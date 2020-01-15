@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// import socket class
-import Socket from '../socket';
-
+import WsClient from '../ws'
 
 export default class App extends React.Component {
     constructor(props) {
@@ -18,11 +16,8 @@ export default class App extends React.Component {
     // componentDidMount is a react life-cycle method that runs after the component 
     //   has mounted.
     componentDidMount() {
-        // establish websocket connection to backend server.
-        let ws = new WebSocket('ws://localhost:8080/ws');
 
-        // create and assign a socket to a variable.
-        let socket = this.socket = new Socket(ws);
+        let socket = this.socket = WsClient.getSocket()
 
         // handle connect and discconnect events.
         socket.on('connect', this.onConnect);
