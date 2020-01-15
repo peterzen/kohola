@@ -22,11 +22,6 @@ import (
 	wallettypes "github.com/decred/dcrwallet/rpc/jsonrpc/types"
 )
 
-const (
-	showHelpMessage = "Specify -h to show available options"
-	listCmdMessage  = "Specify -l to list available commands"
-)
-
 // commandUsage display the usage for a specific command.
 func commandUsage(method interface{}) {
 	usage, err := dcrjson.MethodUsageText(method)
@@ -51,43 +46,33 @@ func usage(errorMessage string) {
 	fmt.Fprintln(os.Stderr, "Usage:")
 	fmt.Fprintf(os.Stderr, "  %s [OPTIONS] <command> <args...>\n\n",
 		appName)
-	fmt.Fprintln(os.Stderr, showHelpMessage)
-	fmt.Fprintln(os.Stderr, listCmdMessage)
 }
 
-
-// helloFromClient is a method that handles messages from the app client.
-func helloFromClient(c *Client, data interface{}) {
-	log.Printf("hello from client! message: %v\n", data)
-
-	// set and write response message
-	c.send = Message{Name: "helloFromServer", Data: "hello client!"}
-	c.Write()
-}
+var cfg *config
 
 func main() {
 
-	cfg, _, err := loadConfig()
+	var err error
+
+	cfg, _, err = loadConfig()
 	// cfg, args, err := loadConfig()
 	if err != nil {
+		log.Println("Load config error", err)
 		os.Exit(1)
 	}
 
-	paramsList := make([]string, 0)
-	runCmd(cfg, "getbalance", paramsList)
+	// paramsList := make([]string, 0)
+	// runCmd("getbalance", paramsList)
 
 	// create router instance
 	router := NewRouter()
 
-	// handle events with messages named `helloFromClient` with handler
-	// helloFromClient (from above).
-	router.Handle("helloFromClient", helloFromClient)
-
-	// http.HandleFunc("/", serveHome)
-
+	// handle events with messages named `wsPing` with handler
+	// wsPing (from above).
+	router.Handle("wsPing", wsPing)
+	router.Handle("getbalance", getBalance)
 
 	http.Handle("/", http.FileServer(http.Dir("../frontend/dist")))
-	// http.HandleFunc("/", ServeIndex)
 
 	// handle all requests to /, upgrade to WebSocket via our router handler.
 	http.Handle("/ws", router)
@@ -97,7 +82,7 @@ func main() {
 }
 
 
-func runCmd(cfg *config, methodStr string, paramsList []string) (error) {
+func runCmd(methodStr string, paramsList []string) (string, error) {
 
 	// Ensure the specified method identifies a valid registered command and
 	// is one of the usable types.
@@ -110,13 +95,11 @@ func runCmd(cfg *config, methodStr string, paramsList []string) (error) {
 	}
 	if err != nil {
 		log.Printf("Unrecognized command %q\n", methodStr)
-		log.Printf(listCmdMessage)
-		return err
+		return "", err
 	}
 	if usageFlags&unusableFlags != 0 {
 		log.Printf("The '%s' command can only be used via websockets\n", method)
-		log.Println(listCmdMessage)
-		return err
+		return "", err
 	}
 
 	// Convert remaining command line args to a slice of interface values
@@ -133,11 +116,11 @@ func runCmd(cfg *config, methodStr string, paramsList []string) (error) {
 			param, err := bio.ReadString('\n')
 			if err != nil && err != io.EOF {
 				log.Printf("Failed to read data from stdin: %v\n", err)
-				return err
+				return "", err
 			}
 			if err == io.EOF && len(param) == 0 {
 				log.Printf("Not enough lines provided on stdin")
-				return err
+				return "", err
 			}
 			param = strings.TrimRight(param, "\r\n")
 			params = append(params, param)
@@ -158,7 +141,7 @@ func runCmd(cfg *config, methodStr string, paramsList []string) (error) {
 		if jerr, ok := err.(dcrjson.Error); ok {
 			log.Printf("%s command: %v (code: %s)\n", method, err, jerr.Code)
 			commandUsage(method)
-			return err
+			return "", err
 		}
 
 		// The error is not a dcrjson.Error and this really should not
@@ -166,7 +149,7 @@ func runCmd(cfg *config, methodStr string, paramsList []string) (error) {
 		// if it should happen due to a bug in the package.
 		log.Printf("%s command: %v\n", method, err)
 		commandUsage(method)
-		return err
+		return "", err
 	}
 
 	// Marshal the command into a JSON-RPC byte slice in preparation for
@@ -174,7 +157,7 @@ func runCmd(cfg *config, methodStr string, paramsList []string) (error) {
 	marshalledJSON, err := dcrjson.MarshalCmd("1.0", 1, cmd)
 	if err != nil {
 		log.Println(err)
-		return err
+		return "", err
 	}
 
 	// Send the JSON-RPC request to the server using the user-specified
@@ -182,7 +165,7 @@ func runCmd(cfg *config, methodStr string, paramsList []string) (error) {
 	result, err := sendPostRequest(marshalledJSON, cfg)
 	if err != nil {
 		log.Println(err)
-		return err
+		return "", err
 	}
 
 	// Choose how to display the result based on its type.
@@ -192,19 +175,23 @@ func runCmd(cfg *config, methodStr string, paramsList []string) (error) {
 		if err := json.Indent(&dst, result, "", "  "); err != nil {
 			log.Printf("Failed to format result: %v",
 				err)
-			return err
+			return "", err
 		}
-		fmt.Println(dst.String())
+		jsonResult :=dst.String()
+		fmt.Println(jsonResult)
+		return jsonResult, nil
 	} else if strings.HasPrefix(strResult, `"`) {
 		var str string
 		if err := json.Unmarshal(result, &str); err != nil {
 			log.Printf("Failed to unmarshal result: %v", err)
-			return err
+			return "", err
 		}
 		fmt.Println(str)
+		return str, nil
 	} else if strResult != "null" {
 		fmt.Println(strResult)
+		return strResult, nil
 	}
 
-	return nil
+	return "", nil
 }
