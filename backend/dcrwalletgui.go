@@ -85,7 +85,9 @@ func main() {
 
 	// http.HandleFunc("/", serveHome)
 
+
 	http.Handle("/", http.FileServer(http.Dir("../frontend/dist")))
+	// http.HandleFunc("/", ServeIndex)
 
 	// handle all requests to /, upgrade to WebSocket via our router handler.
 	http.Handle("/ws", router)

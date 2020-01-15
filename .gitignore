@@ -2,3 +2,7 @@
 backend/dcrwalletgui
 
 frontend/dist/bundle.js
+
+backend/__debug_bin
+
+frontend/yarn.lock

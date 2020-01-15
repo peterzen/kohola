@@ -1,10 +1,9 @@
 package main
 
 import (
+	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
-
-	"github.com/gorilla/websocket"
 )
 
 // Handler is a type representing functions which resolve requests.
@@ -61,3 +60,57 @@ func (rt *Router) Handle(event Event, handler Handler) {
 	rt.rules[event] = handler
 
 }
+
+type indexHandler struct {
+	ServerName string
+}
+
+// ServeIndex serves the index page
+// func ServeIndex(w http.ResponseWriter, r *http.Request) {
+
+// 	data := indexHandler{
+// 		ServerName: "blah",
+// 	}
+// 	indexTmpl.Execute(w, data)
+
+// }
+
+// func (server *Server) ServeStatic(w http.ResponseWriter, r *http.Request) {
+// 	err := server.renderFile(w, r.URL.Path)
+// 	if err != nil {
+// 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+// 		w.WriteHeader(http.StatusNotFound)
+// 		server.fn404(w, r)
+// 	}
+// }
+
+// var indexTmpl = template.Must(template.New("index").Parse(`<!DOCTYPE html>
+// <html lang="en">
+// <head>
+// <title>dcrwalletgui</title>
+// <meta name="viewport" content="width=device-width">
+// <link rel=icon href=data:,>
+// <style>
+// main {
+//         max-width: 80ch;
+//         padding: 2ch;
+//         line-height: 1.4;
+//         margin: auto;
+//         font-family: sans-serif;
+// }
+// </style>
+// </head>
+
+// <body>
+// <main>
+// {{.ServerName}}
+
+// <div id="app"></div>
+
+// <h2>dcrwalletgui</h2>
+
+// <script src="dist/bundle.js"></script>
+
+// </main>
+// </body>
+// </html>`))
