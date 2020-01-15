@@ -6,6 +6,14 @@ import (
 	"net/http"
 )
 
+// configure upgrader
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	// accept all?
+	CheckOrigin: func(r *http.Request) bool { return true },
+}
+
 // Handler is a type representing functions which resolve requests.
 type Handler func(*Client, interface{})
 
@@ -26,13 +34,6 @@ func NewRouter() *Router {
 
 // ServeHTTP creates the socket connection and begins the read routine.
 func (rt *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// configure upgrader
-	upgrader := websocket.Upgrader{
-		ReadBufferSize:  1024,
-		WriteBufferSize: 1024,
-		// accept all?
-		CheckOrigin: func(r *http.Request) bool { return true },
-	}
 
 	// upgrade connection to socket
 	socket, err := upgrader.Upgrade(w, r, nil)
