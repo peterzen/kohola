@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './components/App'; // component not yet created
+import WsClient from './ws'
 
+import App from './components/App';
 
-// mount parent react element (App) on id app.
+WsClient.initialize();
+
 ReactDOM.render(
-    <App />,
+    <App/>,
     document.getElementById('app')
 );

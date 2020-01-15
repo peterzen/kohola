@@ -51,7 +51,7 @@ func (rt *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // FindHandler implements a handler finding function for router.
 func (rt *Router) FindHandler(event Event) (Handler, bool) {
-	handler, found := rt.rules["helloFromClient"]
+	handler, found := rt.rules[event]
 	return handler, found
 }
 
