@@ -97,7 +97,7 @@ func main() {
 }
 
 
-func runCmd(cfg *config, methodStr string, paramsList []string) {
+func runCmd(cfg *config, methodStr string, paramsList []string) (error) {
 
 	// Ensure the specified method identifies a valid registered command and
 	// is one of the usable types.
@@ -109,15 +109,14 @@ func runCmd(cfg *config, methodStr string, paramsList []string) {
 		usageFlags, err = dcrjson.MethodUsageFlags(method)
 	}
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unrecognized command %q\n", methodStr)
-		fmt.Fprintln(os.Stderr, listCmdMessage)
-		os.Exit(1)
+		log.Printf("Unrecognized command %q\n", methodStr)
+		log.Printf(listCmdMessage)
+		return err
 	}
 	if usageFlags&unusableFlags != 0 {
-		fmt.Fprintf(os.Stderr, "The '%s' command can only be used via "+
-			"websockets\n", method)
-		fmt.Fprintln(os.Stderr, listCmdMessage)
-		os.Exit(1)
+		log.Printf("The '%s' command can only be used via websockets\n", method)
+		log.Println(listCmdMessage)
+		return err
 	}
 
 	// Convert remaining command line args to a slice of interface values
@@ -133,14 +132,12 @@ func runCmd(cfg *config, methodStr string, paramsList []string) {
 		if arg == "-" {
 			param, err := bio.ReadString('\n')
 			if err != nil && err != io.EOF {
-				fmt.Fprintf(os.Stderr, "Failed to read data "+
-					"from stdin: %v\n", err)
-				os.Exit(1)
+				log.Printf("Failed to read data from stdin: %v\n", err)
+				return err
 			}
 			if err == io.EOF && len(param) == 0 {
-				fmt.Fprintln(os.Stderr, "Not enough lines "+
-					"provided on stdin")
-				os.Exit(1)
+				log.Printf("Not enough lines provided on stdin")
+				return err
 			}
 			param = strings.TrimRight(param, "\r\n")
 			params = append(params, param)
@@ -159,34 +156,33 @@ func runCmd(cfg *config, methodStr string, paramsList []string) {
 		// NewCmd function is only supposed to return errors of that
 		// type.
 		if jerr, ok := err.(dcrjson.Error); ok {
-			fmt.Fprintf(os.Stderr, "%s command: %v (code: %s)\n",
-				method, err, jerr.Code)
+			log.Printf("%s command: %v (code: %s)\n", method, err, jerr.Code)
 			commandUsage(method)
-			os.Exit(1)
+			return err
 		}
 
 		// The error is not a dcrjson.Error and this really should not
 		// happen.  Nevertheless, fallback to just showing the error
 		// if it should happen due to a bug in the package.
-		fmt.Fprintf(os.Stderr, "%s command: %v\n", method, err)
+		log.Printf("%s command: %v\n", method, err)
 		commandUsage(method)
-		os.Exit(1)
+		return err
 	}
 
 	// Marshal the command into a JSON-RPC byte slice in preparation for
 	// sending it to the RPC server.
 	marshalledJSON, err := dcrjson.MarshalCmd("1.0", 1, cmd)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+		log.Println(err)
+		return err
 	}
 
 	// Send the JSON-RPC request to the server using the user-specified
 	// connection configuration.
 	result, err := sendPostRequest(marshalledJSON, cfg)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+		log.Println(err)
+		return err
 	}
 
 	// Choose how to display the result based on its type.
@@ -194,21 +190,21 @@ func runCmd(cfg *config, methodStr string, paramsList []string) {
 	if strings.HasPrefix(strResult, "{") || strings.HasPrefix(strResult, "[") {
 		var dst bytes.Buffer
 		if err := json.Indent(&dst, result, "", "  "); err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to format result: %v",
+			log.Printf("Failed to format result: %v",
 				err)
-			os.Exit(1)
+			return err
 		}
 		fmt.Println(dst.String())
 	} else if strings.HasPrefix(strResult, `"`) {
 		var str string
 		if err := json.Unmarshal(result, &str); err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to unmarshal result: %v",
-				err)
-			os.Exit(1)
+			log.Printf("Failed to unmarshal result: %v", err)
+			return err
 		}
 		fmt.Println(str)
 	} else if strResult != "null" {
 		fmt.Println(strResult)
 	}
 
+	return nil
 }
