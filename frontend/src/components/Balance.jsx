@@ -1,50 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import WsClient from '../ws'
 
-class AccountRow extends React.Component {
-}
+import DatastoreFactory from '../store.js';
+
+const store = DatastoreFactory.getInstance();
 
 
 export default class Balance extends React.Component {
     constructor(props) {
         super(props);
-
-        // state variables
         this.state = {
-            balances: []
+            accountsList: []
         }
     }
 
-    // componentDidMount is a react life-cycle method that runs after the component 
-    //   has mounted.
     componentDidMount() {
-
-        let socket = this.socket = WsClient.getSocket();
-
-        // handle connect and discconnect events.
-        socket.on('getbalanceResult', this.onDataReceived);
-
-        socket.on('connect', function () {
-            // debugger
-            socket.emit('getbalance', '');
-        });
-
+        store.on('change:accounts', this.onAccountsUpdate);
     }
 
-
-    onDataReceived = (data) => {
-        this.setState(JSON.parse(data));
-        console.log(this.state);
+    onAccountsUpdate = (data) => {
+        this.setState(data);
+        this.render();
     }
 
     renderRow(props) {
         return (
-        <tr>
-            <td>{props.accountname}</td>
-            <td>{props.spendable}</td>
-        </tr>
+            <tr>
+                <td>{props.accountName}</td>
+                <td>{props.totalBalance}</td>
+            </tr>
         )
     }
 
@@ -54,15 +39,16 @@ export default class Balance extends React.Component {
                 <h3>Account Overview</h3>
                 <table>
                     <thead>
-                        <th>account</th>
-                        <th>spendable</th>
+                        <tr>
+                            <th>account</th>
+                            <th>spendable</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {this.state.balances.map(this.renderRow)}
+                        {this.state.accountsList.map(this.renderRow)}
                     </tbody>
                 </table>
             </div>
         )
     }
-
 }

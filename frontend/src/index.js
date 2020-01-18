@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import WsClient from './ws'
-
 import App from './components/App';
 
-WsClient.initialize();
+import DatastoreFactory from './store.js';
+
+const store = DatastoreFactory.getInstance();
 
 ReactDOM.render(
     <App/>,

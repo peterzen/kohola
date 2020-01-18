@@ -3,17 +3,16 @@ module.exports = {
     './src/index.js'
   ],
   module: {
-    loaders: [
-        {
-            test: /\.js|.jsx?$/,
-            exclude: /(node_modules)/,
-            loader: 'babel-loader',
-            query: {
-                presets: ['es2015', 'react', 'stage-2']
-            }
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
         }
+      }
     ]
-},
+  },
   resolve: {
     extensions: ['*', '.js', '.jsx']
   },
