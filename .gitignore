@@ -1,7 +1,7 @@
 
 backend/dcrwalletgui
 
-frontend/dist/bundle.js
+frontend/dist
 
 backend/__debug_bin
 

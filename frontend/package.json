@@ -1,31 +1,49 @@
 {
-  "name": "dcrwallet-gui",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "webpack-dev-server --progress --colors  --https --cert=certs/localhost.pem --key=certs/localhost.key --config ./webpack.config.js",
-    "proto": "protoc -I=./src/proto ./src/proto/api.proto --js_out=import_style=commonjs,binary:./src/proto && protoc -I=./src/proto ./src/proto/api.proto   --grpc-web_out=import_style=commonjs,mode=grpcwebtext:./src/proto",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "events": "^3.1.0",
-    "google-protobuf": "^3.6.1",
-    "grpc-web": "^1.0.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.8.3",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/preset-env": "^7.8.3",
-    "@babel/preset-react": "^7.8.3",
-    "babel-loader": "^8.0.6",
-    "browserify": "^16.2.2",
-    "webpack": "^4.16.5",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.7"
-  }
+	"name": "dcrwallet-gui",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.tsx",
+	"scripts": {
+		"start": "webpack-dev-server --progress --colors  --https --cert=certs/localhost.pem --key=certs/localhost.key --config ./webpack.config.js",
+		"proto": "./protogen.sh",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@improbable-eng/grpc-web": "^0.12.0",
+		"events": "^3.1.0",
+		"google-protobuf": "^3.6.1",
+		"grpc-web": "^1.0.0",
+		"lodash": "^4.17.15",
+		"react": "^16.12.0",
+		"react-dom": "^16.12.0",
+		"tslib": "^1.10.0",
+		"@types/lodash": "^4.14.149",
+		"@types/moment": "^2.13.0",
+		"ee-ts": "^1.0.1",
+		"momentjs": "^2.0.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.8.3",
+		"@babel/plugin-proposal-class-properties": "^7.0.0",
+		"@babel/preset-env": "^7.8.3",
+		"@babel/preset-react": "^7.8.3",
+		"@types/react": "^16.9.17",
+		"@types/react-dom": "^16.9.4",
+		"@types/lodash": "^4.14.149",
+		"@types/moment": "^2.13.0",
+		"babel-loader": "^8.0.6",
+		"browserify": "^16.2.2",
+		"source-map-loader": "^0.2.4",
+		"ts-loader": "^6.2.1",
+		"ts-protoc-gen": "^0.12.0",
+		"typescript": "^3.7.5",
+		"webpack": "^4.16.5",
+		"webpack-cli": "^3.1.0",
+		"webpack-dev-server": "^3.1.7"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	}
 }

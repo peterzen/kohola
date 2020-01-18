@@ -1,32 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
 
-
-import DatastoreFactory from '../store.js';
+import DatastoreFactory from '../store';
+import { AccountsResponse } from '../proto/api_pb';
 
 const store = DatastoreFactory.getInstance();
 
 
-export default class Balance extends React.Component {
-    constructor(props) {
+export default class Balance extends React.Component<{},AccountsResponse.AsObject> {
+
+    constructor(props: object) {
         super(props);
-        this.state = {
-            accountsList: []
-        }
+        this.state = new AccountsResponse().toObject();
     }
 
     componentDidMount() {
-        store.on('change:accounts', this.onAccountsUpdate);
+        store.on('change:accounts', (data: AccountsResponse) => {
+            this.setState(data.toObject());
+            // this.render();
+        });
     }
 
-    onAccountsUpdate = (data) => {
-        this.setState(data);
-        this.render();
-    }
-
-    renderRow(props) {
+    renderRow(props: AccountsResponse.Account.AsObject) {
         return (
-            <tr>
+            <tr key={props.accountNumber}>
                 <td>{props.accountName}</td>
                 <td>{props.totalBalance}</td>
             </tr>
