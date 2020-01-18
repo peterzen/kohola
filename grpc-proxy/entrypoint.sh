@@ -12,4 +12,6 @@ grpcwebproxy \
     --use_websockets \
     --server_bind_address 0.0.0.0 \
     --server_tls_cert_file $SERVER_TLS_CERT_FILE \
-    --server_tls_key_file $SERVER_TLS_KEY_FILE
+    --server_tls_key_file $SERVER_TLS_KEY_FILE \
+    --server_http_max_write_timeout=0 \
+    --server_http_max_read_timeout=0

@@ -1,1 +1,14 @@
-grpcwebproxy --backend_addr=localhost:19558 --backend_tls --backend_tls_ca_files /home/peter/Work/decred/dcrd_simnet.cert --allow_all_origins --run_http_server --use_websockets --run_tls_server --backend_tls_noverify --server_bind_address 0.0.0.0 --server_tls_cert_file localhost.pem --server_tls_key_file localhost.key
+grpcwebproxy \
+    --backend_addr=localhost:19558 \
+    --backend_tls \
+    --backend_tls_ca_files /home/peter/Work/decred/dcrd_simnet.cert \
+    --allow_all_origins \
+    --run_http_server \
+    --use_websockets \
+    --run_tls_server \
+    --backend_tls_noverify \
+    --server_bind_address 0.0.0.0 \
+    --server_tls_cert_file localhost.pem \
+    --server_tls_key_file localhost.key \
+    --server_http_max_write_timeout=0 \
+    --server_http_max_read_timeout=0
