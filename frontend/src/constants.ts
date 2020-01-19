@@ -1,0 +1,12 @@
+export enum TransactionType {
+	REGULAR = 0,
+	COINBASE = 4,
+	TICKET_PURCHASE = 1,
+	VOTE = 2,
+	REVOCATION = 3
+}
+export enum TransactionDirection {
+	TRANSACTION_DIR_RECEIVED = 0,
+	TRANSACTION_DIR_TRANSFERRED = 1,
+	TRANSACTION_DIR_SENT = 2
+}

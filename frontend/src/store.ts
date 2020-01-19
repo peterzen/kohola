@@ -20,9 +20,11 @@ import {
 	GetTransactionsResponse,
 	GetTransactionsRequest,
 	TransactionDetails,
-	BlockDetails
+	BlockDetails,
+	BestBlockResponse,
+	BestBlockRequest
 } from './proto/api_pb';
-import { reverseHash } from './helpers';
+import { TransactionDirection } from './constants';
 
 
 const transport = grpc.WebsocketTransport();
@@ -71,11 +73,32 @@ export class GetTransactionsListResult {
 
 type CallbackFn = (r: GetTransactionsListResult) => void
 
+export class ChainInfo {
+
+	bestBlock: BestBlockResponse;
+
+	constructor(bestBlock: BestBlockResponse | undefined) {
+		if (bestBlock == undefined) {
+			this.bestBlock=new BestBlockResponse();
+			return;
+		}
+		this.bestBlock = bestBlock;
+	}
+
+	getBestBlockHeight(): number {
+		return this.bestBlock.getHeight();
+	}
+
+	getBestBlockHash(): string {
+		return reverseHash(Buffer.from(this.bestBlock.getHash_asU8()).toString("hex"));
+	}
+}
 
 class Datastore extends EventEmitter {
 
 	public transactions: Object;
 	public accounts: Object;
+	public chainInfo: ChainInfo;
 
 	constructor() {
 		super();
@@ -111,22 +134,18 @@ class Datastore extends EventEmitter {
 
 	async getAccounts(): Promise<AccountsResponse> {
 
-		const accountRequest = new AccountsRequest();
+		const request = new AccountsRequest();
 
 		return new Promise<AccountsResponse>((resolve, reject) => {
-			
+
 			grpc.invoke(WalletService.Accounts, {
-				request: accountRequest,
+				request: request,
 				host: wsHost,
 				onMessage: (message: AccountsResponse) => {
 					console.log("getAccounts", message.toObject());
 					resolve(message);
 				},
 				onEnd: (code: grpc.Code, message: string | undefined, trailers: grpc.Metadata) => {
-					// console.log('result', res);
-					// const { status, statusMessage, headers, message } = res;
-					// console.log("onEnd.status", status, statusMessage);
-					// console.log("onEnd.headers", headers);
 					if (code !== grpc.Code.OK) {
 						console.error('getAccounts', code, message);
 						reject({
@@ -140,6 +159,30 @@ class Datastore extends EventEmitter {
 	}
 
 
+	getChainInfo(): Promise<ChainInfo> {
+		const request = new BestBlockRequest();
+
+		return new Promise<ChainInfo>((resolve, reject) => {
+			grpc.invoke(WalletService.BestBlock, {
+				request: request,
+				host: wsHost,
+				onMessage: (message: BestBlockResponse) => {
+					console.log("getChainInfo", message.toObject());
+					const chainInfo = new ChainInfo(message);
+					resolve(chainInfo);
+				},
+				onEnd: (code: grpc.Code, message: string | undefined, trailers: grpc.Metadata) => {
+					if (code !== grpc.Code.OK) {
+						console.error('getChainInfo', code, message);
+						reject({
+							status: code,
+							msg: message
+						});
+					}
+				}
+			});
+		});
+	}
 
 	txNotifications() {
 		const request = new TransactionNotificationsRequest();
@@ -184,7 +227,7 @@ class Datastore extends EventEmitter {
 		return new Promise<GetTransactionsListResult>((resolve, reject) => {
 
 			const foundTx = new GetTransactionsListResult();
-	
+
 			client.onHeaders((headers: grpc.Metadata) => {
 				console.log("onHeaders", headers);
 			});
@@ -239,20 +282,6 @@ export const DatastoreFactory = {
 		datastore = new Datastore();
 		return datastore;
 	}
-}
-
-export enum TransactionType {
-	REGULAR = 0,
-	COINBASE = 4,
-	TICKET_PURCHASE = 1,
-	VOTE = 2,
-	REVOCATION = 3
-}
-
-export enum TransactionDirection {
-	TRANSACTION_DIR_RECEIVED = 0,
-	TRANSACTION_DIR_TRANSFERRED = 1,
-	TRANSACTION_DIR_SENT = 2
 }
 
 export class WalletAccount extends AccountsResponse.Account {
@@ -358,27 +387,40 @@ export class Transaction {
 }
 
 
-	// accountNotifications() {
-	// 	const request = new AccountNotificationsRequest();
+// accountNotifications() {
+// 	const request = new AccountNotificationsRequest();
 
-	// 	const client = grpc.client(WalletService.AccountNotifications, {
-	// 		host: wsHost,
-	// 		transport: transport
-	// 	});
-	// 	client.onHeaders((headers: grpc.Metadata) => {
-	// 		// console.log("onHeaders", headers);
-	// 	});
-	// 	client.onMessage((message: AccountNotificationsResponse) => {
-	// 		console.log("accountnotifications", message.toObject());
-	// 		this.emit('change:accounts', message);
-	// 	});
-	// 	client.onEnd((status: grpc.Code, statusMessage: string, trailers: grpc.Metadata) => {
-	// 		console.log("onEnd", status, statusMessage, trailers);
-	// 	});
+// 	const client = grpc.client(WalletService.AccountNotifications, {
+// 		host: wsHost,
+// 		transport: transport
+// 	});
+// 	client.onHeaders((headers: grpc.Metadata) => {
+// 		// console.log("onHeaders", headers);
+// 	});
+// 	client.onMessage((message: AccountNotificationsResponse) => {
+// 		console.log("accountnotifications", message.toObject());
+// 		this.emit('change:accounts', message);
+// 	});
+// 	client.onEnd((status: grpc.Code, statusMessage: string, trailers: grpc.Metadata) => {
+// 		console.log("onEnd", status, statusMessage, trailers);
+// 	});
 
-	// 	client.start(new grpc.Metadata({ "HeaderTestKey1": "ClientValue1" }));
-	// 	client.send(request);
-	// }
+// 	client.start(new grpc.Metadata({ "HeaderTestKey1": "ClientValue1" }));
+// 	client.send(request);
+// }
+
+
+
+export function reverseHash(s: string) {
+	s = s.replace(/^(.(..)*)$/, "0$1"); // add a leading zero if needed
+	let a = s.match(/../g);             // split number in groups of two
+	if (a !== null) {
+		a.reverse();                        // reverse the groups
+		var s2 = a.join("");
+		return s2;
+	}
+	return "";
+}
 
 
 export default DatastoreFactory;

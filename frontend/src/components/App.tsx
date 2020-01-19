@@ -1,9 +1,10 @@
 import * as React from "react";
 
-import DatastoreFactory from '../store';
+import DatastoreFactory, { ChainInfo } from '../store';
 
 import AccountOverview from './Balance';
 import RecentTransactions from './Transactions';
+import ChainInfoComponent from "./ChainInfoComponent";
 
 const store = DatastoreFactory.getInstance();
 
@@ -22,10 +23,10 @@ export default class App extends React.Component<{}, AppState> {
 
     componentDidMount() {
         store.on('ping:connected', () => {
-            this.setState({connected: true});
+            this.setState({ connected: true });
         });
         store.on('ping:disconnected', () => {
-            this.setState({connected: false});
+            this.setState({ connected: false });
         });
     }
 
@@ -37,6 +38,7 @@ export default class App extends React.Component<{}, AppState> {
         return (
             <div>
                 <h1>{title} {connected}</h1>
+                <ChainInfoComponent />
                 <hr />
                 <AccountOverview />
                 <RecentTransactions />

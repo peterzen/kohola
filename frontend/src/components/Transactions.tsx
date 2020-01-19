@@ -1,7 +1,8 @@
 import * as React from 'react';
 import _ from 'lodash';
 
-import DatastoreFactory, { GetTransactionsListResult, Transaction, TransactionDirection, TransactionType } from '../store';
+import DatastoreFactory, { GetTransactionsListResult, Transaction } from '../store';
+import { TransactionDirection, TransactionType } from "../constants";
 import { formatTimestamp, formatAmount, formatTxType } from '../helpers';
 
 const store = DatastoreFactory.getInstance();
