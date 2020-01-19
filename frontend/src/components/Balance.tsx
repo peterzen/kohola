@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import DatastoreFactory from '../store';
 import { AccountsResponse } from '../proto/api_pb';
+import { formatAmount } from '../helpers';
 
 const store = DatastoreFactory.getInstance();
 
@@ -24,7 +25,7 @@ export default class Balance extends React.Component<{},AccountsResponse.AsObjec
         return (
             <tr key={props.accountNumber}>
                 <td>{props.accountName}</td>
-                <td>{props.totalBalance}</td>
+                <td>{formatAmount(props.totalBalance)}</td>
             </tr>
         )
     }

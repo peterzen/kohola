@@ -1,48 +1,87 @@
 import * as React from 'react';
-import * as moment from 'moment';
+import _ from 'lodash';
 
-import DatastoreFactory from '../store';
-import { TransactionNotificationsResponse, TransactionDetails } from '../proto/api_pb';
+import DatastoreFactory, { GetTransactionsListResult, Transaction, TransactionDirection, TransactionType } from '../store';
+import { formatTimestamp, formatAmount, formatTxType } from '../helpers';
 
 const store = DatastoreFactory.getInstance();
 
-export default class Transactions extends React.Component<{},TransactionNotificationsResponse.AsObject> {
+
+interface TransactionListItemProps {
+    tx: Transaction
+}
+
+export function TransactionListItem(props: TransactionListItemProps) {
+    const tx = props.tx;
+    return (
+        <tr>
+            <td><span title={tx.getTimestamp().format()}>{formatTimestamp(tx.getTimestamp())}</span></td>
+            <td>{formatAmount(tx.getAmount())}</td>
+            <td>{formatTxType(tx.getType())}</td>
+            <td><span title={tx.getHash()}>{_.truncate(tx.getHash(), { length: 15 })}</span></td>
+        </tr>
+    );
+}
+
+interface TransactionListProps {
+    items: Array<Transaction>
+}
+
+export function TransactionList(props: TransactionListProps) {
+    const list = props.items.map((tx: Transaction) => {
+        return (
+            <TransactionListItem tx={tx} key={tx.getHash()} />
+        )
+    });
+    return (
+        <table>
+            <tbody>
+                {list}
+            </tbody>
+        </table>
+    )
+}
+
+interface RecentTransactionsState {
+    results: GetTransactionsListResult
+}
+
+export default class RecentTransactions extends React.Component<{}, RecentTransactionsState> {
+
     constructor(props: Object) {
         super(props);
-        this.state = new TransactionNotificationsResponse().toObject();
+        this.state = {
+            results: new GetTransactionsListResult()
+        };
     }
 
     componentDidMount() {
-        store.on('change:transactions', (data:TransactionNotificationsResponse) => {
-            this.setState(data.toObject())
-        });
+        store.getTransactions(1, 200, 1250, undefined)
+            .then((foundTx) => {
+                this.setState({
+                    results: foundTx
+                })
+            })
+            .catch((err) => {
+                console.error("RecentTransactions", err);
+            });
     }
 
-    renderRow(props: TransactionDetails.AsObject) {
-        const ts = moment.unix(props.timestamp).fromNow();
-        return (
-            <tr key={props.hash.toString()}>
-                <td>{props.hash.toString()}</td>
-                <td>{ts}</td>
-            </tr>
-        )
-    }
 
     render() {
+        let
+            unminedTxList = this.state.results.getUnminedTxList(),
+            minedTxList = this.state.results.getMinedTxList();
         return (
             <div>
-                <h3>Transactions</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>hash</th>
-                            <th>timestamp</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.unminedTransactionsList.map(this.renderRow)}
-                    </tbody>
-                </table>
+                <div>
+                    <h3>Unmined transactions ({this.state.results.getUnminedTxCount().toString()})</h3>
+                    <TransactionList items={unminedTxList} />
+                </div>
+                <div>
+                    <h3>Mined transactions ({this.state.results.getMinedTxCount().toString()})</h3>
+                    <TransactionList items={minedTxList} />
+                </div>
             </div>
         )
     }

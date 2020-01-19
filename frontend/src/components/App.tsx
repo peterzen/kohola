@@ -2,12 +2,10 @@ import * as React from "react";
 
 import DatastoreFactory from '../store';
 
-const store = DatastoreFactory.getInstance();
-
-
 import Balance from './Balance';
-import Transactions from './Transactions';
+import RecentTransactions from './Transactions';
 
+const store = DatastoreFactory.getInstance();
 
 type AppState = {
     connected: Boolean
@@ -41,7 +39,7 @@ export default class App extends React.Component<{}, AppState> {
                 <h1>{title} {connected}</h1>
                 <hr />
                 <Balance />
-                <Transactions />
+                <RecentTransactions />
             </div>
         )
     }
