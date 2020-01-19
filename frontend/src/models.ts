@@ -1,4 +1,4 @@
-import { AccountsResponse, TransactionDetails } from './proto/api_pb';
+import { AccountsResponse, TransactionDetails, GetTicketsResponse } from './proto/api_pb';
 import { TransactionDirection } from './constants';
 import { reverseHash } from './store';
 import moment = require('moment');
@@ -23,8 +23,8 @@ export class Transaction {
 	fee: number;
 	debitAccounts: WalletAccount[] = [];
 	creditAddresses: string[] = [];
-	constructor(tx: TransactionDetails | null) {
-		if (tx === null) {
+	constructor(tx: TransactionDetails | undefined) {
+		if (tx === undefined) {
 			return;
 		}
 		this.timestamp = moment.unix(tx.getTimestamp());
@@ -91,5 +91,58 @@ export class Transaction {
 	}
 	getCreditAddresses() {
 		return this.creditAddresses;
+	}
+}
+
+export enum TicketStatus {
+	UNKNOWN = 0,
+	UNMINED = 1,
+	IMMATURE = 2,
+	LIVE = 3,
+	VOTED = 4,
+	MISSED = 5,
+	EXPIRED = 6,
+	REVOKED = 7
+}
+
+export const TicketStatusLabels = {
+	0: 'UNKNOWN',
+	1: 'UNMINED',
+	2: 'IMMATURE',
+	3: 'LIVE',
+	4: 'VOTED',
+	5: 'MISSED',
+	6: 'EXPIRED',
+	7: 'REVOKED'
+}
+
+
+
+export class Ticket {
+	private spender: Transaction | undefined;
+	private tx: Transaction;
+	private status: TicketStatus;
+	private statusLabel: string;
+
+	constructor(td: GetTicketsResponse.TicketDetails) {
+		this.tx = new Transaction(td.getTicket());
+		if (td.getSpender() != undefined) {
+			this.spender = new Transaction(td.getSpender());
+		}
+		this.status = td.getTicketStatus();
+		this.statusLabel = TicketStatusLabels[this.status];
+	}
+
+	public getStatusLabel(): string {
+		return this.statusLabel;
+	}
+	public getStatus(): TicketStatus {
+		return this.status;
+	}
+	public getTx(): Transaction {
+		return this.tx;
+	}
+	public getSpender(): Transaction | undefined {
+		return this.spender;
 	}
 }

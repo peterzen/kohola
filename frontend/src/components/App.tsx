@@ -4,6 +4,7 @@ import AccountOverview from './Balance';
 import RecentTransactions from './RecentTransactions';
 import ChainInfoComponent from "./ChainInfoComponent";
 import ConnectionStatus from "./ConnectionStatus";
+import TicketsOverview from "./TicketsOverview";
 
 export default class App extends React.Component {
 
@@ -16,6 +17,8 @@ export default class App extends React.Component {
                 <ChainInfoComponent />
                 <hr />
                 <AccountOverview />
+                <hr />
+                <TicketsOverview />
                 <hr />
                 <RecentTransactions />
             </div>

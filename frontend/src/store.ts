@@ -21,9 +21,12 @@ import {
 	GetTransactionsRequest,
 	BlockDetails,
 	BestBlockResponse,
-	BestBlockRequest
+	BestBlockRequest,
+	GetTicketsResponse,
+	GetTicketRequest,
+	GetTicketsRequest
 } from './proto/api_pb';
-import { Transaction } from './models';
+import { Transaction, Ticket } from './models';
 
 
 const transport = grpc.WebsocketTransport();
@@ -93,7 +96,10 @@ export class ChainInfo {
 	}
 }
 
-class Datastore extends EventEmitter {
+type GetTicketsCallbackFn = (r: Ticket[]) => void
+
+
+export class Datastore extends EventEmitter {
 
 	public transactions: Object;
 	public accounts: Object;
@@ -163,6 +169,61 @@ class Datastore extends EventEmitter {
 					}
 				}
 			});
+		});
+	}
+
+	async getTickets(
+		startBlockHeight: number,
+		endBlockHeight: number,
+		targetTicketCount: number,
+		onDataRecvd: GetTicketsCallbackFn | undefined
+	): Promise<Ticket[]> {
+
+		const request = new GetTicketsRequest();
+		request.setStartingBlockHeight(startBlockHeight);
+		request.setEndingBlockHeight(endBlockHeight);
+		request.setTargetTicketCount(targetTicketCount);
+
+		const client = grpc.client(WalletService.GetTickets, {
+			host: wsHost,
+			transport: transport
+		});
+
+
+		const tickets: Ticket[] = [];
+
+		return new Promise<Ticket[]>((resolve, reject) => {
+
+			client.onHeaders((headers: grpc.Metadata) => {
+				// console.log("onHeaders", headers);
+			});
+
+			client.onMessage((message: GetTicketsResponse) => {
+				console.log('getTicketsList got ticket', message.toObject());
+
+				let ticketDetails = message.getTicket();
+				if (ticketDetails !== undefined) {
+					tickets.push(new Ticket(ticketDetails))
+				}
+				if (onDataRecvd !== undefined) {
+					onDataRecvd(tickets);
+				}
+			});
+
+			client.onEnd((status: grpc.Code, statusMessage: string, trailers: grpc.Metadata) => {
+				// console.log("getTickets", status, statusMessage, trailers);
+				if (status !== grpc.Code.OK) {
+					reject({
+						status: status,
+						msg: statusMessage
+					});
+				} else {
+					resolve(tickets);
+				}
+			});
+
+			client.start(new grpc.Metadata({ "HeaderTestKey1": "ClientValue1" }));
+			client.send(request);
 		});
 	}
 

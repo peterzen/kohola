@@ -5,6 +5,7 @@ import DatastoreFactory, { GetTransactionsListResult } from '../store';
 import { Transaction } from "../models";
 import { TransactionDirection, TransactionType } from "../constants";
 import { formatTimestamp, formatAmount, formatTxType } from '../helpers';
+import { Timestamp, TransactionHash } from './shared';
 
 const store = DatastoreFactory.getInstance();
 
@@ -17,10 +18,10 @@ export function TransactionListItem(props: TransactionListItemProps) {
     const tx = props.tx;
     return (
         <tr>
-            <td><span title={tx.getTimestamp().format()}>{formatTimestamp(tx.getTimestamp())}</span></td>
+            <td><Timestamp ts={tx.getTimestamp()} /></td>
             <td>{formatAmount(tx.getAmount())}</td>
             <td>{formatTxType(tx.getType())}</td>
-            <td><span title={tx.getHash()}>{_.truncate(tx.getHash(), { length: 15 })}</span></td>
+            <td><TransactionHash tx={tx} /></td>
         </tr>
     );
 }
