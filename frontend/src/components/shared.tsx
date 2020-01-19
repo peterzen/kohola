@@ -1,5 +1,5 @@
 import { Moment } from "moment";
-import { formatTimestamp } from "../helpers";
+import { formatTimestamp, formatAmount } from "../helpers";
 import React from "react";
 import { Transaction } from "../models";
 import _ from "lodash";
@@ -10,7 +10,7 @@ interface TimestampProps {
 }
 export function Timestamp(props: TimestampProps) {
     return (
-        <span title={props.ts.format()}>{formatTimestamp(props.ts)}</span>
+        <span className="timestamp" title={props.ts.format()}>{formatTimestamp(props.ts)}</span>
     )
 }
 
@@ -20,6 +20,16 @@ interface TransactionHashProps {
 
 export function TransactionHash(props: TransactionHashProps) {
     return (
-        <span title={props.tx.getHash()}>{_.truncate(props.tx.getHash(), { length: 15 })}</span>
+        <span className="tx-hash" title={props.tx.getHash()}>{_.truncate(props.tx.getHash(), { length: 15 })}</span>
+    )
+}
+
+interface AmountProps {
+    amount: number
+}
+
+export function Amount(props: AmountProps) {
+    return (
+        <span className="amount">{formatAmount(props.amount)}</span>
     )
 }

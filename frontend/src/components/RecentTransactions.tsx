@@ -1,11 +1,9 @@
 import * as React from 'react';
-import _ from 'lodash';
 
 import DatastoreFactory, { GetTransactionsListResult } from '../store';
 import { Transaction } from "../models";
-import { TransactionDirection, TransactionType } from "../constants";
-import { formatTimestamp, formatAmount, formatTxType } from '../helpers';
-import { Timestamp, TransactionHash } from './shared';
+import { formatTxType } from '../helpers';
+import { Timestamp, TransactionHash, Amount } from './shared';
 
 const store = DatastoreFactory.getInstance();
 
@@ -19,7 +17,7 @@ export function TransactionListItem(props: TransactionListItemProps) {
     return (
         <tr>
             <td><Timestamp ts={tx.getTimestamp()} /></td>
-            <td>{formatAmount(tx.getAmount())}</td>
+            <td><Amount amount={tx.getAmount()}/></td>
             <td>{formatTxType(tx.getType())}</td>
             <td><TransactionHash tx={tx} /></td>
         </tr>

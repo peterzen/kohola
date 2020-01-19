@@ -1,10 +1,7 @@
 import * as React from 'react';
 
 import DatastoreFactory from '../store';
-import { AccountsResponse, GetTicketsResponse } from '../proto/api_pb';
-import { formatAmount, formatTimestamp } from '../helpers';
-import _ from 'lodash';
-import { Transaction, Ticket } from '../models';
+import { Ticket } from '../models';
 import { Timestamp, TransactionHash } from './shared';
 
 const store = DatastoreFactory.getInstance();
