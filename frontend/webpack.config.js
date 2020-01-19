@@ -8,7 +8,11 @@ module.exports = {
 				test: /\.(ts|tsx)$/,
 				include: /src/,
 				exclude: /node_modules/,
-				loader: "ts-loader"
+				loader: "ts-loader",
+				options: {
+					transpileOnly: true,
+					experimentalWatchApi: true,
+				},
 			},
 			{
 				test: /\.(js|jsx)$/,
@@ -28,9 +32,9 @@ module.exports = {
 		extensions: ['.js', '.jsx', ".ts", ".tsx"]
 	},
 	externals: {
-        // "react": "React",
-        // "react-dom": "ReactDOM"
-    },
+		// "react": "React",
+		// "react-dom": "ReactDOM"
+	},
 	output: {
 		path: __dirname + '/dist',
 		publicPath: '/',
@@ -38,5 +42,12 @@ module.exports = {
 	},
 	devServer: {
 		contentBase: './dist'
+	},
+
+	// dev build perf optimization
+	optimization: {
+		removeAvailableModules: false,
+		removeEmptyChunks: false,
+		splitChunks: false,
 	}
 };
