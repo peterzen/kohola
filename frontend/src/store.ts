@@ -78,7 +78,7 @@ export class ChainInfo {
 
 	constructor(bestBlock: BestBlockResponse | undefined) {
 		if (bestBlock == undefined) {
-			this.bestBlock=new BestBlockResponse();
+			this.bestBlock = new BestBlockResponse();
 			return;
 		}
 		this.bestBlock = bestBlock;
@@ -108,6 +108,15 @@ class Datastore extends EventEmitter {
 
 		this.ping();
 		// setInterval(_.bind(this.ping, this), 5000);
+	}
+
+	async initialize() {
+		try {
+			this.chainInfo = await this.getChainInfo();
+		}
+		catch (err) {
+			console.error("store.initialize", err);
+		}
 	}
 
 	ping() {
@@ -228,11 +237,11 @@ class Datastore extends EventEmitter {
 			const foundTx = new GetTransactionsListResult();
 
 			client.onHeaders((headers: grpc.Metadata) => {
-				console.log("onHeaders", headers);
+				// console.log("onHeaders", headers);
 			});
 
 			client.onMessage((message: GetTransactionsResponse) => {
-				console.log('getTransactions got block', message.toObject());
+				// console.log('getTransactions got block', message.toObject());
 
 				let minedBlockDetails = message.getMinedTransactions();
 				if (minedBlockDetails !== undefined) {
