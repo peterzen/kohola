@@ -56,7 +56,7 @@ export default class RecentTransactions extends React.Component<{}, RecentTransa
     }
 
     componentDidMount() {
-        store.getTransactions(1, 200, 1250, undefined)
+        store.getTransactions(0, 200, 1250, undefined)
             .then((foundTx) => {
                 this.setState({
                     results: foundTx

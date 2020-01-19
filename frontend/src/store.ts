@@ -109,48 +109,36 @@ class Datastore extends EventEmitter {
 		});
 	}
 
-	getAccounts() {
+	async getAccounts(): Promise<AccountsResponse> {
+
 		const accountRequest = new AccountsRequest();
-		grpc.invoke(WalletService.Accounts, {
-			request: accountRequest,
-			host: wsHost,
-			onMessage: (message: AccountsResponse) => {
-				this.emit('change:accounts', message);
-				console.log("getAccounts", message.toObject());
-			},
-			onEnd: (code: grpc.Code, message: string | undefined, trailers: grpc.Metadata) => {
-				// console.log('result', res);
-				// const { status, statusMessage, headers, message } = res;
-				// console.log("onEnd.status", status, statusMessage);
-				// console.log("onEnd.headers", headers);
-				if (code !== grpc.Code.OK) {
-					console.error('getAccounts', code, message);
+
+		return new Promise<AccountsResponse>((resolve, reject) => {
+			
+			grpc.invoke(WalletService.Accounts, {
+				request: accountRequest,
+				host: wsHost,
+				onMessage: (message: AccountsResponse) => {
+					console.log("getAccounts", message.toObject());
+					resolve(message);
+				},
+				onEnd: (code: grpc.Code, message: string | undefined, trailers: grpc.Metadata) => {
+					// console.log('result', res);
+					// const { status, statusMessage, headers, message } = res;
+					// console.log("onEnd.status", status, statusMessage);
+					// console.log("onEnd.headers", headers);
+					if (code !== grpc.Code.OK) {
+						console.error('getAccounts', code, message);
+						reject({
+							status: code,
+							msg: message
+						});
+					}
 				}
-			}
+			});
 		});
 	}
 
-	// accountNotifications() {
-	// 	const request = new AccountNotificationsRequest();
-
-	// 	const client = grpc.client(WalletService.AccountNotifications, {
-	// 		host: wsHost,
-	// 		transport: transport
-	// 	});
-	// 	client.onHeaders((headers: grpc.Metadata) => {
-	// 		// console.log("onHeaders", headers);
-	// 	});
-	// 	client.onMessage((message: AccountNotificationsResponse) => {
-	// 		console.log("accountnotifications", message.toObject());
-	// 		this.emit('change:accounts', message);
-	// 	});
-	// 	client.onEnd((status: grpc.Code, statusMessage: string, trailers: grpc.Metadata) => {
-	// 		console.log("onEnd", status, statusMessage, trailers);
-	// 	});
-
-	// 	client.start(new grpc.Metadata({ "HeaderTestKey1": "ClientValue1" }));
-	// 	client.send(request);
-	// }
 
 
 	txNotifications() {
@@ -195,11 +183,11 @@ class Datastore extends EventEmitter {
 
 		return new Promise<GetTransactionsListResult>((resolve, reject) => {
 
+			const foundTx = new GetTransactionsListResult();
+	
 			client.onHeaders((headers: grpc.Metadata) => {
 				console.log("onHeaders", headers);
 			});
-
-			const foundTx = new GetTransactionsListResult();
 
 			client.onMessage((message: GetTransactionsResponse) => {
 				console.log('getTransactions got block', message.toObject());
@@ -242,7 +230,7 @@ class Datastore extends EventEmitter {
 
 let datastore: Datastore;
 
-const DatastoreFactory = {
+export const DatastoreFactory = {
 
 	getInstance: function () {
 		if (datastore != null) {
@@ -369,6 +357,28 @@ export class Transaction {
 	}
 }
 
+
+	// accountNotifications() {
+	// 	const request = new AccountNotificationsRequest();
+
+	// 	const client = grpc.client(WalletService.AccountNotifications, {
+	// 		host: wsHost,
+	// 		transport: transport
+	// 	});
+	// 	client.onHeaders((headers: grpc.Metadata) => {
+	// 		// console.log("onHeaders", headers);
+	// 	});
+	// 	client.onMessage((message: AccountNotificationsResponse) => {
+	// 		console.log("accountnotifications", message.toObject());
+	// 		this.emit('change:accounts', message);
+	// 	});
+	// 	client.onEnd((status: grpc.Code, statusMessage: string, trailers: grpc.Metadata) => {
+	// 		console.log("onEnd", status, statusMessage, trailers);
+	// 	});
+
+	// 	client.start(new grpc.Metadata({ "HeaderTestKey1": "ClientValue1" }));
+	// 	client.send(request);
+	// }
 
 
 export default DatastoreFactory;

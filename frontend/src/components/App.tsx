@@ -2,7 +2,7 @@ import * as React from "react";
 
 import DatastoreFactory from '../store';
 
-import Balance from './Balance';
+import AccountOverview from './Balance';
 import RecentTransactions from './Transactions';
 
 const store = DatastoreFactory.getInstance();
@@ -38,7 +38,7 @@ export default class App extends React.Component<{}, AppState> {
             <div>
                 <h1>{title} {connected}</h1>
                 <hr />
-                <Balance />
+                <AccountOverview />
                 <RecentTransactions />
             </div>
         )

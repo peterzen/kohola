@@ -6,26 +6,36 @@ import { formatAmount } from '../helpers';
 
 const store = DatastoreFactory.getInstance();
 
+interface AccountOverviewState {
+    accounts: AccountsResponse
+}
 
-export default class Balance extends React.Component<{},AccountsResponse.AsObject> {
+export default class AccountOverview extends React.Component<{}, AccountOverviewState> {
 
     constructor(props: object) {
         super(props);
-        this.state = new AccountsResponse().toObject();
+        this.state = {
+            accounts: new AccountsResponse()
+        }
     }
 
     componentDidMount() {
-        store.on('change:accounts', (data: AccountsResponse) => {
-            this.setState(data.toObject());
-            // this.render();
-        });
+        store.getAccounts()
+            .then((accounts) => {
+                this.setState({
+                    accounts: accounts
+                })
+            })
+            .catch((err) => {
+                console.error("AccountOverview", err);
+            });
     }
 
-    renderRow(props: AccountsResponse.Account.AsObject) {
+    renderAccountItem(account: AccountsResponse.Account) {
         return (
-            <tr key={props.accountNumber}>
-                <td>{props.accountName}</td>
-                <td>{formatAmount(props.totalBalance)}</td>
+            <tr key={account.getAccountNumber()}>
+                <td>{account.getAccountName()}</td>
+                <td>{formatAmount(account.getTotalBalance())}</td>
             </tr>
         )
     }
@@ -42,7 +52,7 @@ export default class Balance extends React.Component<{},AccountsResponse.AsObjec
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.accountsList.map(this.renderRow)}
+                        {this.state.accounts.getAccountsList().map(this.renderAccountItem)}
                     </tbody>
                 </table>
             </div>
