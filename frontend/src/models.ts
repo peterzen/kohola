@@ -1,13 +1,17 @@
-import { AccountsResponse, TransactionDetails, GetTicketsResponse } from './proto/api_pb';
-import { TransactionDirection } from './constants';
-import { reverseHash } from './store';
+import { AccountsResponse, TransactionDetails, GetTicketsResponse, BestBlockResponse } from './proto/api_pb';
+import { TransactionDirection, TicketStatus, TicketStatusLabels } from './constants';
+import { reverseHash } from './helpers';
 import moment = require('moment');
+
+
+
 export class WalletAccount extends AccountsResponse.Account {
 	constructor(id: number) {
 		super();
 		this.setAccountNumber(id);
 	}
 }
+
 export class Transaction {
 	timestamp: moment.Moment;
 	height: number;
@@ -94,30 +98,6 @@ export class Transaction {
 	}
 }
 
-export enum TicketStatus {
-	UNKNOWN = 0,
-	UNMINED = 1,
-	IMMATURE = 2,
-	LIVE = 3,
-	VOTED = 4,
-	MISSED = 5,
-	EXPIRED = 6,
-	REVOKED = 7
-}
-
-export const TicketStatusLabels = {
-	0: 'UNKNOWN',
-	1: 'UNMINED',
-	2: 'IMMATURE',
-	3: 'LIVE',
-	4: 'VOTED',
-	5: 'MISSED',
-	6: 'EXPIRED',
-	7: 'REVOKED'
-}
-
-
-
 export class Ticket {
 	private spender: Transaction | undefined;
 	private tx: Transaction;
@@ -144,5 +124,60 @@ export class Ticket {
 	}
 	public getSpender(): Transaction | undefined {
 		return this.spender;
+	}
+}
+
+export class ChainInfo {
+
+	bestBlock: BestBlockResponse;
+
+	constructor(bestBlock: BestBlockResponse | undefined) {
+		if (bestBlock == undefined) {
+			this.bestBlock = new BestBlockResponse();
+			return;
+		}
+		this.bestBlock = bestBlock;
+	}
+
+	getBestBlockHeight(): number {
+		return this.bestBlock.getHeight();
+	}
+
+	getBestBlockHash(): string {
+		return reverseHash(Buffer.from(this.bestBlock.getHash_asU8()).toString("hex"));
+	}
+}
+
+export class TransactionsListResult {
+
+	private minedTx: Transaction[] = []
+	private unminedTx: Transaction[] = []
+
+	getUnminedTxList(): Transaction[] {
+		return this.unminedTx;
+	}
+
+	getMinedTxList(): Transaction[] {
+		return this.minedTx;
+	}
+
+	addMinedTx(txList: Transaction[]) {
+		this.minedTx.push(...txList);
+	}
+
+	addUnminedTx(txList: Transaction[]) {
+		this.unminedTx.push(...txList);
+	}
+
+	getUnminedTxCount() {
+		return this.unminedTx.length;
+	}
+
+	getMinedTxCount() {
+		return this.minedTx.length;
+	}
+
+	getTxCount() {
+		return this.minedTx.length + this.unminedTx.length;
 	}
 }

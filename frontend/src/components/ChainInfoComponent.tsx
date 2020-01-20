@@ -1,6 +1,7 @@
 import * as React from "react";
 
-import DatastoreFactory, { ChainInfo } from '../store';
+import { ChainInfo } from '../models';
+import DatastoreFactory from '../store';
 
 
 const store = DatastoreFactory.getInstance();
@@ -20,14 +21,14 @@ export default class ChainInfoComponent extends React.Component<{}, ChainInfoSta
 
     componentDidMount() {
         store.getChainInfo()
-        .then((chainInfo) => {
-            this.setState({
-                chainInfo: chainInfo
+            .then((chainInfo) => {
+                this.setState({
+                    chainInfo: chainInfo
+                })
             })
-        })
-        .catch((err) => {
-            console.error("ChainInfoComponent", err);
-        });
+            .catch((err) => {
+                console.error("ChainInfoComponent", err);
+            });
 
     }
 
@@ -35,7 +36,7 @@ export default class ChainInfoComponent extends React.Component<{}, ChainInfoSta
         const chainInfo = this.state.chainInfo;
         return (
             <div>
-                Block height: {chainInfo.getBestBlockHeight()}<br/>
+                Block height: {chainInfo.getBestBlockHeight()}<br />
                 Block hash: {chainInfo.getBestBlockHash()}
             </div>
         )

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import DatastoreFactory, { GetTransactionsListResult } from '../store';
-import { Transaction } from "../models";
+import DatastoreFactory  from '../store';
+import { Transaction, TransactionsListResult } from "../models";
 import { formatTxType } from '../helpers';
 import { Timestamp, TransactionHash, Amount } from './shared';
 
@@ -25,7 +25,7 @@ export function TransactionListItem(props: TransactionListItemProps) {
 }
 
 interface TransactionListProps {
-    items: Array<Transaction>
+    items: Transaction[]
 }
 
 export function TransactionList(props: TransactionListProps) {
@@ -44,7 +44,7 @@ export function TransactionList(props: TransactionListProps) {
 }
 
 interface RecentTransactionsState {
-    results: GetTransactionsListResult
+    results: TransactionsListResult
 }
 
 export default class RecentTransactions extends React.Component<{}, RecentTransactionsState> {
@@ -52,7 +52,7 @@ export default class RecentTransactions extends React.Component<{}, RecentTransa
     constructor(props: Object) {
         super(props);
         this.state = {
-            results: new GetTransactionsListResult()
+            results: new TransactionsListResult()
         };
     }
 
