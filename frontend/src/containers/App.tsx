@@ -24,4 +24,18 @@ export default class App extends React.Component {
             </div>
         )
     }
+
+    // componentDidMount() {
+    //     window.addEventListener("beforeunload", this.onBeforeWindowUnload);
+    // }
+
+    // componentWillUnmount() {
+    //     window.removeEventListener("beforeunload", this.onBeforeWindowUnload);
+    // }
+
+    // private onBeforeWindowUnload(e: BeforeUnloadEvent) {
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    //     return false;
+    // }
 }
