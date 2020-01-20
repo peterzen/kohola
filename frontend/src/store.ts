@@ -24,7 +24,10 @@ import {
 	BestBlockRequest,
 	GetTicketsResponse,
 	GetTicketRequest,
-	GetTicketsRequest
+	GetTicketsRequest,
+	AccountBalance,
+	BalanceRequest,
+	BalanceResponse
 } from './proto/api_pb';
 import { Transaction, Ticket } from './models';
 
@@ -199,7 +202,7 @@ export class Datastore extends EventEmitter {
 			});
 
 			client.onMessage((message: GetTicketsResponse) => {
-				console.log('getTicketsList got ticket', message.toObject());
+				// console.log('getTicketsList got ticket', message.toObject());
 
 				let ticketDetails = message.getTicket();
 				if (ticketDetails !== undefined) {
@@ -228,7 +231,7 @@ export class Datastore extends EventEmitter {
 	}
 
 
-	getChainInfo(): Promise<ChainInfo> {
+	async getChainInfo(): Promise<ChainInfo> {
 		const request = new BestBlockRequest();
 
 		return new Promise<ChainInfo>((resolve, reject) => {
@@ -243,6 +246,33 @@ export class Datastore extends EventEmitter {
 				onEnd: (code: grpc.Code, message: string | undefined, trailers: grpc.Metadata) => {
 					if (code !== grpc.Code.OK) {
 						console.error('getChainInfo', code, message);
+						reject({
+							status: code,
+							msg: message
+						});
+					}
+				}
+			});
+		});
+	}
+
+	async getAccountBalance(accountNumber: number): Promise<BalanceResponse> {
+
+		const request = new BalanceRequest();
+		request.setAccountNumber(accountNumber);
+		request.setRequiredConfirmations(3);
+
+		return new Promise<BalanceResponse>((resolve, reject) => {
+			grpc.invoke(WalletService.Balance, {
+				request: request,
+				host: wsHost,
+				onMessage: (message: BalanceResponse) => {
+					console.log("getBalance", message.toObject());
+					resolve(message);
+				},
+				onEnd: (code: grpc.Code, message: string | undefined, trailers: grpc.Metadata) => {
+					if (code !== grpc.Code.OK) {
+						console.error('getBalance', code, message);
 						reject({
 							status: code,
 							msg: message
