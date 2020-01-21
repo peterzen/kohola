@@ -2,9 +2,9 @@ import * as React from "react";
 
 import AccountOverview from '../components/Balance';
 import RecentTransactions from '../components/RecentTransactions';
-import ChainInfoComponent from "../components/ChainInfoComponent";
 import ConnectionStatus from "../components/ConnectionStatus";
 import TicketsOverview from "../components/TicketsOverview";
+import BestBlock from "../components/BestBlock";
 
 export default class App extends React.Component {
 
@@ -14,7 +14,7 @@ export default class App extends React.Component {
         return (
             <div>
                 <h1>{title}  <ConnectionStatus /></h1>
-                <ChainInfoComponent />
+                <BestBlock />
                 <hr />
                 <AccountOverview />
                 <hr />

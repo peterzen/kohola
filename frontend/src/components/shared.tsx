@@ -1,5 +1,5 @@
 import { Moment } from "moment";
-import { formatTimestamp, formatAmount } from "../helpers";
+import { formatTimestamp, formatAmount, reverseHash } from "../helpers";
 import React from "react";
 import { Transaction } from "../models";
 import _ from "lodash";
@@ -31,5 +31,19 @@ interface AmountProps {
 export function Amount(props: AmountProps) {
     return (
         <span className="amount">{formatAmount(props.amount)}</span>
+    )
+}
+
+interface HashProps {
+    hash: Uint8Array
+}
+
+export function Hash(props: HashProps) {
+    if (!props.hash.length) {
+        return null;
+    }
+    const fmtHash = Buffer.from(props.hash).toString("hex")
+    return (
+        <span>{fmtHash}</span>
     )
 }

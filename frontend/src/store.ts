@@ -20,7 +20,7 @@ import {
 	BalanceRequest,
 	BalanceResponse
 } from './proto/api_pb';
-import { getGrpcClient, grpcInvoke } from './middleware/walletrpc';
+import { getGrpcClient, grpcInvoke,grpcInvokerFactory } from './middleware/walletrpc';
 import { Transaction, Ticket, ChainInfo, TransactionsListResult } from './models';
 
 
@@ -29,6 +29,7 @@ type CallbackFn = (r: TransactionsListResult) => void
 
 type GetTicketsCallbackFn = (r: Ticket[]) => void
 
+const pinger = grpcInvokerFactory(WalletService.Ping);
 
 export class Datastore extends EventEmitter {
 
@@ -40,7 +41,16 @@ export class Datastore extends EventEmitter {
 		// this.getAccounts();
 		// this.txNotifications();
 
-		this.ping();
+		// pinger()
+		// .then((r) =>{
+		// 	console.log('pinger',r)
+		// 	debugger
+		// })
+		// .catch((e)=>{
+
+		// 	debugger;
+		// })
+		// this.ping();
 		// setInterval(_.bind(this.ping, this), 5000);
 	}
 

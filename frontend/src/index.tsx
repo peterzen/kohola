@@ -8,11 +8,14 @@ import { createBrowserHistory } from 'history';
 import initialState from './store/initialState';
 import configureStore from './store/configureStore';
 import App from './containers/App';
+import { getBestBlockHeightAttempt, GETBESTBLOCK_ATTEMPT } from './actions/WalletRpcActions';
 
 
 
 const history = createBrowserHistory();
 const store = configureStore(initialState, history);
+
+store.dispatch(getBestBlockHeightAttempt());
 
 ReactDOM.render(
     <Provider store={store}>

@@ -1,35 +1,10 @@
 import { grpc } from "@improbable-eng/grpc-web";
-import * as jspb from "google-protobuf";
-
-import { WalletService } from '../proto/api_pb_service';
-import * as api_pb from "../proto/api_pb";
-
-
-
-import {
-    PingRequest,
-    AccountsRequest,
-    TransactionNotificationsRequest,
-    TransactionNotificationsResponse,
-    AccountsResponse,
-    PingResponse,
-    GetTransactionsResponse,
-    GetTransactionsRequest,
-    BestBlockResponse,
-    BestBlockRequest,
-    GetTicketsResponse,
-    GetTicketsRequest,
-    BalanceRequest,
-    BalanceResponse
-} from '../proto/api_pb';
-import { ServiceDefinition, UnaryMethodDefinition, MethodDefinition } from "@improbable-eng/grpc-web/dist/typings/service";
+import { MethodDefinition } from "@improbable-eng/grpc-web/dist/typings/service";
 import { ProtobufMessage } from "@improbable-eng/grpc-web/dist/typings/message";
 import { InvokeRpcOptions } from "@improbable-eng/grpc-web/dist/typings/invoke";
 import { Code } from "@improbable-eng/grpc-web/dist/typings/Code";
 import { Metadata } from "@improbable-eng/grpc-web/dist/typings/metadata";
 import { Client } from "@improbable-eng/grpc-web/dist/typings/client";
-
-
 
 const transport = grpc.WebsocketTransport();
 const wsHost = "https://localhost:8443"
@@ -44,7 +19,7 @@ interface GrpcInvokePropsInterface {
 export function grpcInvoke(
     service: MethodDefinition<ProtobufMessage, ProtobufMessage>,
     request: ProtobufMessage,
-    p: GrpcInvokePropsInterface){
+    p: GrpcInvokePropsInterface) {
 
     const props: InvokeRpcOptions<ProtobufMessage, ProtobufMessage> = {
         host: wsHost,
@@ -61,4 +36,35 @@ export function getGrpcClient(method: MethodDefinition<ProtobufMessage, Protobuf
         host: wsHost,
         transport: transport
     });
+}
+
+
+
+export function grpcInvokerFactory(reqClassRef: MethodDefinition<ProtobufMessage, ProtobufMessage>) {
+
+    return function () {
+        const req = new reqClassRef.requestType();
+        const methodName = reqClassRef.methodName;
+
+        return new Promise<ProtobufMessage>((resolve, reject) => {
+            grpc.invoke(reqClassRef, {
+                host: wsHost,
+                request: req,
+                onMessage: (message) => {
+                    console.log(methodName, message.toObject());
+                    resolve(message);
+                },
+                onEnd: (code: grpc.Code, message: any, headers) => {
+                    if (code !== grpc.Code.OK) {
+                        console.error(methodName, code, message, headers);
+                        reject({
+                            status: code,
+                            method: methodName,
+                            msg: message
+                        });
+                    }
+                }
+            });
+        });
+    }
 }
