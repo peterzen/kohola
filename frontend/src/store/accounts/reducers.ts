@@ -1,19 +1,16 @@
-import { WalletAccounts } from "../../models";
 import {
     WalletAccountsState,
     GetAccountsActionTypes,
     GETACCOUNTS_ATTEMPT, GETACCOUNTS_FAILED, GETACCOUNTS_SUCCESS
 } from "./types";
 
-
-export const initialState: WalletAccountsState = {
+export const accountsInitialState: WalletAccountsState = {
     accounts: [],
     getAccountsRequest: false,
 }
 
-
 export default function accounts(
-    state: WalletAccountsState = initialState,
+    state: WalletAccountsState = accountsInitialState,
     action: GetAccountsActionTypes) {
 
     switch (action.type) {

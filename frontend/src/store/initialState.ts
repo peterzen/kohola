@@ -1,28 +1,15 @@
-import { BestBlock } from "../models";
 import { IApplicationState } from "./types";
 
 import { transactionsInitialState } from "./transactions/reducers";
+import { pingInitialState } from "./ping/reducers";
+import { bestblockInitialState } from "./bestblock/reducers";
+import { accountsInitialState } from "./accounts/reducers";
 
 
-
-let initialState: IApplicationState = {
-	ping: {
-		getPingError: "",
-		getPingRequestAttempt: false,
-		getPingResponse: null,
-		pingTimer: null,
-	},
-
-	bestblock: {
-		currentBlock: new BestBlock(),
-		getBestBlockHeightRequest: false
-	},
-
-	accounts: {
-		accounts: [],
-		getAccountsRequest: false
-	},
-
+const initialState: IApplicationState = {
+	ping: pingInitialState,
+	bestblock: bestblockInitialState,
+	accounts: accountsInitialState,
 	transactions: transactionsInitialState
 }
 

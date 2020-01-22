@@ -1,15 +1,17 @@
-
-import { BestBlockActionTypes, BestBlockState, GETBESTBLOCK_ATTEMPT, GETBESTBLOCK_FAILED, GETBESTBLOCK_SUCCESS } from './types'
+import {
+	BestBlockActionTypes, BestBlockState,
+	GETBESTBLOCK_ATTEMPT, GETBESTBLOCK_FAILED, GETBESTBLOCK_SUCCESS
+} from './types'
 import { BestBlock } from '../../models';
 
-export const initialState: BestBlockState = {
+export const bestblockInitialState: BestBlockState = {
   currentBlock: new BestBlock(),
   getBestBlockHeightRequest: false,
 }
 
 
 export default function bestblock(
-  state: BestBlockState = initialState,
+  state: BestBlockState = bestblockInitialState,
   action: BestBlockActionTypes) {
 
   switch (action.type) {

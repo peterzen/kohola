@@ -1,19 +1,17 @@
-
 import { 
   PingActionTypes, PingState, 
   GETPING_ATTEMPT, GETPING_FAILED, GETPING_SUCCESS, GETPING_CANCELED 
 } from './types'
 
-export const initialState: PingState = {
+export const pingInitialState: PingState = {
   getPingResponse: null,
   getPingError: "",
   getPingRequestAttempt: false,
   pingTimer: null
 }
 
-
 export default function ping(
-  state: PingState = initialState,
+  state: PingState = pingInitialState,
   action: PingActionTypes) {
 
   switch (action.type) {
