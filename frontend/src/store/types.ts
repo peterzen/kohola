@@ -1,17 +1,20 @@
+
 import { grpc } from "@improbable-eng/grpc-web";
 
-import { BestBlockState } from "./bestblock/types";
 import { PingState } from "./ping/types";
-import { WalletAccountsState } from "./accounts/types";
-import { TransactionsState } from "./transactions/types";
 import { TicketsState } from "./tickets/types";
+import { BestBlockState } from "./bestblock/types";
+import { TransactionsState } from "./transactions/types";
+import { WalletBalanceState } from "./walletbalance/types";
+import { WalletAccountsState } from "./accounts/types";
 
 export type IApplicationState = {
 	ping: PingState,
 	bestblock: BestBlockState,
 	accounts: WalletAccountsState,
 	transactions: TransactionsState,
-	tickets: TicketsState
+	tickets: TicketsState,
+	walletbalance: WalletBalanceState
 }
 
 export type AppError = {

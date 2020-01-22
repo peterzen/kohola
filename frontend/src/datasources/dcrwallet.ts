@@ -4,7 +4,8 @@ import { grpc } from "@improbable-eng/grpc-web";
 import * as api from '../proto/api_pb';
 import { WalletService, VotingService, TicketBuyerService, AgendaService } from '../proto/api_pb_service';
 import { getGrpcClient, grpcInvoke, grpcInvokerFactory } from '../middleware/walletrpc';
-import { Transaction, Ticket, TransactionsListResult } from '../models';
+import { Transaction, Ticket, TransactionsListResult, AccountBalance, WalletBalance } from '../models';
+import { AppError } from "../store/types";
 
 
 type CallbackFn = (r: TransactionsListResult) => void
@@ -29,7 +30,7 @@ const DcrwalletDatasource = {
 		startBlockHeight: number,
 		endBlockHeight: number,
 		targetTicketCount: number,
-		onDataRecvd?: GetTicketsCallbackFn 
+		onDataRecvd?: GetTicketsCallbackFn
 	): Promise<Ticket[]> {
 
 		const request = new api.GetTicketsRequest();
@@ -72,30 +73,46 @@ const DcrwalletDatasource = {
 		});
 	},
 
-	Balance: function (accountNumber: number): Promise<api.BalanceResponse> {
+	WalletBalance: function (accountNumbers: number[]): Promise<WalletBalance> {
 
-		const request = new api.BalanceRequest();
-		request.setAccountNumber(accountNumber);
-		request.setRequiredConfirmations(3);
+		const promises: Promise<AccountBalance>[] = [];
+		const walletBalance: WalletBalance = {};
 
-		return new Promise<api.BalanceResponse>((resolve, reject) => {
+		accountNumbers.forEach((accountNumber) => {
 
-			grpcInvoke(WalletService.Balance, request, {
-				onMessage: (message: api.BalanceResponse) => {
-					console.log("getBalance", message.toObject());
-					resolve(message);
-				},
-				onEnd: (code, message) => {
-					if (code !== grpc.Code.OK) {
-						console.error('getBalance', code, message);
-						reject({
-							status: code,
-							msg: message
-						});
+			const request = new api.BalanceRequest();
+			request.setAccountNumber(accountNumber);
+			request.setRequiredConfirmations(3);
+
+			const p = new Promise<AccountBalance>((resolve, reject) => {
+				grpcInvoke(WalletService.Balance, request, {
+					onMessage: (balance: AccountBalance) => {
+						walletBalance[accountNumber] = balance;
+						console.log("getBalance", balance.toObject());
+						resolve(balance);
+					},
+					onEnd: (code: grpc.Code, message: string) => {
+						if (code !== grpc.Code.OK) {
+							console.error('getBalance', code, message);
+							reject({
+								status: code,
+								msg: message
+							});
+						}
 					}
-				}
+				});
 			});
+			promises.push(p);
 		});
+		return new Promise<WalletBalance>((resolve, reject) => {
+			Promise.all(promises)
+				.then(() => {
+					resolve(walletBalance);
+				})
+				.catch((err: AppError) => {
+					reject(err);
+				});
+		})
 	},
 
 	Transactions: function (

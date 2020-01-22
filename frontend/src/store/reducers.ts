@@ -6,6 +6,7 @@ import tickets from "./tickets/reducers";
 import accounts from './accounts/reducers'
 import bestblock from './bestblock/reducers';
 import transactions from "./transactions/reducers";
+import walletbalance from "./walletbalance/reducers";
 
 export default function createRootReducer(history: History) {
     return combineReducers({
@@ -15,6 +16,7 @@ export default function createRootReducer(history: History) {
 		accounts,
         bestblock,
 		transactions,
+		walletbalance
     });
 }
 

@@ -14,6 +14,7 @@ import { getTicketsAttempt } from './store/tickets/actions';
 import { getAccountsAttempt } from './store/accounts/actions';
 import { getTransactionsAttempt } from './store/transactions/actions';
 import { getBestBlockHeightAttempt } from './store/bestblock/actions';
+import { getWalletBalance } from './store/walletbalance/actions';
 
 const history = createBrowserHistory();
 const store = configureStore(initialState, history);
@@ -23,6 +24,8 @@ store.dispatch(getAccountsAttempt());
 store.dispatch(getTransactionsAttempt())
 store.dispatch(getPingAttempt());
 store.dispatch(getTicketsAttempt());
+
+
 
 ReactDOM.render(
     <Provider store={store}>

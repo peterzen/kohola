@@ -1,16 +1,20 @@
 import { IApplicationState } from "./types";
 
-import { transactionsInitialState } from "./transactions/reducers";
 import { pingInitialState } from "./ping/reducers";
-import { bestblockInitialState } from "./bestblock/reducers";
+import { ticketsInitialState } from "./tickets/reducers";
 import { accountsInitialState } from "./accounts/reducers";
+import { bestblockInitialState } from "./bestblock/reducers";
+import { transactionsInitialState } from "./transactions/reducers";
+import { walletbalanceInitialState } from "./walletbalance/reducers";
 
 
 const initialState: IApplicationState = {
 	ping: pingInitialState,
-	bestblock: bestblockInitialState,
+	tickets: ticketsInitialState,
 	accounts: accountsInitialState,
-	transactions: transactionsInitialState
+	bestblock: bestblockInitialState,
+	transactions: transactionsInitialState,
+	walletbalance: walletbalanceInitialState
 }
 
 

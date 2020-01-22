@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import AccountsOverview from '../components/AccountsOverviewComponent';
-import RecentTransactions from '../components/RecentTransactionsComponent';
-import ConnectionStatus from "../components/ConnectionStatus";
-import TicketsOverview from "../components/TicketsOverviewComponent";
 import BestBlock from "../components/BestBlockComponent";
+import TicketsOverview from "../components/TicketsOverviewComponent";
+import ConnectionStatus from "../components/ConnectionStatus";
+import RecentTransactions from '../components/RecentTransactionsComponent';
+import WalletBalanceComponent from "../components/WalletBalanceComponent";
 
 export default class App extends React.Component {
 
@@ -16,7 +16,7 @@ export default class App extends React.Component {
 				<h1>{title}  <ConnectionStatus /></h1>
 				<BestBlock />
 				<hr />
-				<AccountsOverview />
+				<WalletBalanceComponent />
 				<hr />
 				<RecentTransactions />
 				<hr />

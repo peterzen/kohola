@@ -1,4 +1,4 @@
-import { AccountsResponse, TransactionDetails, GetTicketsResponse, BestBlockResponse, PingResponse } from './proto/api_pb';
+import { AccountsResponse, TransactionDetails, GetTicketsResponse, BestBlockResponse, PingResponse, BalanceResponse } from './proto/api_pb';
 import { TransactionDirection, TicketStatus, TicketStatusLabels } from './constants';
 import { reverseHash } from './helpers';
 import moment = require('moment');
@@ -8,7 +8,7 @@ export class WalletPing extends PingResponse { }
 
 export class BestBlock extends BestBlockResponse { }
 
-export class WalletAccounts extends AccountsResponse {}
+export class WalletAccounts extends AccountsResponse { }
 
 export class WalletAccount extends AccountsResponse.Account {
 	constructor(id?: number) {
@@ -106,7 +106,7 @@ export class Transaction {
 }
 
 export type TransactionsListResult = {
-	minedTx: Transaction[] 
+	minedTx: Transaction[]
 	unminedTx: Transaction[]
 }
 
@@ -139,25 +139,33 @@ export class Ticket {
 	}
 }
 
-export class ChainInfo {
 
-	bestBlock: BestBlockResponse;
+export class AccountBalance extends BalanceResponse {
 
-	constructor(bestBlock: BestBlockResponse | undefined) {
-		if (bestBlock == undefined) {
-			this.bestBlock = new BestBlockResponse();
-			return;
+	private accountNumber: number;
+
+	constructor(accountNumber?: number) {
+		super();
+		if (accountNumber != undefined) {
+			this.accountNumber = accountNumber;
 		}
-		this.bestBlock = bestBlock;
 	}
 
-	getBestBlockHeight(): number {
-		return this.bestBlock.getHeight();
+	setAccountNumber(accountNumber: number) {
+		this.accountNumber = accountNumber;
 	}
 
-	getBestBlockHash(): string {
-		return reverseHash(Buffer.from(this.bestBlock.getHash_asU8()).toString("hex"));
+	getAccountNumber() {
+		return this.accountNumber;
 	}
 }
 
+
+export interface WalletBalance {
+	[accountNumber: number]: AccountBalance;
+}
+
+export interface IndexedWalletAccounts {
+	[accountNumber: number]: WalletAccount
+}
 

@@ -1,8 +1,9 @@
-import { WalletAccount } from "../../models";
+import { WalletAccount, IndexedWalletAccounts } from "../../models";
 import { AppError } from "../types";
 
+
 export interface WalletAccountsState {
-    readonly accounts: WalletAccount[]
+    readonly accounts: IndexedWalletAccounts,
     readonly getAccountsRequest: boolean,
 }
 
@@ -21,7 +22,7 @@ export interface GetAccountsFailedAction {
 
 export interface GetAccountsSuccessAction {
     type: typeof GETACCOUNTS_SUCCESS,
-    payload: WalletAccount[]
+    payload: IndexedWalletAccounts
 }
 
 export type GetAccountsActionTypes = GetAccountsAttemptAction | GetAccountsFailedAction | GetAccountsSuccessAction
