@@ -11,6 +11,7 @@ import App from './containers/App';
 
 import { getBestBlockHeightAttempt } from './store/bestblock/actions';
 import { getPingAttempt } from './store/ping/actions';
+import { getAccountsAttempt } from './store/accounts/actions';
 
 
 
@@ -18,6 +19,7 @@ const history = createBrowserHistory();
 const store = configureStore(initialState, history);
 
 store.dispatch(getBestBlockHeightAttempt());
+store.dispatch(getAccountsAttempt());
 store.dispatch(getPingAttempt());
 
 ReactDOM.render(

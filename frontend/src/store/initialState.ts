@@ -14,6 +14,11 @@ let initialState = {
         currentBlock: new BestBlock(),
         getBestBlockHeightRequest: false
     },
+
+    accounts: {
+        accounts: [],
+        getAccountsRequest: false
+    }
 }
 
 

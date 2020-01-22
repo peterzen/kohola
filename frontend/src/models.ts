@@ -4,15 +4,18 @@ import { reverseHash } from './helpers';
 import moment = require('moment');
 
 
-export class WalletPing extends PingResponse {}
+export class WalletPing extends PingResponse { }
 
-export class BestBlock extends BestBlockResponse {}
+export class BestBlock extends BestBlockResponse { }
 
+export class WalletAccounts extends AccountsResponse {}
 
 export class WalletAccount extends AccountsResponse.Account {
-	constructor(id: number) {
+	constructor(id?: number) {
 		super();
-		this.setAccountNumber(id);
+		if (id != undefined) {
+			this.setAccountNumber(id);
+		}
 	}
 }
 

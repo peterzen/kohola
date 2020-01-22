@@ -59,7 +59,6 @@ export function grpcInvokerFactory(reqClassRef: MethodDefinition<ProtobufMessage
                         console.error(methodName, code, message, headers);
                         reject({
                             status: code,
-                            method: methodName,
                             msg: message
                         });
                     }
