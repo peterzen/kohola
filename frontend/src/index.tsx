@@ -8,7 +8,9 @@ import { createBrowserHistory } from 'history';
 import initialState from './store/initialState';
 import configureStore from './store/configureStore';
 import App from './containers/App';
-import { getBestBlockHeightAttempt } from './store/walletrpc/actions';
+
+import { getBestBlockHeightAttempt } from './store/bestblock/actions';
+import { getPingAttempt } from './store/ping/actions';
 
 
 
@@ -16,6 +18,7 @@ const history = createBrowserHistory();
 const store = configureStore(initialState, history);
 
 store.dispatch(getBestBlockHeightAttempt());
+store.dispatch(getPingAttempt());
 
 ReactDOM.render(
     <Provider store={store}>

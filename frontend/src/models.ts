@@ -1,11 +1,13 @@
-import { AccountsResponse, TransactionDetails, GetTicketsResponse, BestBlockResponse } from './proto/api_pb';
+import { AccountsResponse, TransactionDetails, GetTicketsResponse, BestBlockResponse, PingResponse } from './proto/api_pb';
 import { TransactionDirection, TicketStatus, TicketStatusLabels } from './constants';
 import { reverseHash } from './helpers';
 import moment = require('moment');
 
-export class BestBlock extends BestBlockResponse {
-	
-}
+
+export class WalletPing extends PingResponse {}
+
+export class BestBlock extends BestBlockResponse {}
+
 
 export class WalletAccount extends AccountsResponse.Account {
 	constructor(id: number) {

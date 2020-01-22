@@ -1,9 +1,9 @@
-import { WalletrpcState } from "./walletrpc/types";
+import { BestBlockState } from "./bestblock/types";
+import { PingState } from "./ping/types";
 
-
-// https://redux.js.org/recipes/usage-with-typescript
 
 export type IApplicationState = {
-    walletrpc: WalletrpcState
+    ping: PingState,
+    bestblock: BestBlockState
 }
 

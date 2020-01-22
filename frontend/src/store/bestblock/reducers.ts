@@ -1,32 +1,29 @@
 
-
-import { ActionTypes, WalletrpcActionTypes, WalletrpcState } from './types'
+import { BestBlockActionTypes, BestBlockState, GETBESTBLOCK_ATTEMPT, GETBESTBLOCK_FAILED, GETBESTBLOCK_SUCCESS } from './types'
 import { BestBlock } from '../../models';
 
-
-
-export const initialState: WalletrpcState = {
+export const initialState: BestBlockState = {
   currentBlock: new BestBlock(),
-  getBestBlockHeightRequest: false
+  getBestBlockHeightRequest: false,
 }
 
 
 export default function walletrpc(
-  state: WalletrpcState = initialState,
-  action: WalletrpcActionTypes) {
+  state: BestBlockState = initialState,
+  action: BestBlockActionTypes) {
 
   switch (action.type) {
-    case ActionTypes.GETBESTBLOCK_ATTEMPT:
+    case GETBESTBLOCK_ATTEMPT:
       return {
         ...state,
         getBestBlockHeightRequest: true,
       };
-    case ActionTypes.GETBESTBLOCK_FAILED:
+    case GETBESTBLOCK_FAILED:
       return {
         ...state,
         getBestBlockHeightRequest: false,
       };
-    case ActionTypes.GETBESTBLOCK_SUCCESS:
+    case GETBESTBLOCK_SUCCESS:
       return {
         ...state,
         getBestBlockHeightRequest: false,

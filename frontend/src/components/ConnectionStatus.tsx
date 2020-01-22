@@ -1,33 +1,15 @@
 import * as React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-import DatastoreFactory from '../store';
+import { IApplicationState } from "../store/types";
+import { PingState } from "../store/ping/types";
 
-const store = DatastoreFactory.getInstance();
 
-type ConnectionStatusState = {
-    connected: Boolean
-}
-
-export default class ConnectionStatus extends React.Component<{}, ConnectionStatusState> {
-    constructor(props: Object) {
-        super(props);
-
-        this.state = {
-            connected: false,
-        }
-    }
-
-    componentDidMount() {
-        store.on('ping:connected', () => {
-            this.setState({ connected: true });
-        });
-        store.on('ping:disconnected', () => {
-            this.setState({ connected: false });
-        });
-    }
+class ConnectionStatusComponent extends React.Component<PingState, any> {
 
     render() {
-        let connected = (this.state.connected ? "[*]" : "");
+        let connected = this.props.getPingResponse !== null ? "[*]" : "";
 
         return (
             <span>
@@ -36,3 +18,14 @@ export default class ConnectionStatus extends React.Component<{}, ConnectionStat
         )
     }
 }
+
+
+const mapStateToProps = function (state: IApplicationState, ownProps: any) {
+    return {
+        getPingResponse: state.ping.getPingResponse,
+        getPingError: state.ping.getPingError
+    };
+}
+
+export default withRouter(connect(mapStateToProps, {
+})(ConnectionStatusComponent));

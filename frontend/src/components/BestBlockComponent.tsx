@@ -1,11 +1,13 @@
 import * as React from "react";
-
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { Hash } from "./shared";
-import { WalletrpcState } from "../store/walletrpc/types";
 
-class BestBlockComponent extends React.Component<WalletrpcState, any> {
+import { BestBlockState } from "../store/bestblock/types";
+import { IApplicationState } from "../store/types";
+
+import { Hash } from "./shared";
+
+class BestBlockComponent extends React.Component<BestBlockState, BestBlockState> {
     render() {
         return (
             <div>
@@ -17,9 +19,9 @@ class BestBlockComponent extends React.Component<WalletrpcState, any> {
 }
 
 
-const mapStateToProps = function (state: any, ownProps: any) {
+const mapStateToProps = function (state: IApplicationState, ownProps: any) {
     return {
-        currentBlock: state.walletrpc.currentBlock
+        currentBlock: state.bestblock.currentBlock
     };
 }
 export default withRouter(connect(mapStateToProps, {
