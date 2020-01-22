@@ -9,6 +9,7 @@ import {
 } from './types';
 
 import { BestBlock } from '../../models';
+import { AppError } from '../types';
 
 
 export function getBestBlockHeightAttempt(): any {
@@ -22,7 +23,7 @@ export function getBestBlockHeightAttempt(): any {
             .then((resp: BestBlock) => {
                 dispatch({ payload: resp, type: GETBESTBLOCK_SUCCESS });
             })
-            .catch((error: object) => {
+            .catch((error: AppError) => {
                 dispatch({ error, type: GETBESTBLOCK_FAILED });
             });
     }

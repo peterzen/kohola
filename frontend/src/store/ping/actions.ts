@@ -8,6 +8,7 @@ import {
     GETPING_SUCCESS, GETPING_FAILED, GETPING_CANCELED
 } from './types';
 import { WalletPing } from '../../models';
+import { AppError } from '../types';
 
 export function getPingAttempt(): any {
 
@@ -17,7 +18,7 @@ export function getPingAttempt(): any {
             .then((resp: WalletPing) => {
                 dispatch({ pingTimer, getPingResponse: resp, type: GETPING_SUCCESS });
             })
-            .catch((error: object) => {
+            .catch((error: AppError) => {
                 dispatch({ error, pingTimer, type: GETPING_FAILED });
             });
     }

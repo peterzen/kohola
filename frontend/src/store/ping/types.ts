@@ -1,4 +1,5 @@
 import { WalletPing } from "../../models";
+import { AppError } from "../types";
 
 
 export interface PingState {
@@ -19,7 +20,7 @@ export interface PingAttemptAction {
 
 export interface PingFailedAction {
   type: typeof GETPING_FAILED,
-  error: object,
+  error: AppError,
   pingTimer: NodeJS.Timeout,
 }
 

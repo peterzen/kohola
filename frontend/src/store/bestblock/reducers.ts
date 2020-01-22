@@ -8,7 +8,7 @@ export const initialState: BestBlockState = {
 }
 
 
-export default function walletrpc(
+export default function bestblock(
   state: BestBlockState = initialState,
   action: BestBlockActionTypes) {
 
