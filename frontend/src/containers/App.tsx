@@ -3,7 +3,7 @@ import * as React from "react";
 import AccountsOverview from '../components/AccountsOverviewComponent';
 import RecentTransactions from '../components/RecentTransactionsComponent';
 import ConnectionStatus from "../components/ConnectionStatus";
-import TicketsOverview from "../components/TicketsOverview";
+import TicketsOverview from "../components/TicketsOverviewComponent";
 import BestBlock from "../components/BestBlockComponent";
 
 export default class App extends React.Component {

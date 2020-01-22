@@ -9,12 +9,11 @@ import App from './containers/App';
 import initialState from './store/initialState';
 import configureStore from './store/configureStore';
 
-import { getBestBlockHeightAttempt } from './store/bestblock/actions';
 import { getPingAttempt } from './store/ping/actions';
+import { getTicketsAttempt } from './store/tickets/actions';
 import { getAccountsAttempt } from './store/accounts/actions';
 import { getTransactionsAttempt } from './store/transactions/actions';
-
-
+import { getBestBlockHeightAttempt } from './store/bestblock/actions';
 
 const history = createBrowserHistory();
 const store = configureStore(initialState, history);
@@ -23,6 +22,7 @@ store.dispatch(getBestBlockHeightAttempt());
 store.dispatch(getAccountsAttempt());
 store.dispatch(getTransactionsAttempt())
 store.dispatch(getPingAttempt());
+store.dispatch(getTicketsAttempt());
 
 ReactDOM.render(
     <Provider store={store}>

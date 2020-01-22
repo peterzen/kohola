@@ -29,7 +29,7 @@ const DcrwalletDatasource = {
 		startBlockHeight: number,
 		endBlockHeight: number,
 		targetTicketCount: number,
-		onDataRecvd: GetTicketsCallbackFn | undefined
+		onDataRecvd?: GetTicketsCallbackFn 
 	): Promise<Ticket[]> {
 
 		const request = new api.GetTicketsRequest();

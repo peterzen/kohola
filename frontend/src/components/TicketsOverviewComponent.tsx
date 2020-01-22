@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom';
 
-import DatastoreFactory from '../store';
 import { Ticket } from '../models';
+import { TicketsState } from '../store/tickets/types';
+import { IApplicationState } from '../store/types';
 import { Timestamp, TransactionHash } from './shared';
 
-const store = DatastoreFactory.getInstance();
 
 interface TicketListItemProps {
     ticket: Ticket
@@ -49,33 +51,9 @@ export function TicketListComponent(props: TicketListComponentProps) {
     )
 }
 
-interface TicketsOverviewState {
-    tickets: Ticket[]
-}
-
-export default class TicketsOverview extends React.Component<{}, TicketsOverviewState> {
-
-    constructor(props: object) {
-        super(props);
-        this.state = {
-            tickets: []
-        }
-    }
-
-    componentDidMount() {
-        store.getTickets(0, 200, 1250, undefined)
-            .then((tickets) => {
-                this.setState({
-                    tickets: tickets
-                })
-            })
-            .catch((err) => {
-                console.error("RecentTransactions", err);
-            });
-    }
-
+class TicketsOverviewComponent extends React.Component<TicketsState, TicketsState> {
     render() {
-        const tickets = this.state.tickets;
+		const tickets = this.props.tickets;
         return (
             <div>
                 <h3>Tickets Overview</h3>
@@ -84,3 +62,13 @@ export default class TicketsOverview extends React.Component<{}, TicketsOverview
         )
     }
 }
+
+
+const mapStateToProps = function (state: IApplicationState, ownProps: any) {
+	return {
+		tickets: state.tickets.tickets
+	};
+}
+
+export default withRouter(connect(mapStateToProps, {
+})(TicketsOverviewComponent));
