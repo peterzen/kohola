@@ -105,6 +105,11 @@ export class Transaction {
 	}
 }
 
+export type TransactionsListResult = {
+	minedTx: Transaction[] 
+	unminedTx: Transaction[]
+}
+
 export class Ticket {
 	private spender: Transaction | undefined;
 	private tx: Transaction;
@@ -155,36 +160,4 @@ export class ChainInfo {
 	}
 }
 
-export class TransactionsListResult {
 
-	private minedTx: Transaction[] = []
-	private unminedTx: Transaction[] = []
-
-	getUnminedTxList(): Transaction[] {
-		return this.unminedTx;
-	}
-
-	getMinedTxList(): Transaction[] {
-		return this.minedTx;
-	}
-
-	addMinedTx(txList: Transaction[]) {
-		this.minedTx.push(...txList);
-	}
-
-	addUnminedTx(txList: Transaction[]) {
-		this.unminedTx.push(...txList);
-	}
-
-	getUnminedTxCount() {
-		return this.unminedTx.length;
-	}
-
-	getMinedTxCount() {
-		return this.minedTx.length;
-	}
-
-	getTxCount() {
-		return this.minedTx.length + this.unminedTx.length;
-	}
-}
