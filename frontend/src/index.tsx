@@ -8,7 +8,7 @@ import { createBrowserHistory } from 'history';
 import initialState from './store/initialState';
 import configureStore from './store/configureStore';
 import App from './containers/App';
-import { getBestBlockHeightAttempt, GETBESTBLOCK_ATTEMPT } from './actions/WalletRpcActions';
+import { getBestBlockHeightAttempt } from './store/walletrpc/actions';
 
 
 

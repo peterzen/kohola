@@ -3,7 +3,9 @@ import { TransactionDirection, TicketStatus, TicketStatusLabels } from './consta
 import { reverseHash } from './helpers';
 import moment = require('moment');
 
-
+export class BestBlock extends BestBlockResponse {
+	
+}
 
 export class WalletAccount extends AccountsResponse.Account {
 	constructor(id: number) {

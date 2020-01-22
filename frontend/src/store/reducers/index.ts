@@ -2,7 +2,7 @@
 import { combineReducers } from "redux";
 import { connectRouter } from 'connected-react-router'
 
-import walletrpc from './walletrpc';
+import walletrpc from '../walletrpc/reducers';
 
 export default function createRootReducer(history: History) {
     return combineReducers({

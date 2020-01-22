@@ -1,27 +1,24 @@
 
-import DcrwalletDatasource from '../datasources/dcrwallet';
+import DcrwalletDatasource from '../../datasources/dcrwallet';
+import { ActionTypes } from './types';
+import { Dispatch } from 'redux';
 
 
-export const GETBESTBLOCK_ATTEMPT = "GETBESTBLOCK_ATTEMPT";
-export const GETBESTBLOCK_FAILED = "GETBESTBLOCK_FAILED";
-export const GETBESTBLOCK_SUCCESS = "GETBESTBLOCK_SUCCESS";
+// https://spin.atomicobject.com/2018/11/19/redux-thunk-async-actions/
 
-export function getBestBlockHeightAttempt(cb: any|undefined) {
-    return function (dispatch: any, getState: any) {
-        const { getBestBlockHeightRequest } = getState().walletrpc;
+export function getBestBlockHeightAttempt(): any {
+    return function (dispatch: Dispatch, getState: any): void {
+        const { getBestBlockHeightRequest } = getState().walletrpc.getBestBlockHeightRequest;
         if (getBestBlockHeightRequest) {
             return;
         }
-        dispatch({ type: GETBESTBLOCK_ATTEMPT });
+        dispatch({ type: ActionTypes.GETBESTBLOCK_ATTEMPT });
         DcrwalletDatasource.BestBlock()
             .then(function (resp: any) {
-                dispatch({ payload: resp, type: GETBESTBLOCK_SUCCESS });
-                if (cb != undefined) {
-                    dispatch(cb());
-                }
+                dispatch({ payload: resp, type: ActionTypes.GETBESTBLOCK_SUCCESS });
             })
             .catch(function (error: any) {
-                dispatch({ error, type: GETBESTBLOCK_FAILED });
+                dispatch({ error, type: ActionTypes.GETBESTBLOCK_FAILED });
             });
     }
 };

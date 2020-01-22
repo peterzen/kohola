@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { routerMiddleware, push } from "react-router-redux";
 import { createLogger } from 'redux-logger'
-import createRootReducer from "../reducers";
+import createRootReducer from "./reducers";
 
 export default function configureStore(initialState: Object, history: any) {
 

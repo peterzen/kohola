@@ -1,16 +1,11 @@
 import * as React from "react";
-import PropTypes from 'prop-types';
 
-import { BestBlockResponse } from "../proto/api_pb";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Hash } from "./shared";
+import { WalletrpcState } from "../store/walletrpc/types";
 
-interface IBestBlockProps {
-    currentBlock: BestBlockResponse
-}
-
-class BestBlock extends React.Component<IBestBlockProps, any> {
+class BestBlockComponent extends React.Component<WalletrpcState, any> {
     render() {
         return (
             <div>
@@ -28,4 +23,4 @@ const mapStateToProps = function (state: any, ownProps: any) {
     };
 }
 export default withRouter(connect(mapStateToProps, {
-})(BestBlock));
+})(BestBlockComponent));

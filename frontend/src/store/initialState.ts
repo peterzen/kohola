@@ -1,12 +1,8 @@
-import BestBlock from "../components/BestBlock";
-import { BestBlockResponse } from "../proto/api_pb";
+import { BestBlock } from "../models";
 
-type IState = {
-    walletrpc: {
-        currentBlock: object
-    }
-}
-let initialState: IState = {
+
+
+let initialState = {
     walletrpc: {
 
         // Ping
@@ -15,7 +11,8 @@ let initialState: IState = {
         // getPingResponse: null,
         // pingTimer: null,
 
-        currentBlock: new BestBlockResponse(),
+        currentBlock: new BestBlock(),
+        getBestBlockHeightRequest: false
         // GetTransactions
         // minedTransactions: Array(),
         // unminedTransactions: Array(),

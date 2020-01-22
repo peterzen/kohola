@@ -4,7 +4,7 @@ import AccountOverview from '../components/Balance';
 import RecentTransactions from '../components/RecentTransactions';
 import ConnectionStatus from "../components/ConnectionStatus";
 import TicketsOverview from "../components/TicketsOverview";
-import BestBlock from "../components/BestBlock";
+import BestBlock from "../components/BestBlockComponent";
 
 export default class App extends React.Component {
 
