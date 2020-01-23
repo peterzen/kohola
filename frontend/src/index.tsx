@@ -8,24 +8,14 @@ import { ConnectedRouter } from "connected-react-router";
 import App from './containers/App';
 import initialState from './store/initialState';
 import configureStore from './store/configureStore';
-
+import { initializeData } from './store/actions';
 import { getPingAttempt } from './store/ping/actions';
-import { getTicketsAttempt } from './store/tickets/actions';
-import { getAccountsAttempt } from './store/accounts/actions';
-import { getTransactionsAttempt } from './store/transactions/actions';
-import { getBestBlockHeightAttempt } from './store/bestblock/actions';
-import { getWalletBalance } from './store/walletbalance/actions';
 
 const history = createBrowserHistory();
 const store = configureStore(initialState, history);
 
-store.dispatch(getBestBlockHeightAttempt());
-store.dispatch(getAccountsAttempt());
-store.dispatch(getTransactionsAttempt())
 store.dispatch(getPingAttempt());
-store.dispatch(getTicketsAttempt());
-
-
+store.dispatch(initializeData())
 
 ReactDOM.render(
     <Provider store={store}>

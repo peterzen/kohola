@@ -13,13 +13,13 @@ import { AppError, IGetState } from '../types';
 
 
 export function getTransactionsAttempt(): any {
-	return function (dispatch: Dispatch<GetTransactionsActionTypes>, getState: IGetState): void {
+	return function (dispatch: Dispatch<GetTransactionsActionTypes>, getState: IGetState): Promise<any> {
 		const { getTransactionsRequest, startBlockHeight, endBlockHeight, txCount } = getState().transactions
 		if (getTransactionsRequest) {
-			return;
+			return Promise.resolve();
 		}
 		dispatch({ type: GETTRANSACTION_ATTEMPT });
-		DcrwalletDatasource.Transactions(startBlockHeight, endBlockHeight, txCount)
+		return DcrwalletDatasource.Transactions(startBlockHeight, endBlockHeight, txCount)
 			.then((resp: TransactionsListResult) => {
 				dispatch({ payload: resp, type: GETTRANSACTION_SUCCESS });
 			})

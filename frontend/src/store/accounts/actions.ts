@@ -8,33 +8,28 @@ import {
 } from './types';
 
 import { WalletAccounts, IndexedWalletAccounts, WalletAccount } from '../../models';
-import { AppError, IApplicationState } from '../types';
+import { AppError, IGetState } from '../types';
 import _ from 'lodash';
-import { getWalletBalance } from '../walletbalance/actions';
 
 function mapAccounts(accounts: WalletAccount[]): IndexedWalletAccounts {
 	const indexedAccounts: IndexedWalletAccounts = {};
 	_.each(accounts, (account) => {
-		indexedAccounts[account.getAccountNumber()]= account;
+		indexedAccounts[account.getAccountNumber()] = account;
 	});
 	return indexedAccounts;
 }
 
-function accountsSelector(state: IApplicationState): number[] {
-	return _.keys(state.accounts.accounts)
-}
 
 export function getAccountsAttempt(): any {
-	return function (dispatch: Dispatch<GetAccountsActionTypes>, getState: any): void {
-		const { getBestBlockHeightRequest } = getState().bestblock.getBestBlockHeightRequest;
+	return function (dispatch: Dispatch<GetAccountsActionTypes>, getState: IGetState): Promise<any> {
+		const { getBestBlockHeightRequest } = getState().bestblock;
 		if (getBestBlockHeightRequest) {
-			return;
+			return Promise.resolve();
 		}
 		dispatch({ type: GETACCOUNTS_ATTEMPT });
-		DcrwalletDatasource.Accounts()
+		return DcrwalletDatasource.Accounts()
 			.then((resp: WalletAccounts) => {
 				dispatch({ payload: mapAccounts(resp.getAccountsList()), type: GETACCOUNTS_SUCCESS });
-				dispatch(getWalletBalance(accountsSelector(getState())));
 			})
 			.catch((error: AppError) => {
 				dispatch({ error, type: GETACCOUNTS_FAILED });

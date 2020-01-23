@@ -13,13 +13,13 @@ import { AppError } from '../types';
 
 
 export function getBestBlockHeightAttempt(): any {
-    return function (dispatch: Dispatch<BestBlockActionTypes>, getState: any): void {
+    return function (dispatch: Dispatch<BestBlockActionTypes>, getState: any): Promise<any> {
         const { getBestBlockHeightRequest } = getState().bestblock.getBestBlockHeightRequest;
         if (getBestBlockHeightRequest) {
-            return;
+            return Promise.resolve();
         }
         dispatch({ type: GETBESTBLOCK_ATTEMPT });
-        DcrwalletDatasource.BestBlock()
+        return DcrwalletDatasource.BestBlock()
             .then((resp: BestBlock) => {
                 dispatch({ payload: resp, type: GETBESTBLOCK_SUCCESS });
             })

@@ -12,13 +12,13 @@ import {
 
 
 export function getTicketsAttempt(): any {
-	return function (dispatch: Dispatch<GetTicketsActionTypes>, getState: IGetState): void {
+	return function (dispatch: Dispatch<GetTicketsActionTypes>, getState: IGetState): Promise<any> {
 		const { getTicketsRequest, startBlockHeight, endBlockHeight, targetTicketCount } = getState().tickets
 		if (getTicketsRequest) {
-			return;
+			return Promise.resolve();
 		}
 		dispatch({ type: GETTICKETS_ATTEMPT });
-		DcrwalletDatasource.Tickets(startBlockHeight, endBlockHeight, targetTicketCount)
+		return DcrwalletDatasource.Tickets(startBlockHeight, endBlockHeight, targetTicketCount)
 			.then((resp: Ticket[]) => {
 				dispatch({ payload: resp, type: GETTICKETS_SUCCESS });
 			})
