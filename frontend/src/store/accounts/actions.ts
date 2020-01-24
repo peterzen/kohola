@@ -1,17 +1,18 @@
 import { Dispatch } from 'redux';
-
-import DcrwalletDatasource from '../../datasources/dcrwallet';
-
-import {
-	GetAccountsActionTypes,
-	GETACCOUNTS_ATTEMPT, GETACCOUNTS_SUCCESS, GETACCOUNTS_FAILED,
-} from './types';
-
-import { WalletAccounts, IndexedWalletAccounts, WalletAccount } from '../../models';
-import { AppError, IGetState } from '../types';
+import { ThunkDispatch } from 'redux-thunk';
 import _ from 'lodash';
 
-function mapAccounts(accounts: WalletAccount[]): IndexedWalletAccounts {
+import {
+	GetAccountsActionTypes, AccountNotificationsSubscribe,
+	GETACCOUNTS_ATTEMPT, GETACCOUNTS_SUCCESS, GETACCOUNTS_FAILED, ACCOUNTSNOTIFICATIONS_RECEIVED, AccountNotificationsReceived,
+} from './types';
+
+import { IGetState } from '../types';
+import DcrwalletDatasource from '../../datasources/dcrwallet';
+import { IndexedWalletAccounts, WalletAccount } from '../../models';
+
+
+const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
 	const indexedAccounts: IndexedWalletAccounts = {};
 	_.each(accounts, (account) => {
 		indexedAccounts[account.getAccountNumber()] = account;
@@ -21,21 +22,28 @@ function mapAccounts(accounts: WalletAccount[]): IndexedWalletAccounts {
 
 
 export function loadAccountsAttempt(): any {
-	return function (dispatch: Dispatch<GetAccountsActionTypes>, getState: IGetState): Promise<any> {
+	return async (dispatch: ThunkDispatch<{}, {}, GetAccountsActionTypes>, getState: IGetState): Promise<any> => {
 		const { getBestBlockHeightRequest } = getState().bestblock;
 		if (getBestBlockHeightRequest) {
 			return Promise.resolve();
 		}
 		dispatch({ type: GETACCOUNTS_ATTEMPT });
-		return DcrwalletDatasource.fetchAccounts()
-			.then((resp: WalletAccounts) => {
-				dispatch({ payload: mapAccounts(resp.getAccountsList()), type: GETACCOUNTS_SUCCESS });
-			})
-			.catch((error: AppError) => {
-				dispatch({ error, type: GETACCOUNTS_FAILED });
-			});
+		try {
+			const resp = await DcrwalletDatasource.fetchAccounts();
+			dispatch({ payload: mapAccounts(resp.getAccountsList()), type: GETACCOUNTS_SUCCESS });
+		}
+		catch (error) {
+			dispatch({ error, type: GETACCOUNTS_FAILED });
+		}
 	}
 };
 
 
-
+export function subscribeAccountNotifications(): any {
+	return (dispatch: Dispatch<AccountNotificationsReceived>) => {
+		DcrwalletDatasource.accountNotifications((message) => {
+			dispatch({ type: ACCOUNTSNOTIFICATIONS_RECEIVED, payload: message });
+			dispatch(loadAccountsAttempt());
+		});
+	}
+}

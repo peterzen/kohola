@@ -1,7 +1,7 @@
 import {
 	WalletAccountsState,
 	GetAccountsActionTypes,
-	GETACCOUNTS_ATTEMPT, GETACCOUNTS_FAILED, GETACCOUNTS_SUCCESS
+	GETACCOUNTS_ATTEMPT, GETACCOUNTS_FAILED, GETACCOUNTS_SUCCESS, ACCOUNTSNOTIFICATIONS_RECEIVED
 } from "./types";
 
 export const accountsInitialState: WalletAccountsState = {
@@ -29,6 +29,10 @@ export default function accounts(
 				...state,
 				getAccountsRequest: false,
 				accounts: action.payload
+			};
+		case ACCOUNTSNOTIFICATIONS_RECEIVED:
+			return {
+				...state,
 			};
 		default:
 			return state;

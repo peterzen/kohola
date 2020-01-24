@@ -28,7 +28,7 @@ const DcrwalletDatasource = {
 	fetchTicketBuyerConfig: grpcInvokerFactory(TicketBuyerService.TicketBuyerConfig),
 	fetchLoadActiveDataFilters: grpcInvokerFactory(WalletService.LoadActiveDataFilters),
 
-	fetchTickets: function (
+	fetchTickets: async function (
 		startBlockHeight: number,
 		endBlockHeight: number,
 		targetTicketCount: number,
@@ -75,7 +75,7 @@ const DcrwalletDatasource = {
 		});
 	},
 
-	fetchWalletBalance: function (accountNumbers: number[]): Promise<WalletBalance> {
+	fetchWalletBalance: async function (accountNumbers: number[]): Promise<WalletBalance> {
 
 		const promises: Promise<AccountBalance>[] = [];
 		const walletBalance: WalletBalance = {};
@@ -90,7 +90,7 @@ const DcrwalletDatasource = {
 				grpcInvoke(WalletService.Balance, request, {
 					onMessage: (balance: AccountBalance) => {
 						walletBalance[accountNumber] = balance;
-						console.log("getBalance", balance.toObject());
+						// console.log("getBalance", balance.toObject());
 						resolve(balance);
 					},
 					onEnd: (code: grpc.Code, message: string) => {
@@ -117,7 +117,7 @@ const DcrwalletDatasource = {
 		})
 	},
 
-	fetchTransactions: function (
+	fetchTransactions: async function (
 		startBlockHeight: number,
 		endBlockHeight: number,
 		txCount: number,
@@ -170,32 +170,58 @@ const DcrwalletDatasource = {
 			client.start();
 			client.send(request);
 		});
+	},
+
+	accountNotifications:  function (notificationHandler: IAccountNotificationHandler) {
+		const request = new api.TransactionNotificationsRequest();
+
+		const client = getGrpcClient(WalletService.AccountNotifications);
+
+		client.onHeaders((headers: grpc.Metadata) => {
+			// console.log("onHeaders", headers);
+		});
+		client.onMessage(notificationHandler);
+		// client.onMessage((message: api.TransactionNotificationsResponse) => {
+		// 	console.log("txnotifications", message.toObject());
+		// 	// this.emit('change:transactions', message);
+		// });
+		client.onEnd((status, message) => {
+			// console.log("onEnd", status, statusMessage, trailers);
+		});
+
+		client.start();
+		client.send(request);
+	},
+
+	txNotifications:  function (notificationHandler: ITransactionNotificationHandler) {
+		const request = new api.TransactionNotificationsRequest();
+
+		const client = getGrpcClient(WalletService.TransactionNotifications);
+
+		client.onHeaders((headers: grpc.Metadata) => {
+			// console.log("onHeaders", headers);
+		});
+		client.onMessage(notificationHandler);
+		// client.onMessage((message: api.TransactionNotificationsResponse) => {
+		// 	console.log("txnotifications", message.toObject());
+		// 	// this.emit('change:transactions', message);
+		// });
+		client.onEnd((status, message) => {
+			// console.log("onEnd", status, statusMessage, trailers);
+		});
+
+		client.start();
+		client.send(request);
 	}
-
-
-
-	// async txNotifications() {
-	//     const request = new api.TransactionNotificationsRequest();
-
-	//     const client = getGrpcClient(WalletService.TransactionNotifications);
-
-	//     client.onHeaders((headers: grpc.Metadata) => {
-	//         // console.log("onHeaders", headers);
-	//     });
-	//     client.onMessage((message: api.TransactionNotificationsResponse) => {
-	//         console.log("txnotifications", message.toObject());
-	//         // this.emit('change:transactions', message);
-	//     });
-	//     client.onEnd((status, message) => {
-	//         // console.log("onEnd", status, statusMessage, trailers);
-	//     });
-
-	//     client.start();
-	//     client.send(request);
-	// }
 
 }
 
+interface IAccountNotificationHandler {
+	(message: api.AccountNotificationsResponse): void
+}
 
+interface ITransactionNotificationHandler {
+	(message: api.TransactionNotificationsResponse): void
+}
 
 export default DcrwalletDatasource;

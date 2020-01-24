@@ -2,6 +2,7 @@ import { AccountsResponse, TransactionDetails, GetTicketsResponse, BestBlockResp
 import { TransactionDirection, TicketStatus, TicketStatusLabels } from './constants';
 import { reverseHash } from './helpers';
 import moment = require('moment');
+import { EventEmitter } from 'events';
 
 
 export class WalletPing extends PingResponse { }

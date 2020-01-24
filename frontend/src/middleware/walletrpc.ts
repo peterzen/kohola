@@ -42,7 +42,7 @@ export function getGrpcClient(method: MethodDefinition<ProtobufMessage, Protobuf
 
 export function grpcInvokerFactory(reqClassRef: MethodDefinition<ProtobufMessage, ProtobufMessage>) {
 
-    return function () {
+    return async function () {
         const req = new reqClassRef.requestType();
         const methodName = reqClassRef.methodName;
 

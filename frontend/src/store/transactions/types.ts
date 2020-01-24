@@ -1,5 +1,6 @@
 import { AppError } from "../types";
 import { Transaction, TransactionsListResult } from "../../models";
+import { TransactionNotificationsResponse } from "../../proto/api_pb";
 
 export interface TransactionsState {
 	readonly minedTx: Transaction[]
@@ -10,6 +11,7 @@ export interface TransactionsState {
 	readonly targetTxCount: number
 }
 
+// GetTransactions
 export const GETTRANSACTION_ATTEMPT = 'GETTRANSACTION_ATTEMPT'
 export const GETTRANSACTION_FAILED = 'GETTRANSACTION_FAILED'
 export const GETTRANSACTION_SUCCESS = 'GETTRANSACTION_SUCCESS'
@@ -28,4 +30,24 @@ export interface GetTransactionSuccessAction {
 	payload: TransactionsListResult
 }
 
-export type GetTransactionsActionTypes = GetTransactionAttemptAction | GetTransactionFailedAction | GetTransactionSuccessAction
+
+// TransactionNotifications
+export const TRANSACTIONNOTIFICATIONS_SUBSCRIBE = 'TRANSACTIONNOTIFICATIONS_SUBSCRIBE'
+export const TRANSACTIONNOTIFICATIONS_RECEIVED = 'TRANSACTIONNOTIFICATIONS_RECEIVED'
+
+export interface TransactionNotificationsSubscribe {
+	type: typeof TRANSACTIONNOTIFICATIONS_SUBSCRIBE,
+}
+
+export interface TransactionNotificationsReceived {
+	type: typeof TRANSACTIONNOTIFICATIONS_RECEIVED,
+	payload: TransactionNotificationsResponse
+}
+
+
+export type GetTransactionsActionTypes =
+	GetTransactionAttemptAction |
+	GetTransactionFailedAction |
+	GetTransactionSuccessAction |
+	TransactionNotificationsSubscribe |
+	TransactionNotificationsReceived
