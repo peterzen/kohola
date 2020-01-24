@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
 import TimeAgo from 'react-timeago';
@@ -9,6 +8,7 @@ import { TicketsState } from '../store/tickets/types';
 import { IApplicationState } from '../store/types';
 import { TransactionHash } from './shared';
 import { getTickets } from '../store/tickets/selectors';
+import { connect } from 'react-redux';
 
 
 interface TicketListItemProps {

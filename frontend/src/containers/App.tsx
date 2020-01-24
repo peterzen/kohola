@@ -9,7 +9,7 @@ import WalletBalanceComponent from "../components/WalletBalanceComponent";
 export default class App extends React.Component {
 
 	render() {
-		const title = "dcrwalletgui";
+		const title = "home";
 
 		return (
 			<div>
