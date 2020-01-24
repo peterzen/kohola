@@ -13,13 +13,13 @@ import { IGetState, IActionCreator } from '../types';
 
 export const loadTransactionsAttempt: IActionCreator = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, GetTransactionsActionTypes>, getState: IGetState): Promise<any> => {
-		const { getTransactionsRequest, startBlockHeight, endBlockHeight, txCount } = getState().transactions
+		const { getTransactionsRequest, startBlockHeight, endBlockHeight, targetTxCount } = getState().transactions
 		if (getTransactionsRequest) {
 			return Promise.resolve();
 		}
 		dispatch({ type: GETTRANSACTION_ATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.fetchTransactions(startBlockHeight, endBlockHeight, txCount)
+			const resp = await DcrwalletDatasource.fetchTransactions(startBlockHeight, endBlockHeight, targetTxCount)
 			dispatch({ payload: resp, type: GETTRANSACTION_SUCCESS });
 		}
 		catch (error) {

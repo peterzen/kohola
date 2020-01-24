@@ -7,7 +7,7 @@ export interface TransactionsState {
 	readonly getTransactionsRequest: boolean,
 	readonly startBlockHeight: number,
 	readonly endBlockHeight: number,
-	readonly txCount: number
+	readonly targetTxCount: number
 }
 
 export const GETTRANSACTION_ATTEMPT = 'GETTRANSACTION_ATTEMPT'

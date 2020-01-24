@@ -68,7 +68,7 @@ class RecentTransactionsComponent extends React.Component<TransactionsState, Tra
 const mapStateToProps = function (state: IApplicationState, ownProps: any) {
 	return {
 		unminedTx: state.transactions.unminedTx,
-		minedTx: state.transactions.unminedTx
+		minedTx: state.transactions.minedTx
 	};
 }
 

@@ -11,7 +11,7 @@ import { loadBestBlockHeightAttempt } from './bestblock/actions';
 
 export const initializeData: IActionCreator = () => {
 	return (dispatch: Dispatch) => {
-		dispatch(pingAttempt());
+		// dispatch(pingAttempt());
 		dispatch(loadBestBlockHeightAttempt())
 			.then(() => {
 				return dispatch(loadAccountsAttempt());
