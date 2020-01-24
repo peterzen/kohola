@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 import TimeAgo from 'react-timeago';
 
 import { Transaction } from "../models";
-import { formatTxType } from '../helpers';
 import { TransactionHash, Amount } from './shared';
 import { IApplicationState } from '../store/types';
 import { TransactionsState } from '../store/transactions/types';
@@ -25,7 +24,7 @@ export function TransactionListItem(props: TransactionListItemProps) {
 		<tr>
 			<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
 			<td><Amount amount={tx.getAmount()} /></td>
-			<td>{formatTxType(tx.getType())}</td>
+			<td>{tx.getTypeAsString()}</td>
 			<td><TransactionHash tx={tx} /></td>
 		</tr>
 	);

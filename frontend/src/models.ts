@@ -11,6 +11,22 @@ export class BestBlock extends BestBlockResponse { }
 
 export class WalletAccounts extends AccountsResponse { }
 
+type WalletAccountAsObject ={
+	timestamp: Date
+	height: number
+	blockHash: string
+	index: number
+	hash:  string
+	type: string
+	debitsAmount: number
+	creditsAmount: number
+	direction: TransactionDirection
+	amount: number
+	fee: number
+	debitAccounts: WalletAccount[]
+	creditAddresses: string[]
+}
+
 export class WalletAccount extends AccountsResponse.Account {
 	constructor(id?: number) {
 		super();
@@ -103,6 +119,33 @@ export class Transaction {
 	}
 	getCreditAddresses() {
 		return this.creditAddresses;
+	}
+	getTypeAsString() {
+		switch (this.type) {
+			case 0: return 'regular'
+			case 1: return 'sstx'
+			case 2: return 'vote'
+			case 3: return 'revocation'
+			case 4: return 'coinbase'
+			default: return "unknown"
+		};
+	}
+	toObject(): WalletAccountAsObject{
+		return {
+			timestamp: this.timestamp.toDate(),
+			height: this.height,
+			blockHash: this.getBlockHash(),
+			index: this.index,
+			hash: this.txHash,
+			type: this.getTypeAsString(),
+			debitsAmount: this.debitsAmount,
+			creditsAmount: this.creditsAmount,
+			direction: this.direction,
+			amount: this.amount,
+			fee: this.fee,
+			debitAccounts: this.debitAccounts,
+			creditAddresses: this.creditAddresses
+		}
 	}
 }
 
