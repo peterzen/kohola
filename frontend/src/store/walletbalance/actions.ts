@@ -1,31 +1,28 @@
 
-import { Dispatch } from 'redux';
-
-import DcrwalletDatasource from '../../datasources/dcrwallet';
+import { ThunkDispatch } from 'redux-thunk';
 
 import {
 	GetBalanceActionTypes,
 	GETBALANCE_ATTEMPT, GETBALANCE_SUCCESS, GETBALANCE_FAILED
 } from './types';
 
-import { AppError, IGetState } from '../types';
-import { WalletBalance } from '../../models';
+import { IGetState, IActionCreator } from '../types';
+import DcrwalletDatasource from '../../datasources/dcrwallet';
 
-
-export function getWalletBalance(accountNumbers: number[]): any {
-	return function (dispatch: Dispatch<GetBalanceActionTypes>, getState: IGetState): void {
+export const loadWalletBalance: IActionCreator = (accountNumbers: number[]) => {
+	return async (dispatch: ThunkDispatch<{}, {}, GetBalanceActionTypes>, getState: IGetState): Promise<any> => {
 		const { getBalanceRequest } = getState().walletbalance;
 		if (getBalanceRequest) {
-			return;
+			return Promise.resolve();
 		}
 		dispatch({ type: GETBALANCE_ATTEMPT });
-		DcrwalletDatasource.WalletBalance(accountNumbers)
-			.then((resp: WalletBalance) => {
-				dispatch({ payload: resp, type: GETBALANCE_SUCCESS });
-			})
-			.catch((error: AppError) => {
-				dispatch({ error, type: GETBALANCE_FAILED });
-			});
+		try {
+			const resp = await DcrwalletDatasource.fetchWalletBalance(accountNumbers)
+			dispatch({ payload: resp, type: GETBALANCE_SUCCESS });
+		}
+		catch (error) {
+			dispatch({ error, type: GETBALANCE_FAILED });
+		}
 	}
 };
 

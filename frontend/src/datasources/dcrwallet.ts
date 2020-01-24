@@ -1,36 +1,38 @@
 
 import { grpc } from "@improbable-eng/grpc-web";
-
 import * as api from '../proto/api_pb';
-import { WalletService, VotingService, TicketBuyerService, AgendaService } from '../proto/api_pb_service';
+
+import { AppError } from "../store/types";
 import { getGrpcClient, grpcInvoke, grpcInvokerFactory } from '../middleware/walletrpc';
 import { Transaction, Ticket, TransactionsListResult, AccountBalance, WalletBalance } from '../models';
-import { AppError } from "../store/types";
+import { WalletService, VotingService, TicketBuyerService, AgendaService } from '../proto/api_pb_service';
 
+interface IFetchTransactionsCallback {
+	(r: TransactionsListResult): void
+}
 
-type CallbackFn = (r: TransactionsListResult) => void
-type GetTicketsCallbackFn = (r: Ticket[]) => void
-
+interface IGetTicketsCallback {
+	(r: Ticket[]): void
+}
 
 const DcrwalletDatasource = {
 	Ping: grpcInvokerFactory(WalletService.Ping),
-	BestBlock: grpcInvokerFactory(WalletService.BestBlock),
-	Network: grpcInvokerFactory(WalletService.Network),
-	StakeInfo: grpcInvokerFactory(WalletService.StakeInfo),
-	TicketPrice: grpcInvokerFactory(WalletService.TicketPrice),
-	Accounts: grpcInvokerFactory(WalletService.Accounts),
-	LoadActiveDataFilters: grpcInvokerFactory(WalletService.LoadActiveDataFilters),
-	TicketBuyerConfig: grpcInvokerFactory(TicketBuyerService.TicketBuyerConfig),
-	StopAutoBuyer: grpcInvokerFactory(TicketBuyerService.StopAutoBuyer),
-	Agendas: grpcInvokerFactory(AgendaService.Agendas),
-	VoteChoices: grpcInvokerFactory(VotingService.VoteChoices),
+	fetchNetwork: grpcInvokerFactory(WalletService.Network),
+	fetchAgendas: grpcInvokerFactory(AgendaService.Agendas),
+	fetchAccounts: grpcInvokerFactory(WalletService.Accounts),
+	fetchBestBlock: grpcInvokerFactory(WalletService.BestBlock),
+	fetchStakeInfo: grpcInvokerFactory(WalletService.StakeInfo),
+	fetchTicketPrice: grpcInvokerFactory(WalletService.TicketPrice),
+	fetchVoteChoices: grpcInvokerFactory(VotingService.VoteChoices),
+	fetchStopAutoBuyer: grpcInvokerFactory(TicketBuyerService.StopAutoBuyer),
+	fetchTicketBuyerConfig: grpcInvokerFactory(TicketBuyerService.TicketBuyerConfig),
+	fetchLoadActiveDataFilters: grpcInvokerFactory(WalletService.LoadActiveDataFilters),
 
-
-	Tickets: function (
+	fetchTickets: function (
 		startBlockHeight: number,
 		endBlockHeight: number,
 		targetTicketCount: number,
-		onDataRecvd?: GetTicketsCallbackFn
+		onDataRecvd?: IGetTicketsCallback
 	): Promise<Ticket[]> {
 
 		const request = new api.GetTicketsRequest();
@@ -73,7 +75,7 @@ const DcrwalletDatasource = {
 		});
 	},
 
-	WalletBalance: function (accountNumbers: number[]): Promise<WalletBalance> {
+	fetchWalletBalance: function (accountNumbers: number[]): Promise<WalletBalance> {
 
 		const promises: Promise<AccountBalance>[] = [];
 		const walletBalance: WalletBalance = {};
@@ -115,11 +117,11 @@ const DcrwalletDatasource = {
 		})
 	},
 
-	Transactions: function (
+	fetchTransactions: function (
 		startBlockHeight: number,
 		endBlockHeight: number,
 		txCount: number,
-		onDataRecvd?: CallbackFn | undefined
+		onDataRecvd?: IFetchTransactionsCallback | undefined
 	): Promise<TransactionsListResult> {
 
 		const request = new api.GetTransactionsRequest();

@@ -1,30 +1,28 @@
+import { ThunkDispatch } from 'redux-thunk';
 
-import { Dispatch } from 'redux';
-
-import { Ticket } from '../../models';
-import { AppError, IGetState } from '../types';
+import { IGetState, IActionCreator } from '../types';
 import DcrwalletDatasource from '../../datasources/dcrwallet';
+
 import {
 	GetTicketsActionTypes,
 	GETTICKETS_ATTEMPT, GETTICKETS_SUCCESS, GETTICKETS_FAILED
 } from './types';
 
 
-
-export function getTicketsAttempt(): any {
-	return function (dispatch: Dispatch<GetTicketsActionTypes>, getState: IGetState): Promise<any> {
+export const loadTicketsAttempt: IActionCreator = () => {
+	return async (dispatch: ThunkDispatch<{}, {}, GetTicketsActionTypes>, getState: IGetState): Promise<any> => {
 		const { getTicketsRequest, startBlockHeight, endBlockHeight, targetTicketCount } = getState().tickets
 		if (getTicketsRequest) {
 			return Promise.resolve();
 		}
 		dispatch({ type: GETTICKETS_ATTEMPT });
-		return DcrwalletDatasource.Tickets(startBlockHeight, endBlockHeight, targetTicketCount)
-			.then((resp: Ticket[]) => {
-				dispatch({ payload: resp, type: GETTICKETS_SUCCESS });
-			})
-			.catch((error: AppError) => {
-				dispatch({ error, type: GETTICKETS_FAILED });
-			});
+		try {
+			const resp = await DcrwalletDatasource.fetchTickets(startBlockHeight, endBlockHeight, targetTicketCount)
+			dispatch({ payload: resp, type: GETTICKETS_SUCCESS });
+		}
+		catch (error) {
+			dispatch({ error, type: GETTICKETS_FAILED });
+		}
 	}
 };
 

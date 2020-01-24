@@ -7,6 +7,7 @@ import { BestBlockState } from "./bestblock/types";
 import { TransactionsState } from "./transactions/types";
 import { WalletBalanceState } from "./walletbalance/types";
 import { WalletAccountsState } from "./accounts/types";
+import { Dispatch, Action, AnyAction } from "redux";
 
 export type IApplicationState = {
 	ping: PingState,
@@ -24,4 +25,8 @@ export type AppError = {
 
 export interface IGetState {
 	(): IApplicationState
+}
+
+export interface IActionCreator {
+	(dispatch?: Dispatch<AnyAction>, getState?: IGetState): any
 }

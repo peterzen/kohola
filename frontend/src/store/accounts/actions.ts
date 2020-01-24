@@ -20,14 +20,14 @@ function mapAccounts(accounts: WalletAccount[]): IndexedWalletAccounts {
 }
 
 
-export function getAccountsAttempt(): any {
+export function loadAccountsAttempt(): any {
 	return function (dispatch: Dispatch<GetAccountsActionTypes>, getState: IGetState): Promise<any> {
 		const { getBestBlockHeightRequest } = getState().bestblock;
 		if (getBestBlockHeightRequest) {
 			return Promise.resolve();
 		}
 		dispatch({ type: GETACCOUNTS_ATTEMPT });
-		return DcrwalletDatasource.Accounts()
+		return DcrwalletDatasource.fetchAccounts()
 			.then((resp: WalletAccounts) => {
 				dispatch({ payload: mapAccounts(resp.getAccountsList()), type: GETACCOUNTS_SUCCESS });
 			})

@@ -9,12 +9,10 @@ import App from './containers/App';
 import initialState from './store/initialState';
 import configureStore from './store/configureStore';
 import { initializeData } from './store/actions';
-import { getPingAttempt } from './store/ping/actions';
 
 const history = createBrowserHistory();
 const store = configureStore(initialState, history);
 
-store.dispatch(getPingAttempt());
 store.dispatch(initializeData())
 
 ReactDOM.render(

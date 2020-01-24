@@ -1,5 +1,5 @@
 
-import { Dispatch } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
 
 import DcrwalletDatasource from '../../datasources/dcrwallet';
 
@@ -8,24 +8,23 @@ import {
 	GETTRANSACTION_ATTEMPT, GETTRANSACTION_SUCCESS, GETTRANSACTION_FAILED
 } from './types';
 
-import { TransactionsListResult } from '../../models';
-import { AppError, IGetState } from '../types';
+import { IGetState, IActionCreator } from '../types';
 
 
-export function getTransactionsAttempt(): any {
-	return function (dispatch: Dispatch<GetTransactionsActionTypes>, getState: IGetState): Promise<any> {
+export const loadTransactionsAttempt: IActionCreator = () => {
+	return async (dispatch: ThunkDispatch<{}, {}, GetTransactionsActionTypes>, getState: IGetState): Promise<any> => {
 		const { getTransactionsRequest, startBlockHeight, endBlockHeight, txCount } = getState().transactions
 		if (getTransactionsRequest) {
 			return Promise.resolve();
 		}
 		dispatch({ type: GETTRANSACTION_ATTEMPT });
-		return DcrwalletDatasource.Transactions(startBlockHeight, endBlockHeight, txCount)
-			.then((resp: TransactionsListResult) => {
-				dispatch({ payload: resp, type: GETTRANSACTION_SUCCESS });
-			})
-			.catch((error: AppError) => {
-				dispatch({ error, type: GETTRANSACTION_FAILED });
-			});
+		try {
+			const resp = await DcrwalletDatasource.fetchTransactions(startBlockHeight, endBlockHeight, txCount)
+			dispatch({ payload: resp, type: GETTRANSACTION_SUCCESS });
+		}
+		catch (error) {
+			dispatch({ error, type: GETTRANSACTION_FAILED });
+		}
 	}
 };
 

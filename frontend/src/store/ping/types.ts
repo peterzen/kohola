@@ -1,5 +1,6 @@
 import { WalletPing } from "../../models";
 import { AppError } from "../types";
+import { ProtobufMessage } from "@improbable-eng/grpc-web/dist/typings/message";
 
 
 export interface PingState {
@@ -27,7 +28,7 @@ export interface PingFailedAction {
 export interface PingSuccessAction {
   type: typeof GETPING_SUCCESS,
   pingTimer: NodeJS.Timeout,
-  getPingResponse: WalletPing,
+  getPingResponse: ProtobufMessage,
 }
 
 export interface PingCanceledAction {

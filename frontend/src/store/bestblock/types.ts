@@ -1,3 +1,5 @@
+import { ProtobufMessage } from "@improbable-eng/grpc-web/dist/typings/message";
+
 import { BestBlock } from "../../models";
 import { AppError } from "../types";
 
@@ -21,7 +23,7 @@ export interface GetBestBlockFailedAction {
 
 export interface GetBestBlockSuccessAction {
 	type: typeof GETBESTBLOCK_SUCCESS,
-	payload: BestBlock
+	payload: ProtobufMessage
 }
 
 export type BestBlockActionTypes = GetBestBlockAttemptAction | GetBestBlockFailedAction | GetBestBlockSuccessAction
