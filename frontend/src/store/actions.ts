@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 
-import { IGetState, IApplicationState, IActionCreator } from './types';
+import { IActionCreator } from './types';
 
 import { pingAttempt } from './ping/actions';
 import { loadWalletBalance } from './walletbalance/actions';
@@ -9,16 +9,8 @@ import { loadAccountsAttempt } from './accounts/actions';
 import { loadTransactionsAttempt } from './transactions/actions';
 import { loadBestBlockHeightAttempt } from './bestblock/actions';
 
-function accountsSelector(state: IApplicationState): number[] {
-	return _.keys(state.accounts.accounts)
-}
-
-function getBestBlockHeight(state: IApplicationState): number {
-	return state.bestblock.currentBlock.getHeight();
-}
-
 export const initializeData: IActionCreator = () => {
-	return (dispatch: Dispatch, getState: IGetState) => {
+	return (dispatch: Dispatch) => {
 		dispatch(pingAttempt());
 		dispatch(loadBestBlockHeightAttempt())
 			.then(() => {
@@ -27,8 +19,7 @@ export const initializeData: IActionCreator = () => {
 			.then(() => {
 				dispatch(loadTransactionsAttempt())
 				dispatch(loadTicketsAttempt());
-				const accountNumberList = accountsSelector(getState())
-				dispatch(loadWalletBalance(accountNumberList));
+				dispatch(loadWalletBalance());
 			});
 	}
 }
