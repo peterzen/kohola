@@ -1,7 +1,7 @@
 import { IApplicationState } from "./types";
 
 import { pingInitialState } from "./ping/reducers";
-import { ticketsInitialState } from "./tickets/reducers";
+import { ticketsInitialState } from "./staking/reducers";
 import { accountsInitialState } from "./accounts/reducers";
 import { bestblockInitialState } from "./bestblock/reducers";
 import { transactionsInitialState } from "./transactions/reducers";

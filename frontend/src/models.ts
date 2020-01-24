@@ -1,4 +1,4 @@
-import { AccountsResponse, TransactionDetails, GetTicketsResponse, BestBlockResponse, PingResponse, BalanceResponse } from './proto/api_pb';
+import { AccountsResponse, TransactionDetails, GetTicketsResponse, BestBlockResponse, PingResponse, BalanceResponse, TicketPriceResponse } from './proto/api_pb';
 import { TransactionDirection, TicketStatus, TicketStatusLabels } from './constants';
 import { reverseHash } from './helpers';
 import moment = require('moment');
@@ -11,12 +11,14 @@ export class BestBlock extends BestBlockResponse { }
 
 export class WalletAccounts extends AccountsResponse { }
 
-type WalletAccountAsObject ={
+export class TicketPrice extends TicketPriceResponse { }
+
+type WalletAccountAsObject = {
 	timestamp: Date
 	height: number
 	blockHash: string
 	index: number
-	hash:  string
+	hash: string
 	type: string
 	debitsAmount: number
 	creditsAmount: number
@@ -130,7 +132,7 @@ export class Transaction {
 			default: return "unknown"
 		};
 	}
-	toObject(): WalletAccountAsObject{
+	toObject(): WalletAccountAsObject {
 		return {
 			timestamp: this.timestamp.toDate(),
 			height: this.height,

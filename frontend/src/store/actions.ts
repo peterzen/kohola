@@ -4,7 +4,7 @@ import { IActionCreator } from './types';
 
 import { pingAttempt } from './ping/actions';
 import { loadWalletBalance } from './walletbalance/actions';
-import { loadTicketsAttempt } from './tickets/actions';
+import { loadTicketsAttempt, loadTicketPriceAttempt } from './staking/actions';
 import { loadAccountsAttempt, subscribeAccountNotifications } from './accounts/actions';
 import { loadTransactionsAttempt, subscribeTransactionNotifications } from './transactions/actions';
 import { loadBestBlockHeightAttempt } from './bestblock/actions';
@@ -20,7 +20,8 @@ export const initializeData: IActionCreator = () => {
 				return Promise.all([
 					dispatch(loadTransactionsAttempt()),
 					dispatch(loadTicketsAttempt()),
-					dispatch(loadWalletBalance())
+					dispatch(loadWalletBalance()),
+					dispatch(loadTicketPriceAttempt()),
 				])
 			})
 			.then(() => {

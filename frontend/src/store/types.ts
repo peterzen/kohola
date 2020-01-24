@@ -2,7 +2,7 @@
 import { grpc } from "@improbable-eng/grpc-web";
 
 import { PingState } from "./ping/types";
-import { TicketsState } from "./tickets/types";
+import { TicketsState } from "./staking/types";
 import { BestBlockState } from "./bestblock/types";
 import { TransactionsState } from "./transactions/types";
 import { WalletBalanceState } from "./walletbalance/types";
@@ -30,3 +30,4 @@ export interface IGetState {
 export interface IActionCreator {
 	(dispatch?: Dispatch<AnyAction>, getState?: IGetState): any
 }
+

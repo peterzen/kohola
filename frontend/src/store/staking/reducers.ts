@@ -1,15 +1,18 @@
 
 import {
 	TicketsState, GetTicketsActionTypes,
-	GETTICKETS_ATTEMPT, GETTICKETS_FAILED, GETTICKETS_SUCCESS
+	GETTICKETS_ATTEMPT, GETTICKETS_FAILED, GETTICKETS_SUCCESS, GETTICKETPRICE_ATTEMPT, GETTICKETPRICE_FAILED, GETTICKETPRICE_SUCCESS
 } from './types'
+import { TicketPrice } from '../../models';
 
 export const ticketsInitialState: TicketsState = {
 	tickets: [],
 	getTicketsRequest: false,
 	startBlockHeight: 150,
 	endBlockHeight: 1,
-	targetTicketCount: 50
+	targetTicketCount: 50,
+	ticketPrice: new TicketPrice(),
+	getTicketPriceRequest: false,
 }
 
 
@@ -18,6 +21,7 @@ export default function transactions(
 	action: GetTicketsActionTypes) {
 
 	switch (action.type) {
+		// GetTickets
 		case GETTICKETS_ATTEMPT:
 			return {
 				...state,
@@ -33,6 +37,22 @@ export default function transactions(
 				...state,
 				getTicketsRequest: false,
 				tickets: action.payload
+			};
+		case GETTICKETPRICE_ATTEMPT:
+			return {
+				...state,
+				getTicketPriceRequest: true,
+			};
+		case GETTICKETPRICE_FAILED:
+			return {
+				...state,
+				getTicketPriceRequest: false,
+			};
+		case GETTICKETPRICE_SUCCESS:
+			return {
+				...state,
+				getTicketPriceRequest: false,
+				ticketPrice: action.payload
 			};
 		default:
 			return state;

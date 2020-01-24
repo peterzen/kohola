@@ -10,7 +10,7 @@ import {
 } from './types';
 
 import { IGetState, IActionCreator } from '../types';
-import { loadTicketsAttempt } from '../tickets/actions';
+import { loadTicketsAttempt } from '../staking/actions';
 import { loadWalletBalance } from '../walletbalance/actions';
 
 

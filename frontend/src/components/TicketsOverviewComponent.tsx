@@ -4,10 +4,10 @@ import { withRouter } from 'react-router-dom';
 import TimeAgo from 'react-timeago';
 
 import { Ticket } from '../models';
-import { TicketsState } from '../store/tickets/types';
+import { TicketsState } from '../store/staking/types';
 import { IApplicationState } from '../store/types';
 import { TransactionHash } from './shared';
-import { getTickets } from '../store/tickets/selectors';
+import { getTickets } from '../store/staking/selectors';
 import { connect } from 'react-redux';
 
 

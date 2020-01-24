@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { IApplicationState } from '../store/types';
 import TicketsOverview from "../components/TicketsOverviewComponent";
+import TicketPriceComponent from '../components/TicketPriceComponent';
 
 class StakingContainer extends React.Component {
 
@@ -13,6 +14,7 @@ class StakingContainer extends React.Component {
 		return (
 			<div>
 				<h2>{title}</h2>
+				<TicketPriceComponent />
 				<TicketsOverview />
 			</div>
 		)
@@ -21,7 +23,7 @@ class StakingContainer extends React.Component {
 }
 
 
-const mapStateToProps = (state: IApplicationState, ownProps: any) =>{
+const mapStateToProps = (state: IApplicationState, ownProps: any) => {
 	return {
 	};
 }
