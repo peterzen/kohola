@@ -5,33 +5,35 @@ import {
 import { BestBlock } from '../../models';
 
 export const bestblockInitialState: BestBlockState = {
-  currentBlock: new BestBlock(),
-  getBestBlockHeightRequest: false,
+	currentBlock: new BestBlock(),
+	getBestBlockHeightRequest: false,
+	periodicTimer: null
 }
 
 
 export default function bestblock(
-  state: BestBlockState = bestblockInitialState,
-  action: BestBlockActionTypes) {
+	state: BestBlockState = bestblockInitialState,
+	action: BestBlockActionTypes) {
 
-  switch (action.type) {
-    case GETBESTBLOCK_ATTEMPT:
-      return {
-        ...state,
-        getBestBlockHeightRequest: true,
-      };
-    case GETBESTBLOCK_FAILED:
-      return {
-        ...state,
-        getBestBlockHeightRequest: false,
-      };
-    case GETBESTBLOCK_SUCCESS:
-      return {
-        ...state,
-        getBestBlockHeightRequest: false,
-        currentBlock: action.payload
-      };
-    default:
-      return state;
-  }
+	switch (action.type) {
+		case GETBESTBLOCK_ATTEMPT:
+			return {
+				...state,
+				getBestBlockHeightRequest: true,
+			};
+		case GETBESTBLOCK_FAILED:
+			return {
+				...state,
+				getBestBlockHeightRequest: false,
+			};
+		case GETBESTBLOCK_SUCCESS:
+			return {
+				...state,
+				getBestBlockHeightRequest: false,
+				currentBlock: action.payload,
+				periodicTimer: action.periodicTimer
+			};
+		default:
+			return state;
+	}
 }

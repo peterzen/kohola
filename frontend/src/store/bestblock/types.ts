@@ -6,6 +6,7 @@ import { AppError } from "../types";
 export interface BestBlockState {
 	readonly currentBlock: BestBlock
 	readonly getBestBlockHeightRequest: boolean,
+	readonly periodicTimer: NodeJS.Timeout | null,
 }
 
 export const GETBESTBLOCK_ATTEMPT = 'GETBESTBLOCK_ATTEMPT'
@@ -23,7 +24,8 @@ export interface GetBestBlockFailedAction {
 
 export interface GetBestBlockSuccessAction {
 	type: typeof GETBESTBLOCK_SUCCESS,
-	payload: ProtobufMessage
+	payload: ProtobufMessage,
+	periodicTimer: NodeJS.Timeout,
 }
 
 export type BestBlockActionTypes = GetBestBlockAttemptAction | GetBestBlockFailedAction | GetBestBlockSuccessAction
