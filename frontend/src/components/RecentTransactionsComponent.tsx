@@ -2,9 +2,11 @@ import * as React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
+import TimeAgo from 'react-timeago';
+
 import { Transaction } from "../models";
 import { formatTxType } from '../helpers';
-import { Timestamp, TransactionHash, Amount } from './shared';
+import { TransactionHash, Amount } from './shared';
 import { IApplicationState } from '../store/types';
 import { TransactionsState } from '../store/transactions/types';
 
@@ -21,7 +23,7 @@ export function TransactionListItem(props: TransactionListItemProps) {
 	const tx = props.tx;
 	return (
 		<tr>
-			<td><Timestamp ts={tx.getTimestamp()} /></td>
+			<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
 			<td><Amount amount={tx.getAmount()} /></td>
 			<td>{formatTxType(tx.getType())}</td>
 			<td><TransactionHash tx={tx} /></td>
