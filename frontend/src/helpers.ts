@@ -5,10 +5,6 @@ export function formatTimestamp(ts: moment.Moment): string {
     return ts.fromNow();
 }
 
-export function formatAmount(atoms: number) {
-    return atoms / 100000000;
-}
-
 export function formatTxType(txType: number): string {
     switch (txType) {
         case 0: return 'regular'
