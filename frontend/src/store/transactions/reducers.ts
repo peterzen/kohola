@@ -1,7 +1,7 @@
 
 import {
 	TransactionsState, GetTransactionsActionTypes,
-	GETTRANSACTION_ATTEMPT, GETTRANSACTION_FAILED, GETTRANSACTION_SUCCESS
+	GETTRANSACTION_ATTEMPT, GETTRANSACTION_FAILED, GETTRANSACTION_SUCCESS, TRANSACTIONNOTIFICATIONS_SUBSCRIBE, TRANSACTIONNOTIFICATIONS_RECEIVED
 } from './types'
 
 export const transactionsInitialState: TransactionsState = {
@@ -49,7 +49,18 @@ export default function transactions(
 				minedTx: action.payload.minedTx,
 				unminedTx: action.payload.unminedTx
 			};
+		case TRANSACTIONNOTIFICATIONS_SUBSCRIBE:
+			return {
+				...state
+			};
+		case TRANSACTIONNOTIFICATIONS_RECEIVED:
+			return {
+				...state
+			};
 		default:
+			neverReached(action);
 			return state;
 	}
 }
+
+const neverReached = (never: never) => { };
