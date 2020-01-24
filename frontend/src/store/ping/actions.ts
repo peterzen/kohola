@@ -1,5 +1,5 @@
-
 import { Dispatch } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
 
 import DcrwalletDatasource from '../../datasources/dcrwallet';
 
@@ -7,18 +7,18 @@ import {
 	PingActionTypes,
 	GETPING_SUCCESS, GETPING_FAILED, GETPING_CANCELED
 } from './types';
+
 import { IGetState, IActionCreator } from '../types';
 
 export const pingAttempt: IActionCreator = () => {
 
-	return async (dispatch: Dispatch<PingActionTypes>, getState: IGetState) => {
+	return async (dispatch: ThunkDispatch<{}, {}, PingActionTypes>, getState: IGetState): Promise<any> => {
 		const pingTimer = setTimeout(() => dispatch(pingAttempt()), 10000);
 		try {
 			const resp = await DcrwalletDatasource.Ping();
-			dispatch({ pingTimer, getPingResponse: resp, type: GETPING_SUCCESS });
+			dispatch({ type: GETPING_SUCCESS, pingTimer: pingTimer, getPingResponse: resp });
 		} catch (error) {
 			dispatch({ error, pingTimer, type: GETPING_FAILED });
-
 		}
 	}
 }
