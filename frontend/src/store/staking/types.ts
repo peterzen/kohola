@@ -2,7 +2,7 @@ import { AppError } from "../types";
 import { Ticket, TicketPrice } from "../../models";
 import { ProtobufMessage } from "@improbable-eng/grpc-web/dist/typings/message";
 
-export interface TicketsState {
+export interface StakingState {
 	readonly tickets: Ticket[],
 	readonly getTicketsRequest: boolean,
 	readonly startBlockHeight: number,

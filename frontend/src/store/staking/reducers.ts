@@ -1,11 +1,11 @@
 
 import {
-	TicketsState, GetTicketsActionTypes,
+	StakingState, GetTicketsActionTypes,
 	GETTICKETS_ATTEMPT, GETTICKETS_FAILED, GETTICKETS_SUCCESS, GETTICKETPRICE_ATTEMPT, GETTICKETPRICE_FAILED, GETTICKETPRICE_SUCCESS
 } from './types'
 import { TicketPrice } from '../../models';
 
-export const ticketsInitialState: TicketsState = {
+export const ticketsInitialState: StakingState = {
 	tickets: [],
 	getTicketsRequest: false,
 	startBlockHeight: 150,
@@ -16,8 +16,8 @@ export const ticketsInitialState: TicketsState = {
 }
 
 
-export default function transactions(
-	state: TicketsState = ticketsInitialState,
+export default function staking(
+	state: StakingState = ticketsInitialState,
 	action: GetTicketsActionTypes) {
 
 	switch (action.type) {

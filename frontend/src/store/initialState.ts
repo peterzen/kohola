@@ -10,7 +10,7 @@ import { walletbalanceInitialState } from "./walletbalance/reducers";
 
 const initialState: IApplicationState = {
 	ping: pingInitialState,
-	tickets: ticketsInitialState,
+	staking: ticketsInitialState,
 	accounts: accountsInitialState,
 	bestblock: bestblockInitialState,
 	transactions: transactionsInitialState,

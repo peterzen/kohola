@@ -11,7 +11,11 @@ import {
 
 export const loadTicketsAttempt: IActionCreator = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, GetTicketsActionTypes>, getState: IGetState): Promise<any> => {
-		const { getTicketsRequest, startBlockHeight, endBlockHeight, targetTicketCount } = getState().tickets
+		const {
+			getTicketsRequest,
+			startBlockHeight,
+			endBlockHeight,
+			targetTicketCount } = getState().staking
 		if (getTicketsRequest) {
 			return Promise.resolve();
 		}
@@ -30,7 +34,7 @@ export const loadTicketsAttempt: IActionCreator = () => {
 
 export const loadTicketPriceAttempt: IActionCreator = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, GetTicketsActionTypes>, getState: IGetState): Promise<any> => {
-		const { getTicketPriceRequest } = getState().tickets
+		const { getTicketPriceRequest } = getState().staking
 		if (getTicketPriceRequest) {
 			return Promise.resolve();
 		}

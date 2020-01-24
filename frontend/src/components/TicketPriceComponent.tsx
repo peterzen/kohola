@@ -2,12 +2,12 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { TicketsState } from '../store/staking/types';
+import { StakingState } from '../store/staking/types';
 import { IApplicationState } from '../store/types';
 
 
 
-class TicketPriceComponent extends React.Component<TicketsState, TicketsState> {
+class TicketPriceComponent extends React.Component<StakingState, StakingState> {
 	render() {
 		return (
 			<div>
@@ -19,7 +19,7 @@ class TicketPriceComponent extends React.Component<TicketsState, TicketsState> {
 
 const mapStateToProps = (state: IApplicationState, ownProps: any) => {
 	return {
-		ticketPrice: state.tickets.ticketPrice
+		ticketPrice: state.staking.ticketPrice
 	};
 }
 

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import TimeAgo from 'react-timeago';
 
 import { Ticket } from '../models';
-import { TicketsState } from '../store/staking/types';
+import { StakingState } from '../store/staking/types';
 import { IApplicationState } from '../store/types';
 import { TransactionHash } from './shared';
 import { getTickets } from '../store/staking/selectors';
@@ -54,9 +54,9 @@ export function TicketListComponent(props: TicketListComponentProps) {
 	)
 }
 
-class TicketsOverviewComponent extends React.Component<TicketsState, TicketsState> {
+class TicketsOverviewComponent extends React.Component<StakingState, StakingState> {
 	render() {
-		const tickets = this.props.tickets;
+		const  tickets  = this.props.tickets
 		return (
 			<div>
 				<h3>Tickets Overview</h3>
