@@ -8,6 +8,7 @@ import { Ticket } from '../models';
 import { TicketsState } from '../store/tickets/types';
 import { IApplicationState } from '../store/types';
 import { TransactionHash } from './shared';
+import { getTickets } from '../store/tickets/selectors';
 
 
 interface TicketListItemProps {
@@ -65,10 +66,9 @@ class TicketsOverviewComponent extends React.Component<TicketsState, TicketsStat
 	}
 }
 
-
-const mapStateToProps = function (state: IApplicationState, ownProps: any) {
+const mapStateToProps = (state: IApplicationState, ownProps: any) =>{
 	return {
-		tickets: state.tickets.tickets
+		tickets: getTickets(state)
 	};
 }
 

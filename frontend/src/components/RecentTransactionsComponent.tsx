@@ -8,6 +8,7 @@ import { Transaction } from "../models";
 import { TransactionHash, Amount } from './shared';
 import { IApplicationState } from '../store/types';
 import { TransactionsState } from '../store/transactions/types';
+import { getUnminedTransactions, getMinedTransactions } from '../store/transactions/selectors';
 
 
 interface TransactionListProps {
@@ -66,10 +67,10 @@ class RecentTransactionsComponent extends React.Component<TransactionsState, Tra
 	}
 }
 
-const mapStateToProps = function (state: IApplicationState, ownProps: any) {
+const mapStateToProps =  (state: IApplicationState, ownProps: any) =>{
 	return {
-		unminedTx: state.transactions.unminedTx,
-		minedTx: state.transactions.minedTx
+		unminedTx: getUnminedTransactions(state),
+		minedTx: getMinedTransactions(state)
 	};
 }
 

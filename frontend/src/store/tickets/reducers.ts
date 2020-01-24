@@ -7,9 +7,9 @@ import {
 export const ticketsInitialState: TicketsState = {
 	tickets: [],
 	getTicketsRequest: false,
-	startBlockHeight: 0,
-	endBlockHeight: 0,
-	targetTicketCount: 0
+	startBlockHeight: 150,
+	endBlockHeight: 1,
+	targetTicketCount: 50
 }
 
 
