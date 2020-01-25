@@ -23,7 +23,7 @@ const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
 
 export function loadAccountsAttempt(): any {
 	return async (dispatch: ThunkDispatch<{}, {}, GetAccountsActionTypes>, getState: IGetState): Promise<any> => {
-		const { getBestBlockHeightRequest } = getState().bestblock;
+		const { getBestBlockHeightRequest } = getState().networkinfo;
 		if (getBestBlockHeightRequest) {
 			return Promise.resolve();
 		}

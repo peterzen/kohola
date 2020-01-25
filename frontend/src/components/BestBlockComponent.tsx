@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { BestBlockState } from "../store/bestblock/types";
+import { BestBlockState } from "../store/networkinfo/types";
 import { IApplicationState } from "../store/types";
 
 import { Hash } from "./shared";
@@ -21,7 +21,7 @@ class BestBlockComponent extends React.Component<BestBlockState, BestBlockState>
 
 const mapStateToProps = function (state: IApplicationState, ownProps: any) {
     return {
-        currentBlock: state.bestblock.currentBlock
+        currentBlock: state.networkinfo.currentBlock
     };
 }
 export default withRouter(connect(mapStateToProps, {

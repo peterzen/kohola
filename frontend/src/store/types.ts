@@ -3,12 +3,11 @@ import { grpc } from "@improbable-eng/grpc-web";
 import { Dispatch, AnyAction } from "redux";
 
 import { PingState } from "./ping/types";
-import { StakingState } from "./staking/types";
-import { BestBlockState } from "./bestblock/types";
+import { IStakingState } from "./staking/types";
+import { INetworkInfoState } from "./networkinfo/types";
 import { TransactionsState } from "./transactions/types";
 import { WalletBalanceState } from "./walletbalance/types";
 import { WalletAccountsState } from "./accounts/types";
-import { NetworkState } from "./network/types";
 import { VoteChoicesState } from "./votechoices/types";
 import { StopAutoBuyerState } from "./stopautobuyer/types";
 import { TicketBuyerConfigState } from "./ticketbuyerconfig/types";
@@ -16,12 +15,11 @@ import { LoadActiveDataFiltersState } from "./loadactivedatafilters/types";
 
 export type IApplicationState = {
 	ping: PingState,
-	staking: StakingState,
-	bestblock: BestBlockState,
+	staking: IStakingState,
+	networkinfo: INetworkInfoState,
 	accounts: WalletAccountsState,
 	transactions: TransactionsState,
 	walletbalance: WalletBalanceState,
-	network: NetworkState,
 	votechoices: VoteChoicesState,
 	stopautobuyer: StopAutoBuyerState,
 	ticketbuyerconfig: TicketBuyerConfigState,

@@ -2,13 +2,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { StakingState } from '../store/staking/types';
+import { IStakingState } from '../store/staking/types';
 import { IApplicationState } from '../store/types';
 import { loadTicketPriceAttempt } from '../store/staking/actions';
 
 
 
-class TicketPriceComponent extends React.Component<StakingState, StakingState> {
+class TicketPriceComponent extends React.Component<IStakingState, IStakingState> {
 	render() {
 		return (
 			<div>

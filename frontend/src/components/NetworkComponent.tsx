@@ -2,9 +2,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { NetworkState } from "../store/network/types";
 import { IApplicationState } from "../store/types";
-import { loadNetworkAttempt } from "../store/network/actions";
+import { INetworkState } from "../store/networkinfo/types";
+import { loadNetworkAttempt } from "../store/networkinfo/actions";
 
 
 export interface NetworkOwnProps {
@@ -15,7 +15,7 @@ interface DispatchProps {
 	// onSomeEvent: () => void
 }
 
-type Props = NetworkState & DispatchProps & NetworkOwnProps
+type Props = INetworkState & DispatchProps & NetworkOwnProps
 
 interface InternalState {
 	// internalComponentStateField: string
@@ -26,7 +26,7 @@ class NetworkComponent extends React.Component<Props, InternalState> {
 	render() {
 		return (
 			<div>
-				Active network: {this.props._Network.getActiveNetwork()}
+				Active network: {this.props.network.getActiveNetwork()}
 			</div>
 		)
 	}
@@ -38,9 +38,11 @@ class NetworkComponent extends React.Component<Props, InternalState> {
 }
 
 
-const mapStateToProps = (state: IApplicationState, ownProps: NetworkOwnProps): NetworkState => {
+const mapStateToProps = (state: IApplicationState, ownProps: NetworkOwnProps): INetworkState => {
 	return {
-		...state.network
+		network: state.networkinfo.network,
+		getNetworkRequest: state.networkinfo.getNetworkRequest,
+		errorNetwork: state.networkinfo.errorNetwork,
 	};
 }
 export default withRouter(connect(mapStateToProps)(NetworkComponent));

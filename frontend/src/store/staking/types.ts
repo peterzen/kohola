@@ -2,25 +2,15 @@ import { AppError } from "../types";
 import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../models";
 import { ProtobufMessage } from "@improbable-eng/grpc-web/dist/typings/message";
 
-export interface StakingState {
+
+export interface ITicketsState {
 	readonly tickets: Ticket[],
 	readonly getTicketsRequest: boolean,
 	readonly startBlockHeight: number,
 	readonly endBlockHeight: number,
-
 	readonly targetTicketCount: number,
-	readonly ticketPrice: TicketPrice,
-	readonly getTicketPriceRequest: boolean,
-
-	readonly getAgendasRequest: boolean,
-	readonly agendas: Agendas
-	readonly errorAgendas: AppError | null,
-
-	readonly getStakeInfoRequest: boolean,
-	readonly stakeinfo: StakeInfo
-	readonly errorStakeInfo: AppError | null,
-
 }
+
 
 // GetTickets
 export const GETTICKETS_ATTEMPT = 'GETTICKETS_ATTEMPT'
@@ -41,6 +31,10 @@ export interface GetTicketsSuccessAction {
 	payload: Ticket[]
 }
 
+export interface ITicketPriceState {
+	readonly ticketPrice: TicketPrice,
+	readonly getTicketPriceRequest: boolean,
+}
 
 // TicketPrice
 export const GETTICKETPRICE_ATTEMPT = 'GETTICKETPRICE_ATTEMPT'
@@ -64,7 +58,7 @@ export interface TicketPriceSuccessAction {
 
 
 // Agendas
-export interface AgendasState {
+export interface IAgendasState {
 	readonly getAgendasRequest: boolean,
 	readonly agendas: Agendas
 	readonly errorAgendas: AppError | null
@@ -88,11 +82,8 @@ export interface AgendasSuccessAction {
 	payload: ProtobufMessage,
 }
 
-
-
 // StakeInfo
-
-export interface StakeInfoState {
+export interface IStakeInfoState {
 	readonly getStakeInfoRequest: boolean,
 	readonly stakeinfo: StakeInfo
 	readonly errorStakeInfo: AppError | null
@@ -116,6 +107,7 @@ export interface StakeInfoSuccessAction {
 	payload: ProtobufMessage,
 }
 
+export type IStakingState = IStakeInfoState & IAgendasState & ITicketPriceState & ITicketsState
 
 export type StakingActionTypes =
 	GetTicketsAttemptAction |

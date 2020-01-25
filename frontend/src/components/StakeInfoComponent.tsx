@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import { IApplicationState } from "../store/types";
-import { StakeInfoState } from "../store/staking/types";
+import { IStakeInfoState } from "../store/staking/types";
 import { loadStakeInfoAttempt } from "../store/staking/actions";
 
 
@@ -15,7 +15,7 @@ interface DispatchProps {
 	// onSomeEvent: () => void
 }
 
-type Props = StakeInfoState & DispatchProps & StakeInfoOwnProps
+type Props = IStakeInfoState & DispatchProps & StakeInfoOwnProps
 
 interface InternalState {
 	// internalComponentStateField: string
@@ -43,7 +43,7 @@ class StakeInfoComponent extends React.Component<Props, InternalState> {
 }
 
 
-const mapStateToProps = (state: IApplicationState, ownProps: StakeInfoOwnProps): StakeInfoState => {
+const mapStateToProps = (state: IApplicationState, ownProps: StakeInfoOwnProps): IStakeInfoState => {
 	return {
 		getStakeInfoRequest: state.staking.getStakeInfoRequest,
 		stakeinfo: state.staking.stakeinfo,

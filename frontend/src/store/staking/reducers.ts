@@ -1,6 +1,6 @@
 
 import {
-	StakingState, StakingActionTypes,
+	IStakingState, StakingActionTypes,
 	GETTICKETS_ATTEMPT, GETTICKETS_FAILED, GETTICKETS_SUCCESS,
 	GETTICKETPRICE_ATTEMPT, GETTICKETPRICE_FAILED, GETTICKETPRICE_SUCCESS,
 	AGENDASATTEMPT, AGENDASFAILED, AGENDASSUCCESS,
@@ -8,7 +8,7 @@ import {
 } from './types'
 import { TicketPrice, Agendas, StakeInfo } from '../../models';
 
-export const ticketsInitialState: StakingState = {
+export const ticketsInitialState: IStakingState = {
 	tickets: [],
 	getTicketsRequest: false,
 	startBlockHeight: 150,
@@ -30,7 +30,7 @@ export const ticketsInitialState: StakingState = {
 
 
 export default function staking(
-	state: StakingState = ticketsInitialState,
+	state: IStakingState = ticketsInitialState,
 	action: StakingActionTypes) {
 
 	switch (action.type) {
