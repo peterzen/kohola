@@ -1,5 +1,5 @@
 import { AppError } from "../types";
-import { Ticket, TicketPrice } from "../../models";
+import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../models";
 import { ProtobufMessage } from "@improbable-eng/grpc-web/dist/typings/message";
 
 export interface StakingState {
@@ -7,9 +7,19 @@ export interface StakingState {
 	readonly getTicketsRequest: boolean,
 	readonly startBlockHeight: number,
 	readonly endBlockHeight: number,
+
 	readonly targetTicketCount: number,
 	readonly ticketPrice: TicketPrice,
 	readonly getTicketPriceRequest: boolean,
+
+	readonly getAgendasRequest: boolean,
+	readonly agendas: Agendas
+	readonly errorAgendas: AppError | null,
+
+	readonly getStakeInfoRequest: boolean,
+	readonly stakeinfo: StakeInfo
+	readonly errorStakeInfo: AppError | null,
+
 }
 
 // GetTickets
@@ -53,11 +63,71 @@ export interface TicketPriceSuccessAction {
 }
 
 
+// Agendas
+export interface AgendasState {
+	readonly getAgendasRequest: boolean,
+	readonly agendas: Agendas
+	readonly errorAgendas: AppError | null
+}
 
-export type GetTicketsActionTypes =
+export const AGENDASATTEMPT = 'AGENDASATTEMPT'
+export const AGENDASFAILED = 'AGENDASFAILED'
+export const AGENDASSUCCESS = 'AGENDASSUCCESS'
+
+export interface AgendasAttemptAction {
+	type: typeof AGENDASATTEMPT,
+}
+
+export interface AgendasFailedAction {
+	type: typeof AGENDASFAILED,
+	error: AppError
+}
+
+export interface AgendasSuccessAction {
+	type: typeof AGENDASSUCCESS,
+	payload: ProtobufMessage,
+}
+
+
+
+// StakeInfo
+
+export interface StakeInfoState {
+	readonly getStakeInfoRequest: boolean,
+	readonly stakeinfo: StakeInfo
+	readonly errorStakeInfo: AppError | null
+}
+
+export const STAKEINFOATTEMPT = 'STAKEINFOATTEMPT'
+export const STAKEINFOFAILED = 'STAKEINFOFAILED'
+export const STAKEINFOSUCCESS = 'STAKEINFOSUCCESS'
+
+export interface StakeInfoAttemptAction {
+	type: typeof STAKEINFOATTEMPT,
+}
+
+export interface StakeInfoFailedAction {
+	type: typeof STAKEINFOFAILED,
+	error: AppError
+}
+
+export interface StakeInfoSuccessAction {
+	type: typeof STAKEINFOSUCCESS,
+	payload: ProtobufMessage,
+}
+
+
+export type StakingActionTypes =
 	GetTicketsAttemptAction |
 	GetTicketsFailedAction |
 	GetTicketsSuccessAction |
 	GetTicketPriceAttempt |
 	TicketPriceFailedAction |
-	TicketPriceSuccessAction
+	TicketPriceSuccessAction |
+	AgendasAttemptAction |
+	AgendasFailedAction |
+	AgendasSuccessAction |
+	StakeInfoAttemptAction |
+	StakeInfoFailedAction |
+	StakeInfoSuccessAction
+

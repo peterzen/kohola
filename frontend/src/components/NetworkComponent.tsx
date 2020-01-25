@@ -26,7 +26,7 @@ class NetworkComponent extends React.Component<Props, InternalState> {
 	render() {
 		return (
 			<div>
-				<h4>Network</h4>
+				Active network: {this.props._Network.getActiveNetwork()}
 			</div>
 		)
 	}

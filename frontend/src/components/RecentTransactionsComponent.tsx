@@ -2,14 +2,14 @@ import * as React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
-import TimeAgo from 'react-timeago';
-
 import { Transaction } from "../models";
 import { TransactionHash, Amount } from './shared';
 import { IApplicationState } from '../store/types';
 import { TransactionsState } from '../store/transactions/types';
 import { getUnminedTransactions, getMinedTransactions } from '../store/transactions/selectors';
+import { loadTransactionsAttempt } from '../store/transactions/actions';
 
+import TimeAgo from 'react-timeago';
 
 interface TransactionListProps {
 	items: Transaction[]
@@ -65,6 +65,10 @@ class RecentTransactionsComponent extends React.Component<TransactionsState, Tra
 			</div>
 		)
 	}
+	componentDidMount() {
+		this.props.dispatch(loadTransactionsAttempt())
+		
+	}
 }
 
 const mapStateToProps =  (state: IApplicationState, ownProps: any) =>{
@@ -74,5 +78,4 @@ const mapStateToProps =  (state: IApplicationState, ownProps: any) =>{
 	};
 }
 
-export default withRouter(connect(mapStateToProps, {
-})(RecentTransactionsComponent));
+export default withRouter(connect(mapStateToProps)(RecentTransactionsComponent));

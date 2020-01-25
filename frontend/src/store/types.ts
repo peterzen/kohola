@@ -9,8 +9,6 @@ import { TransactionsState } from "./transactions/types";
 import { WalletBalanceState } from "./walletbalance/types";
 import { WalletAccountsState } from "./accounts/types";
 import { NetworkState } from "./network/types";
-import { AgendasState } from "./agendas/types";
-import { StakeInfoState } from "./stakeinfo/types";
 import { VoteChoicesState } from "./votechoices/types";
 import { StopAutoBuyerState } from "./stopautobuyer/types";
 import { TicketBuyerConfigState } from "./ticketbuyerconfig/types";
@@ -24,8 +22,6 @@ export type IApplicationState = {
 	transactions: TransactionsState,
 	walletbalance: WalletBalanceState,
 	network: NetworkState,
-	agendas: AgendasState,
-	stakeinfo: StakeInfoState,
 	votechoices: VoteChoicesState,
 	stopautobuyer: StopAutoBuyerState,
 	ticketbuyerconfig: TicketBuyerConfigState,

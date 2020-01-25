@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { StakingState } from '../store/staking/types';
 import { IApplicationState } from '../store/types';
+import { loadTicketPriceAttempt } from '../store/staking/actions';
 
 
 
@@ -15,6 +16,9 @@ class TicketPriceComponent extends React.Component<StakingState, StakingState> {
 			</div>
 		)
 	}
+	componentDidMount() {
+		this.props.dispatch(loadTicketPriceAttempt())
+	}
 }
 
 const mapStateToProps = (state: IApplicationState, ownProps: any) => {
@@ -23,5 +27,4 @@ const mapStateToProps = (state: IApplicationState, ownProps: any) => {
 	};
 }
 
-export default withRouter(connect(mapStateToProps, {
-})(TicketPriceComponent));
+export default withRouter(connect(mapStateToProps)(TicketPriceComponent));

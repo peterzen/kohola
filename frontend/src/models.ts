@@ -6,15 +6,12 @@ import { EventEmitter } from 'events';
 
 
 export class WalletPing extends PingResponse { }
-
 export class BestBlock extends BestBlockResponse { }
-
 export class WalletAccounts extends AccountsResponse { }
-
 export class TicketPrice extends TicketPriceResponse { }
-
 export class Network extends NetworkResponse {}
-export class Agendas extends AgendasResponse {}
+export class Agendas extends AgendasResponse { }
+export class Agenda extends AgendasResponse.Agenda {}
 export class StakeInfo extends StakeInfoResponse {}
 export class VoteChoices extends VoteChoicesResponse {}
 export class StopAutoBuyer extends StopAutoBuyerResponse {}

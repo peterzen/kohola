@@ -12,22 +12,14 @@ import { loadBestBlockHeightAttempt } from './bestblock/actions';
 export const initializeData: IActionCreator = () => {
 	return (dispatch: Dispatch) => {
 		// dispatch(pingAttempt());
-		dispatch(loadBestBlockHeightAttempt())
-			.then(() => {
-				return dispatch(loadAccountsAttempt());
-			})
+		return dispatch(loadBestBlockHeightAttempt())
 			.then(() => {
 				return Promise.all([
-					dispatch(loadTransactionsAttempt()),
-					dispatch(loadTicketsAttempt()),
-					dispatch(loadWalletBalance()),
-					dispatch(loadTicketPriceAttempt()),
+					dispatch(loadAccountsAttempt()),
+					dispatch(subscribeAccountNotifications()),
+					dispatch(subscribeTransactionNotifications()),
 				])
 			})
-			.then(() => {
-				dispatch(subscribeAccountNotifications());
-				dispatch(subscribeTransactionNotifications());
-			});
 	}
 }
 

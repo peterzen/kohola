@@ -27,6 +27,12 @@ class TicketBuyerConfigComponent extends React.Component<Props, InternalState> {
 		return (
 			<div>
 				<h4>TicketBuyerConfig</h4>
+				Account: {this.props._TicketBuyerConfig.getAccount()}<br/>
+				AvgPriceMode: {this.props._TicketBuyerConfig.getAvgPriceMode()}<br/>
+				BalanceToMaintain: {this.props._TicketBuyerConfig.getBalanceToMaintain()}<br/>
+				FeeSource: {this.props._TicketBuyerConfig.getFeeSource()}<br/>
+				DontWaitForTickets: {this.props._TicketBuyerConfig.getDontWaitForTickets()}<br/>
+				ExpiryDelta: {this.props._TicketBuyerConfig.getExpiryDelta()}<br/>
 			</div>
 		)
 	}

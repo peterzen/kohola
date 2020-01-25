@@ -1,10 +1,10 @@
 import * as React from "react";
 
 import BestBlock from "../components/BestBlockComponent";
-import TicketsOverview from "../components/TicketsOverviewComponent";
 import ConnectionStatus from "../components/ConnectionStatus";
 import RecentTransactions from '../components/RecentTransactionsComponent';
 import WalletBalanceComponent from "../components/WalletBalanceComponent";
+import NetworkComponent from "../components/NetworkComponent";
 
 export default class App extends React.Component {
 
@@ -14,13 +14,12 @@ export default class App extends React.Component {
 		return (
 			<div>
 				<h1>{title}  <ConnectionStatus /></h1>
+				<NetworkComponent/>
 				<BestBlock />
 				<hr />
 				<WalletBalanceComponent />
 				<hr />
 				<RecentTransactions />
-				<hr />
-				<TicketsOverview />
 			</div>
 		)
 	}

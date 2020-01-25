@@ -1,12 +1,13 @@
+import _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+
 import { WalletBalanceState } from '../store/walletbalance/types';
 import { IApplicationState } from '../store/types';
-import { AccountBalance, WalletBalance } from '../models';
+import { AccountBalance } from '../models';
 import { Amount } from './shared';
-import _ from 'lodash';
-
+import { loadWalletBalance } from '../store/walletbalance/actions';
 
 interface IBalanceProps {
 	accountNumber: string,
@@ -66,6 +67,9 @@ class WalletBalanceComponent extends React.Component<WalletBalanceState, WalletB
 				</table>
 			</div>
 		)
+	}
+	componentDidMount() {
+		this.props.dispatch(loadWalletBalance())
 	}
 }
 

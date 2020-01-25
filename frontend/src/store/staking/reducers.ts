@@ -1,9 +1,12 @@
 
 import {
-	StakingState, GetTicketsActionTypes,
-	GETTICKETS_ATTEMPT, GETTICKETS_FAILED, GETTICKETS_SUCCESS, GETTICKETPRICE_ATTEMPT, GETTICKETPRICE_FAILED, GETTICKETPRICE_SUCCESS
+	StakingState, StakingActionTypes,
+	GETTICKETS_ATTEMPT, GETTICKETS_FAILED, GETTICKETS_SUCCESS,
+	GETTICKETPRICE_ATTEMPT, GETTICKETPRICE_FAILED, GETTICKETPRICE_SUCCESS,
+	AGENDASATTEMPT, AGENDASFAILED, AGENDASSUCCESS,
+	STAKEINFOATTEMPT, STAKEINFOFAILED, STAKEINFOSUCCESS
 } from './types'
-import { TicketPrice } from '../../models';
+import { TicketPrice, Agendas, StakeInfo } from '../../models';
 
 export const ticketsInitialState: StakingState = {
 	tickets: [],
@@ -13,12 +16,22 @@ export const ticketsInitialState: StakingState = {
 	targetTicketCount: 50,
 	ticketPrice: new TicketPrice(),
 	getTicketPriceRequest: false,
+
+	// Agendas
+	agendas: new Agendas(),
+	getAgendasRequest: false,
+	errorAgendas: null,
+
+	// StakeInfo
+	stakeinfo: new StakeInfo(),
+	getStakeInfoRequest: false,
+	errorStakeInfo: null,
 }
 
 
 export default function staking(
 	state: StakingState = ticketsInitialState,
-	action: GetTicketsActionTypes) {
+	action: StakingActionTypes) {
 
 	switch (action.type) {
 		// GetTickets
@@ -38,6 +51,7 @@ export default function staking(
 				getTicketsRequest: false,
 				tickets: action.payload
 			};
+		// TicketPrice
 		case GETTICKETPRICE_ATTEMPT:
 			return {
 				...state,
@@ -54,7 +68,52 @@ export default function staking(
 				getTicketPriceRequest: false,
 				ticketPrice: action.payload
 			};
+		// Agendas
+		case AGENDASATTEMPT:
+			return {
+				...state,
+				getAgendasRequest: true,
+				errorAgendas: null,
+			};
+		case AGENDASFAILED:
+			return {
+				...state,
+				getAgendasRequest: false,
+				errorAgendas: action.error,
+			};
+		case AGENDASSUCCESS:
+			return {
+				...state,
+				getAgendasRequest: false,
+				agendas: action.payload,
+				errorAgendas: null
+			};
+
+		// StakeInfo
+		case STAKEINFOATTEMPT:
+			return {
+				...state,
+				getStakeInfoRequest: true,
+				errorStakeInfo: null,
+			};
+		case STAKEINFOFAILED:
+			return {
+				...state,
+				getStakeInfoRequest: false,
+				errorStakeInfo: action.error,
+			};
+		case STAKEINFOSUCCESS:
+			return {
+				...state,
+				getStakeInfoRequest: false,
+				stakeinfo: action.payload,
+				errorStakeInfo: null
+			};
 		default:
+			neverReached(action);
 			return state;
 	}
 }
+
+
+const neverReached = (never: never) => { };

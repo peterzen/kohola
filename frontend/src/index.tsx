@@ -17,16 +17,19 @@ const history = createBrowserHistory();
 const store = configureStore(initialState, history);
 
 store.dispatch(initializeData())
+	.then(() => {
+		ReactDOM.render(
+			<Provider store={store}>
+				<ConnectedRouter history={history}>
+					<Navbar />
+					<Switch>
+						<Route path="/staking" component={Staking} />
+						<Route path="/" component={App} />
+					</Switch>
+				</ConnectedRouter>
+			</Provider>,
+			document.getElementById('app')
+		);
 
-ReactDOM.render(
-    <Provider store={store}>
-		<ConnectedRouter history={history}>
-			<Navbar/>
-            <Switch>
-				<Route path="/staking" component={Staking}/>
-				<Route path="/" component={App} />
-            </Switch>
-        </ConnectedRouter>
-    </Provider>,
-    document.getElementById('app')
-);
+	});
+

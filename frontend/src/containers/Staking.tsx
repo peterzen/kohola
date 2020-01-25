@@ -6,6 +6,8 @@ import { IApplicationState } from '../store/types';
 import TicketsOverview from "../components/TicketsOverviewComponent";
 import TicketPriceComponent from '../components/TicketPriceComponent';
 import StakeInfoComponent from '../components/StakeInfoComponent';
+import AgendasComponent from '../components/AgendasComponent';
+import TicketBuyerConfigComponent from '../components/TicketBuyerConfigComponent';
 
 class StakingContainer extends React.Component {
 
@@ -17,6 +19,8 @@ class StakingContainer extends React.Component {
 				<h2>{title}</h2>
 				<StakeInfoComponent/>
 				<TicketPriceComponent />
+				<AgendasComponent />
+				{/* <TicketBuyerConfigComponent/> */}
 				<TicketsOverview />
 			</div>
 		)

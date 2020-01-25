@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import _ from 'lodash';
 
 import { IApplicationState } from '../store/types';
 import { WalletAccountsState } from '../store/accounts/types';
 import { WalletAccount } from '../models';
 import { Amount } from './shared';
-import _ from 'lodash';
 
 
 class AccountsOverviewComponent extends React.Component<WalletAccountsState, WalletAccountsState> {
@@ -47,5 +47,4 @@ const mapStateToProps = function (state: IApplicationState, ownProps: any) {
 	};
 }
 
-export default withRouter(connect(mapStateToProps, {
-})(AccountsOverviewComponent));
+export default withRouter(connect(mapStateToProps)(AccountsOverviewComponent));

@@ -1,21 +1,22 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import TimeAgo from 'react-timeago';
 
 import { Ticket } from '../models';
 import { StakingState } from '../store/staking/types';
 import { IApplicationState } from '../store/types';
 import { TransactionHash } from './shared';
 import { getTickets } from '../store/staking/selectors';
-import { connect } from 'react-redux';
+import { loadTicketsAttempt } from '../store/staking/actions';
 
+import TimeAgo from 'react-timeago';
 
 interface TicketListItemProps {
 	ticket: Ticket
 }
 
-export function TicketListItem(props: TicketListItemProps) {
+function TicketListItem(props: TicketListItemProps) {
 	const ticket = props.ticket;
 	const tx = ticket.getTx();
 	return (
@@ -56,7 +57,7 @@ export function TicketListComponent(props: TicketListComponentProps) {
 
 class TicketsOverviewComponent extends React.Component<StakingState, StakingState> {
 	render() {
-		const  tickets  = this.props.tickets
+		const tickets = this.props.tickets
 		return (
 			<div>
 				<h3>Tickets Overview</h3>
@@ -64,13 +65,16 @@ class TicketsOverviewComponent extends React.Component<StakingState, StakingStat
 			</div>
 		)
 	}
+	componentDidMount() {
+		this.props.dispatch(loadTicketsAttempt());
+
+	}
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: any) =>{
+const mapStateToProps = (state: IApplicationState, ownProps: any) => {
 	return {
 		tickets: getTickets(state)
 	};
 }
 
-export default withRouter(connect(mapStateToProps, {
-})(TicketsOverviewComponent));
+export default withRouter(connect(mapStateToProps)(TicketsOverviewComponent));

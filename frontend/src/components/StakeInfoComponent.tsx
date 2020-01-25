@@ -2,9 +2,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { StakeInfoState } from "../store/stakeinfo/types";
 import { IApplicationState } from "../store/types";
-import { loadStakeInfoAttempt } from "../store/stakeinfo/actions";
+import { StakeInfoState } from "../store/staking/types";
+import { loadStakeInfoAttempt } from "../store/staking/actions";
 
 
 export interface StakeInfoOwnProps {
@@ -27,6 +27,11 @@ class StakeInfoComponent extends React.Component<Props, InternalState> {
 		return (
 			<div>
 				<h4>StakeInfo</h4>
+				Live tix: {this.props.stakeinfo.getLive()}<br />
+				Immature tix: {this.props.stakeinfo.getImmature()}<br />
+				Expired tix: {this.props.stakeinfo.getExpired()}<br />
+				Missed tix: {this.props.stakeinfo.getMissed()}<br />
+				Own Mempool  tix: {this.props.stakeinfo.getOwnMempoolTix()}<br />
 			</div>
 		)
 	}
@@ -40,7 +45,9 @@ class StakeInfoComponent extends React.Component<Props, InternalState> {
 
 const mapStateToProps = (state: IApplicationState, ownProps: StakeInfoOwnProps): StakeInfoState => {
 	return {
-		...state.stakeinfo
+		getStakeInfoRequest: state.staking.getStakeInfoRequest,
+		stakeinfo: state.staking.stakeinfo,
+		errorStakeInfo: state.staking.errorStakeInfo
 	};
 }
 export default withRouter(connect(mapStateToProps)(StakeInfoComponent));
