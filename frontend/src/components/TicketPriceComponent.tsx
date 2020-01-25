@@ -2,13 +2,26 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { IStakingState } from '../store/staking/types';
+import { IStakingState, ITicketPriceState } from '../store/staking/types';
 import { IApplicationState } from '../store/types';
 import { loadTicketPriceAttempt } from '../store/staking/actions';
 
+export interface TicketPriceOwnProps {
+	// propFromParent: number
+}
+
+interface DispatchProps {
+	// onSomeEvent: () => void
+}
+
+type Props = ITicketPriceState & DispatchProps & TicketPriceOwnProps
+
+interface InternalState {
+	// internalComponentStateField: string
+}
 
 
-class TicketPriceComponent extends React.Component<IStakingState, IStakingState> {
+class TicketPriceComponent extends React.Component<Props, InternalState> {
 	render() {
 		return (
 			<div>
@@ -21,9 +34,10 @@ class TicketPriceComponent extends React.Component<IStakingState, IStakingState>
 	}
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: any) => {
+const mapStateToProps = (state: IApplicationState, ownProps: TicketPriceOwnProps): ITicketPriceState => {
 	return {
-		ticketPrice: state.staking.ticketPrice
+		ticketPrice: state.staking.ticketPrice,
+		getTicketPriceRequest: state.staking.getTicketPriceRequest
 	};
 }
 

@@ -6,7 +6,6 @@ import { IApplicationState } from "../store/types";
 import { INetworkState } from "../store/networkinfo/types";
 import { loadNetworkAttempt } from "../store/networkinfo/actions";
 
-
 export interface NetworkOwnProps {
 	// propFromParent: number
 }
@@ -20,7 +19,6 @@ type Props = INetworkState & DispatchProps & NetworkOwnProps
 interface InternalState {
 	// internalComponentStateField: string
 }
-
 
 class NetworkComponent extends React.Component<Props, InternalState> {
 	render() {
@@ -36,7 +34,6 @@ class NetworkComponent extends React.Component<Props, InternalState> {
 	}
 
 }
-
 
 const mapStateToProps = (state: IApplicationState, ownProps: NetworkOwnProps): INetworkState => {
 	return {
