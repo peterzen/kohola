@@ -11,8 +11,9 @@ import walletbalance from "./walletbalance/reducers";
 import stopautobuyer from './stopautobuyer/reducers'
 import ticketbuyerconfig from './ticketbuyerconfig/reducers'
 import loadactivedatafilters from './loadactivedatafilters/reducers'
+import { History } from "history";
 
-export default function createRootReducer(history: History) {
+export default function createRootReducer(history: History<History.PoorMansUnknown>) {
 	return combineReducers({
 		router: connectRouter(history),
 		ping,
