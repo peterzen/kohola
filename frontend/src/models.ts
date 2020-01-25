@@ -1,4 +1,4 @@
-import { AccountsResponse, TransactionDetails, GetTicketsResponse, BestBlockResponse, PingResponse, BalanceResponse, TicketPriceResponse } from './proto/api_pb';
+import { AccountsResponse, TransactionDetails, GetTicketsResponse, BestBlockResponse, PingResponse, BalanceResponse, TicketPriceResponse, NetworkResponse, AgendasResponse, StakeInfoResponse, VoteChoicesResponse, StopAutoBuyerResponse, TicketBuyerConfigResponse, LoadActiveDataFiltersResponse } from './proto/api_pb';
 import { TransactionDirection, TicketStatus, TicketStatusLabels } from './constants';
 import { reverseHash } from './helpers';
 import moment = require('moment');
@@ -12,6 +12,14 @@ export class BestBlock extends BestBlockResponse { }
 export class WalletAccounts extends AccountsResponse { }
 
 export class TicketPrice extends TicketPriceResponse { }
+
+export class Network extends NetworkResponse {}
+export class Agendas extends AgendasResponse {}
+export class StakeInfo extends StakeInfoResponse {}
+export class VoteChoices extends VoteChoicesResponse {}
+export class StopAutoBuyer extends StopAutoBuyerResponse {}
+export class TicketBuyerConfig extends TicketBuyerConfigResponse {}
+export class LoadActiveDataFilters extends LoadActiveDataFiltersResponse {}
 
 type WalletAccountAsObject = {
 	timestamp: Date

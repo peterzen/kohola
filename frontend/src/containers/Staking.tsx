@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { IApplicationState } from '../store/types';
 import TicketsOverview from "../components/TicketsOverviewComponent";
 import TicketPriceComponent from '../components/TicketPriceComponent';
+import StakeInfoComponent from '../components/StakeInfoComponent';
 
 class StakingContainer extends React.Component {
 
@@ -14,6 +15,7 @@ class StakingContainer extends React.Component {
 		return (
 			<div>
 				<h2>{title}</h2>
+				<StakeInfoComponent/>
 				<TicketPriceComponent />
 				<TicketsOverview />
 			</div>
