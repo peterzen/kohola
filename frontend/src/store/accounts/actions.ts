@@ -3,8 +3,9 @@ import { ThunkDispatch } from 'redux-thunk';
 import _ from 'lodash';
 
 import {
-	GetAccountsActionTypes, AccountNotificationsSubscribe,
-	GETACCOUNTS_ATTEMPT, GETACCOUNTS_SUCCESS, GETACCOUNTS_FAILED, ACCOUNTSNOTIFICATIONS_RECEIVED, AccountNotificationsReceived,
+	GetAccountsActionTypes, AccountNotificationsReceived,
+	GETACCOUNTS_ATTEMPT, GETACCOUNTS_SUCCESS, GETACCOUNTS_FAILED,
+	ACCOUNTSNOTIFICATIONS_RECEIVED,
 } from './types';
 
 import { IGetState } from '../types';
