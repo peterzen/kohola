@@ -10,10 +10,9 @@ import { Hash } from "./shared";
 class BestBlockComponent extends React.Component<BestBlockState, BestBlockState> {
     render() {
         return (
-            <div>
-                Block height: {this.props.currentBlock.getHeight()}<br />
-                Block hash: <Hash hash={this.props.currentBlock.getHash_asU8()} />
-            </div>
+            <span>
+                Block height: <span title="{this.props.currentBlock.getHash_asU8()}">{this.props.currentBlock.getHeight()}</span>
+            </span>
         )
     }
 }
@@ -24,5 +23,4 @@ const mapStateToProps = function (state: IApplicationState, ownProps: any) {
         currentBlock: state.networkinfo.currentBlock
     };
 }
-export default withRouter(connect(mapStateToProps, {
-})(BestBlockComponent));
+export default withRouter(connect(mapStateToProps)(BestBlockComponent));

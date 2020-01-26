@@ -16,11 +16,6 @@ class Home extends React.Component {
 
 		return (
 			<div>
-				<h1>{title}  <ConnectionStatus /></h1>
-				<NetworkComponent />
-				<BestBlock />
-				<hr />
-				<hr />
 				<WalletBalanceComponent />
 				<hr />
 				<RecentTransactions />

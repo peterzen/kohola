@@ -9,6 +9,7 @@ import Home from "./Home"
 import Staking from "./Staking"
 import Navbar from "../components/Navbar"
 import { NoRouteMatch } from '../components/shared';
+import Footer from '../components/Footer';
 
 interface AppProps {
 	history: any  // should be History<something>
@@ -17,14 +18,17 @@ interface AppProps {
 const App = ({ history }: AppProps) => {
 	return (
 		<ConnectedRouter history={history}>
-			<Navbar />
-			<Container fluid={true}>
-				<Switch>
-					<Route path="/staking" component={Staking} />
-					<Route exact path="/" component={Home} />
-					<Route component={NoRouteMatch} />
-				</Switch>
-			</Container>
+			<main>
+				<Navbar />
+				<Container fluid={true}>
+					<Switch>
+						<Route path="/staking" component={Staking} />
+						<Route exact path="/" component={Home} />
+						<Route component={NoRouteMatch} />
+					</Switch>
+				</Container>
+			</main>
+			<Footer/>
 		</ConnectedRouter>
 	)
 }

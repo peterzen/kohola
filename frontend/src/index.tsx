@@ -11,7 +11,7 @@ import { initializeData } from './store/actions';
 import App from './containers/App';
 
 import "bootstrap/dist/css/bootstrap.css";
-// import "./styles/main.scss";
+import "./styles/main.scss";
 
 const history = createBrowserHistory();
 const store = configureStore(initialState, history);

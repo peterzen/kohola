@@ -9,6 +9,8 @@ import { AccountBalance } from '../models';
 import { Amount } from './shared';
 import { loadWalletBalance } from '../store/walletbalance/actions';
 
+import { Table } from 'react-bootstrap';
+
 interface IBalanceProps {
 	accountNumber: string,
 	accountName: string,
@@ -23,11 +25,10 @@ class WalletBalanceComponent extends React.Component<WalletBalanceState, WalletB
 			<tr key={accountNumber}>
 				<td>{accountName}</td>
 				<td><Amount amount={balance.getUnconfirmed()} /></td>
-				<td><Amount amount={balance.getImmatureReward()} /></td>
 				<td><Amount amount={balance.getImmatureStakeGeneration()} /></td>
+				<td><Amount amount={balance.getVotingAuthority()} /></td>
 				<td><Amount amount={balance.getLockedByTickets()} /></td>
 				<td><Amount amount={balance.getSpendable()} /></td>
-				<td><Amount amount={balance.getVotingAuthority()} /></td>
 				<td><Amount amount={balance.getTotal()} /></td>
 			</tr>
 		)
@@ -47,24 +48,22 @@ class WalletBalanceComponent extends React.Component<WalletBalanceState, WalletB
 	render() {
 		return (
 			<div>
-				<h3>Wallet Balance</h3>
-				<table>
+				<Table striped hover>
 					<thead>
 						<tr>
-							<th>account</th>
+							<th></th>
 							<th>unconfirmed</th>
-							<th>immature</th>
 							<th>immature stake</th>
+							<th>votingauth</th>
 							<th>locked</th>
 							<th>spendable</th>
-							<th>votingauth</th>
 							<th>total</th>
 						</tr>
 					</thead>
 					<tbody>
 						{this.renderItems()}
 					</tbody>
-				</table>
+				</Table>
 			</div>
 		)
 	}
