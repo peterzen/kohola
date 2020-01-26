@@ -1,3 +1,5 @@
+import { GetTicketsResponse } from "./proto/api_pb";
+
 export enum TransactionType {
 	REGULAR = 0,
 	COINBASE = 4,
@@ -10,6 +12,8 @@ export enum TransactionDirection {
 	TRANSACTION_DIR_TRANSFERRED = 1,
 	TRANSACTION_DIR_SENT = 2
 }
+
+
 
 export enum TicketStatus {
 	UNKNOWN = 0,

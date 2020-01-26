@@ -11,6 +11,7 @@ import {
 import { IGetState } from '../types';
 import DcrwalletDatasource from '../../datasources/dcrwallet';
 import { IndexedWalletAccounts, WalletAccount } from '../../models';
+import { loadWalletBalance } from '../walletbalance/actions';
 
 
 const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
@@ -45,6 +46,7 @@ export function subscribeAccountNotifications(): any {
 		DcrwalletDatasource.accountNotifications((message) => {
 			dispatch({ type: ACCOUNTSNOTIFICATIONS_RECEIVED, payload: message });
 			dispatch(loadAccountsAttempt());
+			dispatch(loadWalletBalance());
 		});
 	}
 }

@@ -10,7 +10,7 @@ import {
 } from './types';
 
 import { IGetState, IActionCreator } from '../types';
-import { loadTicketsAttempt } from '../staking/actions';
+import { loadTicketsAttempt, loadStakeInfoAttempt } from '../staking/actions';
 import { loadWalletBalance } from '../walletbalance/actions';
 
 
@@ -40,6 +40,7 @@ export function subscribeTransactionNotifications(): any {
 			dispatch(loadTransactionsAttempt());
 			dispatch(loadTicketsAttempt());
 			dispatch(loadWalletBalance());
+			dispatch(loadStakeInfoAttempt());
 		});
 	}
 }

@@ -6,12 +6,13 @@ import {
 	AGENDASATTEMPT, AGENDASFAILED, AGENDASSUCCESS,
 	STAKEINFOATTEMPT, STAKEINFOFAILED, STAKEINFOSUCCESS
 } from './types'
+
 import { TicketPrice, Agendas, StakeInfo } from '../../models';
 
 export const ticketsInitialState: IStakingState = {
 	tickets: [],
 	getTicketsRequest: false,
-	startBlockHeight: 150,
+	startBlockHeight: -4,
 	endBlockHeight: 1,
 	targetTicketCount: 50,
 	ticketPrice: new TicketPrice(),

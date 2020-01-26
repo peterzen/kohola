@@ -3,24 +3,26 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
 import { IApplicationState } from '../store/types';
-import TicketsOverview from "../components/TicketsOverviewComponent";
-import TicketPriceComponent from '../components/TicketPriceComponent';
-import StakeInfoComponent from '../components/StakeInfoComponent';
-import AgendasComponent from '../components/AgendasComponent';
-import TicketBuyerConfigComponent from '../components/TicketBuyerConfigComponent';
+import TicketsOverview from "../components/Staking/TicketsOverviewComponent";
+import TicketPriceComponent from '../components/Staking/TicketPriceComponent';
+import StakeInfoComponent from '../components/Staking/StakeInfoComponent';
+import AgendasComponent from '../components/Staking/AgendasComponent';
+import TicketBuyerConfigComponent from '../components/Staking/TicketBuyerConfigComponent';
+import { IStakingState } from '../store/staking/types';
 
-class StakingContainer extends React.Component {
+class StakingContainer extends React.Component<Props, InternalState> {
 
 	render() {
-		const title = "staking";
+		const title = "Staking";
 
 		return (
 			<div>
-				<h2>{title}</h2>
-				<StakeInfoComponent/>
+				<h1>{title}</h1>
+				<StakeInfoComponent />
+				<hr />
 				<TicketPriceComponent />
-				<AgendasComponent />
 				{/* <TicketBuyerConfigComponent/> */}
+				<AgendasComponent />
 				<TicketsOverview />
 			</div>
 		)
@@ -29,10 +31,25 @@ class StakingContainer extends React.Component {
 }
 
 
-const mapStateToProps = (state: IApplicationState, ownProps: any) => {
+const mapStateToProps = (state: IApplicationState, ownProps: StakingOwnProps): IStakingState => {
 	return {
+		...state.staking
 	};
 }
 
-export default withRouter(connect(mapStateToProps, {
-})(StakingContainer));
+
+export interface StakingOwnProps {
+	// propFromParent: number
+}
+
+interface DispatchProps {
+	// onSomeEvent: () => void
+}
+
+type Props = IStakingState & DispatchProps & StakingOwnProps
+
+interface InternalState {
+	// internalComponentStateField: string
+}
+
+export default withRouter(connect(mapStateToProps)(StakingContainer));

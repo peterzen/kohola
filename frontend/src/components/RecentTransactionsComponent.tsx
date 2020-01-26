@@ -14,12 +14,21 @@ import { Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 
+interface ITransactionMempoolStatusIcon {
+	isMined: boolean
+}
+
+export const TransactionMempoolStatusIcon: any = (props: ITransactionMempoolStatusIcon) => {
+	return (
+		<span title="In the mempool" className="status-icon">{props.isMined ? "" : <FontAwesomeIcon icon={faClock} />}</span>
+	)
+}
 
 export function TransactionListItem(props: TransactionListItemProps) {
 	const tx = props.tx;
 	return (
 		<tr>
-			<td><span title="In the mempool">{tx.isMined() ? "" : <FontAwesomeIcon icon={faClock} />}</span></td>
+			<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
 			<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
 			<td><Amount amount={tx.getAmount()} /></td>
 			<td>{tx.getTypeAsString()}</td>
@@ -50,10 +59,8 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 			txList = this.props.txList;
 		return (
 			<div>
-				<div>
-					<h3>Recent transactions ({txList.length})</h3>
-					<TransactionList items={txList} />
-				</div>
+				<h3>Recent transactions ({txList.length})</h3>
+				<TransactionList items={txList} />
 			</div>
 		)
 	}

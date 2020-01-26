@@ -1,8 +1,15 @@
-
 .footer {
-	position: -webkit-sticky;
-	position: sticky;
-	bottom: 0px;
-	background-color: #f0f0f0;
-  }
-  
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0px;
+  background-color: #f0f0f0;
+  font-size: 90%;
+}
+
+.amount .fractions {
+  opacity: 0.4;
+}
+
+.status-icon {
+  opacity: 0.4;
+}
