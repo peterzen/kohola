@@ -11,6 +11,8 @@ import Navbar from "../components/Navbar"
 import { NoRouteMatch } from '../components/shared';
 import Footer from '../components/Footer';
 
+import { hot } from 'react-hot-loader/root'
+
 interface AppProps {
 	history: any  // should be History<something>
 }
@@ -34,4 +36,4 @@ const App = ({ history }: AppProps) => {
 }
 
 
-export default App
+export default hot(App)

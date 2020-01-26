@@ -52,7 +52,8 @@ module.exports = {
 		]
 	},
 	resolve: {
-		extensions: ['.js', '.jsx', ".ts", ".tsx", "*.scss", "*.css"]
+		extensions: ['.js', '.jsx', ".ts", ".tsx", "*.scss", "*.css"],
+		alias: { 'react-dom': '@hot-loader/react-dom'  },
 	},
 	externals: {
 		// "react": "React",
@@ -68,11 +69,9 @@ module.exports = {
 		historyApiFallback: true,
 		hot: true,
 	},
-
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 	],
-
 	// dev build perf optimization
 	optimization: {
 		removeAvailableModules: false,
