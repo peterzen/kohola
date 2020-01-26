@@ -2,7 +2,7 @@ import * as moment from 'moment';
 
 
 export function formatTimestamp(ts: moment.Moment): string {
-    return ts.fromNow();
+	return ts.fromNow();
 }
 
 
@@ -18,3 +18,6 @@ export function reverseHash(s: string) {
 	return "";
 }
 
+export function formatHash(hash: string) {
+	return Buffer.from(hash).toString("hex")
+}

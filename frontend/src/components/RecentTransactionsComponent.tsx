@@ -10,6 +10,7 @@ import { getUnminedTransactions, getMinedTransactions } from '../store/transacti
 import { loadTransactionsAttempt } from '../store/transactions/actions';
 
 import TimeAgo from 'react-timeago';
+import { Table } from 'react-bootstrap';
 
 interface TransactionListProps {
 	items: Transaction[]
@@ -38,11 +39,11 @@ export function TransactionList(props: TransactionListProps) {
 		)
 	});
 	return (
-		<table>
+		<Table hover>
 			<tbody>
 				{list}
 			</tbody>
-		</table>
+		</Table>
 	)
 }
 
