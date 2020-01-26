@@ -5,16 +5,22 @@ import { withRouter } from 'react-router-dom';
 
 import { IApplicationState } from '../store/types';
 
+import { Navbar, Nav } from 'react-bootstrap';
+
 class NavbarComponent extends React.Component {
 
 	render() {
 		return (
-			<nav>
-				<ul>
-					<li><a href="/">Home</a></li>
-					<li><a href="/staking">Staking</a></li>
-				</ul>
-			</nav>
+			<Navbar bg="light" expand="lg">
+				<Navbar.Brand href="/">dcrwalletgui</Navbar.Brand>
+				<Navbar.Toggle aria-controls="basic-navbar-nav" />
+				<Navbar.Collapse id="basic-navbar-nav">
+					<Nav className="mr-auto">
+						<Nav.Link href="/">Home</Nav.Link>
+						<Nav.Link href="/staking">Staking</Nav.Link>
+					</Nav>
+				</Navbar.Collapse>
+			</Navbar>
 		)
 	}
 }
@@ -23,8 +29,8 @@ class NavbarComponent extends React.Component {
 
 const mapStateToProps = (state: IApplicationState, ownProps: any) => {
 	return {
+		...state
 	};
 }
 
-export default withRouter(connect(mapStateToProps, {
-})(NavbarComponent));
+export default withRouter(connect(mapStateToProps)(NavbarComponent));

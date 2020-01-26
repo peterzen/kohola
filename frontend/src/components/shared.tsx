@@ -40,9 +40,9 @@ export function Amount(props: AmountProps) {
 	let a1 = "", a2 = "";
 	let decPointPos = decAmount.indexOf(".");
 
-	a1 = decAmount.substr(0, decPointPos+rounding+1);
+	a1 = decAmount.substr(0, decPointPos + rounding + 1);
 	a2 = decAmount.substr(decPointPos + rounding + 1);
-	
+
 	if (dcr == 0) {
 		amount = a1 = "0";
 		a2 = "";
@@ -63,5 +63,15 @@ export function Hash(props: HashProps) {
 	const fmtHash = Buffer.from(props.hash).toString("hex")
 	return (
 		<span>{fmtHash}</span>
+	)
+}
+
+
+
+export function NoRouteMatch() {
+	return (
+		<div>
+			No route match
+  		</div>
 	)
 }

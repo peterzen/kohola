@@ -1,6 +1,10 @@
+const path = require('path')
+const webpack = require('webpack')
+
 module.exports = {
 	entry: [
-		'./src/index.tsx'
+		'react-hot-loader/patch',
+		path.resolve('src/index.tsx')
 	],
 	module: {
 		rules: [
@@ -25,11 +29,30 @@ module.exports = {
 				enforce: "pre",
 				test: /\.js$/,
 				loader: "source-map-loader"
+			},
+			{
+				test: /\.(scss|css)$/,
+				use: [{
+					loader: 'style-loader', // inject CSS to page
+				}, {
+					loader: 'css-loader', // translates CSS into CommonJS modules
+				}, {
+					loader: 'postcss-loader', // Run postcss actions
+					options: {
+						plugins: function () { // postcss plugins, can be exported to postcss.config.js
+							return [
+								require('autoprefixer')
+							];
+						}
+					}
+				}, {
+					loader: 'sass-loader' // compiles Sass to CSS
+				}]
 			}
 		]
 	},
 	resolve: {
-		extensions: ['.js', '.jsx', ".ts", ".tsx"]
+		extensions: ['.js', '.jsx', ".ts", ".tsx", "*.scss", "*.css"]
 	},
 	externals: {
 		// "react": "React",
@@ -42,8 +65,13 @@ module.exports = {
 	},
 	devServer: {
 		contentBase: './dist',
-		historyApiFallback: true
+		historyApiFallback: true,
+		hot: true,
 	},
+
+	plugins: [
+		new webpack.HotModuleReplacementPlugin(),
+	],
 
 	// dev build perf optimization
 	optimization: {

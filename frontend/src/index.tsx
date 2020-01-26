@@ -1,35 +1,41 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
-import { Switch, Route } from "react-router-dom";
+import { AppContainer } from 'react-hot-loader'
 import { createBrowserHistory } from 'history';
-import { ConnectedRouter } from "connected-react-router";
 
-import App from './containers/App';
 import initialState from './store/initialState';
 import configureStore from './store/configureStore';
 import { initializeData } from './store/actions';
 
-import Navbar from './components/Navbar';
-import Staking from './containers/Staking';
+import App from './containers/App';
+
+import "bootstrap/dist/css/bootstrap.css";
+// import "./styles/main.scss";
 
 const history = createBrowserHistory();
 const store = configureStore(initialState, history);
 
+const render = () => {
+	ReactDOM.render(
+		<AppContainer>
+			<Provider store={store}>
+				<App history={history} />
+			</Provider>
+		</AppContainer>,
+		document.getElementById('app')
+	);
+}
 store.dispatch(initializeData())
 	.then(() => {
-		ReactDOM.render(
-			<Provider store={store}>
-				<ConnectedRouter history={history}>
-					<Navbar />
-					<Switch>
-						<Route path="/staking" component={Staking} />
-						<Route path="/" component={App} />
-					</Switch>
-				</ConnectedRouter>
-			</Provider>,
-			document.getElementById('app')
-		);
-
+		render();
 	});
 
+
+// Hot reloading
+if (module.hot) {
+	// Reload components
+	module.hot.accept('./components/Navbar', () => {
+		render()
+	})
+}

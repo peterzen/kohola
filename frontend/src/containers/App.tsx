@@ -1,40 +1,33 @@
-import * as React from "react";
+import * as React from 'react';
 
-import BestBlock from "../components/BestBlockComponent";
-import ConnectionStatus from "../components/ConnectionStatus";
-import RecentTransactions from '../components/RecentTransactionsComponent';
-import WalletBalanceComponent from "../components/WalletBalanceComponent";
-import NetworkComponent from "../components/NetworkComponent";
+import { Switch, Route } from "react-router-dom"
+import { ConnectedRouter } from "connected-react-router"
 
-export default class App extends React.Component {
+import { Container } from 'react-bootstrap'
 
-	render() {
-		const title = "home";
+import Home from "./Home"
+import Staking from "./Staking"
+import Navbar from "../components/Navbar"
+import { NoRouteMatch } from '../components/shared';
 
-		return (
-			<div>
-				<h1>{title}  <ConnectionStatus /></h1>
-				<NetworkComponent/>
-				<BestBlock />
-				<hr />
-				<WalletBalanceComponent />
-				<hr />
-				<RecentTransactions />
-			</div>
-		)
-	}
-
-	// componentDidMount() {
-	//     window.addEventListener("beforeunload", this.onBeforeWindowUnload);
-	// }
-
-	// componentWillUnmount() {
-	//     window.removeEventListener("beforeunload", this.onBeforeWindowUnload);
-	// }
-
-	// private onBeforeWindowUnload(e: BeforeUnloadEvent) {
-	//     e.stopPropagation();
-	//     e.preventDefault();
-	//     return false;
-	// }
+interface AppProps {
+	history: any  // should be History<something>
 }
+
+const App = ({ history }: AppProps) => {
+	return (
+		<ConnectedRouter history={history}>
+			<Navbar />
+			<Container fluid={true}>
+				<Switch>
+					<Route path="/staking" component={Staking} />
+					<Route exact path="/" component={Home} />
+					<Route component={NoRouteMatch} />
+				</Switch>
+			</Container>
+		</ConnectedRouter>
+	)
+}
+
+
+export default App
