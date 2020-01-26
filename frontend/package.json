@@ -11,6 +11,9 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@fortawesome/fontawesome-svg-core": "^1.2.26",
+		"@fortawesome/free-solid-svg-icons": "^5.12.0",
+		"@fortawesome/react-fontawesome": "^0.1.8",
 		"@improbable-eng/grpc-web": "^0.12.0",
 		"@types/lodash": "^4.14.149",
 		"@types/moment": "^2.13.0",

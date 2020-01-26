@@ -11,37 +11,15 @@ import { loadTransactionsAttempt } from '../store/transactions/actions';
 
 import TimeAgo from 'react-timeago';
 import { Table } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faClock } from '@fortawesome/free-solid-svg-icons'
 
-
-
-export interface RecentTransactionsOwnProps {
-	// propFromParent: number
-}
-
-interface DispatchProps {
-	// onSomeEvent: () => void
-}
-
-type Props = TransactionsState & DispatchProps & RecentTransactionsOwnProps
-
-interface InternalState {
-	// internalComponentStateField: string
-}
-
-
-interface TransactionListProps {
-	items: Transaction[]
-}
-
-interface TransactionListItemProps {
-	tx: Transaction
-}
 
 export function TransactionListItem(props: TransactionListItemProps) {
 	const tx = props.tx;
 	return (
 		<tr>
-			<td>{tx.isMined() ? "" : "mempool"}</td>
+			<td><span title="In the mempool">{tx.isMined() ? "" : <FontAwesomeIcon icon={faClock} />}</span></td>
 			<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
 			<td><Amount amount={tx.getAmount()} /></td>
 			<td>{tx.getTypeAsString()}</td>
@@ -88,11 +66,31 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 const mapStateToProps = (state: IApplicationState, ownProps: RecentTransactionsOwnProps) => {
 	return {
 		txList: getTransactions(state),
-		getTransactionsRequest: state.transactions.getTransactionsRequest,
-		startBlockHeight: state.transactions.startBlockHeight,
-		endBlockHeight: state.transactions.endBlockHeight,
-		targetTxCount: state.transactions.targetTxCount,
+		...state.transactions
 	}
 }
 
 export default withRouter(connect(mapStateToProps)(RecentTransactionsComponent));
+
+export interface RecentTransactionsOwnProps {
+	// propFromParent: number
+}
+
+interface DispatchProps {
+	// onSomeEvent: () => void
+}
+
+type Props = TransactionsState & DispatchProps & RecentTransactionsOwnProps
+
+interface InternalState {
+	// internalComponentStateField: string
+}
+
+
+interface TransactionListProps {
+	items: Transaction[]
+}
+
+interface TransactionListItemProps {
+	tx: Transaction
+}
