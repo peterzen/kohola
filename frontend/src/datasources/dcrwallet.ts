@@ -4,11 +4,11 @@ import * as api from '../proto/api_pb';
 
 import { AppError } from "../store/types";
 import { getGrpcClient, grpcInvoke, grpcInvokerFactory } from '../middleware/walletrpc';
-import { Transaction, Ticket, TransactionsListResult, AccountBalance, WalletBalance } from '../models';
+import { Transaction, Ticket, AccountBalance, WalletBalance } from '../models';
 import { WalletService, VotingService, TicketBuyerService, AgendaService } from '../proto/api_pb_service';
 
 interface IFetchTransactionsCallback {
-	(r: TransactionsListResult): void
+	(r: Transaction[]): void
 }
 
 interface IGetTicketsCallback {
@@ -122,33 +122,30 @@ const DcrwalletDatasource = {
 		endBlockHeight: number,
 		txCount: number,
 		onDataRecvd?: IFetchTransactionsCallback | undefined
-	): Promise<TransactionsListResult> {
+	): Promise<Transaction[]> {
 
 		const request = new api.GetTransactionsRequest();
 		request.setStartingBlockHeight(startBlockHeight);
 		request.setEndingBlockHeight(endBlockHeight);
 		request.setTargetTransactionCount(txCount);
 
-		return new Promise<TransactionsListResult>((resolve, reject) => {
+		return new Promise<Transaction[]>((resolve, reject) => {
 
 			const client = getGrpcClient(WalletService.GetTransactions);
 
-			const foundTx: TransactionsListResult = {
-				unminedTx: [],
-				minedTx: []
-			}
+			const foundTx: Transaction[] = [];
 
 			client.onMessage((message: api.GetTransactionsResponse) => {
 				// console.log('getTransactions got block', message.toObject());
 
 				let minedBlockDetails = message.getMinedTransactions();
 				if (minedBlockDetails !== undefined) {
-					foundTx.minedTx.push(...minedBlockDetails.getTransactionsList().map((tx) => new Transaction(tx)));
+					foundTx.push(...minedBlockDetails.getTransactionsList().map((tx) => new Transaction(tx, true)));
 				}
 
 				let unminedTxList = message.getUnminedTransactionsList();
 				if (unminedTxList.length) {
-					foundTx.unminedTx.push(...unminedTxList.map((tx) => new Transaction(tx)));
+					foundTx.push(...unminedTxList.map((tx) => new Transaction(tx, false)));
 				}
 				if (onDataRecvd !== undefined) {
 					onDataRecvd(foundTx);
@@ -172,7 +169,7 @@ const DcrwalletDatasource = {
 		});
 	},
 
-	accountNotifications:  function (notificationHandler: IAccountNotificationHandler) {
+	accountNotifications: function (notificationHandler: IAccountNotificationHandler) {
 		const request = new api.TransactionNotificationsRequest();
 
 		const client = getGrpcClient(WalletService.AccountNotifications);
@@ -193,7 +190,7 @@ const DcrwalletDatasource = {
 		client.send(request);
 	},
 
-	txNotifications:  function (notificationHandler: ITransactionNotificationHandler) {
+	txNotifications: function (notificationHandler: ITransactionNotificationHandler) {
 		const request = new api.TransactionNotificationsRequest();
 
 		const client = getGrpcClient(WalletService.TransactionNotifications);

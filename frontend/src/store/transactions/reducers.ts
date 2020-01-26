@@ -5,8 +5,7 @@ import {
 } from './types'
 
 export const transactionsInitialState: TransactionsState = {
-	minedTx: [],
-	unminedTx: [],
+	txList: [],
 	getTransactionsRequest: false,
 	// The block height to begin including transactions from. 
 	// If this field is non- zero, starting_block_hash must be
@@ -46,8 +45,7 @@ export default function transactions(
 			return {
 				...state,
 				getTransactionsRequest: false,
-				minedTx: action.payload.minedTx,
-				unminedTx: action.payload.unminedTx
+				txList: action.payload,
 			};
 		case TRANSACTIONNOTIFICATIONS_SUBSCRIBE:
 			return {

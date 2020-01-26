@@ -58,9 +58,14 @@ export class Transaction {
 	fee: number;
 	debitAccounts: WalletAccount[] = [];
 	creditAddresses: string[] = [];
-	constructor(tx: TransactionDetails | undefined) {
+	_isMined: boolean = false;
+
+	constructor(tx?: TransactionDetails, isMined?:boolean) {
 		if (tx === undefined) {
 			return;
+		}
+		if (isMined != undefined) {
+			this._isMined = isMined;
 		}
 		this.timestamp = moment.unix(tx.getTimestamp());
 		this.txHash = reverseHash(Buffer.from(tx.getHash_asU8()).toString("hex"));
@@ -127,6 +132,12 @@ export class Transaction {
 	getCreditAddresses() {
 		return this.creditAddresses;
 	}
+	isMined() {
+		return this._isMined;
+	}
+	setIsMined(flag: boolean) {
+		this._isMined = flag;
+	}
 	getTypeAsString() {
 		switch (this.type) {
 			case 0: return 'regular'
@@ -154,11 +165,6 @@ export class Transaction {
 			creditAddresses: this.creditAddresses
 		}
 	}
-}
-
-export type TransactionsListResult = {
-	minedTx: Transaction[]
-	unminedTx: Transaction[]
 }
 
 export class Ticket {

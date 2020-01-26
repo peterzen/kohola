@@ -1,14 +1,13 @@
 import { AppError } from "../types";
-import { Transaction, TransactionsListResult } from "../../models";
+import { Transaction } from "../../models";
 import { TransactionNotificationsResponse } from "../../proto/api_pb";
 
 export interface TransactionsState {
-	readonly minedTx: Transaction[]
-	readonly unminedTx: Transaction[]
+	readonly txList: Transaction[]
 	readonly getTransactionsRequest: boolean,
 	readonly startBlockHeight: number,
 	readonly endBlockHeight: number,
-	readonly targetTxCount: number
+	readonly targetTxCount: number,
 }
 
 // GetTransactions
@@ -27,7 +26,7 @@ export interface GetTransactionFailedAction {
 
 export interface GetTransactionSuccessAction {
 	type: typeof GETTRANSACTION_SUCCESS,
-	payload: TransactionsListResult
+	payload: Transaction[]
 }
 
 

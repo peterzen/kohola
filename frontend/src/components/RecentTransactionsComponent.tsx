@@ -6,11 +6,28 @@ import { Transaction } from "../models";
 import { TransactionHash, Amount } from './shared';
 import { IApplicationState } from '../store/types';
 import { TransactionsState } from '../store/transactions/types';
-import { getUnminedTransactions, getMinedTransactions } from '../store/transactions/selectors';
+import { getTransactions } from '../store/transactions/selectors';
 import { loadTransactionsAttempt } from '../store/transactions/actions';
 
 import TimeAgo from 'react-timeago';
 import { Table } from 'react-bootstrap';
+
+
+
+export interface RecentTransactionsOwnProps {
+	// propFromParent: number
+}
+
+interface DispatchProps {
+	// onSomeEvent: () => void
+}
+
+type Props = TransactionsState & DispatchProps & RecentTransactionsOwnProps
+
+interface InternalState {
+	// internalComponentStateField: string
+}
+
 
 interface TransactionListProps {
 	items: Transaction[]
@@ -24,6 +41,7 @@ export function TransactionListItem(props: TransactionListItemProps) {
 	const tx = props.tx;
 	return (
 		<tr>
+			<td>{tx.isMined() ? "" : "mempool"}</td>
 			<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
 			<td><Amount amount={tx.getAmount()} /></td>
 			<td>{tx.getTypeAsString()}</td>
@@ -47,36 +65,34 @@ export function TransactionList(props: TransactionListProps) {
 	)
 }
 
-class RecentTransactionsComponent extends React.Component<TransactionsState, TransactionsState> {
+class RecentTransactionsComponent extends React.Component<Props, InternalState> {
 
 	render() {
 		const
-			unminedTxList = this.props.unminedTx,
-			minedTxList = this.props.minedTx;
+			txList = this.props.txList;
 		return (
 			<div>
 				<div>
-					<h3>Unmined transactions ({unminedTxList.length})</h3>
-					<TransactionList items={unminedTxList} />
-				</div>
-				<div>
-					<h3>Mined transactions ({minedTxList.length})</h3>
-					<TransactionList items={minedTxList} />
+					<h3>Recent transactions ({txList.length})</h3>
+					<TransactionList items={txList} />
 				</div>
 			</div>
 		)
 	}
 	componentDidMount() {
 		this.props.dispatch(loadTransactionsAttempt())
-		
+
 	}
 }
 
-const mapStateToProps =  (state: IApplicationState, ownProps: any) =>{
+const mapStateToProps = (state: IApplicationState, ownProps: RecentTransactionsOwnProps) => {
 	return {
-		unminedTx: getUnminedTransactions(state),
-		minedTx: getMinedTransactions(state)
-	};
+		txList: getTransactions(state),
+		getTransactionsRequest: state.transactions.getTransactionsRequest,
+		startBlockHeight: state.transactions.startBlockHeight,
+		endBlockHeight: state.transactions.endBlockHeight,
+		targetTxCount: state.transactions.targetTxCount,
+	}
 }
 
 export default withRouter(connect(mapStateToProps)(RecentTransactionsComponent));
