@@ -175,7 +175,7 @@ export class Ticket {
 
 	constructor(td: GetTicketsResponse.TicketDetails) {
 		this.tx = new Transaction(td.getTicket());
-		if (td.getSpender() != undefined) {
+		if (td.hasSpender()) {
 			this.spender = new Transaction(td.getSpender());
 		}
 		this.status = td.getTicketStatus();

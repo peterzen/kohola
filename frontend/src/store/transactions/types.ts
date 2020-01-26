@@ -1,6 +1,6 @@
 import { AppError } from "../types";
 import { Transaction } from "../../models";
-import { TransactionNotificationsResponse } from "../../proto/api_pb";
+import { TransactionNotificationsResponse, TransactionDetails } from "../../proto/api_pb";
 
 export interface TransactionsState {
 	readonly txList: Transaction[]
@@ -8,6 +8,7 @@ export interface TransactionsState {
 	readonly startBlockHeight: number,
 	readonly endBlockHeight: number,
 	readonly targetTxCount: number,
+	readonly activeTypeFilter: TransactionDetails.TransactionTypeMap[keyof TransactionDetails.TransactionTypeMap] | null
 }
 
 // GetTransactions

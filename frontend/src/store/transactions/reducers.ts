@@ -3,6 +3,7 @@ import {
 	TransactionsState, GetTransactionsActionTypes,
 	GETTRANSACTION_ATTEMPT, GETTRANSACTION_FAILED, GETTRANSACTION_SUCCESS, TRANSACTIONNOTIFICATIONS_SUBSCRIBE, TRANSACTIONNOTIFICATIONS_RECEIVED
 } from './types'
+import { TransactionType } from '../../constants';
 
 export const transactionsInitialState: TransactionsState = {
 	txList: [],
@@ -22,7 +23,8 @@ export const transactionsInitialState: TransactionsState = {
 	// and transactions through the best block and all
 	// unmined transactions are included.
 	endBlockHeight: 1,
-	targetTxCount: 100
+	targetTxCount: 100,
+	activeTypeFilter: TransactionType.REGULAR
 }
 
 

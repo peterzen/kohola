@@ -6,7 +6,7 @@ import { Transaction } from "../models";
 import { TransactionHash, Amount } from './shared';
 import { IApplicationState } from '../store/types';
 import { TransactionsState } from '../store/transactions/types';
-import { getTransactions } from '../store/transactions/selectors';
+import { getTransactions, getFilteredTransactions } from '../store/transactions/selectors';
 import { loadTransactionsAttempt } from '../store/transactions/actions';
 
 import TimeAgo from 'react-timeago';
@@ -65,8 +65,8 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 
 const mapStateToProps = (state: IApplicationState, ownProps: RecentTransactionsOwnProps) => {
 	return {
-		txList: getTransactions(state),
-		...state.transactions
+		...state.transactions,
+		txList: getFilteredTransactions(state),
 	}
 }
 

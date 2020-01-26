@@ -17,6 +17,15 @@ export const getMinedTransactions = (state: IApplicationState): Transaction[] =>
 		.value()
 }
 
+export const getFilteredTransactions = (state: IApplicationState): Transaction[] => {
+	console.log("getFilteredTransactions",state.transactions.activeTypeFilter)
+	return _.chain(state.transactions.txList)
+		.filter((t) => t.getType() == state.transactions.activeTypeFilter)
+		.orderBy((e) => e.getTimestamp(), "desc")
+		.value()
+}
+
+
 export const getTransactions = (state: IApplicationState): Transaction[] => {
 	return _.orderBy(state.transactions.txList, (e) => e.getTimestamp(), "desc")
 }
