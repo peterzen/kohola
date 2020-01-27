@@ -132,12 +132,9 @@ const DcrwalletDatasource = {
 		return new Promise<Transaction[]>((resolve, reject) => {
 
 			const client = getGrpcClient(WalletService.GetTransactions);
-
 			const foundTx: Transaction[] = [];
 
 			client.onMessage((message: api.GetTransactionsResponse) => {
-				// console.log('getTransactions got block', message.toObject());
-
 				let minedBlockDetails = message.getMinedTransactions();
 				if (minedBlockDetails !== undefined) {
 					foundTx.push(...minedBlockDetails.getTransactionsList().map((tx) => new Transaction(tx, true)));
@@ -153,7 +150,6 @@ const DcrwalletDatasource = {
 			});
 
 			client.onEnd((status, message) => {
-				// console.log("getTransactions", status, statusMessage, trailers);
 				if (status !== grpc.Code.OK) {
 					reject({
 						status: status,
@@ -171,42 +167,16 @@ const DcrwalletDatasource = {
 
 	accountNotifications: function (notificationHandler: IAccountNotificationHandler) {
 		const request = new api.TransactionNotificationsRequest();
-
 		const client = getGrpcClient(WalletService.AccountNotifications);
-
-		client.onHeaders((headers: grpc.Metadata) => {
-			// console.log("onHeaders", headers);
-		});
 		client.onMessage(notificationHandler);
-		// client.onMessage((message: api.TransactionNotificationsResponse) => {
-		// 	console.log("txnotifications", message.toObject());
-		// 	// this.emit('change:transactions', message);
-		// });
-		client.onEnd((status, message) => {
-			// console.log("onEnd", status, statusMessage, trailers);
-		});
-
 		client.start();
 		client.send(request);
 	},
 
 	txNotifications: function (notificationHandler: ITransactionNotificationHandler) {
 		const request = new api.TransactionNotificationsRequest();
-
 		const client = getGrpcClient(WalletService.TransactionNotifications);
-
-		client.onHeaders((headers: grpc.Metadata) => {
-			// console.log("onHeaders", headers);
-		});
 		client.onMessage(notificationHandler);
-		// client.onMessage((message: api.TransactionNotificationsResponse) => {
-		// 	console.log("txnotifications", message.toObject());
-		// 	// this.emit('change:transactions', message);
-		// });
-		client.onEnd((status, message) => {
-			// console.log("onEnd", status, statusMessage, trailers);
-		});
-
 		client.start();
 		client.send(request);
 	},
