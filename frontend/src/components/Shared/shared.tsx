@@ -1,7 +1,7 @@
 import { Moment } from "moment";
-import { formatTimestamp, reverseHash } from "../helpers";
+import { formatTimestamp, reverseHash } from "../../helpers";
 import React from "react";
-import { Transaction } from "../models";
+import { Transaction } from "../../models";
 import _ from "lodash";
 import { sprintf } from "sprintf-js";
 

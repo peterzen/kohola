@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Ticket } from '../../models';
 import { ITicketsState } from '../../store/staking/types';
 import { IApplicationState } from '../../store/types';
-import { TransactionHash } from '../shared';
+import { TransactionHash } from '../Shared/shared';
 import { getTickets } from '../../store/staking/selectors';
 import { loadTicketsAttempt } from '../../store/staking/actions';
 

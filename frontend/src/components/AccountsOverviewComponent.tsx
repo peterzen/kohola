@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { IApplicationState } from '../store/types';
 import { WalletAccountsState } from '../store/accounts/types';
 import { WalletAccount } from '../models';
-import { Amount } from './shared';
+import { Amount } from './Shared/shared';
 
 
 class AccountsOverviewComponent extends React.Component<WalletAccountsState, WalletAccountsState> {

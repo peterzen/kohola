@@ -31,11 +31,3 @@ store.dispatch(initializeData())
 		render();
 	});
 
-
-// Hot reloading
-if (module.hot) {
-	// Reload components
-	module.hot.accept('./components/Navbar', () => {
-		render()
-	})
-}

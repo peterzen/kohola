@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
 import { Transaction } from "../models";
-import { TransactionHash, Amount } from './shared';
+import { TransactionHash, Amount } from './Shared/shared';
 import { IApplicationState } from '../store/types';
 import { TransactionsState } from '../store/transactions/types';
 import { getTransactions, getFilteredTransactions } from '../store/transactions/selectors';

@@ -8,7 +8,7 @@ import { IStakeInfoState } from "../../store/staking/types";
 import { loadStakeInfoAttempt } from "../../store/staking/actions";
 import { TicketStatusIcon } from "./TicketStatusIcon";
 import { TicketStatus } from "../../constants";
-import { Amount } from "../shared";
+import { Amount } from "../Shared/shared";
 
 
 class StakeInfoComponent extends React.Component<Props, InternalState> {
