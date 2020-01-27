@@ -40,6 +40,40 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 		});
 	}
 
+	renderTotals() {
+		const totals = {
+			unconfirmed: 0,
+			immature_stake: 0,
+			immature_coinbase: 0,
+			votingauth: 0,
+			locked: 0,
+			spendable: 0,
+			total: 0,
+		}
+		_.each(this.props.balances, (b) => {
+			totals.unconfirmed+=b.getUnconfirmed()
+			totals.immature_stake+=b.getImmatureStakeGeneration()
+			totals.immature_coinbase+=b.getImmatureReward()
+			totals.votingauth+=b.getVotingAuthority()
+			totals.locked+=b.getLockedByTickets()
+			totals.spendable+=b.getSpendable()
+			totals.total+=b.getTotal()
+		})
+		return (
+			<tr key="totals">
+				<th>Total</th>
+				<th><Amount amount={totals.unconfirmed}/></th>
+				<th><Amount amount={totals.immature_stake}/></th>
+				{/* <th>{totals.immature_coinbase}</th> */}
+				<th><Amount amount={totals.votingauth}/></th>
+				<th><Amount amount={totals.locked}/></th>
+				<th><Amount amount={totals.spendable}/></th>
+				<th><Amount amount={totals.total}/></th>
+				<th></th>
+			</tr>
+		)
+	}
+
 	render() {
 		return (
 			<Table striped hover>
@@ -58,6 +92,9 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 				<tbody>
 					{this.renderItems()}
 				</tbody>
+				<tfoot>
+					{this.renderTotals()}
+				</tfoot>
 			</Table>
 		)
 	}
