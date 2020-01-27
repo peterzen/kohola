@@ -2,7 +2,7 @@ import { AppError } from "../types";
 import { WalletBalance } from "../../models";
 
 
-export interface WalletBalanceState {
+export interface IWalletBalanceState {
 	readonly balances: WalletBalance,
 	readonly getBalanceRequest: boolean,
 }

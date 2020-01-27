@@ -6,7 +6,7 @@ import { PingState } from "./ping/types";
 import { IStakingState } from "./staking/types";
 import { INetworkInfoState } from "./networkinfo/types";
 import { TransactionsState } from "./transactions/types";
-import { WalletBalanceState } from "./walletbalance/types";
+import { IWalletBalanceState } from "./walletbalance/types";
 import { WalletAccountsState } from "./accounts/types";
 import { VoteChoicesState } from "./votechoices/types";
 import { StopAutoBuyerState } from "./stopautobuyer/types";
@@ -19,7 +19,7 @@ export type IApplicationState = {
 	networkinfo: INetworkInfoState,
 	accounts: WalletAccountsState,
 	transactions: TransactionsState,
-	walletbalance: WalletBalanceState,
+	walletbalance: IWalletBalanceState,
 	votechoices: VoteChoicesState,
 	stopautobuyer: StopAutoBuyerState,
 	ticketbuyerconfig: TicketBuyerConfigState,

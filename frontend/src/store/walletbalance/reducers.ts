@@ -1,16 +1,16 @@
 import {
-	WalletBalanceState, GetBalanceActionTypes,
+	IWalletBalanceState, GetBalanceActionTypes,
 	GETBALANCE_ATTEMPT, GETBALANCE_FAILED, GETBALANCE_SUCCESS
 } from "./types";
 
 
-export const walletbalanceInitialState: WalletBalanceState = {
+export const walletbalanceInitialState: IWalletBalanceState = {
 	balances: {},
 	getBalanceRequest: false,
 }
 
 export default function walletbalance(
-	state: WalletBalanceState = walletbalanceInitialState,
+	state: IWalletBalanceState = walletbalanceInitialState,
 	action: GetBalanceActionTypes) {
 
 	switch (action.type) {

@@ -50,3 +50,9 @@ export function subscribeAccountNotifications(): any {
 		});
 	}
 }
+
+
+export function getNewAddress(): any{
+	return (dispatch: Dispatch<AccountNotificationsReceived>) => {
+	}
+}

@@ -70,7 +70,7 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 	}
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: RecentTransactionsOwnProps) => {
+const mapStateToProps = (state: IApplicationState, ownProps: RecentTransactionsOwnProps): Props => {
 	return {
 		...state.transactions,
 		txList: getFilteredTransactions(state),
