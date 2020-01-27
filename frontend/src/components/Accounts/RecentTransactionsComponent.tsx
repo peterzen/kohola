@@ -10,7 +10,7 @@ import { getTransactions, getFilteredTransactions } from '../../store/transactio
 import { loadTransactionsAttempt } from '../../store/transactions/actions';
 
 import TimeAgo from 'react-timeago';
-import { Table } from 'react-bootstrap';
+import { Table, Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 
@@ -55,18 +55,22 @@ export function TransactionList(props: TransactionListProps) {
 class RecentTransactionsComponent extends React.Component<Props, InternalState> {
 
 	render() {
+		if (this.props.getTransactionsRequest == true) {
+			return (
+				<Spinner animation="grow" />
+			)
+		}
 		const
 			txList = this.props.txList;
 		return (
 			<div>
-				<h3>Recent transactions ({txList.length})</h3>
+				<h4>Recent transactions ({txList.length})</h4>
 				<TransactionList items={txList} />
 			</div>
 		)
 	}
 	componentDidMount() {
 		this.props.dispatch(loadTransactionsAttempt())
-
 	}
 }
 
