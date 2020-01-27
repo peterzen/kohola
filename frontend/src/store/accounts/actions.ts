@@ -6,12 +6,16 @@ import {
 	GetAccountsActionTypes, AccountNotificationsReceived,
 	GETACCOUNTS_ATTEMPT, GETACCOUNTS_SUCCESS, GETACCOUNTS_FAILED,
 	ACCOUNTSNOTIFICATIONS_RECEIVED,
+	NEXTADDRESSATTEMPT,
+	NEXTADDRESSSUCCESS,
+	NEXTADDRESSFAILED,
 } from './types';
 
-import { IGetState } from '../types';
+import { IGetState, IActionCreator } from '../types';
 import DcrwalletDatasource from '../../datasources/dcrwallet';
 import { IndexedWalletAccounts, WalletAccount } from '../../models';
 import { loadWalletBalance } from '../walletbalance/actions';
+import { NextAddressActionTypes } from '../nextaddress/types';
 
 
 const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
@@ -51,8 +55,21 @@ export function subscribeAccountNotifications(): any {
 	}
 }
 
+export const loadNextAddressAttempt: any = (account: WalletAccount) => {
+	return async (dispatch: ThunkDispatch<{}, {}, NextAddressActionTypes>, getState: IGetState): Promise<any> => {
 
-export function getNewAddress(): any{
-	return (dispatch: Dispatch<AccountNotificationsReceived>) => {
+		const { getNextAddressRequest } = getState().accounts;
+
+		if (getNextAddressRequest) {
+			return Promise.resolve();
+		}
+
+		dispatch({ type: NEXTADDRESSATTEMPT });
+		try {
+			const resp = await DcrwalletDatasource.fetchNextAddress(account, 0, 2)
+			dispatch({ type: NEXTADDRESSSUCCESS, payload: resp, account:account });
+		} catch (error) {
+			dispatch({ error, type: NEXTADDRESSFAILED });
+		}
 	}
-}
+};

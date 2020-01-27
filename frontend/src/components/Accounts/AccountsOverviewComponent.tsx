@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 
-import { IApplicationState } from '../store/types';
-import { WalletAccountsState } from '../store/accounts/types';
-import { WalletAccount } from '../models';
-import { Amount } from './Shared/shared';
+import { IApplicationState } from '../../store/types';
+import { WalletAccountsState } from '../../store/accounts/types';
+import { WalletAccount } from '../../models';
+import { Amount } from '../Shared/shared';
 
 
 class AccountsOverviewComponent extends React.Component<WalletAccountsState, WalletAccountsState> {

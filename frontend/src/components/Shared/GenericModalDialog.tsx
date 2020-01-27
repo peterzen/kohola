@@ -3,12 +3,13 @@ import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 
-export default class GenericModalDialog extends React.Component<Props, InternalState> {
-	constructor(props: Props) {
+export default class GenericModalDialog<P, S> extends React.Component<P & Props, InternalState & S> {
+	constructor(props: P & Props) {
 		super(props)
-		this.state = {
-			show: props.show
-		}
+		this.DialogContent = this.DialogContent.bind(this)
+		this.onEntered=this.onEntered.bind(this)
+		this.onExit=this.onExit.bind(this)
+		this.ModalTitle=this.ModalTitle.bind(this)
 	}
 
 	DialogContent() {
@@ -17,15 +18,26 @@ export default class GenericModalDialog extends React.Component<Props, InternalS
 		)
 	}
 
-	render() {
+	ModalTitle() {
+		if (this.props.modalTitle == "") {
+			return null
+		}
+		return (
+			<Modal.Title>{this.props.modalTitle}</Modal.Title>
+		)
+	}
 
+	render() {
+		// console.log("GenericModalDialog render")
 		return (
 			<Modal
 				centered
+				onEntered={this.onEntered}
+				onExit={this.onExit}
 				show={this.props.show}
 				onHide={this.props.onHide}>
 				<Modal.Header closeButton>
-					<Modal.Title>{this.props.modalTitle}</Modal.Title>
+					<this.ModalTitle/>
 				</Modal.Header>
 				<Modal.Body>
 					<this.DialogContent />
@@ -38,10 +50,13 @@ export default class GenericModalDialog extends React.Component<Props, InternalS
 			</Modal>
 		)
 	}
+	onEntered() {
+		// console.log("GenericModalDialog onEntered")
+	}
+	onExit() {
+		// console.log("onExit")
+	}
 }
-
-
-
 
 interface Props {
 	modalTitle: string
@@ -51,5 +66,4 @@ interface Props {
 
 
 interface InternalState {
-	show: boolean
 }

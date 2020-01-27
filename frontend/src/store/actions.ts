@@ -6,7 +6,6 @@ import { pingAttempt } from './ping/actions';
 import { loadAccountsAttempt, subscribeAccountNotifications } from './accounts/actions';
 import { subscribeTransactionNotifications } from './transactions/actions';
 import { loadBestBlockHeightAttempt } from './networkinfo/actions';
-import { WalletAccount } from '../models';
 
 export const initializeData: IActionCreator = () => {
 	return (dispatch: Dispatch) => {
@@ -22,11 +21,3 @@ export const initializeData: IActionCreator = () => {
 	}
 }
 
-
-
-export const showNewAddressDialog: IActionCreator = (account: WalletAccount) => {
-	return (dispatch: Dispatch) => {
-		debugger
-		console.log("####ACCOUNT",account)
-	}
-}

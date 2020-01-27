@@ -2,12 +2,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import BestBlock from "../components/BestBlockComponent";
-import ConnectionStatus from "../components/ConnectionStatus";
-import NetworkComponent from "../components/NetworkComponent";
-import RecentTransactions from '../components/RecentTransactionsComponent';
-import WalletBalanceComponent from "../components/WalletBalanceComponent";
+import RecentTransactions from '../components/Accounts/RecentTransactionsComponent';
 import { IApplicationState } from "../store/types";
+import WalletBalanceContainer from "../components/Accounts/WalletBalanceContainer";
 
 class Home extends React.Component {
 
@@ -16,7 +13,7 @@ class Home extends React.Component {
 
 		return (
 			<div>
-				<WalletBalanceComponent />
+				<WalletBalanceContainer />
 				<hr />
 				<RecentTransactions />
 			</div>

@@ -4,7 +4,7 @@ import * as api from '../proto/api_pb';
 
 import { AppError } from "../store/types";
 import { getGrpcClient, grpcInvoke, grpcInvokerFactory } from '../middleware/walletrpc';
-import { Transaction, Ticket, AccountBalance, WalletBalance } from '../models';
+import { Transaction, Ticket, AccountBalance, WalletBalance, NextAddress, WalletAccount } from '../models';
 import { WalletService, VotingService, TicketBuyerService, AgendaService } from '../proto/api_pb_service';
 
 interface IFetchTransactionsCallback {
@@ -209,8 +209,36 @@ const DcrwalletDatasource = {
 
 		client.start();
 		client.send(request);
-	}
+	},
 
+	fetchNextAddress: async function (
+		account: WalletAccount,
+		kind: api.NextAddressRequest.KindMap[keyof api.NextAddressRequest.KindMap],
+		gapPolicy: api.NextAddressRequest.GapPolicyMap[keyof api.NextAddressRequest.GapPolicyMap]
+	): Promise<NextAddress> {
+
+		const request = new api.NextAddressRequest();
+		request.setAccount(account.getAccountNumber());
+		request.setKind(kind);
+		request.setGapPolicy(gapPolicy);
+
+		return new Promise<NextAddress>((resolve, reject) => {
+			grpcInvoke(WalletService.NextAddress, request, {
+				onMessage: (response: NextAddress) => {
+					resolve(response);
+				},
+				onEnd: (code: grpc.Code, message: string) => {
+					if (code !== grpc.Code.OK) {
+						console.error('fetchNextAddress', code, message);
+						reject({
+							status: code,
+							msg: message
+						});
+					}
+				}
+			});
+		});
+	},
 }
 
 interface IAccountNotificationHandler {

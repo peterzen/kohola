@@ -1,20 +1,35 @@
-import { AccountsResponse, TransactionDetails, GetTicketsResponse, BestBlockResponse, PingResponse, BalanceResponse, TicketPriceResponse, NetworkResponse, AgendasResponse, StakeInfoResponse, VoteChoicesResponse, StopAutoBuyerResponse, TicketBuyerConfigResponse, LoadActiveDataFiltersResponse } from './proto/api_pb';
+import {
+	PingResponse,
+	NetworkResponse,
+	AgendasResponse,
+	BalanceResponse,
+	AccountsResponse,
+	BestBlockResponse,
+	StakeInfoResponse,
+	TransactionDetails,
+	GetTicketsResponse,
+	NextAddressResponse,
+	TicketPriceResponse,
+	VoteChoicesResponse,
+	StopAutoBuyerResponse,
+	TicketBuyerConfigResponse,
+	LoadActiveDataFiltersResponse,
+} from './proto/api_pb';
 import { TransactionDirection, TicketStatus, TicketStatusLabels } from './constants';
 import { reverseHash } from './helpers';
 import moment = require('moment');
-import { EventEmitter } from 'events';
 
-
-export class WalletPing extends PingResponse { }
-export class BestBlock extends BestBlockResponse { }
-export class WalletAccounts extends AccountsResponse { }
-export class TicketPrice extends TicketPriceResponse { }
-export class Network extends NetworkResponse {}
-export class Agendas extends AgendasResponse { }
 export class Agenda extends AgendasResponse.Agenda {}
+export class Agendas extends AgendasResponse { }
+export class Network extends NetworkResponse {}
+export class BestBlock extends BestBlockResponse { }
 export class StakeInfo extends StakeInfoResponse {}
+export class WalletPing extends PingResponse { }
+export class TicketPrice extends TicketPriceResponse { }
+export class NextAddress extends NextAddressResponse { }
 export class VoteChoices extends VoteChoicesResponse {}
 export class StopAutoBuyer extends StopAutoBuyerResponse {}
+export class WalletAccounts extends AccountsResponse { }
 export class TicketBuyerConfig extends TicketBuyerConfigResponse {}
 export class LoadActiveDataFilters extends LoadActiveDataFiltersResponse {}
 

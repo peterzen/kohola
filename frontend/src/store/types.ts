@@ -4,10 +4,10 @@ import { Dispatch, AnyAction } from "redux";
 
 import { PingState } from "./ping/types";
 import { IStakingState } from "./staking/types";
+import { IAccountsState } from "./accounts/types";
 import { INetworkInfoState } from "./networkinfo/types";
 import { TransactionsState } from "./transactions/types";
 import { IWalletBalanceState } from "./walletbalance/types";
-import { WalletAccountsState } from "./accounts/types";
 import { VoteChoicesState } from "./votechoices/types";
 import { StopAutoBuyerState } from "./stopautobuyer/types";
 import { TicketBuyerConfigState } from "./ticketbuyerconfig/types";
@@ -17,7 +17,7 @@ export type IApplicationState = {
 	ping: PingState,
 	staking: IStakingState,
 	networkinfo: INetworkInfoState,
-	accounts: WalletAccountsState,
+	accounts: IAccountsState,
 	transactions: TransactionsState,
 	walletbalance: IWalletBalanceState,
 	votechoices: VoteChoicesState,

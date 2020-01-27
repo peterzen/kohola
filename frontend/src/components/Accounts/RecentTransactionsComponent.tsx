@@ -2,12 +2,12 @@ import * as React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
-import { Transaction } from "../models";
-import { TransactionHash, Amount } from './Shared/shared';
-import { IApplicationState } from '../store/types';
-import { TransactionsState } from '../store/transactions/types';
-import { getTransactions, getFilteredTransactions } from '../store/transactions/selectors';
-import { loadTransactionsAttempt } from '../store/transactions/actions';
+import { Transaction } from "../../models";
+import { TransactionHash, Amount } from '../Shared/shared';
+import { IApplicationState } from '../../store/types';
+import { TransactionsState } from '../../store/transactions/types';
+import { getTransactions, getFilteredTransactions } from '../../store/transactions/selectors';
+import { loadTransactionsAttempt } from '../../store/transactions/actions';
 
 import TimeAgo from 'react-timeago';
 import { Table } from 'react-bootstrap';

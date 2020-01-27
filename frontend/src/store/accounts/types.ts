@@ -1,7 +1,9 @@
-import { IndexedWalletAccounts } from "../../models";
+import { IndexedWalletAccounts, NextAddress, WalletAccount } from "../../models";
 import { AppError } from "../types";
 import { AccountNotificationsResponse } from "../../proto/api_pb";
 
+
+export type IAccountsState = WalletAccountsState & NextAddressState
 
 export interface WalletAccountsState {
 	readonly accounts: IndexedWalletAccounts,
@@ -27,6 +29,33 @@ export interface GetAccountsSuccessAction {
 	payload: IndexedWalletAccounts
 }
 
+// NextAddress
+export interface NextAddressState {
+	readonly getNextAddressRequest: boolean
+	readonly nextAddressAccount: WalletAccount | null
+	readonly nextAddressResponse: NextAddress | null
+	readonly errorNextAddress: AppError | null
+}
+
+export const NEXTADDRESSATTEMPT = 'NEXTADDRESSATTEMPT'
+export const NEXTADDRESSFAILED = 'NEXTADDRESSFAILED'
+export const NEXTADDRESSSUCCESS = 'NEXTADDRESSSUCCESS'
+
+export interface NextAddressAttemptAction {
+	type: typeof NEXTADDRESSATTEMPT,
+}
+
+export interface NextAddressFailedAction {
+	type: typeof NEXTADDRESSFAILED,
+	error: AppError
+}
+
+export interface NextAddressSuccessAction {
+	type: typeof NEXTADDRESSSUCCESS,
+	payload: NextAddress,
+	account:WalletAccount
+}
+
 // AccountNotifications
 export const ACCOUNTSNOTIFICATIONS_SUBSCRIBE = 'ACCOUNTSNOTIFICATIONS_SUBSCRIBE'
 export const ACCOUNTSNOTIFICATIONS_RECEIVED = 'ACCOUNTSNOTIFICATIONS_RECEIVED'
@@ -45,4 +74,7 @@ export type GetAccountsActionTypes =
 	GetAccountsFailedAction |
 	GetAccountsSuccessAction |
 	AccountNotificationsSubscribe |
-	AccountNotificationsReceived
+	AccountNotificationsReceived |
+	NextAddressAttemptAction |
+	NextAddressFailedAction |
+	NextAddressSuccessAction
