@@ -3,12 +3,11 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
 import { IApplicationState } from '../store/types';
-import TicketsOverview from "../components/Staking/TicketsOverviewComponent";
 import TicketPriceComponent from '../components/Staking/TicketPriceComponent';
 import StakeInfoComponent from '../components/Staking/StakeInfoComponent';
 import AgendasComponent from '../components/Staking/AgendasComponent';
-import TicketBuyerConfigComponent from '../components/Staking/TicketBuyerConfigComponent';
 import { IStakingState } from '../store/staking/types';
+import TicketsOverviewContainer from '../components/Staking/TicketsOverviewContainer';
 
 class StakingContainer extends React.Component<Props, InternalState> {
 
@@ -23,7 +22,7 @@ class StakingContainer extends React.Component<Props, InternalState> {
 				<TicketPriceComponent />
 				{/* <TicketBuyerConfigComponent/> */}
 				<AgendasComponent />
-				<TicketsOverview />
+				<TicketsOverviewContainer />
 			</div>
 		)
 	}
