@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom';
-
 import _ from 'lodash';
 
 import { Transaction } from "../../models";
@@ -48,7 +46,6 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 		this.setState({ showModal: false })
 	}
 	itemClickHandler(tx: Transaction) {
-		console.log('tx', tx)
 		this.setState({
 			showModal: true,
 			selectedItem: tx
@@ -66,7 +63,7 @@ const mapStateToProps = (state: IApplicationState, ownProps: RecentTransactionsO
 	}
 }
 
-export default withRouter(connect(mapStateToProps)(RecentTransactionsComponent));
+export default connect(mapStateToProps)(RecentTransactionsComponent);
 
 export interface RecentTransactionsOwnProps {
 	// propFromParent: number
