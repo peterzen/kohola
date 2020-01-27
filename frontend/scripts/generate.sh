@@ -1,17 +1,18 @@
 
+BASEDIR=.
+TMPLDIR=scripts/tmpl
 
-
-for __CAMELCASE__ in Network Agendas StakeInfo VoteChoices StopAutoBuyer TicketBuyerConfig LoadActiveDataFilters; do
+for __CAMELCASE__ in NextAddress; do
 
 	__UPCASE__=$(echo $__CAMELCASE__|tr '[a-z]' '[A-Z]')
 	__LCASE__=$(echo $__CAMELCASE__|tr '[A-Z]' '[a-z]')
 	__LCASECAMEL__=_$__CAMELCASE__
 
-	comp="src/components/$__CAMELCASE__"Component.tsx
-	storedir=src/store/$__LCASE__
+	comp="$BASEDIR/src/components/$__CAMELCASE__"Component.tsx
+	storedir=$BASEDIR/src/store/$__LCASE__
 	mkdir -p $storedir
-	cp tmpl/actions.ts tmpl/reducers.ts tmpl/types.ts $storedir/
-	cp tmpl/component.tsx $comp
+	cp $TMPLDIR/actions.ts $TMPLDIR/reducers.ts $TMPLDIR/types.ts $storedir/
+	cp $TMPLDIR/component.tsx $comp
 
 	perl -pi -e "s/__CAMELCASE__/$__CAMELCASE__/g" $storedir/* $comp
 	perl -pi -e "s/__LCASE__/$__LCASE__/g" $storedir/* $comp
