@@ -6,7 +6,7 @@ import { Dropdown } from "react-bootstrap"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-	faCogs,
+	faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons'
 
 const AccountToolsDropdown = (props: { account: WalletAccount, menuHandler: any }) => {
@@ -15,7 +15,7 @@ const AccountToolsDropdown = (props: { account: WalletAccount, menuHandler: any 
 			alignRight
 			onSelect={(evtKey: string) => props.menuHandler(evtKey, props.account)}>
 			<Dropdown.Toggle variant="light" id={"dropdown-" + props.account.getAccountNumber()}>
-				<FontAwesomeIcon icon={faCogs} />
+				<FontAwesomeIcon icon={faEllipsisH} />
 			</Dropdown.Toggle>
 
 			<Dropdown.Menu
