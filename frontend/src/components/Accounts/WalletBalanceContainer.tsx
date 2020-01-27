@@ -1,7 +1,7 @@
 import * as React from "react"
 import { connect } from "react-redux"
 import { Dispatch } from "redux"
-
+import _ from "lodash"
 
 import { getAccounts } from "../../store/accounts/selectors"
 import { loadWalletBalance } from "../../store/walletbalance/actions"
@@ -23,21 +23,19 @@ class WalletBalanceContainer extends React.Component<Props, InternalState>{
 			showModal: false,
 			selectedAccount: null
 		}
-		this.menuHandler = this.menuHandler.bind(this)
-		this.hideModal = this.hideModal.bind(this)
 	}
 
 	render() {
 		return (
 			<div>
 				<AccountBalanceTable
-					menuHandler={this.menuHandler}
+					menuHandler={_.bind(this.menuHandler, this)}
 					accounts={this.props.accounts}
 					balances={this.props.balances} />
 				<GetNewAddressDialog
 					modalTitle=""
 					show={this.state.showModal}
-					onHide={this.hideModal} />
+					onHide={_.bind(this.hideModal, this)} />
 			</div>
 		)
 	}
