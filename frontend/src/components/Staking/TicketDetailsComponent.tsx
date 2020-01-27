@@ -42,9 +42,7 @@ export const TicketDetailsComponent = (props: { ticket: Ticket }) => {
 export default class TicketDetailsModal extends GenericModalDialog<OwnProps, {}> {
 	DialogContent() {
 		return (
-			<div>
-				<TicketDetailsComponent ticket={this.props.ticket} />
-			</div>
+			<TicketDetailsComponent ticket={this.props.ticket} />
 		)
 	}
 }

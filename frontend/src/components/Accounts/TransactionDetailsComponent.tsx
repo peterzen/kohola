@@ -1,13 +1,11 @@
 import * as React from "react";
 
 import { Table } from 'react-bootstrap'
-import TimeAgo from 'react-timeago';
 
 import { Transaction } from "../../models";
 import { Timestamp, TransactionHash, Amount } from "../Shared/shared";
 import { TransactionMempoolStatusIcon } from "./TransactionTable";
 import GenericModalDialog from '../Shared/GenericModalDialog';
-import { Spinner } from 'react-bootstrap';
 
 
 export const TransactionDetailsComponent = (props: { tx: Transaction }) => {
@@ -44,9 +42,7 @@ export const TransactionDetailsComponent = (props: { tx: Transaction }) => {
 export default class TransactionDetailsModal extends GenericModalDialog<OwnProps, {}> {
 	DialogContent() {
 		return (
-			<div>
-				<TransactionDetailsComponent tx={this.props.tx} />
-			</div>
+			<TransactionDetailsComponent tx={this.props.tx} />
 		)
 	}
 }
