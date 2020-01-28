@@ -26,7 +26,7 @@ const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
 }
 
 
-export function loadAccountsAttempt(): ActionCreator<any> {
+export const loadAccountsAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, GetAccountsActionTypes>, getState: IGetState): Promise<any> => {
 		const { getBestBlockHeightRequest } = getState().networkinfo;
 		if (getBestBlockHeightRequest) {
@@ -44,7 +44,7 @@ export function loadAccountsAttempt(): ActionCreator<any> {
 };
 
 
-export function subscribeAccountNotifications(): ActionCreator<any> {
+export const subscribeAccountNotifications: ActionCreator<any> = () => {
 	return (dispatch: Dispatch<AccountNotificationsReceived>) => {
 		DcrwalletDatasource.accountNotifications((message) => {
 			dispatch({ type: ACCOUNTSNOTIFICATIONS_RECEIVED, payload: message });
@@ -66,7 +66,7 @@ export const loadNextAddressAttempt: ActionCreator<any> = (account: WalletAccoun
 		dispatch({ type: NEXTADDRESSATTEMPT });
 		try {
 			const resp = await DcrwalletDatasource.fetchNextAddress(account, 0, 2)
-			dispatch({ type: NEXTADDRESSSUCCESS, payload: resp, account:account });
+			dispatch({ type: NEXTADDRESSSUCCESS, payload: resp, account: account });
 		} catch (error) {
 			dispatch({ error, type: NEXTADDRESSFAILED });
 		}
