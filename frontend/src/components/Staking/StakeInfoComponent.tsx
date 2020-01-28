@@ -30,7 +30,7 @@ class StakeInfoComponent extends React.Component<Props, InternalState> {
 						<h6><TicketStatusIcon status={TicketStatus.UNMINED} /> Mempool</h6>
 					</Col>
 					<Col>
-						<h2><Amount amount={s.getTotalSubsidy()} /></h2>
+						<h2><Amount amount={s.getTotalSubsidy()} showCurrency={true}/></h2>
 						<h6>Total subsidy</h6>
 					</Col>
 				</Row>

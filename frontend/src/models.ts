@@ -14,24 +14,25 @@ import {
 	StopAutoBuyerResponse,
 	TicketBuyerConfigResponse,
 	LoadActiveDataFiltersResponse,
+	BlockDetails,
 } from './proto/api_pb';
 import { TransactionDirection, TicketStatus, TicketStatusLabels } from './constants';
 import { reverseHash } from './helpers';
 import moment = require('moment');
 
-export class Agenda extends AgendasResponse.Agenda {}
+export class Agenda extends AgendasResponse.Agenda { }
 export class Agendas extends AgendasResponse { }
-export class Network extends NetworkResponse {}
+export class Network extends NetworkResponse { }
 export class BestBlock extends BestBlockResponse { }
-export class StakeInfo extends StakeInfoResponse {}
+export class StakeInfo extends StakeInfoResponse { }
 export class WalletPing extends PingResponse { }
 export class TicketPrice extends TicketPriceResponse { }
 export class NextAddress extends NextAddressResponse { }
-export class VoteChoices extends VoteChoicesResponse {}
-export class StopAutoBuyer extends StopAutoBuyerResponse {}
+export class VoteChoices extends VoteChoicesResponse { }
+export class StopAutoBuyer extends StopAutoBuyerResponse { }
 export class WalletAccounts extends AccountsResponse { }
-export class TicketBuyerConfig extends TicketBuyerConfigResponse {}
-export class LoadActiveDataFilters extends LoadActiveDataFiltersResponse {}
+export class TicketBuyerConfig extends TicketBuyerConfigResponse { }
+export class LoadActiveDataFilters extends LoadActiveDataFiltersResponse { }
 
 type WalletAccountAsObject = {
 	timestamp: Date
@@ -58,6 +59,70 @@ export class WalletAccount extends AccountsResponse.Account {
 	}
 }
 
+
+/*
+
+export function formatTransaction(block, transaction, index) {
+
+  const inputAmounts = transaction.getDebitsList().reduce((s, input) => s + input.getPreviousAmount(), 0);
+  const outputAmounts = transaction.getCreditsList().reduce((s, input) => s + input.getAmount(), 0);
+  const amount = outputAmounts - inputAmounts;
+  const fee = transaction.getFee();
+  const type = transaction.getTransactionType();
+  let direction = "";
+
+  let debitAccounts = [];
+  transaction.getDebitsList().forEach((debit) => debitAccounts.push(debit.getPreviousAccount()));
+
+  let creditAddresses = [];
+  transaction.getCreditsList().forEach((credit) => creditAddresses.push(credit.getAddress()));
+
+  if (type === api.TransactionDetails.TransactionType.REGULAR) {
+    if (amount > 0) {
+      direction = TRANSACTION_DIR_RECEIVED;
+    } else if (amount < 0 && (fee == Math.abs(amount))) {
+      direction = TRANSACTION_DIR_TRANSFERRED;
+    } else {
+      direction = TRANSACTION_DIR_SENT;
+    }
+  }
+
+  return {
+    timestamp: block.getTimestamp(),
+    height: block.getHeight(),
+    blockHash: block.getHash(),
+    index: index,
+    hash: transaction.getHash(),
+    txHash: reverseHash(Buffer.from(transaction.getHash()).toString("hex")),
+    tx: transaction,
+    txType: TRANSACTION_TYPES[type],
+    debitsAmount: inputAmounts,
+    creditsAmount: outputAmounts,
+    type,
+    direction,
+    amount,
+    fee,
+    debitAccounts,
+    creditAddresses
+  };
+}
+
+*/
+
+interface IBlockTemplate {
+	getHash(): Uint8Array | string;
+	getHeight(): number;
+	getTimestamp(): number;
+}
+
+// placeholder block for unmined transactions
+class UnminedBlock implements IBlockTemplate {
+	getTimestamp() { return 0 }
+	getHeight() { return -1 }
+	getHash() { return "" }
+};
+
+
 export class Transaction {
 	timestamp: moment.Moment;
 	height: number;
@@ -71,31 +136,33 @@ export class Transaction {
 	direction: TransactionDirection;
 	amount: number;
 	fee: number;
-	debitAccounts: WalletAccount[] = [];
-	creditAddresses: string[] = [];
-	_isMined: boolean = false;
+	debitAccounts: TransactionDetails.Input[] = [];
+	creditAddresses: TransactionDetails.Output[] = [];
+	_isMined: boolean = true;
+	block: IBlockTemplate;
 
-	constructor(tx?: TransactionDetails, isMined?:boolean) {
+	constructor(tx?: TransactionDetails, block?: IBlockTemplate) {
 		if (tx === undefined) {
 			return;
 		}
-		if (isMined != undefined) {
-			this._isMined = isMined;
+		if (block == undefined) {
+			this.block = new UnminedBlock()
+			this._isMined = false
+		} else {
+			this.block = block;
 		}
 		this.timestamp = moment.unix(tx.getTimestamp());
 		this.txHash = reverseHash(Buffer.from(tx.getHash_asU8()).toString("hex"));
+		this.type = tx.getTransactionType();
+
+		this.debitAccounts = tx.getDebitsList();
+		this.creditAddresses = tx.getCreditsList();
+
+		this.fee = tx.getFee();
 		const inputAmounts = tx.getDebitsList().reduce((s, input) => s + input.getPreviousAmount(), 0);
 		const outputAmounts = tx.getCreditsList().reduce((s, input) => s + input.getAmount(), 0);
 		this.amount = outputAmounts - inputAmounts;
-		this.fee = tx.getFee();
-		this.type = tx.getTransactionType();
-		tx.getDebitsList().forEach((debit) => {
-			const a = new WalletAccount(debit.getPreviousAccount());
-			this.debitAccounts.push(a);
-		});
-		tx.getCreditsList().forEach((credit) => {
-			this.creditAddresses.push(credit.getAddress());
-		});
+
 		if (this.type === TransactionDetails.TransactionType.REGULAR) {
 			if (this.amount > 0) {
 				this.direction = TransactionDirection.TRANSACTION_DIR_RECEIVED;
@@ -117,8 +184,8 @@ export class Transaction {
 	getHeight() {
 		return this.height;
 	}
-	getBlockHash() {
-		return this.blockHash;
+	getBlock(): IBlockTemplate {
+		return this.block;
 	}
 	getIndex() {
 		return this.index;
@@ -141,10 +208,10 @@ export class Transaction {
 	getFee() {
 		return this.fee;
 	}
-	getDebitAccounts() {
+	getDebitsList(): TransactionDetails.Input[] {
 		return this.debitAccounts;
 	}
-	getCreditAddresses() {
+	getCreditsList(): TransactionDetails.Output[] {
 		return this.creditAddresses;
 	}
 	isMined() {
@@ -163,11 +230,11 @@ export class Transaction {
 			default: return "unknown"
 		};
 	}
-	toObject(): WalletAccountAsObject {
+	toObject() {
 		return {
 			timestamp: this.timestamp.toDate(),
 			height: this.height,
-			blockHash: this.getBlockHash(),
+			blockHash: this.getBlock().getHash(),
 			index: this.index,
 			hash: this.txHash,
 			type: this.getTypeAsString(),
@@ -187,26 +254,27 @@ export class Ticket {
 	private tx: Transaction;
 	private status: TicketStatus;
 	private statusLabel: string;
+	private block: IBlockTemplate;
 
-	constructor(td: GetTicketsResponse.TicketDetails) {
-		this.tx = new Transaction(td.getTicket());
+	constructor(td: GetTicketsResponse.TicketDetails, block?: IBlockTemplate) {
+		this.tx = new Transaction(td.getTicket(), block);
 		if (td.hasSpender()) {
-			this.spender = new Transaction(td.getSpender());
+			this.spender = new Transaction(td.getSpender(), block);
 		}
 		this.status = td.getTicketStatus();
 		this.statusLabel = TicketStatusLabels[this.status];
 	}
 
-	public getStatusLabel(): string {
+	getStatusLabel(): string {
 		return this.statusLabel;
 	}
-	public getStatus(): TicketStatus {
+	getStatus(): TicketStatus {
 		return this.status;
 	}
-	public getTx(): Transaction {
+	getTx(): Transaction {
 		return this.tx;
 	}
-	public getSpender(): Transaction | undefined {
+	getSpender(): Transaction | undefined {
 		return this.spender;
 	}
 }

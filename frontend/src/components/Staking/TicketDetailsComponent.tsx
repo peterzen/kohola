@@ -4,7 +4,7 @@ import { Table } from 'react-bootstrap'
 import TimeAgo from 'react-timeago';
 
 import { Ticket } from "../../models";
-import { TransactionHash } from "../Shared/shared";
+import { TransactionHash, Amount } from "../Shared/shared";
 import GenericModalDialog from '../Shared/GenericModalDialog';
 import { TicketStatusIcon } from "./TicketStatusIcon";
 import { TransactionMempoolStatusIcon } from "../Accounts/TransactionTable";
@@ -24,8 +24,10 @@ export const TicketDetailsComponent = (props: { ticket: Ticket }) => {
 					</tr>
 					<tr>
 						<th>Mined in block</th>
-						<td><TransactionMempoolStatusIcon isMined={tx.isMined()} />
-							{tx.getBlockHash()}</td>
+						<td><TransactionMempoolStatusIcon isMined={tx.isMined()} />&nbsp;
+							{tx.isMined() ?
+								tx.getBlock().getHeight() : 'mempool'}
+						</td>
 					</tr>
 					<tr>
 						<th>Hash</th>
@@ -36,26 +38,27 @@ export const TicketDetailsComponent = (props: { ticket: Ticket }) => {
 						<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
 					</tr>
 					<tr>
-						<th>Credit addresses</th>
+						<th>Debit accounts</th>
 						<td>
-							{tx.getCreditAddresses().map((a) => {
+							{tx.getDebitsList().map((a) => {
 								return (
-									<div key={a}>{a}</div>
+									<div key={"account-" + a.getIndex() + a.getPreviousAccount()}>
+										{a.getPreviousAccount()}: {a.getPreviousAccount()} / <Amount showCurrency={true} amount={a.getPreviousAmount()} /><br />
+									</div>
 								)
 							})}
 						</td>
 					</tr>
 					<tr>
-						<th>Debit accounts</th>
+						<th>Credit addresses</th>
 						<td>
-							{tx.getDebitAccounts().map((a) => {
+							{tx.getCreditsList().map((a) => {
 								return (
-									<div key={"account-" + a.getAccountNumber()}>{a.getAccountName()}</div>
+									<div key={a.getAddress() + a.getIndex()}>{a.getAddress()}</div>
 								)
 							})}
 						</td>
 					</tr>
-
 				</tbody>
 			</Table>
 			<div><pre>{JSON.stringify(tx.toObject(), undefined, "  ")}</pre></div>

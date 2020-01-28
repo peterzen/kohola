@@ -51,7 +51,7 @@ const DcrwalletDatasource = {
 
 				let ticketDetails = message.getTicket();
 				if (ticketDetails !== undefined) {
-					tickets.push(new Ticket(ticketDetails))
+					tickets.push(new Ticket(ticketDetails, message.getBlock()))
 				}
 				if (onDataRecvd !== undefined) {
 					onDataRecvd(tickets);
@@ -137,12 +137,12 @@ const DcrwalletDatasource = {
 			client.onMessage((message: api.GetTransactionsResponse) => {
 				let minedBlockDetails = message.getMinedTransactions();
 				if (minedBlockDetails !== undefined) {
-					foundTx.push(...minedBlockDetails.getTransactionsList().map((tx) => new Transaction(tx, true)));
+					foundTx.push(...minedBlockDetails.getTransactionsList().map((tx) => new Transaction(tx, minedBlockDetails)));
 				}
 
 				let unminedTxList = message.getUnminedTransactionsList();
 				if (unminedTxList.length) {
-					foundTx.push(...unminedTxList.map((tx) => new Transaction(tx, false)));
+					foundTx.push(...unminedTxList.map((tx) => new Transaction(tx)));
 				}
 				if (onDataRecvd !== undefined) {
 					onDataRecvd(foundTx);

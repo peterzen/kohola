@@ -3,11 +3,11 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faQuestion,
-	faMinus,
 	faClock,
-	faBroadcastTower,
+	faCircle,
+	faPlayCircle,
 	faCheckDouble,
-	faBullseye,
+	faMinusCircle,
 	faHistory,
 	faUndo
 } from '@fortawesome/free-solid-svg-icons'
@@ -16,11 +16,11 @@ import { TicketStatusLabels, TicketStatus } from '../../constants';
 
 const ticketStatusIcons = {
 	0: faQuestion,
-	1: faMinus,
-	2: faClock,
-	3: faBroadcastTower,
+	1: faClock,
+	2: faCircle,
+	3: faPlayCircle,
 	4: faCheckDouble,
-	5: faBullseye,
+	5: faMinusCircle,
 	6: faHistory,
 	7: faUndo,
 }

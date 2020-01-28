@@ -7,6 +7,7 @@ import { TransactionHash } from '../Shared/shared';
 import TimeAgo from 'react-timeago';
 import { Table } from 'react-bootstrap';
 import { TicketStatusIcon } from './TicketStatusIcon';
+import { TransactionMempoolStatusIcon } from '../Accounts/TransactionTable';
 
 
 export default class TicketsTable extends React.Component<TicketsTableProps> {
@@ -15,6 +16,7 @@ export default class TicketsTable extends React.Component<TicketsTableProps> {
 		const tx = ticket.getTx();
 		return (
 			<tr className="clickable" key={tx.getHash()} onClick={this.clickHandler(ticket)}>
+				<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
 				<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
 				<td><TicketStatusIcon status={ticket.getStatus()} /></td>
 				<td><TransactionHash tx={tx} /></td>
@@ -27,6 +29,7 @@ export default class TicketsTable extends React.Component<TicketsTableProps> {
 			<Table hover>
 				<thead>
 					<tr>
+						<th></th>
 						<th>timestamp</th>
 						<th>status</th>
 						<th>hash</th>

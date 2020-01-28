@@ -19,9 +19,11 @@ export const TransactionDetailsComponent = (props: { tx: Transaction }) => {
 						<td>{tx.getTypeAsString()}</td>
 					</tr>
 					<tr>
-						<th>Mined in block</th>
-						<td><TransactionMempoolStatusIcon isMined={tx.isMined()} />
-							{tx.getBlockHash()}</td>
+						<th>Block</th>
+						<td><TransactionMempoolStatusIcon isMined={tx.isMined()} />&nbsp;
+							{tx.isMined() ?
+								tx.getBlock().getHeight() : 'unmined'}
+						</td>
 					</tr>
 					<tr>
 						<th>Hash</th>
@@ -33,28 +35,30 @@ export const TransactionDetailsComponent = (props: { tx: Transaction }) => {
 					</tr>
 					<tr>
 						<th>Amount</th>
-						<td><Amount amount={tx.getAmount()} rounding={8} /></td>
+						<td><Amount amount={tx.getAmount()} rounding={8} showCurrency={true} /></td>
 					</tr>
 					<tr>
 						<th>Fee</th>
-						<td><Amount amount={tx.getFee()} rounding={8} /></td>
+						<td><Amount amount={tx.getFee()} rounding={8} showCurrency={true} /></td>
 					</tr>
 					<tr>
-						<th>Credit addresses</th>
+						<th>Debit accounts</th>
 						<td>
-							{tx.getCreditAddresses().map((a) => {
+							{tx.getDebitsList().map((a) => {
 								return (
-									<div key={a}>{a}</div>
+									<div key={"account-" + a.getIndex() + a.getPreviousAccount()}>
+										{a.getPreviousAccount()}: {a.getPreviousAccount()} / <Amount showCurrency={true} amount={a.getPreviousAmount()} /><br />
+									</div>
 								)
 							})}
 						</td>
 					</tr>
 					<tr>
-						<th>Debit accounts</th>
+						<th>Credit addresses</th>
 						<td>
-							{tx.getDebitAccounts().map((a) => {
+							{tx.getCreditsList().map((a) => {
 								return (
-									<div key={"account-"+a.getAccountNumber()}>{a.getAccountName()}</div>
+									<div key={a.getAddress() + a.getIndex()}>{a.getAddress()}</div>
 								)
 							})}
 						</td>

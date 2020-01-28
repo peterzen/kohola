@@ -29,15 +29,12 @@ export function TransactionHash(props: TransactionHashProps) {
 interface AmountProps {
 	amount: number
 	rounding?: number
+	showCurrency?:boolean
 }
 
 export function Amount(props: AmountProps) {
 
-
-	if (props.amount == -3250) {
-		// debugger
-	}
-
+	const showCurrency=props.showCurrency||false
 	const rounding = props.rounding || 4;
 	const dcrAmount = props.amount / 100000000;
 	const split = dcrAmount.toFixed(rounding).toString().split(".");
@@ -48,7 +45,8 @@ export function Amount(props: AmountProps) {
 	return (
 		<span className="amount" title={dcrAmount.toString()}>
 			<span>{sprintf("%s%02.02f", negativeZero ? '-':'', head)}</span>
-			<span className="fractions" >{tail}</span>
+			<span className="fractions" >{tail}</span>&nbsp;
+			{showCurrency ? <span className="currency">DCR</span> : ""}
 		</span>
 	)
 }
