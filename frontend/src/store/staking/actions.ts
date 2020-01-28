@@ -1,6 +1,7 @@
+import { ActionCreator } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
-import { IGetState, IActionCreator } from '../types';
+import { IGetState } from '../types';
 import DcrwalletDatasource from '../../datasources/dcrwallet';
 
 import {
@@ -11,7 +12,7 @@ import {
 } from './types';
 
 
-export const loadTicketsAttempt: IActionCreator = () => {
+export const loadTicketsAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState): Promise<any> => {
 		const {
 			getTicketsRequest,
@@ -34,7 +35,7 @@ export const loadTicketsAttempt: IActionCreator = () => {
 
 
 
-export const loadTicketPriceAttempt: IActionCreator = () => {
+export const loadTicketPriceAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState): Promise<any> => {
 		const { getTicketPriceRequest } = getState().staking
 		if (getTicketPriceRequest) {
@@ -54,7 +55,7 @@ export const loadTicketPriceAttempt: IActionCreator = () => {
 
 
 
-export const loadAgendasAttempt: IActionCreator = () => {
+export const loadAgendasAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { getAgendasRequest } = getState().staking;
@@ -76,7 +77,7 @@ export const loadAgendasAttempt: IActionCreator = () => {
 
 
 
-export const loadStakeInfoAttempt: IActionCreator = () => {
+export const loadStakeInfoAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { getStakeInfoRequest } = getState().staking;
@@ -84,7 +85,7 @@ export const loadStakeInfoAttempt: IActionCreator = () => {
 		if (getStakeInfoRequest) {
 			return Promise.resolve();
 		}
-		
+
 		dispatch({ type: STAKEINFOATTEMPT });
 		try {
 			const resp = await DcrwalletDatasource.fetchStakeInfo()

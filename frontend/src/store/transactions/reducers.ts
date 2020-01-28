@@ -1,11 +1,13 @@
 
 import {
-	TransactionsState, GetTransactionsActionTypes,
-	GETTRANSACTION_ATTEMPT, GETTRANSACTION_FAILED, GETTRANSACTION_SUCCESS, TRANSACTIONNOTIFICATIONS_SUBSCRIBE, TRANSACTIONNOTIFICATIONS_RECEIVED
+	ITransactionState, TransactionsActionTypes,
+	GETTRANSACTION_ATTEMPT, GETTRANSACTION_FAILED, GETTRANSACTION_SUCCESS,
+	TRANSACTIONNOTIFICATIONS_SUBSCRIBE, TRANSACTIONNOTIFICATIONS_RECEIVED,
+	CONSTRUCTTRANSACTIONATTEMPT, CONSTRUCTTRANSACTIONFAILED, CONSTRUCTTRANSACTIONSUCCESS, 
 } from './types'
 import { TransactionType } from '../../constants';
 
-export const transactionsInitialState: TransactionsState = {
+export const transactionsInitialState: ITransactionState = {
 	txList: [],
 	getTransactionsRequest: false,
 	// The block height to begin including transactions from. 
@@ -24,13 +26,19 @@ export const transactionsInitialState: TransactionsState = {
 	// unmined transactions are included.
 	endBlockHeight: 1,
 	targetTxCount: 100,
-	activeTypeFilter: TransactionType.REGULAR
+	activeTypeFilter: TransactionType.REGULAR,
+
+	// ConstructTransaction
+	constructTransactionRequest: null,
+	constructTransactionResponse: null,
+	constructTransactionAttempting: false,
+	errorConstructTransaction: null,
 }
 
 
 export default function transactions(
-	state: TransactionsState = transactionsInitialState,
-	action: GetTransactionsActionTypes) {
+	state: ITransactionState = transactionsInitialState,
+	action: TransactionsActionTypes) {
 
 	switch (action.type) {
 		case GETTRANSACTION_ATTEMPT:
@@ -56,6 +64,25 @@ export default function transactions(
 		case TRANSACTIONNOTIFICATIONS_RECEIVED:
 			return {
 				...state
+			};
+		case CONSTRUCTTRANSACTIONATTEMPT:
+			return {
+				...state,
+				getConstructTransactionRequest: true,
+				errorConstructTransaction: null,
+			};
+		case CONSTRUCTTRANSACTIONFAILED:
+			return {
+				...state,
+				getConstructTransactionRequest: false,
+				errorConstructTransaction: action.error,
+			};
+		case CONSTRUCTTRANSACTIONSUCCESS:
+			return {
+				...state,
+				getConstructTransactionRequest: false,
+				_ConstructTransaction: action.payload,
+				errorConstructTransaction: null
 			};
 		default:
 			neverReached(action);

@@ -1,4 +1,4 @@
-import { Dispatch } from 'redux';
+import { Dispatch, ActionCreator } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import _ from 'lodash';
 
@@ -11,11 +11,10 @@ import {
 	NEXTADDRESSFAILED,
 } from './types';
 
-import { IGetState, IActionCreator } from '../types';
+import { IGetState } from '../types';
 import DcrwalletDatasource from '../../datasources/dcrwallet';
 import { IndexedWalletAccounts, WalletAccount } from '../../models';
 import { loadWalletBalance } from '../walletbalance/actions';
-import { NextAddressActionTypes } from '../nextaddress/types';
 
 
 const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
@@ -27,7 +26,7 @@ const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
 }
 
 
-export function loadAccountsAttempt(): any {
+export function loadAccountsAttempt(): ActionCreator<any> {
 	return async (dispatch: ThunkDispatch<{}, {}, GetAccountsActionTypes>, getState: IGetState): Promise<any> => {
 		const { getBestBlockHeightRequest } = getState().networkinfo;
 		if (getBestBlockHeightRequest) {
@@ -45,7 +44,7 @@ export function loadAccountsAttempt(): any {
 };
 
 
-export function subscribeAccountNotifications(): any {
+export function subscribeAccountNotifications(): ActionCreator<any> {
 	return (dispatch: Dispatch<AccountNotificationsReceived>) => {
 		DcrwalletDatasource.accountNotifications((message) => {
 			dispatch({ type: ACCOUNTSNOTIFICATIONS_RECEIVED, payload: message });
@@ -55,8 +54,8 @@ export function subscribeAccountNotifications(): any {
 	}
 }
 
-export const loadNextAddressAttempt: any = (account: WalletAccount) => {
-	return async (dispatch: ThunkDispatch<{}, {}, NextAddressActionTypes>, getState: IGetState): Promise<any> => {
+export const loadNextAddressAttempt: ActionCreator<any> = (account: WalletAccount) => {
+	return async (dispatch: ThunkDispatch<{}, {}, GetAccountsActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { getNextAddressRequest } = getState().accounts;
 

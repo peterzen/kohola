@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { Transaction } from "../../models";
 import { IApplicationState } from '../../store/types';
-import { TransactionsState } from '../../store/transactions/types';
+import { ITransactionState } from '../../store/transactions/types';
 import { getFilteredTransactions } from '../../store/transactions/selectors';
 import { loadTransactionsAttempt } from '../../store/transactions/actions';
 
@@ -73,7 +73,7 @@ interface DispatchProps {
 	// onSomeEvent: () => void
 }
 
-type Props = TransactionsState & DispatchProps & OwnProps
+type Props = ITransactionState & DispatchProps & OwnProps
 
 interface InternalState {
 	showModal: boolean

@@ -1,12 +1,11 @@
 
 import { grpc } from "@improbable-eng/grpc-web";
-import { Dispatch, AnyAction } from "redux";
 
 import { PingState } from "./ping/types";
 import { IStakingState } from "./staking/types";
 import { IAccountsState } from "./accounts/types";
 import { INetworkInfoState } from "./networkinfo/types";
-import { TransactionsState } from "./transactions/types";
+import { ITransactionState } from "./transactions/types";
 import { IWalletBalanceState } from "./walletbalance/types";
 import { VoteChoicesState } from "./votechoices/types";
 import { StopAutoBuyerState } from "./stopautobuyer/types";
@@ -18,7 +17,7 @@ export type IApplicationState = {
 	staking: IStakingState,
 	networkinfo: INetworkInfoState,
 	accounts: IAccountsState,
-	transactions: TransactionsState,
+	transactions: ITransactionState,
 	walletbalance: IWalletBalanceState,
 	votechoices: VoteChoicesState,
 	stopautobuyer: StopAutoBuyerState,
@@ -34,8 +33,3 @@ export type AppError = {
 export interface IGetState {
 	(): IApplicationState
 }
-
-export interface IActionCreator {
-	(dispatch?: Dispatch<AnyAction>, getState?: IGetState): any
-}
-

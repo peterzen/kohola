@@ -7,10 +7,10 @@ import {
 	TICKETBUYERCONFIGATTEMPT, TICKETBUYERCONFIGSUCCESS, TICKETBUYERCONFIGFAILED
 } from './types';
 
-import { IActionCreator, IGetState } from '../types';
+import { ActionCreator<any>, IGetState } from '../types';
 
 
-export const loadTicketBuyerConfigAttempt: IActionCreator = () => {
+export const loadTicketBuyerConfigAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, TicketBuyerConfigActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { getTicketBuyerConfigRequest } = getState().ticketbuyerconfig;

@@ -7,10 +7,10 @@ import {
 	__UPCASE__ATTEMPT, __UPCASE__SUCCESS, __UPCASE__FAILED
 } from './types';
 
-import { IActionCreator, IGetState } from '../types';
+import { ActionCreator<any>, IGetState } from '../types';
 
 
-export const load__CAMELCASE__Attempt: IActionCreator = () => {
+export const load__CAMELCASE__Attempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, __CAMELCASE__ActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { get__CAMELCASE__Request } = getState().__LCASE__;

@@ -1,3 +1,4 @@
+import { ActionCreator } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
 import DcrwalletDatasource from '../../datasources/dcrwallet';
@@ -7,10 +8,10 @@ import {
 	VOTECHOICESATTEMPT, VOTECHOICESSUCCESS, VOTECHOICESFAILED
 } from './types';
 
-import { IActionCreator, IGetState } from '../types';
+import {  IGetState } from '../types';
 
 
-export const loadVoteChoicesAttempt: IActionCreator = () => {
+export const loadVoteChoicesAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, VoteChoicesActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { getVoteChoicesRequest } = getState().votechoices;

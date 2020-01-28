@@ -1,4 +1,4 @@
-
+import { ActionCreator } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
 import {
@@ -6,12 +6,11 @@ import {
 	GETBALANCE_ATTEMPT, GETBALANCE_SUCCESS, GETBALANCE_FAILED
 } from './types';
 
-import { IGetState, IActionCreator } from '../types';
-
+import { IGetState } from '../types';
 import DcrwalletDatasource from '../../datasources/dcrwallet';
 import { getAllAccountNumbers } from '../accounts/selectors';
 
-export const loadWalletBalance: IActionCreator = () => {
+export const loadWalletBalance: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, GetBalanceActionTypes>, getState: IGetState): Promise<any> => {
 		const { getBalanceRequest } = getState().walletbalance;
 		if (getBalanceRequest) {

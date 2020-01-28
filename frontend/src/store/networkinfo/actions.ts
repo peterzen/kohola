@@ -1,3 +1,4 @@
+import { ActionCreator } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
 import DcrwalletDatasource from '../../datasources/dcrwallet';
@@ -8,11 +9,10 @@ import {
 	NETWORKATTEMPT, NETWORKSUCCESS, NETWORKFAILED
 } from './types';
 
-import { IActionCreator, IGetState } from '../types';
-import { NetworkActionTypes } from '../network/types';
+import { IGetState } from '../types';
 
 
-export const loadBestBlockHeightAttempt: IActionCreator = () => {
+export const loadBestBlockHeightAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, NetworkInfoActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { getBestBlockHeightRequest } = getState().networkinfo;
@@ -21,7 +21,7 @@ export const loadBestBlockHeightAttempt: IActionCreator = () => {
 		if (getBestBlockHeightRequest) {
 			return Promise.resolve();
 		}
-		
+
 		dispatch({ type: GETBESTBLOCK_ATTEMPT });
 		try {
 			const resp = await DcrwalletDatasource.fetchBestBlock()
@@ -33,16 +33,15 @@ export const loadBestBlockHeightAttempt: IActionCreator = () => {
 };
 
 
-
-export const loadNetworkAttempt: IActionCreator = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, NetworkActionTypes>, getState: IGetState): Promise<any> => {
+export const loadNetworkAttempt: ActionCreator<any> = () => {
+	return async (dispatch: ThunkDispatch<{}, {}, NetworkInfoActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { getNetworkRequest } = getState().networkinfo;
 
 		if (getNetworkRequest) {
 			return Promise.resolve();
 		}
-		
+
 		dispatch({ type: NETWORKATTEMPT });
 		try {
 			const resp = await DcrwalletDatasource.fetchNetwork()

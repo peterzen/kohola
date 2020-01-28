@@ -7,10 +7,11 @@ import {
 	LOADACTIVEDATAFILTERSATTEMPT, LOADACTIVEDATAFILTERSSUCCESS, LOADACTIVEDATAFILTERSFAILED
 } from './types';
 
-import { IActionCreator, IGetState } from '../types';
+import {  IGetState } from '../types';
+import { ActionCreator } from 'redux';
 
 
-export const loadLoadActiveDataFiltersAttempt: IActionCreator = () => {
+export const loadLoadActiveDataFiltersAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, LoadActiveDataFiltersActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { getLoadActiveDataFiltersRequest } = getState().loadactivedatafilters;

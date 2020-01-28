@@ -1,8 +1,13 @@
 import { AppError } from "../types";
 import { Transaction } from "../../models";
-import { TransactionNotificationsResponse, TransactionDetails } from "../../proto/api_pb";
+import {
+	TransactionDetails,
+	TransactionNotificationsResponse,
+	ConstructTransactionRequest,
+	ConstructTransactionResponse,
+} from "../../proto/api_pb";
 
-export interface TransactionsState {
+export interface GetTransactionsState {
 	readonly txList: Transaction[]
 	readonly getTransactionsRequest: boolean,
 	readonly startBlockHeight: number,
@@ -45,9 +50,41 @@ export interface TransactionNotificationsReceived {
 }
 
 
-export type GetTransactionsActionTypes =
+// ConstructTransaction
+export interface ConstructTransactionState {
+	readonly constructTransactionAttempting: boolean,
+	readonly constructTransactionRequest: ConstructTransactionRequest | null,
+	readonly constructTransactionResponse: ConstructTransactionResponse | null,
+	readonly errorConstructTransaction: AppError | null,
+}
+
+export const CONSTRUCTTRANSACTIONATTEMPT = 'CONSTRUCTTRANSACTIONATTEMPT'
+export const CONSTRUCTTRANSACTIONFAILED = 'CONSTRUCTTRANSACTIONFAILED'
+export const CONSTRUCTTRANSACTIONSUCCESS = 'CONSTRUCTTRANSACTIONSUCCESS'
+
+export interface ConstructTransactionAttemptAction {
+	type: typeof CONSTRUCTTRANSACTIONATTEMPT
+	payload: ConstructTransactionRequest
+}
+
+export interface ConstructTransactionFailedAction {
+	type: typeof CONSTRUCTTRANSACTIONFAILED
+	error: AppError
+}
+
+export interface ConstructTransactionSuccessAction {
+	type: typeof CONSTRUCTTRANSACTIONSUCCESS
+	payload: ConstructTransactionResponse
+}
+
+export type ITransactionState = GetTransactionsState & ConstructTransactionState
+
+export type TransactionsActionTypes =
 	GetTransactionAttemptAction |
 	GetTransactionFailedAction |
 	GetTransactionSuccessAction |
 	TransactionNotificationsSubscribe |
-	TransactionNotificationsReceived
+	TransactionNotificationsReceived |
+	ConstructTransactionAttemptAction |
+	ConstructTransactionFailedAction |
+	ConstructTransactionSuccessAction

@@ -6,6 +6,7 @@ import { AppError } from "../store/types";
 import { getGrpcClient, grpcInvoke, grpcInvokerFactory } from '../middleware/walletrpc';
 import { Transaction, Ticket, AccountBalance, WalletBalance, NextAddress, WalletAccount } from '../models';
 import { WalletService, VotingService, TicketBuyerService, AgendaService } from '../proto/api_pb_service';
+import { ConstructTransactionRequest, ConstructTransactionResponse } from "../proto/api_pb";
 
 interface IFetchTransactionsCallback {
 	(r: Transaction[]): void
@@ -209,7 +210,28 @@ const DcrwalletDatasource = {
 			});
 		});
 	},
+
+	doConstructTransaction: async (request: api.ConstructTransactionRequest)
+		: Promise<ConstructTransactionResponse> => {
+		return new Promise<ConstructTransactionResponse>((resolve, reject) => {
+			grpcInvoke(WalletService.ConstructTransaction, request, {
+				onMessage: (response: ConstructTransactionResponse) => {
+					resolve(response);
+				},
+				onEnd: (code: grpc.Code, message: string) => {
+					if (code !== grpc.Code.OK) {
+						console.error('doConstructTransaction', code, message);
+						reject({
+							status: code,
+							msg: message
+						});
+					}
+				}
+			});
+		});
+	},
 }
+
 
 interface IAccountNotificationHandler {
 	(message: api.AccountNotificationsResponse): void

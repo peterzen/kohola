@@ -7,10 +7,10 @@ import {
 	STOPAUTOBUYERATTEMPT, STOPAUTOBUYERSUCCESS, STOPAUTOBUYERFAILED
 } from './types';
 
-import { IActionCreator, IGetState } from '../types';
+import { ActionCreator<any>, IGetState } from '../types';
 
 
-export const loadStopAutoBuyerAttempt: IActionCreator = () => {
+export const loadStopAutoBuyerAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, StopAutoBuyerActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { getStopAutoBuyerRequest } = getState().stopautobuyer;
