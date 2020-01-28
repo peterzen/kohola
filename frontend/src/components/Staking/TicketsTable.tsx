@@ -7,7 +7,7 @@ import { TransactionHash } from '../Shared/shared';
 import TimeAgo from 'react-timeago';
 import { Table } from 'react-bootstrap';
 import { TicketStatusIcon } from './TicketStatusIcon';
-import { TransactionMempoolStatusIcon } from '../Accounts/TransactionTable';
+import { TransactionMempoolStatusIcon } from '../Transactions/TransactionTable';
 
 
 export default class TicketsTable extends React.Component<TicketsTableProps> {

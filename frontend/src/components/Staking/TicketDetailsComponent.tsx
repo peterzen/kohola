@@ -7,7 +7,7 @@ import { Ticket } from "../../models";
 import { TransactionHash, Amount } from "../Shared/shared";
 import GenericModalDialog from '../Shared/GenericModalDialog';
 import { TicketStatusIcon } from "./TicketStatusIcon";
-import { TransactionMempoolStatusIcon } from "../Accounts/TransactionTable";
+import { TransactionMempoolStatusIcon } from "../Transactions/TransactionTable";
 
 export const TicketDetailsComponent = (props: { ticket: Ticket }) => {
 	const ticket = props.ticket
