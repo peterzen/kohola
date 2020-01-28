@@ -72,6 +72,9 @@ export const TransactionDetailsComponent = (props: { tx: Transaction }) => {
 
 export default class TransactionDetailsModal extends GenericModalDialog<OwnProps, {}> {
 	DialogContent() {
+		if (this.props.tx == null) {
+			return null;
+		}
 		return (
 			<TransactionDetailsComponent tx={this.props.tx} />
 		)
@@ -79,7 +82,7 @@ export default class TransactionDetailsModal extends GenericModalDialog<OwnProps
 }
 
 interface OwnProps {
-	tx: Transaction
+	tx: Transaction | null
 }
 
 

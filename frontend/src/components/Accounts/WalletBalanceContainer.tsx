@@ -18,7 +18,7 @@ import WalletTotalsComponent from "./WalletTotalsComponent"
 
 
 class WalletBalanceContainer extends React.Component<Props, InternalState>{
-	constructor(props: Props) {
+	constructor(props: Props ) {
 		super(props)
 		this.state = {
 			showModal: false,
@@ -30,7 +30,7 @@ class WalletBalanceContainer extends React.Component<Props, InternalState>{
 		return (
 			<div className="mt-3">
 				<WalletTotalsComponent totals={this.props.walletTotals} />
-				<div className="mt-3"/>
+				<div className="mt-3" />
 				<AccountBalanceTable
 					menuHandler={_.bind(this.menuHandler, this)}
 					accounts={this.props.accounts}
@@ -67,7 +67,7 @@ class WalletBalanceContainer extends React.Component<Props, InternalState>{
 
 
 
-const mapStateToProps = (state: IApplicationState): IWalletBalanceState | OwnProps => {
+const mapStateToProps = (state: IApplicationState): IWalletBalanceState & OwnProps  => {
 	return {
 		...state.walletbalance,
 		accounts: getAccounts(state),
@@ -79,7 +79,9 @@ const mapStateToProps = (state: IApplicationState): IWalletBalanceState | OwnPro
 interface OwnProps {
 	accounts: IndexedWalletAccounts
 	walletTotals: WalletTotals
+	// propFromParent: number
 }
+
 
 interface DispatchProps {
 	getNextAddress: (account: WalletAccount) => void

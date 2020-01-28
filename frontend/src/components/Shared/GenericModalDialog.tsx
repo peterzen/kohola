@@ -7,12 +7,12 @@ export default class GenericModalDialog<P, S> extends React.Component<P & Props,
 	constructor(props: P & Props) {
 		super(props)
 		this.DialogContent = this.DialogContent.bind(this)
-		this.onEntered=this.onEntered.bind(this)
-		this.onExit=this.onExit.bind(this)
-		this.ModalTitle=this.ModalTitle.bind(this)
+		this.onEntered = this.onEntered.bind(this)
+		this.onExit = this.onExit.bind(this)
+		this.ModalTitle = this.ModalTitle.bind(this)
 	}
 
-	DialogContent() {
+	DialogContent(): JSX.Element | null {
 		return (
 			<span>Default dialog content</span>
 		)
@@ -37,7 +37,7 @@ export default class GenericModalDialog<P, S> extends React.Component<P & Props,
 				show={this.props.show}
 				onHide={this.props.onHide}>
 				<Modal.Header closeButton>
-					<this.ModalTitle/>
+					<this.ModalTitle />
 				</Modal.Header>
 				<Modal.Body>
 					<this.DialogContent />

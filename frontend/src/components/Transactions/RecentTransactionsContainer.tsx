@@ -30,7 +30,6 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 			)
 		}
 		const txList = this.props.txList;
-		console.log("#####",txList)
 		return (
 			<div>
 				<h4>Recent transactions ({txList.length})</h4>
@@ -57,7 +56,7 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 	}
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: RecentTransactionsOwnProps): Props => {
+const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): Props => {
 	return {
 		...state.transactions,
 		txList: getFilteredTransactions(state),
@@ -66,7 +65,7 @@ const mapStateToProps = (state: IApplicationState, ownProps: RecentTransactionsO
 
 export default connect(mapStateToProps)(RecentTransactionsComponent);
 
-export interface RecentTransactionsOwnProps {
+interface OwnProps {
 	// propFromParent: number
 }
 
@@ -74,7 +73,7 @@ interface DispatchProps {
 	// onSomeEvent: () => void
 }
 
-type Props = TransactionsState & DispatchProps & RecentTransactionsOwnProps
+type Props = TransactionsState & DispatchProps & OwnProps
 
 interface InternalState {
 	showModal: boolean
