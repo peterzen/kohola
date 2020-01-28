@@ -30,6 +30,7 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 			)
 		}
 		const txList = this.props.txList;
+		console.log("#####",txList)
 		return (
 			<div>
 				<h4>Recent transactions ({txList.length})</h4>
