@@ -28,27 +28,28 @@ export function TransactionHash(props: TransactionHashProps) {
 
 interface AmountProps {
 	amount: number
+	rounding?: number
 }
 
 export function Amount(props: AmountProps) {
 
-	const dcr = props.amount / 100000000;
-	const rounding = 2;
-	let amount = dcr.toString()
-	let decAmount = sprintf("%02.4f", amount)
 
-	let a1 = "", a2 = "";
-	let decPointPos = decAmount.indexOf(".");
-
-	a1 = decAmount.substr(0, decPointPos + rounding + 1);
-	a2 = decAmount.substr(decPointPos + rounding + 1);
-
-	if (dcr == 0) {
-		amount = a1 = "0";
-		a2 = "";
+	if (props.amount == -3250) {
+		// debugger
 	}
+
+	const rounding = props.rounding || 4;
+	const dcrAmount = props.amount / 100000000;
+	const split = dcrAmount.toFixed(rounding).toString().split(".");
+	const head = [split[0], split[1].slice(0, 2)].join(".");
+	const tail = split[1].slice(2).replace(/0{1,3}$/, "");
+	const negativeZero = (parseFloat(head) === 0) && (dcrAmount < 0);
+
 	return (
-		<span className="amount" title={amount}><span>{a1}</span><span className="fractions" >{a2}</span></span>
+		<span className="amount" title={dcrAmount.toString()}>
+			<span>{sprintf("%s%02.02f", negativeZero ? '-':'', head)}</span>
+			<span className="fractions" >{tail}</span>
+		</span>
 	)
 }
 
