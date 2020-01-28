@@ -6,14 +6,15 @@ import _ from "lodash"
 import { getAccounts } from "../../store/accounts/selectors"
 import { loadWalletBalance } from "../../store/walletbalance/actions"
 import { IApplicationState } from "../../store/types"
-import { getWalletBalances } from "../../store/walletbalance/selectors"
+import { getWalletBalances, getWalletTotals } from "../../store/walletbalance/selectors"
 import { IWalletBalanceState } from "../../store/walletbalance/types"
-import { IndexedWalletAccounts, WalletAccount } from "../../models"
+import { IndexedWalletAccounts, WalletAccount, WalletTotals } from "../../models"
 
 import AccountBalanceTable from "./AccountBalanceTable"
 import GetNewAddressDialog from "./GetNewAddressDialog"
 import { loadNextAddressAttempt } from "../../store/accounts/actions"
 import { MenuItems } from "./AccountToolsDropdown"
+import WalletTotalsComponent from "./WalletTotalsComponent"
 
 
 class WalletBalanceContainer extends React.Component<Props, InternalState>{
@@ -27,11 +28,15 @@ class WalletBalanceContainer extends React.Component<Props, InternalState>{
 
 	render() {
 		return (
-			<div>
+			<div className="mt-3">
+				<WalletTotalsComponent totals={this.props.walletTotals} />
+				<div className="mt-3"/>
 				<AccountBalanceTable
 					menuHandler={_.bind(this.menuHandler, this)}
 					accounts={this.props.accounts}
-					balances={this.props.balances} />
+					balances={this.props.balances}
+					walletTotals={this.props.walletTotals}
+				/>
 				<GetNewAddressDialog
 					modalTitle=""
 					show={this.state.showModal}
@@ -62,16 +67,18 @@ class WalletBalanceContainer extends React.Component<Props, InternalState>{
 
 
 
-const mapStateToProps = (state: IApplicationState) => {
+const mapStateToProps = (state: IApplicationState): IWalletBalanceState | OwnProps => {
 	return {
 		...state.walletbalance,
 		accounts: getAccounts(state),
 		balances: getWalletBalances(state),
+		walletTotals: getWalletTotals(state),
 	};
 }
 
 interface OwnProps {
 	accounts: IndexedWalletAccounts
+	walletTotals: WalletTotals
 }
 
 interface DispatchProps {

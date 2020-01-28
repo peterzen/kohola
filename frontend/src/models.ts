@@ -59,56 +59,6 @@ export class WalletAccount extends AccountsResponse.Account {
 	}
 }
 
-
-/*
-
-export function formatTransaction(block, transaction, index) {
-
-  const inputAmounts = transaction.getDebitsList().reduce((s, input) => s + input.getPreviousAmount(), 0);
-  const outputAmounts = transaction.getCreditsList().reduce((s, input) => s + input.getAmount(), 0);
-  const amount = outputAmounts - inputAmounts;
-  const fee = transaction.getFee();
-  const type = transaction.getTransactionType();
-  let direction = "";
-
-  let debitAccounts = [];
-  transaction.getDebitsList().forEach((debit) => debitAccounts.push(debit.getPreviousAccount()));
-
-  let creditAddresses = [];
-  transaction.getCreditsList().forEach((credit) => creditAddresses.push(credit.getAddress()));
-
-  if (type === api.TransactionDetails.TransactionType.REGULAR) {
-    if (amount > 0) {
-      direction = TRANSACTION_DIR_RECEIVED;
-    } else if (amount < 0 && (fee == Math.abs(amount))) {
-      direction = TRANSACTION_DIR_TRANSFERRED;
-    } else {
-      direction = TRANSACTION_DIR_SENT;
-    }
-  }
-
-  return {
-    timestamp: block.getTimestamp(),
-    height: block.getHeight(),
-    blockHash: block.getHash(),
-    index: index,
-    hash: transaction.getHash(),
-    txHash: reverseHash(Buffer.from(transaction.getHash()).toString("hex")),
-    tx: transaction,
-    txType: TRANSACTION_TYPES[type],
-    debitsAmount: inputAmounts,
-    creditsAmount: outputAmounts,
-    type,
-    direction,
-    amount,
-    fee,
-    debitAccounts,
-    creditAddresses
-  };
-}
-
-*/
-
 interface IBlockTemplate {
 	getHash(): Uint8Array | string;
 	getHeight(): number;
@@ -307,5 +257,15 @@ export interface WalletBalance {
 
 export interface IndexedWalletAccounts {
 	[accountNumber: number]: WalletAccount
+}
+
+export type WalletTotals = {
+	unconfirmed: number
+	immature_stake: number
+	immature_coinbase: number
+	votingauth: number
+	locked: number
+	spendable: number
+	total: number
 }
 
