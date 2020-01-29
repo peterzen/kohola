@@ -9,7 +9,7 @@ import {
 	TransactionsActionTypes, TransactionNotificationsReceived,
 	GETTRANSACTION_ATTEMPT, GETTRANSACTION_SUCCESS, GETTRANSACTION_FAILED,
 	TRANSACTIONNOTIFICATIONS_RECEIVED,
-	CONSTRUCTTRANSACTIONATTEMPT, CONSTRUCTTRANSACTIONSUCCESS, CONSTRUCTTRANSACTIONFAILED
+	CONSTRUCTTRANSACTIONATTEMPT, CONSTRUCTTRANSACTIONSUCCESS, CONSTRUCTTRANSACTIONFAILED, SIGNTRANSACTIONATTEMPT, SIGNTRANSACTIONSUCCESS, SIGNTRANSACTIONFAILED, PUBLISHTRANSACTIONATTEMPT, PUBLISHTRANSACTIONSUCCESS, PUBLISHTRANSACTIONFAILED
 } from './types';
 
 import { CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED, CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL } from '../../constants';
@@ -20,6 +20,7 @@ import { loadWalletBalance } from '../walletbalance/actions';
 import { ConstructTransactionRequest } from '../../proto/api_pb';
 import { rawToHex, reverseRawHash } from '../../helpers/byteActions';
 import { ConstructTxOutput } from '../../datasources/models';
+import { SignTransactionActionTypes } from '../signtransaction/types';
 
 
 export const loadTransactionsAttempt: ActionCreator<any> = () => {
@@ -163,6 +164,89 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 		}
 	}
 };
+
+
+
+
+
+export const signTransactionAttempt: ActionCreator<any> = () => {
+	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
+
+		const { signTransactionAttempting } = getState().transactions;
+
+		if (signTransactionAttempting) {
+			return Promise.resolve();
+		}
+		
+		dispatch({ type: SIGNTRANSACTIONATTEMPT });
+		try {
+			const resp = await DcrwalletDatasource.signTransaction()
+			dispatch({ type: SIGNTRANSACTIONSUCCESS, payload: resp });
+		} catch (error) {
+			dispatch({ error, type: SIGNTRANSACTIONFAILED });
+		}
+	}
+};
+
+
+export const publishTransactionAttempt: ActionCreator<any> = () => {
+	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
+
+		const { publishTransactionAttempting } = getState().transactions;
+
+		if (publishTransactionAttempting) {
+			return Promise.resolve();
+		}
+		
+		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
+		try {
+			const resp = await DcrwalletDatasource.publishTransaction()
+			dispatch({ type: PUBLISHTRANSACTIONSUCCESS, payload: resp });
+		} catch (error) {
+			dispatch({ error, type: PUBLISHTRANSACTIONFAILED });
+		}
+	}
+};
+
+
+export const validateAddressAttempt: ActionCreator<any> = () => {
+	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
+
+		const { publishTransactionAttempting } = getState().transactions;
+
+		if (publishTransactionAttempting) {
+			return Promise.resolve();
+		}
+		
+		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
+		try {
+			const resp = await DcrwalletDatasource.validateAddress()
+			dispatch({ type: PUBLISHTRANSACTIONSUCCESS, payload: resp });
+		} catch (error) {
+			dispatch({ error, type: PUBLISHTRANSACTIONFAILED });
+		}
+	}
+};
+export const committedTicketsAttempt: ActionCreator<any> = () => {
+	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
+
+		const { publishTransactionAttempting } = getState().transactions;
+
+		if (publishTransactionAttempting) {
+			return Promise.resolve();
+		}
+		
+		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
+		try {
+			const resp = await DcrwalletDatasource.committedTickets()
+			dispatch({ type: PUBLISHTRANSACTIONSUCCESS, payload: resp });
+		} catch (error) {
+			dispatch({ error, type: PUBLISHTRANSACTIONFAILED });
+		}
+	}
+};
+
+
 /*
 
 

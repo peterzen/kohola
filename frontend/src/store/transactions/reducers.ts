@@ -3,7 +3,7 @@ import {
 	ITransactionState, TransactionsActionTypes,
 	GETTRANSACTION_ATTEMPT, GETTRANSACTION_FAILED, GETTRANSACTION_SUCCESS,
 	TRANSACTIONNOTIFICATIONS_SUBSCRIBE, TRANSACTIONNOTIFICATIONS_RECEIVED,
-	CONSTRUCTTRANSACTIONATTEMPT, CONSTRUCTTRANSACTIONFAILED, CONSTRUCTTRANSACTIONSUCCESS, 
+	CONSTRUCTTRANSACTIONATTEMPT, CONSTRUCTTRANSACTIONFAILED, CONSTRUCTTRANSACTIONSUCCESS, SIGNTRANSACTIONATTEMPT, SIGNTRANSACTIONFAILED, SIGNTRANSACTIONSUCCESS, PUBLISHTRANSACTIONATTEMPT, PUBLISHTRANSACTIONFAILED, PUBLISHTRANSACTIONSUCCESS, COMMITTEDTICKETSATTEMPT, COMMITTEDTICKETSFAILED, COMMITTEDTICKETSSUCCESS, VALIDATEADDRESSATTEMPT, VALIDATEADDRESSFAILED, VALIDATEADDRESSSUCCESS, SWEEPACCOUNTATTEMPT, SWEEPACCOUNTFAILED, SWEEPACCOUNTSUCCESS,
 } from './types'
 import { TransactionType } from '../../constants';
 
@@ -32,7 +32,27 @@ export const transactionsInitialState: ITransactionState = {
 	constructTransactionResponse: null,
 	constructTransactionAttempting: false,
 	errorConstructTransaction: null,
-	changeScriptByAccount: {}
+	changeScriptByAccount: {},
+
+	// SignTransaction
+	signTransactionAttempting: false,
+	signTransactionResponse: null,
+	errorSignTransaction: null,
+
+	// CommittedTickets
+	committedTicketsAttempting: false,
+	committedTicketsResponse: null,
+	errorCommittedTickets: null,
+
+	//  ValidateAddress
+	validateAddressAttempting: false,
+	validateAddressResponse: null,
+	errorValidateAddress: null,
+
+	// SweepAccount
+	sweepAccountAttempting: false,
+	sweepAccountResponse: null,
+	errorSweepAccount: null
 }
 
 
@@ -41,6 +61,7 @@ export default function transactions(
 	action: TransactionsActionTypes) {
 
 	switch (action.type) {
+		// GetTransaction
 		case GETTRANSACTION_ATTEMPT:
 			return {
 				...state,
@@ -57,6 +78,8 @@ export default function transactions(
 				getTransactionsRequest: false,
 				txList: action.payload,
 			};
+
+		// TransactionNotifications
 		case TRANSACTIONNOTIFICATIONS_SUBSCRIBE:
 			return {
 				...state
@@ -65,6 +88,8 @@ export default function transactions(
 			return {
 				...state
 			};
+
+		// ConstructTransaction
 		case CONSTRUCTTRANSACTIONATTEMPT:
 			return {
 				...state,
@@ -78,13 +103,117 @@ export default function transactions(
 				errorConstructTransaction: action.error,
 			};
 		case CONSTRUCTTRANSACTIONSUCCESS:
-			console.log('###REDUCER',action)
 			return {
 				...state,
 				constructTransactionAttempting: false,
 				constructTransactionResponse: action.response,
 				errorConstructTransaction: null,
 				changeScriptByAccount: action.changeScriptByAccount,
+			};
+
+		// SignTransaction
+		case SIGNTRANSACTIONATTEMPT:
+			return {
+				...state,
+				signTransactionAttempting: true,
+				errorSignTransaction: null,
+			};
+		case SIGNTRANSACTIONFAILED:
+			return {
+				...state,
+				signTransactionAttempting: false,
+				errorSignTransaction: action.error,
+			};
+		case SIGNTRANSACTIONSUCCESS:
+			return {
+				...state,
+				signTransactionAttempting: false,
+				signTransactionResponse: action.payload,
+				errorSignTransaction: null
+			};
+
+		// PublishTransaction
+		case PUBLISHTRANSACTIONATTEMPT:
+			return {
+				...state,
+				publishTransactionAttempting: true,
+				errorPublishTransaction: null,
+			};
+		case PUBLISHTRANSACTIONFAILED:
+			return {
+				...state,
+				publishTransactionAttempting: false,
+				errorPublishTransaction: action.error,
+			};
+		case PUBLISHTRANSACTIONSUCCESS:
+			return {
+				...state,
+				publishTransactionAttempting: false,
+				publishTransactionResponse: action.payload,
+				errorPublishTransaction: null
+			};
+
+		// CommittedTickets
+		case COMMITTEDTICKETSATTEMPT:
+			return {
+				...state,
+				committedTicketsAttempting: true,
+				errorCommittedTickets: null,
+			};
+		case COMMITTEDTICKETSFAILED:
+			return {
+				...state,
+				committedTicketsAttempting: false,
+				errorCommittedTickets: action.error,
+			};
+		case COMMITTEDTICKETSSUCCESS:
+			return {
+				...state,
+				committedTicketsAttempting: false,
+				committedTicketsResponse: action.payload,
+				errorCommittedTickets: null
+			};
+
+		// ValidateAddress
+		case VALIDATEADDRESSATTEMPT:
+			return {
+				...state,
+				validateAddressAttempting: true,
+				errorValidateAddress: null,
+			};
+		case VALIDATEADDRESSFAILED:
+			return {
+				...state,
+				validateAddressAttempting: false,
+				errorValidateAddress: action.error,
+			};
+		case VALIDATEADDRESSSUCCESS:
+			return {
+				...state,
+				validateAddressAttempting: false,
+				validateAddressResponse: action.payload,
+				errorValidateAddress: null
+			};
+
+		// SweepAccount
+		case SWEEPACCOUNTATTEMPT:
+			return {
+				...state,
+				sweepAccountAttempting: true,
+				errorSweepAccount: null,
+			};
+		case SWEEPACCOUNTFAILED:
+			return {
+				...state,
+				sweepAccountAttempting: false,
+				errorSweepAccount: action.error,
+			};
+		case SWEEPACCOUNTSUCCESS:
+			return {
+				...state,
+				sweepAccountAttempting: false,
+				sweepAccountResponse: action.payload,
+				errorSweepAccount: null
 			};
 		default:
 			neverReached(action);

@@ -6,7 +6,6 @@ import { AppError } from "../store/types";
 import { getGrpcClient, grpcInvoke, grpcInvokerFactory } from '../middleware/walletrpc';
 import { Transaction, Ticket, AccountBalance, WalletBalance, NextAddress, WalletAccount } from '../models';
 import { WalletService, VotingService, TicketBuyerService, AgendaService } from '../proto/api_pb_service';
-import { ConstructTransactionRequest, ConstructTransactionResponse } from "../proto/api_pb";
 import { DecodedrawTx, DecodedRawTxInput, DecodedRawTxOutput } from "./models";
 
 interface IFetchTransactionsCallback {
@@ -214,15 +213,121 @@ const DcrwalletDatasource = {
 
 	constructTransaction: async (
 		request: api.ConstructTransactionRequest
-	): Promise<ConstructTransactionResponse> => {
-		return new Promise<ConstructTransactionResponse>((resolve, reject) => {
+	): Promise<api.ConstructTransactionResponse> => {
+		return new Promise<api.ConstructTransactionResponse>((resolve, reject) => {
 			grpcInvoke(WalletService.ConstructTransaction, request, {
-				onMessage: (response: ConstructTransactionResponse) => {
+				onMessage: (response: api.ConstructTransactionResponse) => {
 					resolve(response);
 				},
 				onEnd: (code: grpc.Code, message: string) => {
 					if (code !== grpc.Code.OK) {
 						console.error('doConstructTransaction', code, message);
+						reject({
+							status: code,
+							msg: message
+						});
+					}
+				}
+			});
+		});
+	},
+
+	signTransaction: async (
+		request: api.SignTransactionRequest
+	): Promise<api.SignTransactionResponse> => {
+		return new Promise<api.SignTransactionResponse>((resolve, reject) => {
+			grpcInvoke(WalletService.ConstructTransaction, request, {
+				onMessage: (response: api.SignTransactionResponse) => {
+					resolve(response);
+				},
+				onEnd: (code: grpc.Code, message: string) => {
+					if (code !== grpc.Code.OK) {
+						console.error('signTransaction', code, message);
+						reject({
+							status: code,
+							msg: message
+						});
+					}
+				}
+			});
+		});
+	},
+
+
+	publishTransaction: async (
+		request: api.PublishTransactionRequest
+	): Promise<api.PublishTransactionResponse> => {
+		return new Promise<api.PublishTransactionResponse>((resolve, reject) => {
+			grpcInvoke(WalletService.ConstructTransaction, request, {
+				onMessage: (response: api.PublishTransactionResponse) => {
+					resolve(response);
+				},
+				onEnd: (code: grpc.Code, message: string) => {
+					if (code !== grpc.Code.OK) {
+						console.error('publishTransaction', code, message);
+						reject({
+							status: code,
+							msg: message
+						});
+					}
+				}
+			});
+		});
+	},
+
+	validateAddress: async (
+		request: api.ValidateAddressRequest
+	): Promise<api.ValidateAddressResponse> => {
+		return new Promise<api.ValidateAddressResponse>((resolve, reject) => {
+			grpcInvoke(WalletService.ConstructTransaction, request, {
+				onMessage: (response: api.ValidateAddressResponse) => {
+					resolve(response);
+				},
+				onEnd: (code: grpc.Code, message: string) => {
+					if (code !== grpc.Code.OK) {
+						console.error('validateAddress', code, message);
+						reject({
+							status: code,
+							msg: message
+						});
+					}
+				}
+			});
+		});
+	},
+
+	committedTickets: async (
+		request: api.CommittedTicketsRequest
+	): Promise<api.CommittedTicketsResponse> => {
+		return new Promise<api.CommittedTicketsResponse>((resolve, reject) => {
+			grpcInvoke(WalletService.ConstructTransaction, request, {
+				onMessage: (response: api.CommittedTicketsResponse) => {
+					resolve(response);
+				},
+				onEnd: (code: grpc.Code, message: string) => {
+					if (code !== grpc.Code.OK) {
+						console.error('committedTickets', code, message);
+						reject({
+							status: code,
+							msg: message
+						});
+					}
+				}
+			});
+		});
+	},
+	
+	sweepAccount: async (
+		request: api.SweepAccountRequest
+	): Promise<api.SweepAccountResponse> => {
+		return new Promise<api.SweepAccountResponse>((resolve, reject) => {
+			grpcInvoke(WalletService.ConstructTransaction, request, {
+				onMessage: (response: api.SweepAccountResponse) => {
+					resolve(response);
+				},
+				onEnd: (code: grpc.Code, message: string) => {
+					if (code !== grpc.Code.OK) {
+						console.error('sweepAccount', code, message);
 						reject({
 							status: code,
 							msg: message
