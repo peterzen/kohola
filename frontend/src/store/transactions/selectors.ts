@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { IApplicationState } from "../types"
 import { Transaction } from "../../models"
 import { TransactionDirection } from '../../constants'
+import { IChangeScriptByAccount } from './types'
 
 export const getUnminedTransactions = (state: IApplicationState): Transaction[] => {
 	return _.chain(state.transactions.txList)
@@ -30,4 +31,9 @@ export const getFilteredTransactions = (state: IApplicationState): Transaction[]
 
 export const getTransactions = (state: IApplicationState): Transaction[] => {
 	return _.orderBy(state.transactions.txList, (e) => e.getTimestamp(), "desc")
+}
+
+
+export const getChangeScriptCache = (state: IApplicationState): IChangeScriptByAccount => {
+	return state.transactions.changeScriptCache
 }

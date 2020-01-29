@@ -20,6 +20,7 @@ import { loadWalletBalance } from '../walletbalance/actions';
 import { ConstructTransactionRequest } from '../../proto/api_pb';
 import { rawToHex } from '../../helpers/byteActions';
 import { ConstructTxOutput } from '../../datasources/models';
+import { getChangeScriptCache } from './selectors';
 
 
 export const loadTransactionsAttempt: ActionCreator<any> = () => {
@@ -59,11 +60,11 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 	account: number,
 	confirmations: number,
 	outputs: ConstructTxOutput[],
-	all: boolean) => {
+	sendAllFlag: boolean) => {
 	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { constructTransactionAttempting } = getState().transactions;
-		
+
 		if (constructTransactionAttempting) {
 			return Promise.resolve()
 		}
@@ -72,7 +73,7 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 		request.setSourceAccount(account);
 		request.setRequiredConfirmations(confirmations);
 		let totalAmount = 0;
-		if (!all) {
+		if (!sendAllFlag) {
 			request.setOutputSelectionAlgorithm(CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED);
 			outputs.map(output => {
 				const outputDest = new ConstructTransactionRequest.OutputDestination();
@@ -87,7 +88,7 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 			// If there's a previously stored change address for this account, use it.
 			// This alleviates a possible gap limit address exhaustion. See
 			// issue dcrwallet#1622.
-			const changeScript = getState().transactions.changeScriptByAccount[account] || null;
+			const changeScript = getChangeScriptCache(getState())[account] || null;
 			if (changeScript) {
 				const changeDest = new ConstructTransactionRequest.OutputDestination();
 				changeDest.setScript(changeScript);
@@ -123,8 +124,8 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 
 		try {
 			const constructTxResponse = await DcrwalletDatasource.constructTransaction(request);
-			const changeScriptByAccount = getState().transactions.changeScriptByAccount || {};
-			if (!all) {
+			const changeScriptCache = getChangeScriptCache(getState()) || {};
+			if (!sendAllFlag) {
 				// Store the change address we just generated so that future changes to
 				// the tx being constructed will use the same address and prevent gap
 				// limit exhaustion (see above note on issue dcrwallet#1622).
@@ -132,7 +133,7 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 				if (changeIndex > -1) {
 					const rawTx = Buffer.from(constructTxResponse.getUnsignedTransaction_asU8());
 					const decoded = decodeRawTransaction(rawTx);
-					changeScriptByAccount[account] = decoded.outputs[changeIndex].script;
+					changeScriptCache[account] = decoded.outputs[changeIndex].script;
 				}
 
 			} else {
@@ -141,7 +142,7 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 			const rawTx = rawToHex(constructTxResponse.getUnsignedTransaction_asU8());
 			dispatch({
 				response: constructTxResponse,
-				changeScriptByAccount: changeScriptByAccount,
+				changeScriptCache: changeScriptCache,
 				rawTx: rawTx,
 				totalAmount: totalAmount,
 				type: CONSTRUCTTRANSACTIONSUCCESS
@@ -149,6 +150,8 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 			return constructTxResponse;
 		}
 		catch (error) {
+			dispatch({ error, type: CONSTRUCTTRANSACTIONFAILED });
+			return
 			debugger
 			if (String(error).indexOf("insufficient balance") > 0) {
 				const error: AppError = {
@@ -183,7 +186,7 @@ export const signTransactionAttempt: ActionCreator<any> = () => {
 		if (signTransactionAttempting) {
 			return Promise.resolve();
 		}
-		
+
 		dispatch({ type: SIGNTRANSACTIONATTEMPT });
 		try {
 			const resp = await DcrwalletDatasource.signTransaction()
@@ -203,7 +206,7 @@ export const publishTransactionAttempt: ActionCreator<any> = () => {
 		if (publishTransactionAttempting) {
 			return Promise.resolve();
 		}
-		
+
 		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
 		try {
 			const resp = await DcrwalletDatasource.publishTransaction()
@@ -223,7 +226,7 @@ export const validateAddressAttempt: ActionCreator<any> = () => {
 		if (publishTransactionAttempting) {
 			return Promise.resolve();
 		}
-		
+
 		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
 		try {
 			const resp = await DcrwalletDatasource.validateAddress()
@@ -241,7 +244,7 @@ export const committedTicketsAttempt: ActionCreator<any> = () => {
 		if (publishTransactionAttempting) {
 			return Promise.resolve();
 		}
-		
+
 		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
 		try {
 			const resp = await DcrwalletDatasource.committedTickets()

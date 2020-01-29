@@ -32,7 +32,7 @@ export const transactionsInitialState: ITransactionState = {
 	constructTransactionResponse: null,
 	constructTransactionAttempting: false,
 	errorConstructTransaction: null,
-	changeScriptByAccount: {},
+	changeScriptCache: {},
 
 	// SignTransaction
 	signTransactionAttempting: false,
@@ -108,7 +108,7 @@ export default function transactions(
 				constructTransactionAttempting: false,
 				constructTransactionResponse: action.response,
 				errorConstructTransaction: null,
-				changeScriptByAccount: action.changeScriptByAccount,
+				changeScriptByAccount: action.changeScriptCache,
 			};
 
 		// SignTransaction

@@ -62,7 +62,7 @@ export interface ConstructTransactionState {
 	readonly constructTransactionAttempting: boolean,
 	readonly constructTransactionResponse: ConstructTransactionResponse | null,
 	readonly errorConstructTransaction: AppError | null,
-	readonly changeScriptByAccount: IChangeScriptByAccount,
+	readonly changeScriptCache: IChangeScriptByAccount,
 }
 
 export const CONSTRUCTTRANSACTIONATTEMPT = 'CONSTRUCTTRANSACTIONATTEMPT'
@@ -83,7 +83,7 @@ export interface ConstructTransactionSuccessAction {
 	rawTx: string,
 	response: ConstructTransactionResponse,
 	totalAmount: number,
-	changeScriptByAccount: IChangeScriptByAccount
+	changeScriptCache: IChangeScriptByAccount
 }
 
 

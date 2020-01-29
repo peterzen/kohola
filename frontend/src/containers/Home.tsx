@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import RecentTransactions from '../components/Transactions/RecentTransactionsContainer';
 import { IApplicationState } from "../store/types";
 import WalletBalanceContainer from "../components/Accounts/WalletBalanceContainer";
-import SendDialog from "../components/Transactions/SendDialogForm";
+import SendDialogContainer from "../components/Transactions/SendDialogContainer";
 
 class Home extends React.Component {
 
@@ -16,7 +16,7 @@ class Home extends React.Component {
 			<div>
 				<WalletBalanceContainer />
 				<hr />
-				<SendDialog />
+				<SendDialogContainer />
 				<hr/>
 				<RecentTransactions />
 			</div>
