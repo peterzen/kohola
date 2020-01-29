@@ -18,9 +18,8 @@ import { IGetState, AppError } from '../types';
 import { loadTicketsAttempt, loadStakeInfoAttempt } from '../staking/actions';
 import { loadWalletBalance } from '../walletbalance/actions';
 import { ConstructTransactionRequest } from '../../proto/api_pb';
-import { rawToHex, reverseRawHash } from '../../helpers/byteActions';
+import { rawToHex } from '../../helpers/byteActions';
 import { ConstructTxOutput } from '../../datasources/models';
-import { SignTransactionActionTypes } from '../signtransaction/types';
 
 
 export const loadTransactionsAttempt: ActionCreator<any> = () => {
@@ -62,6 +61,13 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 	outputs: ConstructTxOutput[],
 	all: boolean) => {
 	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
+
+		const { constructTransactionAttempting } = getState().transactions;
+		
+		if (constructTransactionAttempting) {
+			return Promise.resolve()
+		}
+
 		var request = new ConstructTransactionRequest();
 		request.setSourceAccount(account);
 		request.setRequiredConfirmations(confirmations);
