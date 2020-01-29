@@ -1,6 +1,6 @@
 import * as React from "react"
 import { connect } from "react-redux"
-import { Dispatch } from "redux"
+import { Dispatch, bindActionCreators } from "redux"
 import _ from "lodash"
 
 import { getAccounts } from "../../store/accounts/selectors"
@@ -18,7 +18,7 @@ import WalletTotalsComponent from "./WalletTotalsComponent"
 
 
 class WalletBalanceContainer extends React.Component<Props, InternalState>{
-	constructor(props: Props ) {
+	constructor(props: Props) {
 		super(props)
 		this.state = {
 			showModal: false,
@@ -38,7 +38,7 @@ class WalletBalanceContainer extends React.Component<Props, InternalState>{
 					walletTotals={this.props.walletTotals}
 				/>
 				<GetNewAddressDialog
-					modalTitle=""
+					modalTitle="New receive address"
 					show={this.state.showModal}
 					onHide={_.bind(this.hideModal, this)} />
 			</div>
@@ -46,7 +46,7 @@ class WalletBalanceContainer extends React.Component<Props, InternalState>{
 	}
 
 	componentDidMount() {
-		this.props.loadData();
+		this.props.loadWalletBalance();
 	}
 	showModal() {
 		this.setState({ showModal: true })
@@ -58,7 +58,7 @@ class WalletBalanceContainer extends React.Component<Props, InternalState>{
 		this.setState({ selectedAccount: selectedAccount });
 		switch (evtKey) {
 			case MenuItems[MenuItems.NEWADDRESS]:
-				this.props.getNextAddress(selectedAccount)
+				this.props.loadNextAddressAttempt(selectedAccount)
 				this.showModal();
 				break;
 		}
@@ -67,7 +67,7 @@ class WalletBalanceContainer extends React.Component<Props, InternalState>{
 
 
 
-const mapStateToProps = (state: IApplicationState): IWalletBalanceState & OwnProps  => {
+const mapStateToProps = (state: IApplicationState): IWalletBalanceState & OwnProps => {
 	return {
 		...state.walletbalance,
 		accounts: getAccounts(state),
@@ -84,8 +84,8 @@ interface OwnProps {
 
 
 interface DispatchProps {
-	getNextAddress: (account: WalletAccount) => void
-	loadData: () => void
+	loadNextAddressAttempt: (account: WalletAccount) => void
+	loadWalletBalance: () => void
 }
 
 type Props = IWalletBalanceState & DispatchProps & OwnProps
@@ -95,14 +95,10 @@ interface InternalState {
 	selectedAccount: WalletAccount | null
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	getNextAddress: (account: WalletAccount) => {
-		dispatch(loadNextAddressAttempt(account))
-	},
-	loadData: () => {
-		dispatch(loadWalletBalance())
-	}
-})
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	loadNextAddressAttempt: loadNextAddressAttempt,
+	loadWalletBalance: loadWalletBalance
+}, dispatch)
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletBalanceContainer);
