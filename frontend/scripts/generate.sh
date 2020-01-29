@@ -2,7 +2,7 @@
 BASEDIR=.
 TMPLDIR=scripts/tmpl
 
-for __CAMELCASE__ in NextAddress; do
+for __CAMELCASE__ in SignTransaction PublishTransaction ValidateAddress CommittedTickets SweepAccount; do
 
 	__UPCASE__=$(echo $__CAMELCASE__|tr '[a-z]' '[A-Z]')
 	__LCASE__=$(echo $__CAMELCASE__|tr '[A-Z]' '[a-z]')
@@ -12,7 +12,7 @@ for __CAMELCASE__ in NextAddress; do
 	storedir=$BASEDIR/src/store/$__LCASE__
 	mkdir -p $storedir
 	cp $TMPLDIR/actions.ts $TMPLDIR/reducers.ts $TMPLDIR/types.ts $storedir/
-	cp $TMPLDIR/component.tsx $comp
+	# cp $TMPLDIR/component.tsx $comp
 
 	perl -pi -e "s/__CAMELCASE__/$__CAMELCASE__/g" $storedir/* $comp
 	perl -pi -e "s/__LCASE__/$__LCASE__/g" $storedir/* $comp

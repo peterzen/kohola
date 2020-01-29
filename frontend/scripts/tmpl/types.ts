@@ -1,11 +1,9 @@
-import { ProtobufMessage } from "@improbable-eng/grpc-web/dist/typings/message";
 
-import { __CAMELCASE__ } from "../../models";
 import { AppError } from "../types";
 
 export interface __CAMELCASE__State {
-	readonly get__CAMELCASE__Request: boolean,
-	readonly __LCASECAMEL__: __CAMELCASE__
+	readonly __CAMELCASE__Attempting: boolean,
+	readonly __LCASECAMEL__: __CAMELCASE__Request
 	readonly error__CAMELCASE__: AppError | null
 }
 
@@ -24,7 +22,7 @@ export interface __CAMELCASE__FailedAction {
 
 export interface __CAMELCASE__SuccessAction {
 	type: typeof __UPCASE__SUCCESS,
-	payload: ProtobufMessage,
+	payload: __CAMELCASE__Response,
 }
 
 export type __CAMELCASE__ActionTypes =
