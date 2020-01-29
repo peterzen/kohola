@@ -6,6 +6,7 @@ import {
 	ConstructTransactionRequest,
 	ConstructTransactionResponse,
 } from "../../proto/api_pb";
+import { DecodedrawTx } from "../../datasources/models";
 
 export interface GetTransactionsState {
 	readonly txList: Transaction[]
@@ -53,9 +54,9 @@ export interface TransactionNotificationsReceived {
 // ConstructTransaction
 export interface ConstructTransactionState {
 	readonly constructTransactionAttempting: boolean,
-	readonly constructTransactionRequest: ConstructTransactionRequest | null,
 	readonly constructTransactionResponse: ConstructTransactionResponse | null,
 	readonly errorConstructTransaction: AppError | null,
+	readonly changeScriptByAccount: IChangeScriptByAccount,
 }
 
 export const CONSTRUCTTRANSACTIONATTEMPT = 'CONSTRUCTTRANSACTIONATTEMPT'
@@ -64,7 +65,6 @@ export const CONSTRUCTTRANSACTIONSUCCESS = 'CONSTRUCTTRANSACTIONSUCCESS'
 
 export interface ConstructTransactionAttemptAction {
 	type: typeof CONSTRUCTTRANSACTIONATTEMPT
-	payload: ConstructTransactionRequest
 }
 
 export interface ConstructTransactionFailedAction {
@@ -74,10 +74,19 @@ export interface ConstructTransactionFailedAction {
 
 export interface ConstructTransactionSuccessAction {
 	type: typeof CONSTRUCTTRANSACTIONSUCCESS
-	payload: ConstructTransactionResponse
+	rawTx: string,
+	response: ConstructTransactionResponse,
+	totalAmount: number,
+	changeScriptByAccount: IChangeScriptByAccount
 }
 
 export type ITransactionState = GetTransactionsState & ConstructTransactionState
+
+
+export interface IChangeScriptByAccount {
+	[accountNumber: number]: Buffer
+}
+
 
 export type TransactionsActionTypes =
 	GetTransactionAttemptAction |

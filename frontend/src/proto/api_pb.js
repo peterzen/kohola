@@ -294,43 +294,24 @@ proto.walletrpc.VersionRequest.deserializeBinaryFromReader = function(msg, reade
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.VersionRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.VersionRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.VersionRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.VersionRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.VersionRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.VersionRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.VersionRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.VersionRequest} The clone.
- */
-proto.walletrpc.VersionRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.VersionRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -380,12 +361,12 @@ proto.walletrpc.VersionResponse.prototype.toObject = function(opt_includeInstanc
  */
 proto.walletrpc.VersionResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    versionString: msg.getVersionString(),
-    major: msg.getMajor(),
-    minor: msg.getMinor(),
-    patch: msg.getPatch(),
-    prerelease: msg.getPrerelease(),
-    buildMetadata: msg.getBuildMetadata()
+    versionString: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    major: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    minor: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    patch: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    prerelease: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    buildMetadata: jspb.Message.getFieldWithDefault(msg, 6, "")
   };
 
   if (includeInstance) {
@@ -456,70 +437,60 @@ proto.walletrpc.VersionResponse.deserializeBinaryFromReader = function(msg, read
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.VersionResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.VersionResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.VersionResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.VersionResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.VersionResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.VersionResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.VersionResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getVersionString();
+  f = message.getVersionString();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getMajor();
+  f = message.getMajor();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getMinor();
+  f = message.getMinor();
   if (f !== 0) {
     writer.writeUint32(
       3,
       f
     );
   }
-  f = this.getPatch();
+  f = message.getPatch();
   if (f !== 0) {
     writer.writeUint32(
       4,
       f
     );
   }
-  f = this.getPrerelease();
+  f = message.getPrerelease();
   if (f.length > 0) {
     writer.writeString(
       5,
       f
     );
   }
-  f = this.getBuildMetadata();
+  f = message.getBuildMetadata();
   if (f.length > 0) {
     writer.writeString(
       6,
@@ -530,24 +501,15 @@ proto.walletrpc.VersionResponse.prototype.serializeBinaryToWriter = function (wr
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.VersionResponse} The clone.
- */
-proto.walletrpc.VersionResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.VersionResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string version_string = 1;
  * @return {string}
  */
 proto.walletrpc.VersionResponse.prototype.getVersionString = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.VersionResponse.prototype.setVersionString = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -558,11 +520,11 @@ proto.walletrpc.VersionResponse.prototype.setVersionString = function(value) {
  * @return {number}
  */
 proto.walletrpc.VersionResponse.prototype.getMajor = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.VersionResponse.prototype.setMajor = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -573,11 +535,11 @@ proto.walletrpc.VersionResponse.prototype.setMajor = function(value) {
  * @return {number}
  */
 proto.walletrpc.VersionResponse.prototype.getMinor = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.VersionResponse.prototype.setMinor = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -588,11 +550,11 @@ proto.walletrpc.VersionResponse.prototype.setMinor = function(value) {
  * @return {number}
  */
 proto.walletrpc.VersionResponse.prototype.getPatch = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.VersionResponse.prototype.setPatch = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -603,11 +565,11 @@ proto.walletrpc.VersionResponse.prototype.setPatch = function(value) {
  * @return {string}
  */
 proto.walletrpc.VersionResponse.prototype.getPrerelease = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 5, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.VersionResponse.prototype.setPrerelease = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -618,11 +580,11 @@ proto.walletrpc.VersionResponse.prototype.setPrerelease = function(value) {
  * @return {string}
  */
 proto.walletrpc.VersionResponse.prototype.getBuildMetadata = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 6, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.VersionResponse.prototype.setBuildMetadata = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -687,9 +649,9 @@ proto.walletrpc.TransactionDetails.toObject = function(includeInstance, msg) {
     proto.walletrpc.TransactionDetails.Input.toObject, includeInstance),
     creditsList: jspb.Message.toObjectList(msg.getCreditsList(),
     proto.walletrpc.TransactionDetails.Output.toObject, includeInstance),
-    fee: msg.getFee(),
-    timestamp: msg.getTimestamp(),
-    transactionType: msg.getTransactionType()
+    fee: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    timestamp: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    transactionType: jspb.Message.getFieldWithDefault(msg, 7, 0)
   };
 
   if (includeInstance) {
@@ -737,14 +699,12 @@ proto.walletrpc.TransactionDetails.deserializeBinaryFromReader = function(msg, r
     case 3:
       var value = new proto.walletrpc.TransactionDetails.Input;
       reader.readMessage(value,proto.walletrpc.TransactionDetails.Input.deserializeBinaryFromReader);
-      msg.getDebitsList().push(value);
-      msg.setDebitsList(msg.getDebitsList());
+      msg.addDebits(value);
       break;
     case 4:
       var value = new proto.walletrpc.TransactionDetails.Output;
       reader.readMessage(value,proto.walletrpc.TransactionDetails.Output.deserializeBinaryFromReader);
-      msg.getCreditsList().push(value);
-      msg.setCreditsList(msg.getCreditsList());
+      msg.addCredits(value);
       break;
     case 5:
       var value = /** @type {number} */ (reader.readInt64());
@@ -768,49 +728,39 @@ proto.walletrpc.TransactionDetails.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.TransactionDetails} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.TransactionDetails.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.TransactionDetails.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.TransactionDetails.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.TransactionDetails} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.TransactionDetails.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.TransactionDetails.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getHash_asU8();
+  f = message.getHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getTransaction_asU8();
+  f = message.getTransaction_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
       f
     );
   }
-  f = this.getDebitsList();
+  f = message.getDebitsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       3,
@@ -818,7 +768,7 @@ proto.walletrpc.TransactionDetails.prototype.serializeBinaryToWriter = function 
       proto.walletrpc.TransactionDetails.Input.serializeBinaryToWriter
     );
   }
-  f = this.getCreditsList();
+  f = message.getCreditsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       4,
@@ -826,205 +776,27 @@ proto.walletrpc.TransactionDetails.prototype.serializeBinaryToWriter = function 
       proto.walletrpc.TransactionDetails.Output.serializeBinaryToWriter
     );
   }
-  f = this.getFee();
+  f = message.getFee();
   if (f !== 0) {
     writer.writeInt64(
       5,
       f
     );
   }
-  f = this.getTimestamp();
+  f = message.getTimestamp();
   if (f !== 0) {
     writer.writeInt64(
       6,
       f
     );
   }
-  f = this.getTransactionType();
+  f = message.getTransactionType();
   if (f !== 0.0) {
     writer.writeEnum(
       7,
       f
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.TransactionDetails} The clone.
- */
-proto.walletrpc.TransactionDetails.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.TransactionDetails} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * optional bytes hash = 1;
- * @return {!(string|Uint8Array)}
- */
-proto.walletrpc.TransactionDetails.prototype.getHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
-};
-
-
-/**
- * optional bytes hash = 1;
- * This is a type-conversion wrapper around `getHash()`
- * @return {string}
- */
-proto.walletrpc.TransactionDetails.prototype.getHash_asB64 = function() {
-  return /** @type {string} */ (jspb.Message.bytesAsB64(
-      this.getHash()));
-};
-
-
-/**
- * optional bytes hash = 1;
- * Note that Uint8Array is not supported on all browsers.
- * @see http://caniuse.com/Uint8Array
- * This is a type-conversion wrapper around `getHash()`
- * @return {!Uint8Array}
- */
-proto.walletrpc.TransactionDetails.prototype.getHash_asU8 = function() {
-  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
-      this.getHash()));
-};
-
-
-/** @param {!(string|Uint8Array)} value  */
-proto.walletrpc.TransactionDetails.prototype.setHash = function(value) {
-  jspb.Message.setField(this, 1, value);
-};
-
-
-/**
- * optional bytes transaction = 2;
- * @return {!(string|Uint8Array)}
- */
-proto.walletrpc.TransactionDetails.prototype.getTransaction = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
-};
-
-
-/**
- * optional bytes transaction = 2;
- * This is a type-conversion wrapper around `getTransaction()`
- * @return {string}
- */
-proto.walletrpc.TransactionDetails.prototype.getTransaction_asB64 = function() {
-  return /** @type {string} */ (jspb.Message.bytesAsB64(
-      this.getTransaction()));
-};
-
-
-/**
- * optional bytes transaction = 2;
- * Note that Uint8Array is not supported on all browsers.
- * @see http://caniuse.com/Uint8Array
- * This is a type-conversion wrapper around `getTransaction()`
- * @return {!Uint8Array}
- */
-proto.walletrpc.TransactionDetails.prototype.getTransaction_asU8 = function() {
-  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
-      this.getTransaction()));
-};
-
-
-/** @param {!(string|Uint8Array)} value  */
-proto.walletrpc.TransactionDetails.prototype.setTransaction = function(value) {
-  jspb.Message.setField(this, 2, value);
-};
-
-
-/**
- * repeated Input debits = 3;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.TransactionDetails.Input>}
- */
-proto.walletrpc.TransactionDetails.prototype.getDebitsList = function() {
-  return /** @type{!Array.<!proto.walletrpc.TransactionDetails.Input>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.TransactionDetails.Input, 3));
-};
-
-
-/** @param {Array.<!proto.walletrpc.TransactionDetails.Input>} value  */
-proto.walletrpc.TransactionDetails.prototype.setDebitsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 3, value);
-};
-
-
-proto.walletrpc.TransactionDetails.prototype.clearDebitsList = function() {
-  this.setDebitsList([]);
-};
-
-
-/**
- * repeated Output credits = 4;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.TransactionDetails.Output>}
- */
-proto.walletrpc.TransactionDetails.prototype.getCreditsList = function() {
-  return /** @type{!Array.<!proto.walletrpc.TransactionDetails.Output>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.TransactionDetails.Output, 4));
-};
-
-
-/** @param {Array.<!proto.walletrpc.TransactionDetails.Output>} value  */
-proto.walletrpc.TransactionDetails.prototype.setCreditsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 4, value);
-};
-
-
-proto.walletrpc.TransactionDetails.prototype.clearCreditsList = function() {
-  this.setCreditsList([]);
-};
-
-
-/**
- * optional int64 fee = 5;
- * @return {number}
- */
-proto.walletrpc.TransactionDetails.prototype.getFee = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.TransactionDetails.prototype.setFee = function(value) {
-  jspb.Message.setField(this, 5, value);
-};
-
-
-/**
- * optional int64 timestamp = 6;
- * @return {number}
- */
-proto.walletrpc.TransactionDetails.prototype.getTimestamp = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 6, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.TransactionDetails.prototype.setTimestamp = function(value) {
-  jspb.Message.setField(this, 6, value);
-};
-
-
-/**
- * optional TransactionType transaction_type = 7;
- * @return {!proto.walletrpc.TransactionDetails.TransactionType}
- */
-proto.walletrpc.TransactionDetails.prototype.getTransactionType = function() {
-  return /** @type {!proto.walletrpc.TransactionDetails.TransactionType} */ (jspb.Message.getFieldProto3(this, 7, 0));
-};
-
-
-/** @param {!proto.walletrpc.TransactionDetails.TransactionType} value  */
-proto.walletrpc.TransactionDetails.prototype.setTransactionType = function(value) {
-  jspb.Message.setField(this, 7, value);
 };
 
 
@@ -1085,9 +857,9 @@ proto.walletrpc.TransactionDetails.Input.prototype.toObject = function(opt_inclu
  */
 proto.walletrpc.TransactionDetails.Input.toObject = function(includeInstance, msg) {
   var f, obj = {
-    index: msg.getIndex(),
-    previousAccount: msg.getPreviousAccount(),
-    previousAmount: msg.getPreviousAmount()
+    index: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    previousAccount: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    previousAmount: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -1146,49 +918,39 @@ proto.walletrpc.TransactionDetails.Input.deserializeBinaryFromReader = function(
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.TransactionDetails.Input} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.TransactionDetails.Input.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.TransactionDetails.Input.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.TransactionDetails.Input.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.TransactionDetails.Input} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.TransactionDetails.Input.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.TransactionDetails.Input.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getIndex();
+  f = message.getIndex();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getPreviousAccount();
+  f = message.getPreviousAccount();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getPreviousAmount();
+  f = message.getPreviousAmount();
   if (f !== 0) {
     writer.writeInt64(
       3,
@@ -1199,24 +961,15 @@ proto.walletrpc.TransactionDetails.Input.prototype.serializeBinaryToWriter = fun
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.TransactionDetails.Input} The clone.
- */
-proto.walletrpc.TransactionDetails.Input.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.TransactionDetails.Input} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 index = 1;
  * @return {number}
  */
 proto.walletrpc.TransactionDetails.Input.prototype.getIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TransactionDetails.Input.prototype.setIndex = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -1227,11 +980,11 @@ proto.walletrpc.TransactionDetails.Input.prototype.setIndex = function(value) {
  * @return {number}
  */
 proto.walletrpc.TransactionDetails.Input.prototype.getPreviousAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TransactionDetails.Input.prototype.setPreviousAccount = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -1242,11 +995,11 @@ proto.walletrpc.TransactionDetails.Input.prototype.setPreviousAccount = function
  * @return {number}
  */
 proto.walletrpc.TransactionDetails.Input.prototype.getPreviousAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TransactionDetails.Input.prototype.setPreviousAmount = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -1298,11 +1051,11 @@ proto.walletrpc.TransactionDetails.Output.prototype.toObject = function(opt_incl
  */
 proto.walletrpc.TransactionDetails.Output.toObject = function(includeInstance, msg) {
   var f, obj = {
-    index: msg.getIndex(),
-    account: msg.getAccount(),
-    internal: msg.getInternal(),
-    amount: msg.getAmount(),
-    address: msg.getAddress(),
+    index: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    account: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    internal: jspb.Message.getFieldWithDefault(msg, 3, false),
+    amount: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    address: jspb.Message.getFieldWithDefault(msg, 5, ""),
     outputScript: msg.getOutputScript_asB64()
   };
 
@@ -1374,70 +1127,60 @@ proto.walletrpc.TransactionDetails.Output.deserializeBinaryFromReader = function
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.TransactionDetails.Output} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.TransactionDetails.Output.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.TransactionDetails.Output.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.TransactionDetails.Output.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.TransactionDetails.Output} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.TransactionDetails.Output.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.TransactionDetails.Output.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getIndex();
+  f = message.getIndex();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getAccount();
+  f = message.getAccount();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getInternal();
+  f = message.getInternal();
   if (f) {
     writer.writeBool(
       3,
       f
     );
   }
-  f = this.getAmount();
+  f = message.getAmount();
   if (f !== 0) {
     writer.writeInt64(
       4,
       f
     );
   }
-  f = this.getAddress();
+  f = message.getAddress();
   if (f.length > 0) {
     writer.writeString(
       5,
       f
     );
   }
-  f = this.getOutputScript_asU8();
+  f = message.getOutputScript_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       6,
@@ -1448,24 +1191,15 @@ proto.walletrpc.TransactionDetails.Output.prototype.serializeBinaryToWriter = fu
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.TransactionDetails.Output} The clone.
- */
-proto.walletrpc.TransactionDetails.Output.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.TransactionDetails.Output} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 index = 1;
  * @return {number}
  */
 proto.walletrpc.TransactionDetails.Output.prototype.getIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TransactionDetails.Output.prototype.setIndex = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -1476,11 +1210,11 @@ proto.walletrpc.TransactionDetails.Output.prototype.setIndex = function(value) {
  * @return {number}
  */
 proto.walletrpc.TransactionDetails.Output.prototype.getAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TransactionDetails.Output.prototype.setAccount = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -1493,11 +1227,11 @@ proto.walletrpc.TransactionDetails.Output.prototype.setAccount = function(value)
  * @return {boolean}
  */
 proto.walletrpc.TransactionDetails.Output.prototype.getInternal = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 3, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 3, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.TransactionDetails.Output.prototype.setInternal = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -1508,11 +1242,11 @@ proto.walletrpc.TransactionDetails.Output.prototype.setInternal = function(value
  * @return {number}
  */
 proto.walletrpc.TransactionDetails.Output.prototype.getAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TransactionDetails.Output.prototype.setAmount = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -1523,11 +1257,11 @@ proto.walletrpc.TransactionDetails.Output.prototype.setAmount = function(value) 
  * @return {string}
  */
 proto.walletrpc.TransactionDetails.Output.prototype.getAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 5, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.TransactionDetails.Output.prototype.setAddress = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -1538,7 +1272,7 @@ proto.walletrpc.TransactionDetails.Output.prototype.setAddress = function(value)
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.TransactionDetails.Output.prototype.getOutputScript = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 6, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
@@ -1566,9 +1300,198 @@ proto.walletrpc.TransactionDetails.Output.prototype.getOutputScript_asU8 = funct
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.TransactionDetails.Output.prototype.setOutputScript = function(value) {
   jspb.Message.setField(this, 6, value);
+};
+
+
+/**
+ * optional bytes hash = 1;
+ * @return {!(string|Uint8Array)}
+ */
+proto.walletrpc.TransactionDetails.prototype.getHash = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * optional bytes hash = 1;
+ * This is a type-conversion wrapper around `getHash()`
+ * @return {string}
+ */
+proto.walletrpc.TransactionDetails.prototype.getHash_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getHash()));
+};
+
+
+/**
+ * optional bytes hash = 1;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getHash()`
+ * @return {!Uint8Array}
+ */
+proto.walletrpc.TransactionDetails.prototype.getHash_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getHash()));
+};
+
+
+/** @param {!(string|Uint8Array)} value */
+proto.walletrpc.TransactionDetails.prototype.setHash = function(value) {
+  jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * optional bytes transaction = 2;
+ * @return {!(string|Uint8Array)}
+ */
+proto.walletrpc.TransactionDetails.prototype.getTransaction = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * optional bytes transaction = 2;
+ * This is a type-conversion wrapper around `getTransaction()`
+ * @return {string}
+ */
+proto.walletrpc.TransactionDetails.prototype.getTransaction_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getTransaction()));
+};
+
+
+/**
+ * optional bytes transaction = 2;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getTransaction()`
+ * @return {!Uint8Array}
+ */
+proto.walletrpc.TransactionDetails.prototype.getTransaction_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getTransaction()));
+};
+
+
+/** @param {!(string|Uint8Array)} value */
+proto.walletrpc.TransactionDetails.prototype.setTransaction = function(value) {
+  jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * repeated Input debits = 3;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.TransactionDetails.Input>}
+ */
+proto.walletrpc.TransactionDetails.prototype.getDebitsList = function() {
+  return /** @type{!Array.<!proto.walletrpc.TransactionDetails.Input>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.TransactionDetails.Input, 3));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.TransactionDetails.Input>} value */
+proto.walletrpc.TransactionDetails.prototype.setDebitsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 3, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.TransactionDetails.Input=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.TransactionDetails.Input}
+ */
+proto.walletrpc.TransactionDetails.prototype.addDebits = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.walletrpc.TransactionDetails.Input, opt_index);
+};
+
+
+proto.walletrpc.TransactionDetails.prototype.clearDebitsList = function() {
+  this.setDebitsList([]);
+};
+
+
+/**
+ * repeated Output credits = 4;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.TransactionDetails.Output>}
+ */
+proto.walletrpc.TransactionDetails.prototype.getCreditsList = function() {
+  return /** @type{!Array.<!proto.walletrpc.TransactionDetails.Output>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.TransactionDetails.Output, 4));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.TransactionDetails.Output>} value */
+proto.walletrpc.TransactionDetails.prototype.setCreditsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 4, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.TransactionDetails.Output=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.TransactionDetails.Output}
+ */
+proto.walletrpc.TransactionDetails.prototype.addCredits = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.walletrpc.TransactionDetails.Output, opt_index);
+};
+
+
+proto.walletrpc.TransactionDetails.prototype.clearCreditsList = function() {
+  this.setCreditsList([]);
+};
+
+
+/**
+ * optional int64 fee = 5;
+ * @return {number}
+ */
+proto.walletrpc.TransactionDetails.prototype.getFee = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.TransactionDetails.prototype.setFee = function(value) {
+  jspb.Message.setField(this, 5, value);
+};
+
+
+/**
+ * optional int64 timestamp = 6;
+ * @return {number}
+ */
+proto.walletrpc.TransactionDetails.prototype.getTimestamp = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.TransactionDetails.prototype.setTimestamp = function(value) {
+  jspb.Message.setField(this, 6, value);
+};
+
+
+/**
+ * optional TransactionType transaction_type = 7;
+ * @return {!proto.walletrpc.TransactionDetails.TransactionType}
+ */
+proto.walletrpc.TransactionDetails.prototype.getTransactionType = function() {
+  return /** @type {!proto.walletrpc.TransactionDetails.TransactionType} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
+};
+
+
+/** @param {!proto.walletrpc.TransactionDetails.TransactionType} value */
+proto.walletrpc.TransactionDetails.prototype.setTransactionType = function(value) {
+  jspb.Message.setField(this, 7, value);
 };
 
 
@@ -1626,9 +1549,9 @@ proto.walletrpc.BlockDetails.prototype.toObject = function(opt_includeInstance) 
 proto.walletrpc.BlockDetails.toObject = function(includeInstance, msg) {
   var f, obj = {
     hash: msg.getHash_asB64(),
-    height: msg.getHeight(),
-    timestamp: msg.getTimestamp(),
-    approvesParent: msg.getApprovesParent(),
+    height: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    timestamp: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    approvesParent: jspb.Message.getFieldWithDefault(msg, 5, false),
     transactionsList: jspb.Message.toObjectList(msg.getTransactionsList(),
     proto.walletrpc.TransactionDetails.toObject, includeInstance)
   };
@@ -1686,8 +1609,7 @@ proto.walletrpc.BlockDetails.deserializeBinaryFromReader = function(msg, reader)
     case 4:
       var value = new proto.walletrpc.TransactionDetails;
       reader.readMessage(value,proto.walletrpc.TransactionDetails.deserializeBinaryFromReader);
-      msg.getTransactionsList().push(value);
-      msg.setTransactionsList(msg.getTransactionsList());
+      msg.addTransactions(value);
       break;
     default:
       reader.skipField();
@@ -1699,63 +1621,53 @@ proto.walletrpc.BlockDetails.deserializeBinaryFromReader = function(msg, reader)
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.BlockDetails} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.BlockDetails.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.BlockDetails.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.BlockDetails.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.BlockDetails} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.BlockDetails.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.BlockDetails.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getHash_asU8();
+  f = message.getHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getHeight();
+  f = message.getHeight();
   if (f !== 0) {
     writer.writeInt32(
       2,
       f
     );
   }
-  f = this.getTimestamp();
+  f = message.getTimestamp();
   if (f !== 0) {
     writer.writeInt64(
       3,
       f
     );
   }
-  f = this.getApprovesParent();
+  f = message.getApprovesParent();
   if (f) {
     writer.writeBool(
       5,
       f
     );
   }
-  f = this.getTransactionsList();
+  f = message.getTransactionsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       4,
@@ -1767,20 +1679,11 @@ proto.walletrpc.BlockDetails.prototype.serializeBinaryToWriter = function (write
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.BlockDetails} The clone.
- */
-proto.walletrpc.BlockDetails.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.BlockDetails} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.BlockDetails.prototype.getHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -1808,7 +1711,7 @@ proto.walletrpc.BlockDetails.prototype.getHash_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.BlockDetails.prototype.setHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -1819,11 +1722,11 @@ proto.walletrpc.BlockDetails.prototype.setHash = function(value) {
  * @return {number}
  */
 proto.walletrpc.BlockDetails.prototype.getHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BlockDetails.prototype.setHeight = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -1834,11 +1737,11 @@ proto.walletrpc.BlockDetails.prototype.setHeight = function(value) {
  * @return {number}
  */
 proto.walletrpc.BlockDetails.prototype.getTimestamp = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BlockDetails.prototype.setTimestamp = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -1851,11 +1754,11 @@ proto.walletrpc.BlockDetails.prototype.setTimestamp = function(value) {
  * @return {boolean}
  */
 proto.walletrpc.BlockDetails.prototype.getApprovesParent = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 5, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 5, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.BlockDetails.prototype.setApprovesParent = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -1873,9 +1776,19 @@ proto.walletrpc.BlockDetails.prototype.getTransactionsList = function() {
 };
 
 
-/** @param {Array.<!proto.walletrpc.TransactionDetails>} value  */
+/** @param {!Array.<!proto.walletrpc.TransactionDetails>} value */
 proto.walletrpc.BlockDetails.prototype.setTransactionsList = function(value) {
   jspb.Message.setRepeatedWrapperField(this, 4, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.TransactionDetails=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.TransactionDetails}
+ */
+proto.walletrpc.BlockDetails.prototype.addTransactions = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.walletrpc.TransactionDetails, opt_index);
 };
 
 
@@ -1930,8 +1843,8 @@ proto.walletrpc.AccountBalance.prototype.toObject = function(opt_includeInstance
  */
 proto.walletrpc.AccountBalance.toObject = function(includeInstance, msg) {
   var f, obj = {
-    account: msg.getAccount(),
-    totalBalance: msg.getTotalBalance()
+    account: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    totalBalance: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -1986,42 +1899,32 @@ proto.walletrpc.AccountBalance.deserializeBinaryFromReader = function(msg, reade
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.AccountBalance} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.AccountBalance.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.AccountBalance.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.AccountBalance.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.AccountBalance} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.AccountBalance.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.AccountBalance.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccount();
+  f = message.getAccount();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getTotalBalance();
+  f = message.getTotalBalance();
   if (f !== 0) {
     writer.writeInt64(
       2,
@@ -2032,24 +1935,15 @@ proto.walletrpc.AccountBalance.prototype.serializeBinaryToWriter = function (wri
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.AccountBalance} The clone.
- */
-proto.walletrpc.AccountBalance.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.AccountBalance} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account = 1;
  * @return {number}
  */
 proto.walletrpc.AccountBalance.prototype.getAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AccountBalance.prototype.setAccount = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -2060,11 +1954,11 @@ proto.walletrpc.AccountBalance.prototype.setAccount = function(value) {
  * @return {number}
  */
 proto.walletrpc.AccountBalance.prototype.getTotalBalance = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AccountBalance.prototype.setTotalBalance = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -2163,43 +2057,24 @@ proto.walletrpc.PingRequest.deserializeBinaryFromReader = function(msg, reader) 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.PingRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.PingRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.PingRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.PingRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.PingRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.PingRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.PingRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.PingRequest} The clone.
- */
-proto.walletrpc.PingRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.PingRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -2296,43 +2171,24 @@ proto.walletrpc.PingResponse.deserializeBinaryFromReader = function(msg, reader)
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.PingResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.PingResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.PingResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.PingResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.PingResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.PingResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.PingResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.PingResponse} The clone.
- */
-proto.walletrpc.PingResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.PingResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -2429,43 +2285,24 @@ proto.walletrpc.NetworkRequest.deserializeBinaryFromReader = function(msg, reade
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.NetworkRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.NetworkRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.NetworkRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.NetworkRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.NetworkRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.NetworkRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.NetworkRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.NetworkRequest} The clone.
- */
-proto.walletrpc.NetworkRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.NetworkRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -2515,7 +2352,7 @@ proto.walletrpc.NetworkResponse.prototype.toObject = function(opt_includeInstanc
  */
 proto.walletrpc.NetworkResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    activeNetwork: msg.getActiveNetwork()
+    activeNetwork: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -2566,35 +2403,25 @@ proto.walletrpc.NetworkResponse.deserializeBinaryFromReader = function(msg, read
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.NetworkResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.NetworkResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.NetworkResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.NetworkResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.NetworkResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.NetworkResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.NetworkResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getActiveNetwork();
+  f = message.getActiveNetwork();
   if (f !== 0) {
     writer.writeUint32(
       1,
@@ -2605,24 +2432,15 @@ proto.walletrpc.NetworkResponse.prototype.serializeBinaryToWriter = function (wr
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.NetworkResponse} The clone.
- */
-proto.walletrpc.NetworkResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.NetworkResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 active_network = 1;
  * @return {number}
  */
 proto.walletrpc.NetworkResponse.prototype.getActiveNetwork = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.NetworkResponse.prototype.setActiveNetwork = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -2721,43 +2539,24 @@ proto.walletrpc.CoinTypeRequest.deserializeBinaryFromReader = function(msg, read
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CoinTypeRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CoinTypeRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CoinTypeRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CoinTypeRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CoinTypeRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CoinTypeRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CoinTypeRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CoinTypeRequest} The clone.
- */
-proto.walletrpc.CoinTypeRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CoinTypeRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -2807,7 +2606,7 @@ proto.walletrpc.CoinTypeResponse.prototype.toObject = function(opt_includeInstan
  */
 proto.walletrpc.CoinTypeResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    coinType: msg.getCoinType()
+    coinType: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -2858,35 +2657,25 @@ proto.walletrpc.CoinTypeResponse.deserializeBinaryFromReader = function(msg, rea
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CoinTypeResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CoinTypeResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CoinTypeResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CoinTypeResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CoinTypeResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CoinTypeResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CoinTypeResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getCoinType();
+  f = message.getCoinType();
   if (f !== 0) {
     writer.writeUint32(
       1,
@@ -2897,24 +2686,15 @@ proto.walletrpc.CoinTypeResponse.prototype.serializeBinaryToWriter = function (w
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CoinTypeResponse} The clone.
- */
-proto.walletrpc.CoinTypeResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CoinTypeResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 coin_type = 1;
  * @return {number}
  */
 proto.walletrpc.CoinTypeResponse.prototype.getCoinType = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.CoinTypeResponse.prototype.setCoinType = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -2966,7 +2746,7 @@ proto.walletrpc.AccountNumberRequest.prototype.toObject = function(opt_includeIn
  */
 proto.walletrpc.AccountNumberRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accountName: msg.getAccountName()
+    accountName: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -3017,35 +2797,25 @@ proto.walletrpc.AccountNumberRequest.deserializeBinaryFromReader = function(msg,
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.AccountNumberRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.AccountNumberRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.AccountNumberRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.AccountNumberRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.AccountNumberRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.AccountNumberRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.AccountNumberRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccountName();
+  f = message.getAccountName();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -3056,24 +2826,15 @@ proto.walletrpc.AccountNumberRequest.prototype.serializeBinaryToWriter = functio
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.AccountNumberRequest} The clone.
- */
-proto.walletrpc.AccountNumberRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.AccountNumberRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string account_name = 1;
  * @return {string}
  */
 proto.walletrpc.AccountNumberRequest.prototype.getAccountName = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.AccountNumberRequest.prototype.setAccountName = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -3125,7 +2886,7 @@ proto.walletrpc.AccountNumberResponse.prototype.toObject = function(opt_includeI
  */
 proto.walletrpc.AccountNumberResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accountNumber: msg.getAccountNumber()
+    accountNumber: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -3176,35 +2937,25 @@ proto.walletrpc.AccountNumberResponse.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.AccountNumberResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.AccountNumberResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.AccountNumberResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.AccountNumberResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.AccountNumberResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.AccountNumberResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.AccountNumberResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccountNumber();
+  f = message.getAccountNumber();
   if (f !== 0) {
     writer.writeUint32(
       1,
@@ -3215,24 +2966,15 @@ proto.walletrpc.AccountNumberResponse.prototype.serializeBinaryToWriter = functi
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.AccountNumberResponse} The clone.
- */
-proto.walletrpc.AccountNumberResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.AccountNumberResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account_number = 1;
  * @return {number}
  */
 proto.walletrpc.AccountNumberResponse.prototype.getAccountNumber = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AccountNumberResponse.prototype.setAccountNumber = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -3331,43 +3073,24 @@ proto.walletrpc.AccountsRequest.deserializeBinaryFromReader = function(msg, read
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.AccountsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.AccountsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.AccountsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.AccountsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.AccountsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.AccountsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.AccountsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.AccountsRequest} The clone.
- */
-proto.walletrpc.AccountsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.AccountsRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -3427,7 +3150,7 @@ proto.walletrpc.AccountsResponse.toObject = function(includeInstance, msg) {
     accountsList: jspb.Message.toObjectList(msg.getAccountsList(),
     proto.walletrpc.AccountsResponse.Account.toObject, includeInstance),
     currentBlockHash: msg.getCurrentBlockHash_asB64(),
-    currentBlockHeight: msg.getCurrentBlockHeight()
+    currentBlockHeight: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -3467,8 +3190,7 @@ proto.walletrpc.AccountsResponse.deserializeBinaryFromReader = function(msg, rea
     case 1:
       var value = new proto.walletrpc.AccountsResponse.Account;
       reader.readMessage(value,proto.walletrpc.AccountsResponse.Account.deserializeBinaryFromReader);
-      msg.getAccountsList().push(value);
-      msg.setAccountsList(msg.getAccountsList());
+      msg.addAccounts(value);
       break;
     case 2:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
@@ -3488,35 +3210,25 @@ proto.walletrpc.AccountsResponse.deserializeBinaryFromReader = function(msg, rea
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.AccountsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.AccountsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.AccountsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.AccountsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.AccountsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.AccountsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.AccountsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccountsList();
+  f = message.getAccountsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       1,
@@ -3524,106 +3236,20 @@ proto.walletrpc.AccountsResponse.prototype.serializeBinaryToWriter = function (w
       proto.walletrpc.AccountsResponse.Account.serializeBinaryToWriter
     );
   }
-  f = this.getCurrentBlockHash_asU8();
+  f = message.getCurrentBlockHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
       f
     );
   }
-  f = this.getCurrentBlockHeight();
+  f = message.getCurrentBlockHeight();
   if (f !== 0) {
     writer.writeInt32(
       3,
       f
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.AccountsResponse} The clone.
- */
-proto.walletrpc.AccountsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.AccountsResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * repeated Account accounts = 1;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.AccountsResponse.Account>}
- */
-proto.walletrpc.AccountsResponse.prototype.getAccountsList = function() {
-  return /** @type{!Array.<!proto.walletrpc.AccountsResponse.Account>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.AccountsResponse.Account, 1));
-};
-
-
-/** @param {Array.<!proto.walletrpc.AccountsResponse.Account>} value  */
-proto.walletrpc.AccountsResponse.prototype.setAccountsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 1, value);
-};
-
-
-proto.walletrpc.AccountsResponse.prototype.clearAccountsList = function() {
-  this.setAccountsList([]);
-};
-
-
-/**
- * optional bytes current_block_hash = 2;
- * @return {!(string|Uint8Array)}
- */
-proto.walletrpc.AccountsResponse.prototype.getCurrentBlockHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
-};
-
-
-/**
- * optional bytes current_block_hash = 2;
- * This is a type-conversion wrapper around `getCurrentBlockHash()`
- * @return {string}
- */
-proto.walletrpc.AccountsResponse.prototype.getCurrentBlockHash_asB64 = function() {
-  return /** @type {string} */ (jspb.Message.bytesAsB64(
-      this.getCurrentBlockHash()));
-};
-
-
-/**
- * optional bytes current_block_hash = 2;
- * Note that Uint8Array is not supported on all browsers.
- * @see http://caniuse.com/Uint8Array
- * This is a type-conversion wrapper around `getCurrentBlockHash()`
- * @return {!Uint8Array}
- */
-proto.walletrpc.AccountsResponse.prototype.getCurrentBlockHash_asU8 = function() {
-  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
-      this.getCurrentBlockHash()));
-};
-
-
-/** @param {!(string|Uint8Array)} value  */
-proto.walletrpc.AccountsResponse.prototype.setCurrentBlockHash = function(value) {
-  jspb.Message.setField(this, 2, value);
-};
-
-
-/**
- * optional int32 current_block_height = 3;
- * @return {number}
- */
-proto.walletrpc.AccountsResponse.prototype.getCurrentBlockHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.AccountsResponse.prototype.setCurrentBlockHeight = function(value) {
-  jspb.Message.setField(this, 3, value);
 };
 
 
@@ -3673,12 +3299,12 @@ proto.walletrpc.AccountsResponse.Account.prototype.toObject = function(opt_inclu
  */
 proto.walletrpc.AccountsResponse.Account.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accountNumber: msg.getAccountNumber(),
-    accountName: msg.getAccountName(),
-    totalBalance: msg.getTotalBalance(),
-    externalKeyCount: msg.getExternalKeyCount(),
-    internalKeyCount: msg.getInternalKeyCount(),
-    importedKeyCount: msg.getImportedKeyCount()
+    accountNumber: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    accountName: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    totalBalance: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    externalKeyCount: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    internalKeyCount: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    importedKeyCount: jspb.Message.getFieldWithDefault(msg, 6, 0)
   };
 
   if (includeInstance) {
@@ -3749,70 +3375,60 @@ proto.walletrpc.AccountsResponse.Account.deserializeBinaryFromReader = function(
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.AccountsResponse.Account} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.AccountsResponse.Account.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.AccountsResponse.Account.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.AccountsResponse.Account.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.AccountsResponse.Account} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.AccountsResponse.Account.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.AccountsResponse.Account.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccountNumber();
+  f = message.getAccountNumber();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getAccountName();
+  f = message.getAccountName();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getTotalBalance();
+  f = message.getTotalBalance();
   if (f !== 0) {
     writer.writeInt64(
       3,
       f
     );
   }
-  f = this.getExternalKeyCount();
+  f = message.getExternalKeyCount();
   if (f !== 0) {
     writer.writeUint32(
       4,
       f
     );
   }
-  f = this.getInternalKeyCount();
+  f = message.getInternalKeyCount();
   if (f !== 0) {
     writer.writeUint32(
       5,
       f
     );
   }
-  f = this.getImportedKeyCount();
+  f = message.getImportedKeyCount();
   if (f !== 0) {
     writer.writeUint32(
       6,
@@ -3823,24 +3439,15 @@ proto.walletrpc.AccountsResponse.Account.prototype.serializeBinaryToWriter = fun
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.AccountsResponse.Account} The clone.
- */
-proto.walletrpc.AccountsResponse.Account.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.AccountsResponse.Account} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account_number = 1;
  * @return {number}
  */
 proto.walletrpc.AccountsResponse.Account.prototype.getAccountNumber = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AccountsResponse.Account.prototype.setAccountNumber = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -3851,11 +3458,11 @@ proto.walletrpc.AccountsResponse.Account.prototype.setAccountNumber = function(v
  * @return {string}
  */
 proto.walletrpc.AccountsResponse.Account.prototype.getAccountName = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.AccountsResponse.Account.prototype.setAccountName = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -3866,11 +3473,11 @@ proto.walletrpc.AccountsResponse.Account.prototype.setAccountName = function(val
  * @return {number}
  */
 proto.walletrpc.AccountsResponse.Account.prototype.getTotalBalance = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AccountsResponse.Account.prototype.setTotalBalance = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -3881,11 +3488,11 @@ proto.walletrpc.AccountsResponse.Account.prototype.setTotalBalance = function(va
  * @return {number}
  */
 proto.walletrpc.AccountsResponse.Account.prototype.getExternalKeyCount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AccountsResponse.Account.prototype.setExternalKeyCount = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -3896,11 +3503,11 @@ proto.walletrpc.AccountsResponse.Account.prototype.setExternalKeyCount = functio
  * @return {number}
  */
 proto.walletrpc.AccountsResponse.Account.prototype.getInternalKeyCount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AccountsResponse.Account.prototype.setInternalKeyCount = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -3911,13 +3518,100 @@ proto.walletrpc.AccountsResponse.Account.prototype.setInternalKeyCount = functio
  * @return {number}
  */
 proto.walletrpc.AccountsResponse.Account.prototype.getImportedKeyCount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 6, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AccountsResponse.Account.prototype.setImportedKeyCount = function(value) {
   jspb.Message.setField(this, 6, value);
+};
+
+
+/**
+ * repeated Account accounts = 1;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.AccountsResponse.Account>}
+ */
+proto.walletrpc.AccountsResponse.prototype.getAccountsList = function() {
+  return /** @type{!Array.<!proto.walletrpc.AccountsResponse.Account>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.AccountsResponse.Account, 1));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.AccountsResponse.Account>} value */
+proto.walletrpc.AccountsResponse.prototype.setAccountsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.AccountsResponse.Account=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.AccountsResponse.Account}
+ */
+proto.walletrpc.AccountsResponse.prototype.addAccounts = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.walletrpc.AccountsResponse.Account, opt_index);
+};
+
+
+proto.walletrpc.AccountsResponse.prototype.clearAccountsList = function() {
+  this.setAccountsList([]);
+};
+
+
+/**
+ * optional bytes current_block_hash = 2;
+ * @return {!(string|Uint8Array)}
+ */
+proto.walletrpc.AccountsResponse.prototype.getCurrentBlockHash = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * optional bytes current_block_hash = 2;
+ * This is a type-conversion wrapper around `getCurrentBlockHash()`
+ * @return {string}
+ */
+proto.walletrpc.AccountsResponse.prototype.getCurrentBlockHash_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getCurrentBlockHash()));
+};
+
+
+/**
+ * optional bytes current_block_hash = 2;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getCurrentBlockHash()`
+ * @return {!Uint8Array}
+ */
+proto.walletrpc.AccountsResponse.prototype.getCurrentBlockHash_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getCurrentBlockHash()));
+};
+
+
+/** @param {!(string|Uint8Array)} value */
+proto.walletrpc.AccountsResponse.prototype.setCurrentBlockHash = function(value) {
+  jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * optional int32 current_block_height = 3;
+ * @return {number}
+ */
+proto.walletrpc.AccountsResponse.prototype.getCurrentBlockHeight = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.AccountsResponse.prototype.setCurrentBlockHeight = function(value) {
+  jspb.Message.setField(this, 3, value);
 };
 
 
@@ -3967,8 +3661,8 @@ proto.walletrpc.RenameAccountRequest.prototype.toObject = function(opt_includeIn
  */
 proto.walletrpc.RenameAccountRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accountNumber: msg.getAccountNumber(),
-    newName: msg.getNewName()
+    accountNumber: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    newName: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -4023,42 +3717,32 @@ proto.walletrpc.RenameAccountRequest.deserializeBinaryFromReader = function(msg,
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RenameAccountRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RenameAccountRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RenameAccountRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RenameAccountRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RenameAccountRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RenameAccountRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RenameAccountRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccountNumber();
+  f = message.getAccountNumber();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getNewName();
+  f = message.getNewName();
   if (f.length > 0) {
     writer.writeString(
       2,
@@ -4069,24 +3753,15 @@ proto.walletrpc.RenameAccountRequest.prototype.serializeBinaryToWriter = functio
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RenameAccountRequest} The clone.
- */
-proto.walletrpc.RenameAccountRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RenameAccountRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account_number = 1;
  * @return {number}
  */
 proto.walletrpc.RenameAccountRequest.prototype.getAccountNumber = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.RenameAccountRequest.prototype.setAccountNumber = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -4097,11 +3772,11 @@ proto.walletrpc.RenameAccountRequest.prototype.setAccountNumber = function(value
  * @return {string}
  */
 proto.walletrpc.RenameAccountRequest.prototype.getNewName = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.RenameAccountRequest.prototype.setNewName = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -4200,43 +3875,24 @@ proto.walletrpc.RenameAccountResponse.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RenameAccountResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RenameAccountResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RenameAccountResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RenameAccountResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RenameAccountResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RenameAccountResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RenameAccountResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RenameAccountResponse} The clone.
- */
-proto.walletrpc.RenameAccountResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RenameAccountResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -4286,7 +3942,7 @@ proto.walletrpc.RescanRequest.prototype.toObject = function(opt_includeInstance)
  */
 proto.walletrpc.RescanRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    beginHeight: msg.getBeginHeight(),
+    beginHeight: jspb.Message.getFieldWithDefault(msg, 1, 0),
     beginHash: msg.getBeginHash_asB64()
   };
 
@@ -4342,42 +3998,32 @@ proto.walletrpc.RescanRequest.deserializeBinaryFromReader = function(msg, reader
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RescanRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RescanRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RescanRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RescanRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RescanRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RescanRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RescanRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getBeginHeight();
+  f = message.getBeginHeight();
   if (f !== 0) {
     writer.writeInt32(
       1,
       f
     );
   }
-  f = this.getBeginHash_asU8();
+  f = message.getBeginHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
@@ -4388,24 +4034,15 @@ proto.walletrpc.RescanRequest.prototype.serializeBinaryToWriter = function (writ
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RescanRequest} The clone.
- */
-proto.walletrpc.RescanRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RescanRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional int32 begin_height = 1;
  * @return {number}
  */
 proto.walletrpc.RescanRequest.prototype.getBeginHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.RescanRequest.prototype.setBeginHeight = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -4416,7 +4053,7 @@ proto.walletrpc.RescanRequest.prototype.setBeginHeight = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.RescanRequest.prototype.getBeginHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -4444,7 +4081,7 @@ proto.walletrpc.RescanRequest.prototype.getBeginHash_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.RescanRequest.prototype.setBeginHash = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -4496,7 +4133,7 @@ proto.walletrpc.RescanResponse.prototype.toObject = function(opt_includeInstance
  */
 proto.walletrpc.RescanResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    rescannedThrough: msg.getRescannedThrough()
+    rescannedThrough: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -4547,35 +4184,25 @@ proto.walletrpc.RescanResponse.deserializeBinaryFromReader = function(msg, reade
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RescanResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RescanResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RescanResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RescanResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RescanResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RescanResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RescanResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getRescannedThrough();
+  f = message.getRescannedThrough();
   if (f !== 0) {
     writer.writeInt32(
       1,
@@ -4586,24 +4213,15 @@ proto.walletrpc.RescanResponse.prototype.serializeBinaryToWriter = function (wri
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RescanResponse} The clone.
- */
-proto.walletrpc.RescanResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RescanResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional int32 rescanned_through = 1;
  * @return {number}
  */
 proto.walletrpc.RescanResponse.prototype.getRescannedThrough = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.RescanResponse.prototype.setRescannedThrough = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -4656,7 +4274,7 @@ proto.walletrpc.NextAccountRequest.prototype.toObject = function(opt_includeInst
 proto.walletrpc.NextAccountRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     passphrase: msg.getPassphrase_asB64(),
-    accountName: msg.getAccountName()
+    accountName: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -4711,42 +4329,32 @@ proto.walletrpc.NextAccountRequest.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.NextAccountRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.NextAccountRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.NextAccountRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.NextAccountRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.NextAccountRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.NextAccountRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.NextAccountRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getAccountName();
+  f = message.getAccountName();
   if (f.length > 0) {
     writer.writeString(
       2,
@@ -4757,20 +4365,11 @@ proto.walletrpc.NextAccountRequest.prototype.serializeBinaryToWriter = function 
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.NextAccountRequest} The clone.
- */
-proto.walletrpc.NextAccountRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.NextAccountRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes passphrase = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.NextAccountRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -4798,7 +4397,7 @@ proto.walletrpc.NextAccountRequest.prototype.getPassphrase_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.NextAccountRequest.prototype.setPassphrase = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -4809,11 +4408,11 @@ proto.walletrpc.NextAccountRequest.prototype.setPassphrase = function(value) {
  * @return {string}
  */
 proto.walletrpc.NextAccountRequest.prototype.getAccountName = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.NextAccountRequest.prototype.setAccountName = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -4865,7 +4464,7 @@ proto.walletrpc.NextAccountResponse.prototype.toObject = function(opt_includeIns
  */
 proto.walletrpc.NextAccountResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accountNumber: msg.getAccountNumber()
+    accountNumber: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -4916,35 +4515,25 @@ proto.walletrpc.NextAccountResponse.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.NextAccountResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.NextAccountResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.NextAccountResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.NextAccountResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.NextAccountResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.NextAccountResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.NextAccountResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccountNumber();
+  f = message.getAccountNumber();
   if (f !== 0) {
     writer.writeUint32(
       1,
@@ -4955,24 +4544,15 @@ proto.walletrpc.NextAccountResponse.prototype.serializeBinaryToWriter = function
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.NextAccountResponse} The clone.
- */
-proto.walletrpc.NextAccountResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.NextAccountResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account_number = 1;
  * @return {number}
  */
 proto.walletrpc.NextAccountResponse.prototype.getAccountNumber = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.NextAccountResponse.prototype.setAccountNumber = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -5024,9 +4604,9 @@ proto.walletrpc.NextAddressRequest.prototype.toObject = function(opt_includeInst
  */
 proto.walletrpc.NextAddressRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    account: msg.getAccount(),
-    kind: msg.getKind(),
-    gapPolicy: msg.getGapPolicy()
+    account: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    kind: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    gapPolicy: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -5085,109 +4665,45 @@ proto.walletrpc.NextAddressRequest.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.NextAddressRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.NextAddressRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.NextAddressRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.NextAddressRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.NextAddressRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.NextAddressRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.NextAddressRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccount();
+  f = message.getAccount();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getKind();
+  f = message.getKind();
   if (f !== 0.0) {
     writer.writeEnum(
       2,
       f
     );
   }
-  f = this.getGapPolicy();
+  f = message.getGapPolicy();
   if (f !== 0.0) {
     writer.writeEnum(
       3,
       f
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.NextAddressRequest} The clone.
- */
-proto.walletrpc.NextAddressRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.NextAddressRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * optional uint32 account = 1;
- * @return {number}
- */
-proto.walletrpc.NextAddressRequest.prototype.getAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.NextAddressRequest.prototype.setAccount = function(value) {
-  jspb.Message.setField(this, 1, value);
-};
-
-
-/**
- * optional Kind kind = 2;
- * @return {!proto.walletrpc.NextAddressRequest.Kind}
- */
-proto.walletrpc.NextAddressRequest.prototype.getKind = function() {
-  return /** @type {!proto.walletrpc.NextAddressRequest.Kind} */ (jspb.Message.getFieldProto3(this, 2, 0));
-};
-
-
-/** @param {!proto.walletrpc.NextAddressRequest.Kind} value  */
-proto.walletrpc.NextAddressRequest.prototype.setKind = function(value) {
-  jspb.Message.setField(this, 2, value);
-};
-
-
-/**
- * optional GapPolicy gap_policy = 3;
- * @return {!proto.walletrpc.NextAddressRequest.GapPolicy}
- */
-proto.walletrpc.NextAddressRequest.prototype.getGapPolicy = function() {
-  return /** @type {!proto.walletrpc.NextAddressRequest.GapPolicy} */ (jspb.Message.getFieldProto3(this, 3, 0));
-};
-
-
-/** @param {!proto.walletrpc.NextAddressRequest.GapPolicy} value  */
-proto.walletrpc.NextAddressRequest.prototype.setGapPolicy = function(value) {
-  jspb.Message.setField(this, 3, value);
 };
 
 
@@ -5208,6 +4724,51 @@ proto.walletrpc.NextAddressRequest.GapPolicy = {
   GAP_POLICY_IGNORE: 2,
   GAP_POLICY_WRAP: 3
 };
+
+/**
+ * optional uint32 account = 1;
+ * @return {number}
+ */
+proto.walletrpc.NextAddressRequest.prototype.getAccount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.NextAddressRequest.prototype.setAccount = function(value) {
+  jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * optional Kind kind = 2;
+ * @return {!proto.walletrpc.NextAddressRequest.Kind}
+ */
+proto.walletrpc.NextAddressRequest.prototype.getKind = function() {
+  return /** @type {!proto.walletrpc.NextAddressRequest.Kind} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/** @param {!proto.walletrpc.NextAddressRequest.Kind} value */
+proto.walletrpc.NextAddressRequest.prototype.setKind = function(value) {
+  jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * optional GapPolicy gap_policy = 3;
+ * @return {!proto.walletrpc.NextAddressRequest.GapPolicy}
+ */
+proto.walletrpc.NextAddressRequest.prototype.getGapPolicy = function() {
+  return /** @type {!proto.walletrpc.NextAddressRequest.GapPolicy} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/** @param {!proto.walletrpc.NextAddressRequest.GapPolicy} value */
+proto.walletrpc.NextAddressRequest.prototype.setGapPolicy = function(value) {
+  jspb.Message.setField(this, 3, value);
+};
+
 
 
 /**
@@ -5255,8 +4816,8 @@ proto.walletrpc.NextAddressResponse.prototype.toObject = function(opt_includeIns
  */
 proto.walletrpc.NextAddressResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    address: msg.getAddress(),
-    publicKey: msg.getPublicKey()
+    address: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    publicKey: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -5311,42 +4872,32 @@ proto.walletrpc.NextAddressResponse.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.NextAddressResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.NextAddressResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.NextAddressResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.NextAddressResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.NextAddressResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.NextAddressResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.NextAddressResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAddress();
+  f = message.getAddress();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getPublicKey();
+  f = message.getPublicKey();
   if (f.length > 0) {
     writer.writeString(
       2,
@@ -5357,24 +4908,15 @@ proto.walletrpc.NextAddressResponse.prototype.serializeBinaryToWriter = function
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.NextAddressResponse} The clone.
- */
-proto.walletrpc.NextAddressResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.NextAddressResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string address = 1;
  * @return {string}
  */
 proto.walletrpc.NextAddressResponse.prototype.getAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.NextAddressResponse.prototype.setAddress = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -5385,11 +4927,11 @@ proto.walletrpc.NextAddressResponse.prototype.setAddress = function(value) {
  * @return {string}
  */
 proto.walletrpc.NextAddressResponse.prototype.getPublicKey = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.NextAddressResponse.prototype.setPublicKey = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -5442,10 +4984,10 @@ proto.walletrpc.ImportPrivateKeyRequest.prototype.toObject = function(opt_includ
 proto.walletrpc.ImportPrivateKeyRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     passphrase: msg.getPassphrase_asB64(),
-    account: msg.getAccount(),
-    privateKeyWif: msg.getPrivateKeyWif(),
-    rescan: msg.getRescan(),
-    scanFrom: msg.getScanFrom()
+    account: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    privateKeyWif: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    rescan: jspb.Message.getFieldWithDefault(msg, 4, false),
+    scanFrom: jspb.Message.getFieldWithDefault(msg, 5, 0)
   };
 
   if (includeInstance) {
@@ -5512,63 +5054,53 @@ proto.walletrpc.ImportPrivateKeyRequest.deserializeBinaryFromReader = function(m
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ImportPrivateKeyRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ImportPrivateKeyRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ImportPrivateKeyRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ImportPrivateKeyRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ImportPrivateKeyRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ImportPrivateKeyRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ImportPrivateKeyRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getAccount();
+  f = message.getAccount();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getPrivateKeyWif();
+  f = message.getPrivateKeyWif();
   if (f.length > 0) {
     writer.writeString(
       3,
       f
     );
   }
-  f = this.getRescan();
+  f = message.getRescan();
   if (f) {
     writer.writeBool(
       4,
       f
     );
   }
-  f = this.getScanFrom();
+  f = message.getScanFrom();
   if (f !== 0) {
     writer.writeInt32(
       5,
@@ -5579,20 +5111,11 @@ proto.walletrpc.ImportPrivateKeyRequest.prototype.serializeBinaryToWriter = func
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ImportPrivateKeyRequest} The clone.
- */
-proto.walletrpc.ImportPrivateKeyRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ImportPrivateKeyRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes passphrase = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.ImportPrivateKeyRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -5620,7 +5143,7 @@ proto.walletrpc.ImportPrivateKeyRequest.prototype.getPassphrase_asU8 = function(
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.ImportPrivateKeyRequest.prototype.setPassphrase = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -5631,11 +5154,11 @@ proto.walletrpc.ImportPrivateKeyRequest.prototype.setPassphrase = function(value
  * @return {number}
  */
 proto.walletrpc.ImportPrivateKeyRequest.prototype.getAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ImportPrivateKeyRequest.prototype.setAccount = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -5646,11 +5169,11 @@ proto.walletrpc.ImportPrivateKeyRequest.prototype.setAccount = function(value) {
  * @return {string}
  */
 proto.walletrpc.ImportPrivateKeyRequest.prototype.getPrivateKeyWif = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.ImportPrivateKeyRequest.prototype.setPrivateKeyWif = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -5663,11 +5186,11 @@ proto.walletrpc.ImportPrivateKeyRequest.prototype.setPrivateKeyWif = function(va
  * @return {boolean}
  */
 proto.walletrpc.ImportPrivateKeyRequest.prototype.getRescan = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 4, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 4, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.ImportPrivateKeyRequest.prototype.setRescan = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -5678,11 +5201,11 @@ proto.walletrpc.ImportPrivateKeyRequest.prototype.setRescan = function(value) {
  * @return {number}
  */
 proto.walletrpc.ImportPrivateKeyRequest.prototype.getScanFrom = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ImportPrivateKeyRequest.prototype.setScanFrom = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -5781,43 +5304,24 @@ proto.walletrpc.ImportPrivateKeyResponse.deserializeBinaryFromReader = function(
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ImportPrivateKeyResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ImportPrivateKeyResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ImportPrivateKeyResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ImportPrivateKeyResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ImportPrivateKeyResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ImportPrivateKeyResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ImportPrivateKeyResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ImportPrivateKeyResponse} The clone.
- */
-proto.walletrpc.ImportPrivateKeyResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ImportPrivateKeyResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -5869,9 +5373,9 @@ proto.walletrpc.ImportScriptRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     passphrase: msg.getPassphrase_asB64(),
     script: msg.getScript_asB64(),
-    rescan: msg.getRescan(),
-    scanFrom: msg.getScanFrom(),
-    requireRedeemable: msg.getRequireRedeemable()
+    rescan: jspb.Message.getFieldWithDefault(msg, 3, false),
+    scanFrom: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    requireRedeemable: jspb.Message.getFieldWithDefault(msg, 5, false)
   };
 
   if (includeInstance) {
@@ -5938,63 +5442,53 @@ proto.walletrpc.ImportScriptRequest.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ImportScriptRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ImportScriptRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ImportScriptRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ImportScriptRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ImportScriptRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ImportScriptRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ImportScriptRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getScript_asU8();
+  f = message.getScript_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
       f
     );
   }
-  f = this.getRescan();
+  f = message.getRescan();
   if (f) {
     writer.writeBool(
       3,
       f
     );
   }
-  f = this.getScanFrom();
+  f = message.getScanFrom();
   if (f !== 0) {
     writer.writeInt32(
       4,
       f
     );
   }
-  f = this.getRequireRedeemable();
+  f = message.getRequireRedeemable();
   if (f) {
     writer.writeBool(
       5,
@@ -6005,20 +5499,11 @@ proto.walletrpc.ImportScriptRequest.prototype.serializeBinaryToWriter = function
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ImportScriptRequest} The clone.
- */
-proto.walletrpc.ImportScriptRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ImportScriptRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes passphrase = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.ImportScriptRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -6046,7 +5531,7 @@ proto.walletrpc.ImportScriptRequest.prototype.getPassphrase_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.ImportScriptRequest.prototype.setPassphrase = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -6057,7 +5542,7 @@ proto.walletrpc.ImportScriptRequest.prototype.setPassphrase = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.ImportScriptRequest.prototype.getScript = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -6085,7 +5570,7 @@ proto.walletrpc.ImportScriptRequest.prototype.getScript_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.ImportScriptRequest.prototype.setScript = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -6098,11 +5583,11 @@ proto.walletrpc.ImportScriptRequest.prototype.setScript = function(value) {
  * @return {boolean}
  */
 proto.walletrpc.ImportScriptRequest.prototype.getRescan = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 3, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 3, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.ImportScriptRequest.prototype.setRescan = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -6113,11 +5598,11 @@ proto.walletrpc.ImportScriptRequest.prototype.setRescan = function(value) {
  * @return {number}
  */
 proto.walletrpc.ImportScriptRequest.prototype.getScanFrom = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ImportScriptRequest.prototype.setScanFrom = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -6130,11 +5615,11 @@ proto.walletrpc.ImportScriptRequest.prototype.setScanFrom = function(value) {
  * @return {boolean}
  */
 proto.walletrpc.ImportScriptRequest.prototype.getRequireRedeemable = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 5, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 5, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.ImportScriptRequest.prototype.setRequireRedeemable = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -6186,8 +5671,8 @@ proto.walletrpc.ImportScriptResponse.prototype.toObject = function(opt_includeIn
  */
 proto.walletrpc.ImportScriptResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    p2shAddress: msg.getP2shAddress(),
-    redeemable: msg.getRedeemable()
+    p2shAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    redeemable: jspb.Message.getFieldWithDefault(msg, 2, false)
   };
 
   if (includeInstance) {
@@ -6242,42 +5727,32 @@ proto.walletrpc.ImportScriptResponse.deserializeBinaryFromReader = function(msg,
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ImportScriptResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ImportScriptResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ImportScriptResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ImportScriptResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ImportScriptResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ImportScriptResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ImportScriptResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getP2shAddress();
+  f = message.getP2shAddress();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getRedeemable();
+  f = message.getRedeemable();
   if (f) {
     writer.writeBool(
       2,
@@ -6288,24 +5763,15 @@ proto.walletrpc.ImportScriptResponse.prototype.serializeBinaryToWriter = functio
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ImportScriptResponse} The clone.
- */
-proto.walletrpc.ImportScriptResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ImportScriptResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string p2sh_address = 1;
  * @return {string}
  */
 proto.walletrpc.ImportScriptResponse.prototype.getP2shAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.ImportScriptResponse.prototype.setP2shAddress = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -6318,11 +5784,11 @@ proto.walletrpc.ImportScriptResponse.prototype.setP2shAddress = function(value) 
  * @return {boolean}
  */
 proto.walletrpc.ImportScriptResponse.prototype.getRedeemable = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 2, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 2, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.ImportScriptResponse.prototype.setRedeemable = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -6374,8 +5840,8 @@ proto.walletrpc.BalanceRequest.prototype.toObject = function(opt_includeInstance
  */
 proto.walletrpc.BalanceRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accountNumber: msg.getAccountNumber(),
-    requiredConfirmations: msg.getRequiredConfirmations()
+    accountNumber: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    requiredConfirmations: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -6430,42 +5896,32 @@ proto.walletrpc.BalanceRequest.deserializeBinaryFromReader = function(msg, reade
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.BalanceRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.BalanceRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.BalanceRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.BalanceRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.BalanceRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.BalanceRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.BalanceRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccountNumber();
+  f = message.getAccountNumber();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getRequiredConfirmations();
+  f = message.getRequiredConfirmations();
   if (f !== 0) {
     writer.writeInt32(
       2,
@@ -6476,24 +5932,15 @@ proto.walletrpc.BalanceRequest.prototype.serializeBinaryToWriter = function (wri
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.BalanceRequest} The clone.
- */
-proto.walletrpc.BalanceRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.BalanceRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account_number = 1;
  * @return {number}
  */
 proto.walletrpc.BalanceRequest.prototype.getAccountNumber = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BalanceRequest.prototype.setAccountNumber = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -6504,11 +5951,11 @@ proto.walletrpc.BalanceRequest.prototype.setAccountNumber = function(value) {
  * @return {number}
  */
 proto.walletrpc.BalanceRequest.prototype.getRequiredConfirmations = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BalanceRequest.prototype.setRequiredConfirmations = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -6560,13 +6007,13 @@ proto.walletrpc.BalanceResponse.prototype.toObject = function(opt_includeInstanc
  */
 proto.walletrpc.BalanceResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    total: msg.getTotal(),
-    spendable: msg.getSpendable(),
-    immatureReward: msg.getImmatureReward(),
-    immatureStakeGeneration: msg.getImmatureStakeGeneration(),
-    lockedByTickets: msg.getLockedByTickets(),
-    votingAuthority: msg.getVotingAuthority(),
-    unconfirmed: msg.getUnconfirmed()
+    total: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    spendable: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    immatureReward: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    immatureStakeGeneration: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    lockedByTickets: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    votingAuthority: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    unconfirmed: jspb.Message.getFieldWithDefault(msg, 7, 0)
   };
 
   if (includeInstance) {
@@ -6641,77 +6088,67 @@ proto.walletrpc.BalanceResponse.deserializeBinaryFromReader = function(msg, read
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.BalanceResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.BalanceResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.BalanceResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.BalanceResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.BalanceResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.BalanceResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.BalanceResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTotal();
+  f = message.getTotal();
   if (f !== 0) {
     writer.writeInt64(
       1,
       f
     );
   }
-  f = this.getSpendable();
+  f = message.getSpendable();
   if (f !== 0) {
     writer.writeInt64(
       2,
       f
     );
   }
-  f = this.getImmatureReward();
+  f = message.getImmatureReward();
   if (f !== 0) {
     writer.writeInt64(
       3,
       f
     );
   }
-  f = this.getImmatureStakeGeneration();
+  f = message.getImmatureStakeGeneration();
   if (f !== 0) {
     writer.writeInt64(
       4,
       f
     );
   }
-  f = this.getLockedByTickets();
+  f = message.getLockedByTickets();
   if (f !== 0) {
     writer.writeInt64(
       5,
       f
     );
   }
-  f = this.getVotingAuthority();
+  f = message.getVotingAuthority();
   if (f !== 0) {
     writer.writeInt64(
       6,
       f
     );
   }
-  f = this.getUnconfirmed();
+  f = message.getUnconfirmed();
   if (f !== 0) {
     writer.writeInt64(
       7,
@@ -6722,24 +6159,15 @@ proto.walletrpc.BalanceResponse.prototype.serializeBinaryToWriter = function (wr
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.BalanceResponse} The clone.
- */
-proto.walletrpc.BalanceResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.BalanceResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional int64 total = 1;
  * @return {number}
  */
 proto.walletrpc.BalanceResponse.prototype.getTotal = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BalanceResponse.prototype.setTotal = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -6750,11 +6178,11 @@ proto.walletrpc.BalanceResponse.prototype.setTotal = function(value) {
  * @return {number}
  */
 proto.walletrpc.BalanceResponse.prototype.getSpendable = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BalanceResponse.prototype.setSpendable = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -6765,11 +6193,11 @@ proto.walletrpc.BalanceResponse.prototype.setSpendable = function(value) {
  * @return {number}
  */
 proto.walletrpc.BalanceResponse.prototype.getImmatureReward = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BalanceResponse.prototype.setImmatureReward = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -6780,11 +6208,11 @@ proto.walletrpc.BalanceResponse.prototype.setImmatureReward = function(value) {
  * @return {number}
  */
 proto.walletrpc.BalanceResponse.prototype.getImmatureStakeGeneration = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BalanceResponse.prototype.setImmatureStakeGeneration = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -6795,11 +6223,11 @@ proto.walletrpc.BalanceResponse.prototype.setImmatureStakeGeneration = function(
  * @return {number}
  */
 proto.walletrpc.BalanceResponse.prototype.getLockedByTickets = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BalanceResponse.prototype.setLockedByTickets = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -6810,11 +6238,11 @@ proto.walletrpc.BalanceResponse.prototype.setLockedByTickets = function(value) {
  * @return {number}
  */
 proto.walletrpc.BalanceResponse.prototype.getVotingAuthority = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 6, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BalanceResponse.prototype.setVotingAuthority = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -6825,11 +6253,11 @@ proto.walletrpc.BalanceResponse.prototype.setVotingAuthority = function(value) {
  * @return {number}
  */
 proto.walletrpc.BalanceResponse.prototype.getUnconfirmed = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 7, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BalanceResponse.prototype.setUnconfirmed = function(value) {
   jspb.Message.setField(this, 7, value);
 };
@@ -6932,35 +6360,25 @@ proto.walletrpc.GetTransactionRequest.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetTransactionRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetTransactionRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetTransactionRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetTransactionRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetTransactionRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetTransactionRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetTransactionRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTransactionHash_asU8();
+  f = message.getTransactionHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
@@ -6971,20 +6389,11 @@ proto.walletrpc.GetTransactionRequest.prototype.serializeBinaryToWriter = functi
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetTransactionRequest} The clone.
- */
-proto.walletrpc.GetTransactionRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetTransactionRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes transaction_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.GetTransactionRequest.prototype.getTransactionHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -7012,7 +6421,7 @@ proto.walletrpc.GetTransactionRequest.prototype.getTransactionHash_asU8 = functi
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.GetTransactionRequest.prototype.setTransactionHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -7065,7 +6474,7 @@ proto.walletrpc.GetTransactionResponse.prototype.toObject = function(opt_include
 proto.walletrpc.GetTransactionResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     transaction: (f = msg.getTransaction()) && proto.walletrpc.TransactionDetails.toObject(includeInstance, f),
-    confirmations: msg.getConfirmations(),
+    confirmations: jspb.Message.getFieldWithDefault(msg, 2, 0),
     blockHash: msg.getBlockHash_asB64()
   };
 
@@ -7126,35 +6535,25 @@ proto.walletrpc.GetTransactionResponse.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetTransactionResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetTransactionResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetTransactionResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetTransactionResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetTransactionResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetTransactionResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetTransactionResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTransaction();
+  f = message.getTransaction();
   if (f != null) {
     writer.writeMessage(
       1,
@@ -7162,14 +6561,14 @@ proto.walletrpc.GetTransactionResponse.prototype.serializeBinaryToWriter = funct
       proto.walletrpc.TransactionDetails.serializeBinaryToWriter
     );
   }
-  f = this.getConfirmations();
+  f = message.getConfirmations();
   if (f !== 0) {
     writer.writeInt32(
       2,
       f
     );
   }
-  f = this.getBlockHash_asU8();
+  f = message.getBlockHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
@@ -7180,25 +6579,16 @@ proto.walletrpc.GetTransactionResponse.prototype.serializeBinaryToWriter = funct
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetTransactionResponse} The clone.
- */
-proto.walletrpc.GetTransactionResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetTransactionResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional TransactionDetails transaction = 1;
- * @return {proto.walletrpc.TransactionDetails}
+ * @return {?proto.walletrpc.TransactionDetails}
  */
 proto.walletrpc.GetTransactionResponse.prototype.getTransaction = function() {
-  return /** @type{proto.walletrpc.TransactionDetails} */ (
+  return /** @type{?proto.walletrpc.TransactionDetails} */ (
     jspb.Message.getWrapperField(this, proto.walletrpc.TransactionDetails, 1));
 };
 
 
-/** @param {proto.walletrpc.TransactionDetails|undefined} value  */
+/** @param {?proto.walletrpc.TransactionDetails|undefined} value */
 proto.walletrpc.GetTransactionResponse.prototype.setTransaction = function(value) {
   jspb.Message.setWrapperField(this, 1, value);
 };
@@ -7211,7 +6601,7 @@ proto.walletrpc.GetTransactionResponse.prototype.clearTransaction = function() {
 
 /**
  * Returns whether this field is set.
- * @return{!boolean}
+ * @return {!boolean}
  */
 proto.walletrpc.GetTransactionResponse.prototype.hasTransaction = function() {
   return jspb.Message.getField(this, 1) != null;
@@ -7223,11 +6613,11 @@ proto.walletrpc.GetTransactionResponse.prototype.hasTransaction = function() {
  * @return {number}
  */
 proto.walletrpc.GetTransactionResponse.prototype.getConfirmations = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GetTransactionResponse.prototype.setConfirmations = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -7238,7 +6628,7 @@ proto.walletrpc.GetTransactionResponse.prototype.setConfirmations = function(val
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.GetTransactionResponse.prototype.getBlockHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -7266,7 +6656,7 @@ proto.walletrpc.GetTransactionResponse.prototype.getBlockHash_asU8 = function() 
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.GetTransactionResponse.prototype.setBlockHash = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -7319,11 +6709,11 @@ proto.walletrpc.GetTransactionsRequest.prototype.toObject = function(opt_include
 proto.walletrpc.GetTransactionsRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     startingBlockHash: msg.getStartingBlockHash_asB64(),
-    startingBlockHeight: msg.getStartingBlockHeight(),
+    startingBlockHeight: jspb.Message.getFieldWithDefault(msg, 2, 0),
     endingBlockHash: msg.getEndingBlockHash_asB64(),
-    endingBlockHeight: msg.getEndingBlockHeight(),
-    minimumRecentTransactions: msg.getMinimumRecentTransactions(),
-    targetTransactionCount: msg.getTargetTransactionCount()
+    endingBlockHeight: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    minimumRecentTransactions: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    targetTransactionCount: jspb.Message.getFieldWithDefault(msg, 6, 0)
   };
 
   if (includeInstance) {
@@ -7394,70 +6784,60 @@ proto.walletrpc.GetTransactionsRequest.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetTransactionsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetTransactionsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetTransactionsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetTransactionsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetTransactionsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetTransactionsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetTransactionsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getStartingBlockHash_asU8();
+  f = message.getStartingBlockHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getStartingBlockHeight();
+  f = message.getStartingBlockHeight();
   if (f !== 0) {
     writer.writeSint32(
       2,
       f
     );
   }
-  f = this.getEndingBlockHash_asU8();
+  f = message.getEndingBlockHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
       f
     );
   }
-  f = this.getEndingBlockHeight();
+  f = message.getEndingBlockHeight();
   if (f !== 0) {
     writer.writeInt32(
       4,
       f
     );
   }
-  f = this.getMinimumRecentTransactions();
+  f = message.getMinimumRecentTransactions();
   if (f !== 0) {
     writer.writeInt32(
       5,
       f
     );
   }
-  f = this.getTargetTransactionCount();
+  f = message.getTargetTransactionCount();
   if (f !== 0) {
     writer.writeInt32(
       6,
@@ -7468,20 +6848,11 @@ proto.walletrpc.GetTransactionsRequest.prototype.serializeBinaryToWriter = funct
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetTransactionsRequest} The clone.
- */
-proto.walletrpc.GetTransactionsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetTransactionsRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes starting_block_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.GetTransactionsRequest.prototype.getStartingBlockHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -7509,7 +6880,7 @@ proto.walletrpc.GetTransactionsRequest.prototype.getStartingBlockHash_asU8 = fun
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.GetTransactionsRequest.prototype.setStartingBlockHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -7520,11 +6891,11 @@ proto.walletrpc.GetTransactionsRequest.prototype.setStartingBlockHash = function
  * @return {number}
  */
 proto.walletrpc.GetTransactionsRequest.prototype.getStartingBlockHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GetTransactionsRequest.prototype.setStartingBlockHeight = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -7535,7 +6906,7 @@ proto.walletrpc.GetTransactionsRequest.prototype.setStartingBlockHeight = functi
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.GetTransactionsRequest.prototype.getEndingBlockHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -7563,7 +6934,7 @@ proto.walletrpc.GetTransactionsRequest.prototype.getEndingBlockHash_asU8 = funct
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.GetTransactionsRequest.prototype.setEndingBlockHash = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -7574,11 +6945,11 @@ proto.walletrpc.GetTransactionsRequest.prototype.setEndingBlockHash = function(v
  * @return {number}
  */
 proto.walletrpc.GetTransactionsRequest.prototype.getEndingBlockHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GetTransactionsRequest.prototype.setEndingBlockHeight = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -7589,11 +6960,11 @@ proto.walletrpc.GetTransactionsRequest.prototype.setEndingBlockHeight = function
  * @return {number}
  */
 proto.walletrpc.GetTransactionsRequest.prototype.getMinimumRecentTransactions = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GetTransactionsRequest.prototype.setMinimumRecentTransactions = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -7604,11 +6975,11 @@ proto.walletrpc.GetTransactionsRequest.prototype.setMinimumRecentTransactions = 
  * @return {number}
  */
 proto.walletrpc.GetTransactionsRequest.prototype.getTargetTransactionCount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 6, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GetTransactionsRequest.prototype.setTargetTransactionCount = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -7714,8 +7085,7 @@ proto.walletrpc.GetTransactionsResponse.deserializeBinaryFromReader = function(m
     case 2:
       var value = new proto.walletrpc.TransactionDetails;
       reader.readMessage(value,proto.walletrpc.TransactionDetails.deserializeBinaryFromReader);
-      msg.getUnminedTransactionsList().push(value);
-      msg.setUnminedTransactionsList(msg.getUnminedTransactionsList());
+      msg.addUnminedTransactions(value);
       break;
     default:
       reader.skipField();
@@ -7727,35 +7097,25 @@ proto.walletrpc.GetTransactionsResponse.deserializeBinaryFromReader = function(m
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetTransactionsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetTransactionsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetTransactionsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetTransactionsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetTransactionsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetTransactionsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetTransactionsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getMinedTransactions();
+  f = message.getMinedTransactions();
   if (f != null) {
     writer.writeMessage(
       1,
@@ -7763,7 +7123,7 @@ proto.walletrpc.GetTransactionsResponse.prototype.serializeBinaryToWriter = func
       proto.walletrpc.BlockDetails.serializeBinaryToWriter
     );
   }
-  f = this.getUnminedTransactionsList();
+  f = message.getUnminedTransactionsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       2,
@@ -7775,25 +7135,16 @@ proto.walletrpc.GetTransactionsResponse.prototype.serializeBinaryToWriter = func
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetTransactionsResponse} The clone.
- */
-proto.walletrpc.GetTransactionsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetTransactionsResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional BlockDetails mined_transactions = 1;
- * @return {proto.walletrpc.BlockDetails}
+ * @return {?proto.walletrpc.BlockDetails}
  */
 proto.walletrpc.GetTransactionsResponse.prototype.getMinedTransactions = function() {
-  return /** @type{proto.walletrpc.BlockDetails} */ (
+  return /** @type{?proto.walletrpc.BlockDetails} */ (
     jspb.Message.getWrapperField(this, proto.walletrpc.BlockDetails, 1));
 };
 
 
-/** @param {proto.walletrpc.BlockDetails|undefined} value  */
+/** @param {?proto.walletrpc.BlockDetails|undefined} value */
 proto.walletrpc.GetTransactionsResponse.prototype.setMinedTransactions = function(value) {
   jspb.Message.setWrapperField(this, 1, value);
 };
@@ -7806,7 +7157,7 @@ proto.walletrpc.GetTransactionsResponse.prototype.clearMinedTransactions = funct
 
 /**
  * Returns whether this field is set.
- * @return{!boolean}
+ * @return {!boolean}
  */
 proto.walletrpc.GetTransactionsResponse.prototype.hasMinedTransactions = function() {
   return jspb.Message.getField(this, 1) != null;
@@ -7825,9 +7176,19 @@ proto.walletrpc.GetTransactionsResponse.prototype.getUnminedTransactionsList = f
 };
 
 
-/** @param {Array.<!proto.walletrpc.TransactionDetails>} value  */
+/** @param {!Array.<!proto.walletrpc.TransactionDetails>} value */
 proto.walletrpc.GetTransactionsResponse.prototype.setUnminedTransactionsList = function(value) {
   jspb.Message.setRepeatedWrapperField(this, 2, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.TransactionDetails=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.TransactionDetails}
+ */
+proto.walletrpc.GetTransactionsResponse.prototype.addUnminedTransactions = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.walletrpc.TransactionDetails, opt_index);
 };
 
 
@@ -7933,35 +7294,25 @@ proto.walletrpc.GetTicketRequest.deserializeBinaryFromReader = function(msg, rea
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetTicketRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetTicketRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetTicketRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetTicketRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetTicketRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetTicketRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetTicketRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTicketHash_asU8();
+  f = message.getTicketHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
@@ -7972,20 +7323,11 @@ proto.walletrpc.GetTicketRequest.prototype.serializeBinaryToWriter = function (w
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetTicketRequest} The clone.
- */
-proto.walletrpc.GetTicketRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetTicketRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes ticket_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.GetTicketRequest.prototype.getTicketHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -8013,7 +7355,7 @@ proto.walletrpc.GetTicketRequest.prototype.getTicketHash_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.GetTicketRequest.prototype.setTicketHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -8066,10 +7408,10 @@ proto.walletrpc.GetTicketsRequest.prototype.toObject = function(opt_includeInsta
 proto.walletrpc.GetTicketsRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     startingBlockHash: msg.getStartingBlockHash_asB64(),
-    startingBlockHeight: msg.getStartingBlockHeight(),
+    startingBlockHeight: jspb.Message.getFieldWithDefault(msg, 2, 0),
     endingBlockHash: msg.getEndingBlockHash_asB64(),
-    endingBlockHeight: msg.getEndingBlockHeight(),
-    targetTicketCount: msg.getTargetTicketCount()
+    endingBlockHeight: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    targetTicketCount: jspb.Message.getFieldWithDefault(msg, 5, 0)
   };
 
   if (includeInstance) {
@@ -8136,63 +7478,53 @@ proto.walletrpc.GetTicketsRequest.deserializeBinaryFromReader = function(msg, re
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetTicketsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetTicketsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetTicketsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetTicketsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetTicketsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetTicketsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetTicketsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getStartingBlockHash_asU8();
+  f = message.getStartingBlockHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getStartingBlockHeight();
+  f = message.getStartingBlockHeight();
   if (f !== 0) {
     writer.writeSint32(
       2,
       f
     );
   }
-  f = this.getEndingBlockHash_asU8();
+  f = message.getEndingBlockHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
       f
     );
   }
-  f = this.getEndingBlockHeight();
+  f = message.getEndingBlockHeight();
   if (f !== 0) {
     writer.writeInt32(
       4,
       f
     );
   }
-  f = this.getTargetTicketCount();
+  f = message.getTargetTicketCount();
   if (f !== 0) {
     writer.writeInt32(
       5,
@@ -8203,20 +7535,11 @@ proto.walletrpc.GetTicketsRequest.prototype.serializeBinaryToWriter = function (
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetTicketsRequest} The clone.
- */
-proto.walletrpc.GetTicketsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetTicketsRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes starting_block_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.GetTicketsRequest.prototype.getStartingBlockHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -8244,7 +7567,7 @@ proto.walletrpc.GetTicketsRequest.prototype.getStartingBlockHash_asU8 = function
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.GetTicketsRequest.prototype.setStartingBlockHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -8255,11 +7578,11 @@ proto.walletrpc.GetTicketsRequest.prototype.setStartingBlockHash = function(valu
  * @return {number}
  */
 proto.walletrpc.GetTicketsRequest.prototype.getStartingBlockHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GetTicketsRequest.prototype.setStartingBlockHeight = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -8270,7 +7593,7 @@ proto.walletrpc.GetTicketsRequest.prototype.setStartingBlockHeight = function(va
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.GetTicketsRequest.prototype.getEndingBlockHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -8298,7 +7621,7 @@ proto.walletrpc.GetTicketsRequest.prototype.getEndingBlockHash_asU8 = function()
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.GetTicketsRequest.prototype.setEndingBlockHash = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -8309,11 +7632,11 @@ proto.walletrpc.GetTicketsRequest.prototype.setEndingBlockHash = function(value)
  * @return {number}
  */
 proto.walletrpc.GetTicketsRequest.prototype.getEndingBlockHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GetTicketsRequest.prototype.setEndingBlockHeight = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -8324,11 +7647,11 @@ proto.walletrpc.GetTicketsRequest.prototype.setEndingBlockHeight = function(valu
  * @return {number}
  */
 proto.walletrpc.GetTicketsRequest.prototype.getTargetTicketCount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GetTicketsRequest.prototype.setTargetTicketCount = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -8438,35 +7761,25 @@ proto.walletrpc.GetTicketsResponse.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetTicketsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetTicketsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetTicketsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetTicketsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetTicketsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetTicketsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetTicketsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTicket();
+  f = message.getTicket();
   if (f != null) {
     writer.writeMessage(
       1,
@@ -8474,7 +7787,7 @@ proto.walletrpc.GetTicketsResponse.prototype.serializeBinaryToWriter = function 
       proto.walletrpc.GetTicketsResponse.TicketDetails.serializeBinaryToWriter
     );
   }
-  f = this.getBlock();
+  f = message.getBlock();
   if (f != null) {
     writer.writeMessage(
       2,
@@ -8482,75 +7795,6 @@ proto.walletrpc.GetTicketsResponse.prototype.serializeBinaryToWriter = function 
       proto.walletrpc.GetTicketsResponse.BlockDetails.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetTicketsResponse} The clone.
- */
-proto.walletrpc.GetTicketsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetTicketsResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * optional TicketDetails ticket = 1;
- * @return {proto.walletrpc.GetTicketsResponse.TicketDetails}
- */
-proto.walletrpc.GetTicketsResponse.prototype.getTicket = function() {
-  return /** @type{proto.walletrpc.GetTicketsResponse.TicketDetails} */ (
-    jspb.Message.getWrapperField(this, proto.walletrpc.GetTicketsResponse.TicketDetails, 1));
-};
-
-
-/** @param {proto.walletrpc.GetTicketsResponse.TicketDetails|undefined} value  */
-proto.walletrpc.GetTicketsResponse.prototype.setTicket = function(value) {
-  jspb.Message.setWrapperField(this, 1, value);
-};
-
-
-proto.walletrpc.GetTicketsResponse.prototype.clearTicket = function() {
-  this.setTicket(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return{!boolean}
- */
-proto.walletrpc.GetTicketsResponse.prototype.hasTicket = function() {
-  return jspb.Message.getField(this, 1) != null;
-};
-
-
-/**
- * optional BlockDetails block = 2;
- * @return {proto.walletrpc.GetTicketsResponse.BlockDetails}
- */
-proto.walletrpc.GetTicketsResponse.prototype.getBlock = function() {
-  return /** @type{proto.walletrpc.GetTicketsResponse.BlockDetails} */ (
-    jspb.Message.getWrapperField(this, proto.walletrpc.GetTicketsResponse.BlockDetails, 2));
-};
-
-
-/** @param {proto.walletrpc.GetTicketsResponse.BlockDetails|undefined} value  */
-proto.walletrpc.GetTicketsResponse.prototype.setBlock = function(value) {
-  jspb.Message.setWrapperField(this, 2, value);
-};
-
-
-proto.walletrpc.GetTicketsResponse.prototype.clearBlock = function() {
-  this.setBlock(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return{!boolean}
- */
-proto.walletrpc.GetTicketsResponse.prototype.hasBlock = function() {
-  return jspb.Message.getField(this, 2) != null;
 };
 
 
@@ -8602,7 +7846,7 @@ proto.walletrpc.GetTicketsResponse.TicketDetails.toObject = function(includeInst
   var f, obj = {
     ticket: (f = msg.getTicket()) && proto.walletrpc.TransactionDetails.toObject(includeInstance, f),
     spender: (f = msg.getSpender()) && proto.walletrpc.TransactionDetails.toObject(includeInstance, f),
-    ticketStatus: msg.getTicketStatus()
+    ticketStatus: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -8663,35 +7907,25 @@ proto.walletrpc.GetTicketsResponse.TicketDetails.deserializeBinaryFromReader = f
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetTicketsResponse.TicketDetails} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetTicketsResponse.TicketDetails.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetTicketsResponse.TicketDetails.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetTicketsResponse.TicketDetails} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetTicketsResponse.TicketDetails.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTicket();
+  f = message.getTicket();
   if (f != null) {
     writer.writeMessage(
       1,
@@ -8699,7 +7933,7 @@ proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.serializeBinaryToWrit
       proto.walletrpc.TransactionDetails.serializeBinaryToWriter
     );
   }
-  f = this.getSpender();
+  f = message.getSpender();
   if (f != null) {
     writer.writeMessage(
       2,
@@ -8707,97 +7941,13 @@ proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.serializeBinaryToWrit
       proto.walletrpc.TransactionDetails.serializeBinaryToWriter
     );
   }
-  f = this.getTicketStatus();
+  f = message.getTicketStatus();
   if (f !== 0.0) {
     writer.writeEnum(
       3,
       f
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetTicketsResponse.TicketDetails} The clone.
- */
-proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetTicketsResponse.TicketDetails} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * optional TransactionDetails ticket = 1;
- * @return {proto.walletrpc.TransactionDetails}
- */
-proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.getTicket = function() {
-  return /** @type{proto.walletrpc.TransactionDetails} */ (
-    jspb.Message.getWrapperField(this, proto.walletrpc.TransactionDetails, 1));
-};
-
-
-/** @param {proto.walletrpc.TransactionDetails|undefined} value  */
-proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.setTicket = function(value) {
-  jspb.Message.setWrapperField(this, 1, value);
-};
-
-
-proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.clearTicket = function() {
-  this.setTicket(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return{!boolean}
- */
-proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.hasTicket = function() {
-  return jspb.Message.getField(this, 1) != null;
-};
-
-
-/**
- * optional TransactionDetails spender = 2;
- * @return {proto.walletrpc.TransactionDetails}
- */
-proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.getSpender = function() {
-  return /** @type{proto.walletrpc.TransactionDetails} */ (
-    jspb.Message.getWrapperField(this, proto.walletrpc.TransactionDetails, 2));
-};
-
-
-/** @param {proto.walletrpc.TransactionDetails|undefined} value  */
-proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.setSpender = function(value) {
-  jspb.Message.setWrapperField(this, 2, value);
-};
-
-
-proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.clearSpender = function() {
-  this.setSpender(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return{!boolean}
- */
-proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.hasSpender = function() {
-  return jspb.Message.getField(this, 2) != null;
-};
-
-
-/**
- * optional TicketStatus ticket_status = 3;
- * @return {!proto.walletrpc.GetTicketsResponse.TicketDetails.TicketStatus}
- */
-proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.getTicketStatus = function() {
-  return /** @type {!proto.walletrpc.GetTicketsResponse.TicketDetails.TicketStatus} */ (jspb.Message.getFieldProto3(this, 3, 0));
-};
-
-
-/** @param {!proto.walletrpc.GetTicketsResponse.TicketDetails.TicketStatus} value  */
-proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.setTicketStatus = function(value) {
-  jspb.Message.setField(this, 3, value);
 };
 
 
@@ -8814,6 +7964,81 @@ proto.walletrpc.GetTicketsResponse.TicketDetails.TicketStatus = {
   EXPIRED: 6,
   REVOKED: 7
 };
+
+/**
+ * optional TransactionDetails ticket = 1;
+ * @return {?proto.walletrpc.TransactionDetails}
+ */
+proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.getTicket = function() {
+  return /** @type{?proto.walletrpc.TransactionDetails} */ (
+    jspb.Message.getWrapperField(this, proto.walletrpc.TransactionDetails, 1));
+};
+
+
+/** @param {?proto.walletrpc.TransactionDetails|undefined} value */
+proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.setTicket = function(value) {
+  jspb.Message.setWrapperField(this, 1, value);
+};
+
+
+proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.clearTicket = function() {
+  this.setTicket(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.hasTicket = function() {
+  return jspb.Message.getField(this, 1) != null;
+};
+
+
+/**
+ * optional TransactionDetails spender = 2;
+ * @return {?proto.walletrpc.TransactionDetails}
+ */
+proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.getSpender = function() {
+  return /** @type{?proto.walletrpc.TransactionDetails} */ (
+    jspb.Message.getWrapperField(this, proto.walletrpc.TransactionDetails, 2));
+};
+
+
+/** @param {?proto.walletrpc.TransactionDetails|undefined} value */
+proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.setSpender = function(value) {
+  jspb.Message.setWrapperField(this, 2, value);
+};
+
+
+proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.clearSpender = function() {
+  this.setSpender(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.hasSpender = function() {
+  return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * optional TicketStatus ticket_status = 3;
+ * @return {!proto.walletrpc.GetTicketsResponse.TicketDetails.TicketStatus}
+ */
+proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.getTicketStatus = function() {
+  return /** @type {!proto.walletrpc.GetTicketsResponse.TicketDetails.TicketStatus} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/** @param {!proto.walletrpc.GetTicketsResponse.TicketDetails.TicketStatus} value */
+proto.walletrpc.GetTicketsResponse.TicketDetails.prototype.setTicketStatus = function(value) {
+  jspb.Message.setField(this, 3, value);
+};
+
 
 
 /**
@@ -8862,8 +8087,8 @@ proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.toObject = function(op
 proto.walletrpc.GetTicketsResponse.BlockDetails.toObject = function(includeInstance, msg) {
   var f, obj = {
     hash: msg.getHash_asB64(),
-    height: msg.getHeight(),
-    timestamp: msg.getTimestamp()
+    height: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    timestamp: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -8922,49 +8147,39 @@ proto.walletrpc.GetTicketsResponse.BlockDetails.deserializeBinaryFromReader = fu
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetTicketsResponse.BlockDetails} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetTicketsResponse.BlockDetails.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetTicketsResponse.BlockDetails.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetTicketsResponse.BlockDetails} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetTicketsResponse.BlockDetails.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getHash_asU8();
+  f = message.getHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getHeight();
+  f = message.getHeight();
   if (f !== 0) {
     writer.writeInt32(
       2,
       f
     );
   }
-  f = this.getTimestamp();
+  f = message.getTimestamp();
   if (f !== 0) {
     writer.writeInt64(
       3,
@@ -8975,20 +8190,11 @@ proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.serializeBinaryToWrite
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetTicketsResponse.BlockDetails} The clone.
- */
-proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetTicketsResponse.BlockDetails} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.getHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -9016,7 +8222,7 @@ proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.getHash_asU8 = functio
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.setHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -9027,11 +8233,11 @@ proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.setHash = function(val
  * @return {number}
  */
 proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.getHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.setHeight = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -9042,13 +8248,73 @@ proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.setHeight = function(v
  * @return {number}
  */
 proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.getTimestamp = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GetTicketsResponse.BlockDetails.prototype.setTimestamp = function(value) {
   jspb.Message.setField(this, 3, value);
+};
+
+
+/**
+ * optional TicketDetails ticket = 1;
+ * @return {?proto.walletrpc.GetTicketsResponse.TicketDetails}
+ */
+proto.walletrpc.GetTicketsResponse.prototype.getTicket = function() {
+  return /** @type{?proto.walletrpc.GetTicketsResponse.TicketDetails} */ (
+    jspb.Message.getWrapperField(this, proto.walletrpc.GetTicketsResponse.TicketDetails, 1));
+};
+
+
+/** @param {?proto.walletrpc.GetTicketsResponse.TicketDetails|undefined} value */
+proto.walletrpc.GetTicketsResponse.prototype.setTicket = function(value) {
+  jspb.Message.setWrapperField(this, 1, value);
+};
+
+
+proto.walletrpc.GetTicketsResponse.prototype.clearTicket = function() {
+  this.setTicket(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.walletrpc.GetTicketsResponse.prototype.hasTicket = function() {
+  return jspb.Message.getField(this, 1) != null;
+};
+
+
+/**
+ * optional BlockDetails block = 2;
+ * @return {?proto.walletrpc.GetTicketsResponse.BlockDetails}
+ */
+proto.walletrpc.GetTicketsResponse.prototype.getBlock = function() {
+  return /** @type{?proto.walletrpc.GetTicketsResponse.BlockDetails} */ (
+    jspb.Message.getWrapperField(this, proto.walletrpc.GetTicketsResponse.BlockDetails, 2));
+};
+
+
+/** @param {?proto.walletrpc.GetTicketsResponse.BlockDetails|undefined} value */
+proto.walletrpc.GetTicketsResponse.prototype.setBlock = function(value) {
+  jspb.Message.setWrapperField(this, 2, value);
+};
+
+
+proto.walletrpc.GetTicketsResponse.prototype.clearBlock = function() {
+  this.setBlock(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.walletrpc.GetTicketsResponse.prototype.hasBlock = function() {
+  return jspb.Message.getField(this, 2) != null;
 };
 
 
@@ -9145,43 +8411,24 @@ proto.walletrpc.TicketPriceRequest.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.TicketPriceRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.TicketPriceRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.TicketPriceRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.TicketPriceRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.TicketPriceRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.TicketPriceRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.TicketPriceRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.TicketPriceRequest} The clone.
- */
-proto.walletrpc.TicketPriceRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.TicketPriceRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -9231,8 +8478,8 @@ proto.walletrpc.TicketPriceResponse.prototype.toObject = function(opt_includeIns
  */
 proto.walletrpc.TicketPriceResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    ticketPrice: msg.getTicketPrice(),
-    height: msg.getHeight()
+    ticketPrice: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    height: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -9287,42 +8534,32 @@ proto.walletrpc.TicketPriceResponse.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.TicketPriceResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.TicketPriceResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.TicketPriceResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.TicketPriceResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.TicketPriceResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.TicketPriceResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.TicketPriceResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTicketPrice();
+  f = message.getTicketPrice();
   if (f !== 0) {
     writer.writeInt64(
       1,
       f
     );
   }
-  f = this.getHeight();
+  f = message.getHeight();
   if (f !== 0) {
     writer.writeInt32(
       2,
@@ -9333,24 +8570,15 @@ proto.walletrpc.TicketPriceResponse.prototype.serializeBinaryToWriter = function
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.TicketPriceResponse} The clone.
- */
-proto.walletrpc.TicketPriceResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.TicketPriceResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional int64 ticket_price = 1;
  * @return {number}
  */
 proto.walletrpc.TicketPriceResponse.prototype.getTicketPrice = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketPriceResponse.prototype.setTicketPrice = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -9361,11 +8589,11 @@ proto.walletrpc.TicketPriceResponse.prototype.setTicketPrice = function(value) {
  * @return {number}
  */
 proto.walletrpc.TicketPriceResponse.prototype.getHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketPriceResponse.prototype.setHeight = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -9464,43 +8692,24 @@ proto.walletrpc.StakeInfoRequest.deserializeBinaryFromReader = function(msg, rea
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.StakeInfoRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.StakeInfoRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.StakeInfoRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.StakeInfoRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.StakeInfoRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.StakeInfoRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.StakeInfoRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.StakeInfoRequest} The clone.
- */
-proto.walletrpc.StakeInfoRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.StakeInfoRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -9550,17 +8759,17 @@ proto.walletrpc.StakeInfoResponse.prototype.toObject = function(opt_includeInsta
  */
 proto.walletrpc.StakeInfoResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    poolSize: msg.getPoolSize(),
-    allMempoolTix: msg.getAllMempoolTix(),
-    ownMempoolTix: msg.getOwnMempoolTix(),
-    immature: msg.getImmature(),
-    live: msg.getLive(),
-    voted: msg.getVoted(),
-    missed: msg.getMissed(),
-    revoked: msg.getRevoked(),
-    expired: msg.getExpired(),
-    totalSubsidy: msg.getTotalSubsidy(),
-    unspent: msg.getUnspent()
+    poolSize: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    allMempoolTix: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    ownMempoolTix: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    immature: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    live: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    voted: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    missed: jspb.Message.getFieldWithDefault(msg, 7, 0),
+    revoked: jspb.Message.getFieldWithDefault(msg, 8, 0),
+    expired: jspb.Message.getFieldWithDefault(msg, 9, 0),
+    totalSubsidy: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    unspent: jspb.Message.getFieldWithDefault(msg, 11, 0)
   };
 
   if (includeInstance) {
@@ -9651,105 +8860,95 @@ proto.walletrpc.StakeInfoResponse.deserializeBinaryFromReader = function(msg, re
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.StakeInfoResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.StakeInfoResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.StakeInfoResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.StakeInfoResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.StakeInfoResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.StakeInfoResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.StakeInfoResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPoolSize();
+  f = message.getPoolSize();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getAllMempoolTix();
+  f = message.getAllMempoolTix();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getOwnMempoolTix();
+  f = message.getOwnMempoolTix();
   if (f !== 0) {
     writer.writeUint32(
       3,
       f
     );
   }
-  f = this.getImmature();
+  f = message.getImmature();
   if (f !== 0) {
     writer.writeUint32(
       4,
       f
     );
   }
-  f = this.getLive();
+  f = message.getLive();
   if (f !== 0) {
     writer.writeUint32(
       5,
       f
     );
   }
-  f = this.getVoted();
+  f = message.getVoted();
   if (f !== 0) {
     writer.writeUint32(
       6,
       f
     );
   }
-  f = this.getMissed();
+  f = message.getMissed();
   if (f !== 0) {
     writer.writeUint32(
       7,
       f
     );
   }
-  f = this.getRevoked();
+  f = message.getRevoked();
   if (f !== 0) {
     writer.writeUint32(
       8,
       f
     );
   }
-  f = this.getExpired();
+  f = message.getExpired();
   if (f !== 0) {
     writer.writeUint32(
       9,
       f
     );
   }
-  f = this.getTotalSubsidy();
+  f = message.getTotalSubsidy();
   if (f !== 0) {
     writer.writeInt64(
       10,
       f
     );
   }
-  f = this.getUnspent();
+  f = message.getUnspent();
   if (f !== 0) {
     writer.writeUint32(
       11,
@@ -9760,24 +8959,15 @@ proto.walletrpc.StakeInfoResponse.prototype.serializeBinaryToWriter = function (
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.StakeInfoResponse} The clone.
- */
-proto.walletrpc.StakeInfoResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.StakeInfoResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 pool_size = 1;
  * @return {number}
  */
 proto.walletrpc.StakeInfoResponse.prototype.getPoolSize = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StakeInfoResponse.prototype.setPoolSize = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -9788,11 +8978,11 @@ proto.walletrpc.StakeInfoResponse.prototype.setPoolSize = function(value) {
  * @return {number}
  */
 proto.walletrpc.StakeInfoResponse.prototype.getAllMempoolTix = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StakeInfoResponse.prototype.setAllMempoolTix = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -9803,11 +8993,11 @@ proto.walletrpc.StakeInfoResponse.prototype.setAllMempoolTix = function(value) {
  * @return {number}
  */
 proto.walletrpc.StakeInfoResponse.prototype.getOwnMempoolTix = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StakeInfoResponse.prototype.setOwnMempoolTix = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -9818,11 +9008,11 @@ proto.walletrpc.StakeInfoResponse.prototype.setOwnMempoolTix = function(value) {
  * @return {number}
  */
 proto.walletrpc.StakeInfoResponse.prototype.getImmature = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StakeInfoResponse.prototype.setImmature = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -9833,11 +9023,11 @@ proto.walletrpc.StakeInfoResponse.prototype.setImmature = function(value) {
  * @return {number}
  */
 proto.walletrpc.StakeInfoResponse.prototype.getLive = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StakeInfoResponse.prototype.setLive = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -9848,11 +9038,11 @@ proto.walletrpc.StakeInfoResponse.prototype.setLive = function(value) {
  * @return {number}
  */
 proto.walletrpc.StakeInfoResponse.prototype.getVoted = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 6, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StakeInfoResponse.prototype.setVoted = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -9863,11 +9053,11 @@ proto.walletrpc.StakeInfoResponse.prototype.setVoted = function(value) {
  * @return {number}
  */
 proto.walletrpc.StakeInfoResponse.prototype.getMissed = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 7, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StakeInfoResponse.prototype.setMissed = function(value) {
   jspb.Message.setField(this, 7, value);
 };
@@ -9878,11 +9068,11 @@ proto.walletrpc.StakeInfoResponse.prototype.setMissed = function(value) {
  * @return {number}
  */
 proto.walletrpc.StakeInfoResponse.prototype.getRevoked = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 8, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StakeInfoResponse.prototype.setRevoked = function(value) {
   jspb.Message.setField(this, 8, value);
 };
@@ -9893,11 +9083,11 @@ proto.walletrpc.StakeInfoResponse.prototype.setRevoked = function(value) {
  * @return {number}
  */
 proto.walletrpc.StakeInfoResponse.prototype.getExpired = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 9, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 9, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StakeInfoResponse.prototype.setExpired = function(value) {
   jspb.Message.setField(this, 9, value);
 };
@@ -9908,11 +9098,11 @@ proto.walletrpc.StakeInfoResponse.prototype.setExpired = function(value) {
  * @return {number}
  */
 proto.walletrpc.StakeInfoResponse.prototype.getTotalSubsidy = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 10, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StakeInfoResponse.prototype.setTotalSubsidy = function(value) {
   jspb.Message.setField(this, 10, value);
 };
@@ -9923,11 +9113,11 @@ proto.walletrpc.StakeInfoResponse.prototype.setTotalSubsidy = function(value) {
  * @return {number}
  */
 proto.walletrpc.StakeInfoResponse.prototype.getUnspent = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 11, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 11, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StakeInfoResponse.prototype.setUnspent = function(value) {
   jspb.Message.setField(this, 11, value);
 };
@@ -9980,7 +9170,7 @@ proto.walletrpc.BlockInfoRequest.prototype.toObject = function(opt_includeInstan
 proto.walletrpc.BlockInfoRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     blockHash: msg.getBlockHash_asB64(),
-    blockHeight: msg.getBlockHeight()
+    blockHeight: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -10035,42 +9225,32 @@ proto.walletrpc.BlockInfoRequest.deserializeBinaryFromReader = function(msg, rea
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.BlockInfoRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.BlockInfoRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.BlockInfoRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.BlockInfoRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.BlockInfoRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.BlockInfoRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.BlockInfoRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getBlockHash_asU8();
+  f = message.getBlockHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getBlockHeight();
+  f = message.getBlockHeight();
   if (f !== 0) {
     writer.writeInt32(
       2,
@@ -10081,20 +9261,11 @@ proto.walletrpc.BlockInfoRequest.prototype.serializeBinaryToWriter = function (w
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.BlockInfoRequest} The clone.
- */
-proto.walletrpc.BlockInfoRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.BlockInfoRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes block_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.BlockInfoRequest.prototype.getBlockHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -10122,7 +9293,7 @@ proto.walletrpc.BlockInfoRequest.prototype.getBlockHash_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.BlockInfoRequest.prototype.setBlockHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -10133,11 +9304,11 @@ proto.walletrpc.BlockInfoRequest.prototype.setBlockHash = function(value) {
  * @return {number}
  */
 proto.walletrpc.BlockInfoRequest.prototype.getBlockHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BlockInfoRequest.prototype.setBlockHeight = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -10190,12 +9361,12 @@ proto.walletrpc.BlockInfoResponse.prototype.toObject = function(opt_includeInsta
 proto.walletrpc.BlockInfoResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     blockHash: msg.getBlockHash_asB64(),
-    blockHeight: msg.getBlockHeight(),
-    confirmations: msg.getConfirmations(),
-    timestamp: msg.getTimestamp(),
+    blockHeight: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    confirmations: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    timestamp: jspb.Message.getFieldWithDefault(msg, 4, 0),
     blockHeader: msg.getBlockHeader_asB64(),
-    stakeInvalidated: msg.getStakeInvalidated(),
-    approvesParent: msg.getApprovesParent()
+    stakeInvalidated: jspb.Message.getFieldWithDefault(msg, 6, false),
+    approvesParent: jspb.Message.getFieldWithDefault(msg, 7, false)
   };
 
   if (includeInstance) {
@@ -10270,77 +9441,67 @@ proto.walletrpc.BlockInfoResponse.deserializeBinaryFromReader = function(msg, re
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.BlockInfoResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.BlockInfoResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.BlockInfoResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.BlockInfoResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.BlockInfoResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.BlockInfoResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.BlockInfoResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getBlockHash_asU8();
+  f = message.getBlockHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getBlockHeight();
+  f = message.getBlockHeight();
   if (f !== 0) {
     writer.writeInt32(
       2,
       f
     );
   }
-  f = this.getConfirmations();
+  f = message.getConfirmations();
   if (f !== 0) {
     writer.writeInt32(
       3,
       f
     );
   }
-  f = this.getTimestamp();
+  f = message.getTimestamp();
   if (f !== 0) {
     writer.writeInt64(
       4,
       f
     );
   }
-  f = this.getBlockHeader_asU8();
+  f = message.getBlockHeader_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       5,
       f
     );
   }
-  f = this.getStakeInvalidated();
+  f = message.getStakeInvalidated();
   if (f) {
     writer.writeBool(
       6,
       f
     );
   }
-  f = this.getApprovesParent();
+  f = message.getApprovesParent();
   if (f) {
     writer.writeBool(
       7,
@@ -10351,20 +9512,11 @@ proto.walletrpc.BlockInfoResponse.prototype.serializeBinaryToWriter = function (
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.BlockInfoResponse} The clone.
- */
-proto.walletrpc.BlockInfoResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.BlockInfoResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes block_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.BlockInfoResponse.prototype.getBlockHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -10392,7 +9544,7 @@ proto.walletrpc.BlockInfoResponse.prototype.getBlockHash_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.BlockInfoResponse.prototype.setBlockHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -10403,11 +9555,11 @@ proto.walletrpc.BlockInfoResponse.prototype.setBlockHash = function(value) {
  * @return {number}
  */
 proto.walletrpc.BlockInfoResponse.prototype.getBlockHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BlockInfoResponse.prototype.setBlockHeight = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -10418,11 +9570,11 @@ proto.walletrpc.BlockInfoResponse.prototype.setBlockHeight = function(value) {
  * @return {number}
  */
 proto.walletrpc.BlockInfoResponse.prototype.getConfirmations = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BlockInfoResponse.prototype.setConfirmations = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -10433,11 +9585,11 @@ proto.walletrpc.BlockInfoResponse.prototype.setConfirmations = function(value) {
  * @return {number}
  */
 proto.walletrpc.BlockInfoResponse.prototype.getTimestamp = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BlockInfoResponse.prototype.setTimestamp = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -10448,7 +9600,7 @@ proto.walletrpc.BlockInfoResponse.prototype.setTimestamp = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.BlockInfoResponse.prototype.getBlockHeader = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 5, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
@@ -10476,7 +9628,7 @@ proto.walletrpc.BlockInfoResponse.prototype.getBlockHeader_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.BlockInfoResponse.prototype.setBlockHeader = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -10489,11 +9641,11 @@ proto.walletrpc.BlockInfoResponse.prototype.setBlockHeader = function(value) {
  * @return {boolean}
  */
 proto.walletrpc.BlockInfoResponse.prototype.getStakeInvalidated = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 6, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 6, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.BlockInfoResponse.prototype.setStakeInvalidated = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -10506,11 +9658,11 @@ proto.walletrpc.BlockInfoResponse.prototype.setStakeInvalidated = function(value
  * @return {boolean}
  */
 proto.walletrpc.BlockInfoResponse.prototype.getApprovesParent = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 7, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 7, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.BlockInfoResponse.prototype.setApprovesParent = function(value) {
   jspb.Message.setField(this, 7, value);
 };
@@ -10562,7 +9714,7 @@ proto.walletrpc.ChangePassphraseRequest.prototype.toObject = function(opt_includ
  */
 proto.walletrpc.ChangePassphraseRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    key: msg.getKey(),
+    key: jspb.Message.getFieldWithDefault(msg, 1, 0),
     oldPassphrase: msg.getOldPassphrase_asB64(),
     newPassphrase: msg.getNewPassphrase_asB64()
   };
@@ -10623,49 +9775,39 @@ proto.walletrpc.ChangePassphraseRequest.deserializeBinaryFromReader = function(m
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ChangePassphraseRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ChangePassphraseRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ChangePassphraseRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ChangePassphraseRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ChangePassphraseRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ChangePassphraseRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ChangePassphraseRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getKey();
+  f = message.getKey();
   if (f !== 0.0) {
     writer.writeEnum(
       1,
       f
     );
   }
-  f = this.getOldPassphrase_asU8();
+  f = message.getOldPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
       f
     );
   }
-  f = this.getNewPassphrase_asU8();
+  f = message.getNewPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
@@ -10676,24 +9818,23 @@ proto.walletrpc.ChangePassphraseRequest.prototype.serializeBinaryToWriter = func
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ChangePassphraseRequest} The clone.
+ * @enum {number}
  */
-proto.walletrpc.ChangePassphraseRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ChangePassphraseRequest} */ (jspb.Message.cloneMessage(this));
+proto.walletrpc.ChangePassphraseRequest.Key = {
+  PRIVATE: 0,
+  PUBLIC: 1
 };
-
 
 /**
  * optional Key key = 1;
  * @return {!proto.walletrpc.ChangePassphraseRequest.Key}
  */
 proto.walletrpc.ChangePassphraseRequest.prototype.getKey = function() {
-  return /** @type {!proto.walletrpc.ChangePassphraseRequest.Key} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {!proto.walletrpc.ChangePassphraseRequest.Key} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {!proto.walletrpc.ChangePassphraseRequest.Key} value  */
+/** @param {!proto.walletrpc.ChangePassphraseRequest.Key} value */
 proto.walletrpc.ChangePassphraseRequest.prototype.setKey = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -10704,7 +9845,7 @@ proto.walletrpc.ChangePassphraseRequest.prototype.setKey = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.ChangePassphraseRequest.prototype.getOldPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -10732,7 +9873,7 @@ proto.walletrpc.ChangePassphraseRequest.prototype.getOldPassphrase_asU8 = functi
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.ChangePassphraseRequest.prototype.setOldPassphrase = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -10743,7 +9884,7 @@ proto.walletrpc.ChangePassphraseRequest.prototype.setOldPassphrase = function(va
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.ChangePassphraseRequest.prototype.getNewPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -10771,19 +9912,11 @@ proto.walletrpc.ChangePassphraseRequest.prototype.getNewPassphrase_asU8 = functi
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.ChangePassphraseRequest.prototype.setNewPassphrase = function(value) {
   jspb.Message.setField(this, 3, value);
 };
 
-
-/**
- * @enum {number}
- */
-proto.walletrpc.ChangePassphraseRequest.Key = {
-  PRIVATE: 0,
-  PUBLIC: 1
-};
 
 
 /**
@@ -10878,43 +10011,24 @@ proto.walletrpc.ChangePassphraseResponse.deserializeBinaryFromReader = function(
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ChangePassphraseResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ChangePassphraseResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ChangePassphraseResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ChangePassphraseResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ChangePassphraseResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ChangePassphraseResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ChangePassphraseResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ChangePassphraseResponse} The clone.
- */
-proto.walletrpc.ChangePassphraseResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ChangePassphraseResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -10964,11 +10078,11 @@ proto.walletrpc.FundTransactionRequest.prototype.toObject = function(opt_include
  */
 proto.walletrpc.FundTransactionRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    account: msg.getAccount(),
-    targetAmount: msg.getTargetAmount(),
-    requiredConfirmations: msg.getRequiredConfirmations(),
-    includeImmatureCoinbases: msg.getIncludeImmatureCoinbases(),
-    includeChangeScript: msg.getIncludeChangeScript()
+    account: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    targetAmount: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    requiredConfirmations: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    includeImmatureCoinbases: jspb.Message.getFieldWithDefault(msg, 4, false),
+    includeChangeScript: jspb.Message.getFieldWithDefault(msg, 5, false)
   };
 
   if (includeInstance) {
@@ -11035,63 +10149,53 @@ proto.walletrpc.FundTransactionRequest.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.FundTransactionRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.FundTransactionRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.FundTransactionRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.FundTransactionRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.FundTransactionRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.FundTransactionRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.FundTransactionRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccount();
+  f = message.getAccount();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getTargetAmount();
+  f = message.getTargetAmount();
   if (f !== 0) {
     writer.writeInt64(
       2,
       f
     );
   }
-  f = this.getRequiredConfirmations();
+  f = message.getRequiredConfirmations();
   if (f !== 0) {
     writer.writeInt32(
       3,
       f
     );
   }
-  f = this.getIncludeImmatureCoinbases();
+  f = message.getIncludeImmatureCoinbases();
   if (f) {
     writer.writeBool(
       4,
       f
     );
   }
-  f = this.getIncludeChangeScript();
+  f = message.getIncludeChangeScript();
   if (f) {
     writer.writeBool(
       5,
@@ -11102,24 +10206,15 @@ proto.walletrpc.FundTransactionRequest.prototype.serializeBinaryToWriter = funct
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.FundTransactionRequest} The clone.
- */
-proto.walletrpc.FundTransactionRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.FundTransactionRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account = 1;
  * @return {number}
  */
 proto.walletrpc.FundTransactionRequest.prototype.getAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FundTransactionRequest.prototype.setAccount = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -11130,11 +10225,11 @@ proto.walletrpc.FundTransactionRequest.prototype.setAccount = function(value) {
  * @return {number}
  */
 proto.walletrpc.FundTransactionRequest.prototype.getTargetAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FundTransactionRequest.prototype.setTargetAmount = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -11145,11 +10240,11 @@ proto.walletrpc.FundTransactionRequest.prototype.setTargetAmount = function(valu
  * @return {number}
  */
 proto.walletrpc.FundTransactionRequest.prototype.getRequiredConfirmations = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FundTransactionRequest.prototype.setRequiredConfirmations = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -11162,11 +10257,11 @@ proto.walletrpc.FundTransactionRequest.prototype.setRequiredConfirmations = func
  * @return {boolean}
  */
 proto.walletrpc.FundTransactionRequest.prototype.getIncludeImmatureCoinbases = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 4, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 4, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.FundTransactionRequest.prototype.setIncludeImmatureCoinbases = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -11179,11 +10274,11 @@ proto.walletrpc.FundTransactionRequest.prototype.setIncludeImmatureCoinbases = f
  * @return {boolean}
  */
 proto.walletrpc.FundTransactionRequest.prototype.getIncludeChangeScript = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 5, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 5, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.FundTransactionRequest.prototype.setIncludeChangeScript = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -11244,7 +10339,7 @@ proto.walletrpc.FundTransactionResponse.toObject = function(includeInstance, msg
   var f, obj = {
     selectedOutputsList: jspb.Message.toObjectList(msg.getSelectedOutputsList(),
     proto.walletrpc.FundTransactionResponse.PreviousOutput.toObject, includeInstance),
-    totalAmount: msg.getTotalAmount(),
+    totalAmount: jspb.Message.getFieldWithDefault(msg, 2, 0),
     changePkScript: msg.getChangePkScript_asB64()
   };
 
@@ -11285,8 +10380,7 @@ proto.walletrpc.FundTransactionResponse.deserializeBinaryFromReader = function(m
     case 1:
       var value = new proto.walletrpc.FundTransactionResponse.PreviousOutput;
       reader.readMessage(value,proto.walletrpc.FundTransactionResponse.PreviousOutput.deserializeBinaryFromReader);
-      msg.getSelectedOutputsList().push(value);
-      msg.setSelectedOutputsList(msg.getSelectedOutputsList());
+      msg.addSelectedOutputs(value);
       break;
     case 2:
       var value = /** @type {number} */ (reader.readInt64());
@@ -11306,35 +10400,25 @@ proto.walletrpc.FundTransactionResponse.deserializeBinaryFromReader = function(m
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.FundTransactionResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.FundTransactionResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.FundTransactionResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.FundTransactionResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.FundTransactionResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.FundTransactionResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.FundTransactionResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSelectedOutputsList();
+  f = message.getSelectedOutputsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       1,
@@ -11342,106 +10426,20 @@ proto.walletrpc.FundTransactionResponse.prototype.serializeBinaryToWriter = func
       proto.walletrpc.FundTransactionResponse.PreviousOutput.serializeBinaryToWriter
     );
   }
-  f = this.getTotalAmount();
+  f = message.getTotalAmount();
   if (f !== 0) {
     writer.writeInt64(
       2,
       f
     );
   }
-  f = this.getChangePkScript_asU8();
+  f = message.getChangePkScript_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
       f
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.FundTransactionResponse} The clone.
- */
-proto.walletrpc.FundTransactionResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.FundTransactionResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * repeated PreviousOutput selected_outputs = 1;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.FundTransactionResponse.PreviousOutput>}
- */
-proto.walletrpc.FundTransactionResponse.prototype.getSelectedOutputsList = function() {
-  return /** @type{!Array.<!proto.walletrpc.FundTransactionResponse.PreviousOutput>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.FundTransactionResponse.PreviousOutput, 1));
-};
-
-
-/** @param {Array.<!proto.walletrpc.FundTransactionResponse.PreviousOutput>} value  */
-proto.walletrpc.FundTransactionResponse.prototype.setSelectedOutputsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 1, value);
-};
-
-
-proto.walletrpc.FundTransactionResponse.prototype.clearSelectedOutputsList = function() {
-  this.setSelectedOutputsList([]);
-};
-
-
-/**
- * optional int64 total_amount = 2;
- * @return {number}
- */
-proto.walletrpc.FundTransactionResponse.prototype.getTotalAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.FundTransactionResponse.prototype.setTotalAmount = function(value) {
-  jspb.Message.setField(this, 2, value);
-};
-
-
-/**
- * optional bytes change_pk_script = 3;
- * @return {!(string|Uint8Array)}
- */
-proto.walletrpc.FundTransactionResponse.prototype.getChangePkScript = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
-};
-
-
-/**
- * optional bytes change_pk_script = 3;
- * This is a type-conversion wrapper around `getChangePkScript()`
- * @return {string}
- */
-proto.walletrpc.FundTransactionResponse.prototype.getChangePkScript_asB64 = function() {
-  return /** @type {string} */ (jspb.Message.bytesAsB64(
-      this.getChangePkScript()));
-};
-
-
-/**
- * optional bytes change_pk_script = 3;
- * Note that Uint8Array is not supported on all browsers.
- * @see http://caniuse.com/Uint8Array
- * This is a type-conversion wrapper around `getChangePkScript()`
- * @return {!Uint8Array}
- */
-proto.walletrpc.FundTransactionResponse.prototype.getChangePkScript_asU8 = function() {
-  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
-      this.getChangePkScript()));
-};
-
-
-/** @param {!(string|Uint8Array)} value  */
-proto.walletrpc.FundTransactionResponse.prototype.setChangePkScript = function(value) {
-  jspb.Message.setField(this, 3, value);
 };
 
 
@@ -11492,12 +10490,12 @@ proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.toObject = func
 proto.walletrpc.FundTransactionResponse.PreviousOutput.toObject = function(includeInstance, msg) {
   var f, obj = {
     transactionHash: msg.getTransactionHash_asB64(),
-    outputIndex: msg.getOutputIndex(),
-    amount: msg.getAmount(),
+    outputIndex: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    amount: jspb.Message.getFieldWithDefault(msg, 3, 0),
     pkScript: msg.getPkScript_asB64(),
-    receiveTime: msg.getReceiveTime(),
-    fromCoinbase: msg.getFromCoinbase(),
-    tree: msg.getTree()
+    receiveTime: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    fromCoinbase: jspb.Message.getFieldWithDefault(msg, 6, false),
+    tree: jspb.Message.getFieldWithDefault(msg, 7, 0)
   };
 
   if (includeInstance) {
@@ -11572,77 +10570,67 @@ proto.walletrpc.FundTransactionResponse.PreviousOutput.deserializeBinaryFromRead
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.FundTransactionResponse.PreviousOutput} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.FundTransactionResponse.PreviousOutput.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.FundTransactionResponse.PreviousOutput.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.FundTransactionResponse.PreviousOutput} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.FundTransactionResponse.PreviousOutput.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTransactionHash_asU8();
+  f = message.getTransactionHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getOutputIndex();
+  f = message.getOutputIndex();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getAmount();
+  f = message.getAmount();
   if (f !== 0) {
     writer.writeInt64(
       3,
       f
     );
   }
-  f = this.getPkScript_asU8();
+  f = message.getPkScript_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       4,
       f
     );
   }
-  f = this.getReceiveTime();
+  f = message.getReceiveTime();
   if (f !== 0) {
     writer.writeInt64(
       5,
       f
     );
   }
-  f = this.getFromCoinbase();
+  f = message.getFromCoinbase();
   if (f) {
     writer.writeBool(
       6,
       f
     );
   }
-  f = this.getTree();
+  f = message.getTree();
   if (f !== 0) {
     writer.writeInt32(
       7,
@@ -11653,20 +10641,11 @@ proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.serializeBinary
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.FundTransactionResponse.PreviousOutput} The clone.
- */
-proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.FundTransactionResponse.PreviousOutput} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes transaction_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.getTransactionHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -11694,7 +10673,7 @@ proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.getTransactionH
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setTransactionHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -11705,11 +10684,11 @@ proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setTransactionH
  * @return {number}
  */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.getOutputIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setOutputIndex = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -11720,11 +10699,11 @@ proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setOutputIndex 
  * @return {number}
  */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.getAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setAmount = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -11735,7 +10714,7 @@ proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setAmount = fun
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.getPkScript = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 4, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
@@ -11763,7 +10742,7 @@ proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.getPkScript_asU
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setPkScript = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -11774,11 +10753,11 @@ proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setPkScript = f
  * @return {number}
  */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.getReceiveTime = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setReceiveTime = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -11791,11 +10770,11 @@ proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setReceiveTime 
  * @return {boolean}
  */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.getFromCoinbase = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 6, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 6, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setFromCoinbase = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -11806,13 +10785,100 @@ proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setFromCoinbase
  * @return {number}
  */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.getTree = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 7, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FundTransactionResponse.PreviousOutput.prototype.setTree = function(value) {
   jspb.Message.setField(this, 7, value);
+};
+
+
+/**
+ * repeated PreviousOutput selected_outputs = 1;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.FundTransactionResponse.PreviousOutput>}
+ */
+proto.walletrpc.FundTransactionResponse.prototype.getSelectedOutputsList = function() {
+  return /** @type{!Array.<!proto.walletrpc.FundTransactionResponse.PreviousOutput>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.FundTransactionResponse.PreviousOutput, 1));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.FundTransactionResponse.PreviousOutput>} value */
+proto.walletrpc.FundTransactionResponse.prototype.setSelectedOutputsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.FundTransactionResponse.PreviousOutput=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.FundTransactionResponse.PreviousOutput}
+ */
+proto.walletrpc.FundTransactionResponse.prototype.addSelectedOutputs = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.walletrpc.FundTransactionResponse.PreviousOutput, opt_index);
+};
+
+
+proto.walletrpc.FundTransactionResponse.prototype.clearSelectedOutputsList = function() {
+  this.setSelectedOutputsList([]);
+};
+
+
+/**
+ * optional int64 total_amount = 2;
+ * @return {number}
+ */
+proto.walletrpc.FundTransactionResponse.prototype.getTotalAmount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.FundTransactionResponse.prototype.setTotalAmount = function(value) {
+  jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * optional bytes change_pk_script = 3;
+ * @return {!(string|Uint8Array)}
+ */
+proto.walletrpc.FundTransactionResponse.prototype.getChangePkScript = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * optional bytes change_pk_script = 3;
+ * This is a type-conversion wrapper around `getChangePkScript()`
+ * @return {string}
+ */
+proto.walletrpc.FundTransactionResponse.prototype.getChangePkScript_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getChangePkScript()));
+};
+
+
+/**
+ * optional bytes change_pk_script = 3;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getChangePkScript()`
+ * @return {!Uint8Array}
+ */
+proto.walletrpc.FundTransactionResponse.prototype.getChangePkScript_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getChangePkScript()));
+};
+
+
+/** @param {!(string|Uint8Array)} value */
+proto.walletrpc.FundTransactionResponse.prototype.setChangePkScript = function(value) {
+  jspb.Message.setField(this, 3, value);
 };
 
 
@@ -11862,10 +10928,10 @@ proto.walletrpc.UnspentOutputsRequest.prototype.toObject = function(opt_includeI
  */
 proto.walletrpc.UnspentOutputsRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    account: msg.getAccount(),
-    targetAmount: msg.getTargetAmount(),
-    requiredConfirmations: msg.getRequiredConfirmations(),
-    includeImmatureCoinbases: msg.getIncludeImmatureCoinbases()
+    account: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    targetAmount: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    requiredConfirmations: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    includeImmatureCoinbases: jspb.Message.getFieldWithDefault(msg, 4, false)
   };
 
   if (includeInstance) {
@@ -11928,56 +10994,46 @@ proto.walletrpc.UnspentOutputsRequest.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.UnspentOutputsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.UnspentOutputsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.UnspentOutputsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.UnspentOutputsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.UnspentOutputsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.UnspentOutputsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.UnspentOutputsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccount();
+  f = message.getAccount();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getTargetAmount();
+  f = message.getTargetAmount();
   if (f !== 0) {
     writer.writeInt64(
       2,
       f
     );
   }
-  f = this.getRequiredConfirmations();
+  f = message.getRequiredConfirmations();
   if (f !== 0) {
     writer.writeInt32(
       3,
       f
     );
   }
-  f = this.getIncludeImmatureCoinbases();
+  f = message.getIncludeImmatureCoinbases();
   if (f) {
     writer.writeBool(
       4,
@@ -11988,24 +11044,15 @@ proto.walletrpc.UnspentOutputsRequest.prototype.serializeBinaryToWriter = functi
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.UnspentOutputsRequest} The clone.
- */
-proto.walletrpc.UnspentOutputsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.UnspentOutputsRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account = 1;
  * @return {number}
  */
 proto.walletrpc.UnspentOutputsRequest.prototype.getAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.UnspentOutputsRequest.prototype.setAccount = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -12016,11 +11063,11 @@ proto.walletrpc.UnspentOutputsRequest.prototype.setAccount = function(value) {
  * @return {number}
  */
 proto.walletrpc.UnspentOutputsRequest.prototype.getTargetAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.UnspentOutputsRequest.prototype.setTargetAmount = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -12031,11 +11078,11 @@ proto.walletrpc.UnspentOutputsRequest.prototype.setTargetAmount = function(value
  * @return {number}
  */
 proto.walletrpc.UnspentOutputsRequest.prototype.getRequiredConfirmations = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.UnspentOutputsRequest.prototype.setRequiredConfirmations = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -12048,11 +11095,11 @@ proto.walletrpc.UnspentOutputsRequest.prototype.setRequiredConfirmations = funct
  * @return {boolean}
  */
 proto.walletrpc.UnspentOutputsRequest.prototype.getIncludeImmatureCoinbases = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 4, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 4, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.UnspentOutputsRequest.prototype.setIncludeImmatureCoinbases = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -12105,13 +11152,13 @@ proto.walletrpc.UnspentOutputResponse.prototype.toObject = function(opt_includeI
 proto.walletrpc.UnspentOutputResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     transactionHash: msg.getTransactionHash_asB64(),
-    outputIndex: msg.getOutputIndex(),
-    amount: msg.getAmount(),
+    outputIndex: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    amount: jspb.Message.getFieldWithDefault(msg, 3, 0),
     pkScript: msg.getPkScript_asB64(),
-    receiveTime: msg.getReceiveTime(),
-    fromCoinbase: msg.getFromCoinbase(),
-    tree: msg.getTree(),
-    amountSum: msg.getAmountSum()
+    receiveTime: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    fromCoinbase: jspb.Message.getFieldWithDefault(msg, 6, false),
+    tree: jspb.Message.getFieldWithDefault(msg, 7, 0),
+    amountSum: jspb.Message.getFieldWithDefault(msg, 8, 0)
   };
 
   if (includeInstance) {
@@ -12190,84 +11237,74 @@ proto.walletrpc.UnspentOutputResponse.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.UnspentOutputResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.UnspentOutputResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.UnspentOutputResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.UnspentOutputResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.UnspentOutputResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.UnspentOutputResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.UnspentOutputResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTransactionHash_asU8();
+  f = message.getTransactionHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getOutputIndex();
+  f = message.getOutputIndex();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getAmount();
+  f = message.getAmount();
   if (f !== 0) {
     writer.writeInt64(
       3,
       f
     );
   }
-  f = this.getPkScript_asU8();
+  f = message.getPkScript_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       4,
       f
     );
   }
-  f = this.getReceiveTime();
+  f = message.getReceiveTime();
   if (f !== 0) {
     writer.writeInt64(
       5,
       f
     );
   }
-  f = this.getFromCoinbase();
+  f = message.getFromCoinbase();
   if (f) {
     writer.writeBool(
       6,
       f
     );
   }
-  f = this.getTree();
+  f = message.getTree();
   if (f !== 0) {
     writer.writeInt32(
       7,
       f
     );
   }
-  f = this.getAmountSum();
+  f = message.getAmountSum();
   if (f !== 0) {
     writer.writeInt64(
       8,
@@ -12278,20 +11315,11 @@ proto.walletrpc.UnspentOutputResponse.prototype.serializeBinaryToWriter = functi
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.UnspentOutputResponse} The clone.
- */
-proto.walletrpc.UnspentOutputResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.UnspentOutputResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes transaction_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.UnspentOutputResponse.prototype.getTransactionHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -12319,7 +11347,7 @@ proto.walletrpc.UnspentOutputResponse.prototype.getTransactionHash_asU8 = functi
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.UnspentOutputResponse.prototype.setTransactionHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -12330,11 +11358,11 @@ proto.walletrpc.UnspentOutputResponse.prototype.setTransactionHash = function(va
  * @return {number}
  */
 proto.walletrpc.UnspentOutputResponse.prototype.getOutputIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.UnspentOutputResponse.prototype.setOutputIndex = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -12345,11 +11373,11 @@ proto.walletrpc.UnspentOutputResponse.prototype.setOutputIndex = function(value)
  * @return {number}
  */
 proto.walletrpc.UnspentOutputResponse.prototype.getAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.UnspentOutputResponse.prototype.setAmount = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -12360,7 +11388,7 @@ proto.walletrpc.UnspentOutputResponse.prototype.setAmount = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.UnspentOutputResponse.prototype.getPkScript = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 4, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
@@ -12388,7 +11416,7 @@ proto.walletrpc.UnspentOutputResponse.prototype.getPkScript_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.UnspentOutputResponse.prototype.setPkScript = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -12399,11 +11427,11 @@ proto.walletrpc.UnspentOutputResponse.prototype.setPkScript = function(value) {
  * @return {number}
  */
 proto.walletrpc.UnspentOutputResponse.prototype.getReceiveTime = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.UnspentOutputResponse.prototype.setReceiveTime = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -12416,11 +11444,11 @@ proto.walletrpc.UnspentOutputResponse.prototype.setReceiveTime = function(value)
  * @return {boolean}
  */
 proto.walletrpc.UnspentOutputResponse.prototype.getFromCoinbase = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 6, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 6, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.UnspentOutputResponse.prototype.setFromCoinbase = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -12431,11 +11459,11 @@ proto.walletrpc.UnspentOutputResponse.prototype.setFromCoinbase = function(value
  * @return {number}
  */
 proto.walletrpc.UnspentOutputResponse.prototype.getTree = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 7, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.UnspentOutputResponse.prototype.setTree = function(value) {
   jspb.Message.setField(this, 7, value);
 };
@@ -12446,11 +11474,11 @@ proto.walletrpc.UnspentOutputResponse.prototype.setTree = function(value) {
  * @return {number}
  */
 proto.walletrpc.UnspentOutputResponse.prototype.getAmountSum = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 8, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.UnspentOutputResponse.prototype.setAmountSum = function(value) {
   jspb.Message.setField(this, 8, value);
 };
@@ -12509,10 +11537,10 @@ proto.walletrpc.ConstructTransactionRequest.prototype.toObject = function(opt_in
  */
 proto.walletrpc.ConstructTransactionRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    sourceAccount: msg.getSourceAccount(),
-    requiredConfirmations: msg.getRequiredConfirmations(),
-    feePerKb: msg.getFeePerKb(),
-    outputSelectionAlgorithm: msg.getOutputSelectionAlgorithm(),
+    sourceAccount: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    requiredConfirmations: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    feePerKb: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    outputSelectionAlgorithm: jspb.Message.getFieldWithDefault(msg, 4, 0),
     nonChangeOutputsList: jspb.Message.toObjectList(msg.getNonChangeOutputsList(),
     proto.walletrpc.ConstructTransactionRequest.Output.toObject, includeInstance),
     changeDestination: (f = msg.getChangeDestination()) && proto.walletrpc.ConstructTransactionRequest.OutputDestination.toObject(includeInstance, f)
@@ -12571,8 +11599,7 @@ proto.walletrpc.ConstructTransactionRequest.deserializeBinaryFromReader = functi
     case 5:
       var value = new proto.walletrpc.ConstructTransactionRequest.Output;
       reader.readMessage(value,proto.walletrpc.ConstructTransactionRequest.Output.deserializeBinaryFromReader);
-      msg.getNonChangeOutputsList().push(value);
-      msg.setNonChangeOutputsList(msg.getNonChangeOutputsList());
+      msg.addNonChangeOutputs(value);
       break;
     case 6:
       var value = new proto.walletrpc.ConstructTransactionRequest.OutputDestination;
@@ -12589,63 +11616,53 @@ proto.walletrpc.ConstructTransactionRequest.deserializeBinaryFromReader = functi
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ConstructTransactionRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ConstructTransactionRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ConstructTransactionRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ConstructTransactionRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ConstructTransactionRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ConstructTransactionRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ConstructTransactionRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSourceAccount();
+  f = message.getSourceAccount();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getRequiredConfirmations();
+  f = message.getRequiredConfirmations();
   if (f !== 0) {
     writer.writeInt32(
       2,
       f
     );
   }
-  f = this.getFeePerKb();
+  f = message.getFeePerKb();
   if (f !== 0) {
     writer.writeInt32(
       3,
       f
     );
   }
-  f = this.getOutputSelectionAlgorithm();
+  f = message.getOutputSelectionAlgorithm();
   if (f !== 0.0) {
     writer.writeEnum(
       4,
       f
     );
   }
-  f = this.getNonChangeOutputsList();
+  f = message.getNonChangeOutputsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       5,
@@ -12653,7 +11670,7 @@ proto.walletrpc.ConstructTransactionRequest.prototype.serializeBinaryToWriter = 
       proto.walletrpc.ConstructTransactionRequest.Output.serializeBinaryToWriter
     );
   }
-  f = this.getChangeDestination();
+  f = message.getChangeDestination();
   if (f != null) {
     writer.writeMessage(
       6,
@@ -12661,128 +11678,6 @@ proto.walletrpc.ConstructTransactionRequest.prototype.serializeBinaryToWriter = 
       proto.walletrpc.ConstructTransactionRequest.OutputDestination.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ConstructTransactionRequest} The clone.
- */
-proto.walletrpc.ConstructTransactionRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ConstructTransactionRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * optional uint32 source_account = 1;
- * @return {number}
- */
-proto.walletrpc.ConstructTransactionRequest.prototype.getSourceAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.ConstructTransactionRequest.prototype.setSourceAccount = function(value) {
-  jspb.Message.setField(this, 1, value);
-};
-
-
-/**
- * optional int32 required_confirmations = 2;
- * @return {number}
- */
-proto.walletrpc.ConstructTransactionRequest.prototype.getRequiredConfirmations = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.ConstructTransactionRequest.prototype.setRequiredConfirmations = function(value) {
-  jspb.Message.setField(this, 2, value);
-};
-
-
-/**
- * optional int32 fee_per_kb = 3;
- * @return {number}
- */
-proto.walletrpc.ConstructTransactionRequest.prototype.getFeePerKb = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.ConstructTransactionRequest.prototype.setFeePerKb = function(value) {
-  jspb.Message.setField(this, 3, value);
-};
-
-
-/**
- * optional OutputSelectionAlgorithm output_selection_algorithm = 4;
- * @return {!proto.walletrpc.ConstructTransactionRequest.OutputSelectionAlgorithm}
- */
-proto.walletrpc.ConstructTransactionRequest.prototype.getOutputSelectionAlgorithm = function() {
-  return /** @type {!proto.walletrpc.ConstructTransactionRequest.OutputSelectionAlgorithm} */ (jspb.Message.getFieldProto3(this, 4, 0));
-};
-
-
-/** @param {!proto.walletrpc.ConstructTransactionRequest.OutputSelectionAlgorithm} value  */
-proto.walletrpc.ConstructTransactionRequest.prototype.setOutputSelectionAlgorithm = function(value) {
-  jspb.Message.setField(this, 4, value);
-};
-
-
-/**
- * repeated Output non_change_outputs = 5;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.ConstructTransactionRequest.Output>}
- */
-proto.walletrpc.ConstructTransactionRequest.prototype.getNonChangeOutputsList = function() {
-  return /** @type{!Array.<!proto.walletrpc.ConstructTransactionRequest.Output>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.ConstructTransactionRequest.Output, 5));
-};
-
-
-/** @param {Array.<!proto.walletrpc.ConstructTransactionRequest.Output>} value  */
-proto.walletrpc.ConstructTransactionRequest.prototype.setNonChangeOutputsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 5, value);
-};
-
-
-proto.walletrpc.ConstructTransactionRequest.prototype.clearNonChangeOutputsList = function() {
-  this.setNonChangeOutputsList([]);
-};
-
-
-/**
- * optional OutputDestination change_destination = 6;
- * @return {proto.walletrpc.ConstructTransactionRequest.OutputDestination}
- */
-proto.walletrpc.ConstructTransactionRequest.prototype.getChangeDestination = function() {
-  return /** @type{proto.walletrpc.ConstructTransactionRequest.OutputDestination} */ (
-    jspb.Message.getWrapperField(this, proto.walletrpc.ConstructTransactionRequest.OutputDestination, 6));
-};
-
-
-/** @param {proto.walletrpc.ConstructTransactionRequest.OutputDestination|undefined} value  */
-proto.walletrpc.ConstructTransactionRequest.prototype.setChangeDestination = function(value) {
-  jspb.Message.setWrapperField(this, 6, value);
-};
-
-
-proto.walletrpc.ConstructTransactionRequest.prototype.clearChangeDestination = function() {
-  this.setChangeDestination(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return{!boolean}
- */
-proto.walletrpc.ConstructTransactionRequest.prototype.hasChangeDestination = function() {
-  return jspb.Message.getField(this, 6) != null;
 };
 
 
@@ -12840,9 +11735,9 @@ proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.toObject
  */
 proto.walletrpc.ConstructTransactionRequest.OutputDestination.toObject = function(includeInstance, msg) {
   var f, obj = {
-    address: msg.getAddress(),
+    address: jspb.Message.getFieldWithDefault(msg, 1, ""),
     script: msg.getScript_asB64(),
-    scriptVersion: msg.getScriptVersion()
+    scriptVersion: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -12901,49 +11796,39 @@ proto.walletrpc.ConstructTransactionRequest.OutputDestination.deserializeBinaryF
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ConstructTransactionRequest.OutputDestination} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ConstructTransactionRequest.OutputDestination.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ConstructTransactionRequest.OutputDestination.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ConstructTransactionRequest.OutputDestination} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ConstructTransactionRequest.OutputDestination.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAddress();
+  f = message.getAddress();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getScript_asU8();
+  f = message.getScript_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
       f
     );
   }
-  f = this.getScriptVersion();
+  f = message.getScriptVersion();
   if (f !== 0) {
     writer.writeUint32(
       3,
@@ -12954,24 +11839,15 @@ proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.serializ
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ConstructTransactionRequest.OutputDestination} The clone.
- */
-proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ConstructTransactionRequest.OutputDestination} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string address = 1;
  * @return {string}
  */
 proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.getAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.setAddress = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -12982,7 +11858,7 @@ proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.setAddre
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.getScript = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -13010,7 +11886,7 @@ proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.getScrip
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.setScript = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -13021,11 +11897,11 @@ proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.setScrip
  * @return {number}
  */
 proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.getScriptVersion = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ConstructTransactionRequest.OutputDestination.prototype.setScriptVersion = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -13078,7 +11954,7 @@ proto.walletrpc.ConstructTransactionRequest.Output.prototype.toObject = function
 proto.walletrpc.ConstructTransactionRequest.Output.toObject = function(includeInstance, msg) {
   var f, obj = {
     destination: (f = msg.getDestination()) && proto.walletrpc.ConstructTransactionRequest.OutputDestination.toObject(includeInstance, f),
-    amount: msg.getAmount()
+    amount: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -13134,35 +12010,25 @@ proto.walletrpc.ConstructTransactionRequest.Output.deserializeBinaryFromReader =
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ConstructTransactionRequest.Output} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ConstructTransactionRequest.Output.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ConstructTransactionRequest.Output.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ConstructTransactionRequest.Output.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ConstructTransactionRequest.Output} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ConstructTransactionRequest.Output.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ConstructTransactionRequest.Output.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getDestination();
+  f = message.getDestination();
   if (f != null) {
     writer.writeMessage(
       1,
@@ -13170,7 +12036,7 @@ proto.walletrpc.ConstructTransactionRequest.Output.prototype.serializeBinaryToWr
       proto.walletrpc.ConstructTransactionRequest.OutputDestination.serializeBinaryToWriter
     );
   }
-  f = this.getAmount();
+  f = message.getAmount();
   if (f !== 0) {
     writer.writeInt64(
       2,
@@ -13181,25 +12047,16 @@ proto.walletrpc.ConstructTransactionRequest.Output.prototype.serializeBinaryToWr
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ConstructTransactionRequest.Output} The clone.
- */
-proto.walletrpc.ConstructTransactionRequest.Output.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ConstructTransactionRequest.Output} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional OutputDestination destination = 1;
- * @return {proto.walletrpc.ConstructTransactionRequest.OutputDestination}
+ * @return {?proto.walletrpc.ConstructTransactionRequest.OutputDestination}
  */
 proto.walletrpc.ConstructTransactionRequest.Output.prototype.getDestination = function() {
-  return /** @type{proto.walletrpc.ConstructTransactionRequest.OutputDestination} */ (
+  return /** @type{?proto.walletrpc.ConstructTransactionRequest.OutputDestination} */ (
     jspb.Message.getWrapperField(this, proto.walletrpc.ConstructTransactionRequest.OutputDestination, 1));
 };
 
 
-/** @param {proto.walletrpc.ConstructTransactionRequest.OutputDestination|undefined} value  */
+/** @param {?proto.walletrpc.ConstructTransactionRequest.OutputDestination|undefined} value */
 proto.walletrpc.ConstructTransactionRequest.Output.prototype.setDestination = function(value) {
   jspb.Message.setWrapperField(this, 1, value);
 };
@@ -13212,7 +12069,7 @@ proto.walletrpc.ConstructTransactionRequest.Output.prototype.clearDestination = 
 
 /**
  * Returns whether this field is set.
- * @return{!boolean}
+ * @return {!boolean}
  */
 proto.walletrpc.ConstructTransactionRequest.Output.prototype.hasDestination = function() {
   return jspb.Message.getField(this, 1) != null;
@@ -13224,13 +12081,136 @@ proto.walletrpc.ConstructTransactionRequest.Output.prototype.hasDestination = fu
  * @return {number}
  */
 proto.walletrpc.ConstructTransactionRequest.Output.prototype.getAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ConstructTransactionRequest.Output.prototype.setAmount = function(value) {
   jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * optional uint32 source_account = 1;
+ * @return {number}
+ */
+proto.walletrpc.ConstructTransactionRequest.prototype.getSourceAccount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.ConstructTransactionRequest.prototype.setSourceAccount = function(value) {
+  jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * optional int32 required_confirmations = 2;
+ * @return {number}
+ */
+proto.walletrpc.ConstructTransactionRequest.prototype.getRequiredConfirmations = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.ConstructTransactionRequest.prototype.setRequiredConfirmations = function(value) {
+  jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * optional int32 fee_per_kb = 3;
+ * @return {number}
+ */
+proto.walletrpc.ConstructTransactionRequest.prototype.getFeePerKb = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.ConstructTransactionRequest.prototype.setFeePerKb = function(value) {
+  jspb.Message.setField(this, 3, value);
+};
+
+
+/**
+ * optional OutputSelectionAlgorithm output_selection_algorithm = 4;
+ * @return {!proto.walletrpc.ConstructTransactionRequest.OutputSelectionAlgorithm}
+ */
+proto.walletrpc.ConstructTransactionRequest.prototype.getOutputSelectionAlgorithm = function() {
+  return /** @type {!proto.walletrpc.ConstructTransactionRequest.OutputSelectionAlgorithm} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/** @param {!proto.walletrpc.ConstructTransactionRequest.OutputSelectionAlgorithm} value */
+proto.walletrpc.ConstructTransactionRequest.prototype.setOutputSelectionAlgorithm = function(value) {
+  jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * repeated Output non_change_outputs = 5;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.ConstructTransactionRequest.Output>}
+ */
+proto.walletrpc.ConstructTransactionRequest.prototype.getNonChangeOutputsList = function() {
+  return /** @type{!Array.<!proto.walletrpc.ConstructTransactionRequest.Output>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.ConstructTransactionRequest.Output, 5));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.ConstructTransactionRequest.Output>} value */
+proto.walletrpc.ConstructTransactionRequest.prototype.setNonChangeOutputsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 5, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.ConstructTransactionRequest.Output=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.ConstructTransactionRequest.Output}
+ */
+proto.walletrpc.ConstructTransactionRequest.prototype.addNonChangeOutputs = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 5, opt_value, proto.walletrpc.ConstructTransactionRequest.Output, opt_index);
+};
+
+
+proto.walletrpc.ConstructTransactionRequest.prototype.clearNonChangeOutputsList = function() {
+  this.setNonChangeOutputsList([]);
+};
+
+
+/**
+ * optional OutputDestination change_destination = 6;
+ * @return {?proto.walletrpc.ConstructTransactionRequest.OutputDestination}
+ */
+proto.walletrpc.ConstructTransactionRequest.prototype.getChangeDestination = function() {
+  return /** @type{?proto.walletrpc.ConstructTransactionRequest.OutputDestination} */ (
+    jspb.Message.getWrapperField(this, proto.walletrpc.ConstructTransactionRequest.OutputDestination, 6));
+};
+
+
+/** @param {?proto.walletrpc.ConstructTransactionRequest.OutputDestination|undefined} value */
+proto.walletrpc.ConstructTransactionRequest.prototype.setChangeDestination = function(value) {
+  jspb.Message.setWrapperField(this, 6, value);
+};
+
+
+proto.walletrpc.ConstructTransactionRequest.prototype.clearChangeDestination = function() {
+  this.setChangeDestination(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.walletrpc.ConstructTransactionRequest.prototype.hasChangeDestination = function() {
+  return jspb.Message.getField(this, 6) != null;
 };
 
 
@@ -13281,10 +12261,10 @@ proto.walletrpc.ConstructTransactionResponse.prototype.toObject = function(opt_i
 proto.walletrpc.ConstructTransactionResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     unsignedTransaction: msg.getUnsignedTransaction_asB64(),
-    totalPreviousOutputAmount: msg.getTotalPreviousOutputAmount(),
-    totalOutputAmount: msg.getTotalOutputAmount(),
-    estimatedSignedSize: msg.getEstimatedSignedSize(),
-    changeIndex: msg.getChangeIndex()
+    totalPreviousOutputAmount: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    totalOutputAmount: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    estimatedSignedSize: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    changeIndex: jspb.Message.getFieldWithDefault(msg, 5, 0)
   };
 
   if (includeInstance) {
@@ -13351,63 +12331,53 @@ proto.walletrpc.ConstructTransactionResponse.deserializeBinaryFromReader = funct
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ConstructTransactionResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ConstructTransactionResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ConstructTransactionResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ConstructTransactionResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ConstructTransactionResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ConstructTransactionResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ConstructTransactionResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getUnsignedTransaction_asU8();
+  f = message.getUnsignedTransaction_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getTotalPreviousOutputAmount();
+  f = message.getTotalPreviousOutputAmount();
   if (f !== 0) {
     writer.writeInt64(
       2,
       f
     );
   }
-  f = this.getTotalOutputAmount();
+  f = message.getTotalOutputAmount();
   if (f !== 0) {
     writer.writeInt64(
       3,
       f
     );
   }
-  f = this.getEstimatedSignedSize();
+  f = message.getEstimatedSignedSize();
   if (f !== 0) {
     writer.writeUint32(
       4,
       f
     );
   }
-  f = this.getChangeIndex();
+  f = message.getChangeIndex();
   if (f !== 0) {
     writer.writeInt32(
       5,
@@ -13418,20 +12388,11 @@ proto.walletrpc.ConstructTransactionResponse.prototype.serializeBinaryToWriter =
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ConstructTransactionResponse} The clone.
- */
-proto.walletrpc.ConstructTransactionResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ConstructTransactionResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes unsigned_transaction = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.ConstructTransactionResponse.prototype.getUnsignedTransaction = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -13459,7 +12420,7 @@ proto.walletrpc.ConstructTransactionResponse.prototype.getUnsignedTransaction_as
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.ConstructTransactionResponse.prototype.setUnsignedTransaction = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -13470,11 +12431,11 @@ proto.walletrpc.ConstructTransactionResponse.prototype.setUnsignedTransaction = 
  * @return {number}
  */
 proto.walletrpc.ConstructTransactionResponse.prototype.getTotalPreviousOutputAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ConstructTransactionResponse.prototype.setTotalPreviousOutputAmount = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -13485,11 +12446,11 @@ proto.walletrpc.ConstructTransactionResponse.prototype.setTotalPreviousOutputAmo
  * @return {number}
  */
 proto.walletrpc.ConstructTransactionResponse.prototype.getTotalOutputAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ConstructTransactionResponse.prototype.setTotalOutputAmount = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -13500,11 +12461,11 @@ proto.walletrpc.ConstructTransactionResponse.prototype.setTotalOutputAmount = fu
  * @return {number}
  */
 proto.walletrpc.ConstructTransactionResponse.prototype.getEstimatedSignedSize = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ConstructTransactionResponse.prototype.setEstimatedSignedSize = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -13515,11 +12476,11 @@ proto.walletrpc.ConstructTransactionResponse.prototype.setEstimatedSignedSize = 
  * @return {number}
  */
 proto.walletrpc.ConstructTransactionResponse.prototype.getChangeIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ConstructTransactionResponse.prototype.setChangeIndex = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -13629,8 +12590,7 @@ proto.walletrpc.SignTransactionRequest.deserializeBinaryFromReader = function(ms
     case 4:
       var value = new proto.walletrpc.SignTransactionRequest.AdditionalScript;
       reader.readMessage(value,proto.walletrpc.SignTransactionRequest.AdditionalScript.deserializeBinaryFromReader);
-      msg.getAdditionalScriptsList().push(value);
-      msg.setAdditionalScriptsList(msg.getAdditionalScriptsList());
+      msg.addAdditionalScripts(value);
       break;
     default:
       reader.skipField();
@@ -13642,49 +12602,39 @@ proto.walletrpc.SignTransactionRequest.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignTransactionRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignTransactionRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignTransactionRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignTransactionRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignTransactionRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignTransactionRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignTransactionRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getSerializedTransaction_asU8();
+  f = message.getSerializedTransaction_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
       f
     );
   }
-  f = this.getAdditionalScriptsList();
+  f = message.getAdditionalScriptsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       4,
@@ -13692,116 +12642,6 @@ proto.walletrpc.SignTransactionRequest.prototype.serializeBinaryToWriter = funct
       proto.walletrpc.SignTransactionRequest.AdditionalScript.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignTransactionRequest} The clone.
- */
-proto.walletrpc.SignTransactionRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignTransactionRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * @return {!(string|Uint8Array)}
- */
-proto.walletrpc.SignTransactionRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * This is a type-conversion wrapper around `getPassphrase()`
- * @return {string}
- */
-proto.walletrpc.SignTransactionRequest.prototype.getPassphrase_asB64 = function() {
-  return /** @type {string} */ (jspb.Message.bytesAsB64(
-      this.getPassphrase()));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * Note that Uint8Array is not supported on all browsers.
- * @see http://caniuse.com/Uint8Array
- * This is a type-conversion wrapper around `getPassphrase()`
- * @return {!Uint8Array}
- */
-proto.walletrpc.SignTransactionRequest.prototype.getPassphrase_asU8 = function() {
-  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
-      this.getPassphrase()));
-};
-
-
-/** @param {!(string|Uint8Array)} value  */
-proto.walletrpc.SignTransactionRequest.prototype.setPassphrase = function(value) {
-  jspb.Message.setField(this, 1, value);
-};
-
-
-/**
- * optional bytes serialized_transaction = 2;
- * @return {!(string|Uint8Array)}
- */
-proto.walletrpc.SignTransactionRequest.prototype.getSerializedTransaction = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
-};
-
-
-/**
- * optional bytes serialized_transaction = 2;
- * This is a type-conversion wrapper around `getSerializedTransaction()`
- * @return {string}
- */
-proto.walletrpc.SignTransactionRequest.prototype.getSerializedTransaction_asB64 = function() {
-  return /** @type {string} */ (jspb.Message.bytesAsB64(
-      this.getSerializedTransaction()));
-};
-
-
-/**
- * optional bytes serialized_transaction = 2;
- * Note that Uint8Array is not supported on all browsers.
- * @see http://caniuse.com/Uint8Array
- * This is a type-conversion wrapper around `getSerializedTransaction()`
- * @return {!Uint8Array}
- */
-proto.walletrpc.SignTransactionRequest.prototype.getSerializedTransaction_asU8 = function() {
-  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
-      this.getSerializedTransaction()));
-};
-
-
-/** @param {!(string|Uint8Array)} value  */
-proto.walletrpc.SignTransactionRequest.prototype.setSerializedTransaction = function(value) {
-  jspb.Message.setField(this, 2, value);
-};
-
-
-/**
- * repeated AdditionalScript additional_scripts = 4;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.SignTransactionRequest.AdditionalScript>}
- */
-proto.walletrpc.SignTransactionRequest.prototype.getAdditionalScriptsList = function() {
-  return /** @type{!Array.<!proto.walletrpc.SignTransactionRequest.AdditionalScript>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SignTransactionRequest.AdditionalScript, 4));
-};
-
-
-/** @param {Array.<!proto.walletrpc.SignTransactionRequest.AdditionalScript>} value  */
-proto.walletrpc.SignTransactionRequest.prototype.setAdditionalScriptsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 4, value);
-};
-
-
-proto.walletrpc.SignTransactionRequest.prototype.clearAdditionalScriptsList = function() {
-  this.setAdditionalScriptsList([]);
 };
 
 
@@ -13852,8 +12692,8 @@ proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.toObject = fun
 proto.walletrpc.SignTransactionRequest.AdditionalScript.toObject = function(includeInstance, msg) {
   var f, obj = {
     transactionHash: msg.getTransactionHash_asB64(),
-    outputIndex: msg.getOutputIndex(),
-    tree: msg.getTree(),
+    outputIndex: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    tree: jspb.Message.getFieldWithDefault(msg, 3, 0),
     pkScript: msg.getPkScript_asB64()
   };
 
@@ -13917,56 +12757,46 @@ proto.walletrpc.SignTransactionRequest.AdditionalScript.deserializeBinaryFromRea
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignTransactionRequest.AdditionalScript} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignTransactionRequest.AdditionalScript.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignTransactionRequest.AdditionalScript.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignTransactionRequest.AdditionalScript} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignTransactionRequest.AdditionalScript.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTransactionHash_asU8();
+  f = message.getTransactionHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getOutputIndex();
+  f = message.getOutputIndex();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getTree();
+  f = message.getTree();
   if (f !== 0) {
     writer.writeInt32(
       3,
       f
     );
   }
-  f = this.getPkScript_asU8();
+  f = message.getPkScript_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       4,
@@ -13977,20 +12807,11 @@ proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.serializeBinar
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignTransactionRequest.AdditionalScript} The clone.
- */
-proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignTransactionRequest.AdditionalScript} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes transaction_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.getTransactionHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -14018,7 +12839,7 @@ proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.getTransaction
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.setTransactionHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -14029,11 +12850,11 @@ proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.setTransaction
  * @return {number}
  */
 proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.getOutputIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.setOutputIndex = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -14044,11 +12865,11 @@ proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.setOutputIndex
  * @return {number}
  */
 proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.getTree = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.setTree = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -14059,7 +12880,7 @@ proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.setTree = func
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.getPkScript = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 4, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
@@ -14087,9 +12908,120 @@ proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.getPkScript_as
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.SignTransactionRequest.AdditionalScript.prototype.setPkScript = function(value) {
   jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * optional bytes passphrase = 1;
+ * @return {!(string|Uint8Array)}
+ */
+proto.walletrpc.SignTransactionRequest.prototype.getPassphrase = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * optional bytes passphrase = 1;
+ * This is a type-conversion wrapper around `getPassphrase()`
+ * @return {string}
+ */
+proto.walletrpc.SignTransactionRequest.prototype.getPassphrase_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getPassphrase()));
+};
+
+
+/**
+ * optional bytes passphrase = 1;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getPassphrase()`
+ * @return {!Uint8Array}
+ */
+proto.walletrpc.SignTransactionRequest.prototype.getPassphrase_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getPassphrase()));
+};
+
+
+/** @param {!(string|Uint8Array)} value */
+proto.walletrpc.SignTransactionRequest.prototype.setPassphrase = function(value) {
+  jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * optional bytes serialized_transaction = 2;
+ * @return {!(string|Uint8Array)}
+ */
+proto.walletrpc.SignTransactionRequest.prototype.getSerializedTransaction = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * optional bytes serialized_transaction = 2;
+ * This is a type-conversion wrapper around `getSerializedTransaction()`
+ * @return {string}
+ */
+proto.walletrpc.SignTransactionRequest.prototype.getSerializedTransaction_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getSerializedTransaction()));
+};
+
+
+/**
+ * optional bytes serialized_transaction = 2;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getSerializedTransaction()`
+ * @return {!Uint8Array}
+ */
+proto.walletrpc.SignTransactionRequest.prototype.getSerializedTransaction_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getSerializedTransaction()));
+};
+
+
+/** @param {!(string|Uint8Array)} value */
+proto.walletrpc.SignTransactionRequest.prototype.setSerializedTransaction = function(value) {
+  jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * repeated AdditionalScript additional_scripts = 4;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.SignTransactionRequest.AdditionalScript>}
+ */
+proto.walletrpc.SignTransactionRequest.prototype.getAdditionalScriptsList = function() {
+  return /** @type{!Array.<!proto.walletrpc.SignTransactionRequest.AdditionalScript>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SignTransactionRequest.AdditionalScript, 4));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.SignTransactionRequest.AdditionalScript>} value */
+proto.walletrpc.SignTransactionRequest.prototype.setAdditionalScriptsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 4, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.SignTransactionRequest.AdditionalScript=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.SignTransactionRequest.AdditionalScript}
+ */
+proto.walletrpc.SignTransactionRequest.prototype.addAdditionalScripts = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.walletrpc.SignTransactionRequest.AdditionalScript, opt_index);
+};
+
+
+proto.walletrpc.SignTransactionRequest.prototype.clearAdditionalScriptsList = function() {
+  this.setAdditionalScriptsList([]);
 };
 
 
@@ -14202,42 +13134,32 @@ proto.walletrpc.SignTransactionResponse.deserializeBinaryFromReader = function(m
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignTransactionResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignTransactionResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignTransactionResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignTransactionResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignTransactionResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignTransactionResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignTransactionResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTransaction_asU8();
+  f = message.getTransaction_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getUnsignedInputIndexesList();
+  f = message.getUnsignedInputIndexesList();
   if (f.length > 0) {
     writer.writePackedUint32(
       2,
@@ -14248,20 +13170,11 @@ proto.walletrpc.SignTransactionResponse.prototype.serializeBinaryToWriter = func
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignTransactionResponse} The clone.
- */
-proto.walletrpc.SignTransactionResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignTransactionResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes transaction = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.SignTransactionResponse.prototype.getTransaction = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -14289,7 +13202,7 @@ proto.walletrpc.SignTransactionResponse.prototype.getTransaction_asU8 = function
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.SignTransactionResponse.prototype.setTransaction = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -14306,14 +13219,23 @@ proto.walletrpc.SignTransactionResponse.prototype.getUnsignedInputIndexesList = 
 };
 
 
-/** @param {Array.<number>} value  */
+/** @param {!Array.<number>} value */
 proto.walletrpc.SignTransactionResponse.prototype.setUnsignedInputIndexesList = function(value) {
   jspb.Message.setField(this, 2, value || []);
 };
 
 
+/**
+ * @param {!number} value
+ * @param {number=} opt_index
+ */
+proto.walletrpc.SignTransactionResponse.prototype.addUnsignedInputIndexes = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
 proto.walletrpc.SignTransactionResponse.prototype.clearUnsignedInputIndexesList = function() {
-  jspb.Message.setField(this, 2, []);
+  this.setUnsignedInputIndexesList([]);
 };
 
 
@@ -14418,14 +13340,12 @@ proto.walletrpc.SignTransactionsRequest.deserializeBinaryFromReader = function(m
     case 2:
       var value = new proto.walletrpc.SignTransactionsRequest.UnsignedTransaction;
       reader.readMessage(value,proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.deserializeBinaryFromReader);
-      msg.getTransactionsList().push(value);
-      msg.setTransactionsList(msg.getTransactionsList());
+      msg.addTransactions(value);
       break;
     case 3:
       var value = new proto.walletrpc.SignTransactionsRequest.AdditionalScript;
       reader.readMessage(value,proto.walletrpc.SignTransactionsRequest.AdditionalScript.deserializeBinaryFromReader);
-      msg.getAdditionalScriptsList().push(value);
-      msg.setAdditionalScriptsList(msg.getAdditionalScriptsList());
+      msg.addAdditionalScripts(value);
       break;
     default:
       reader.skipField();
@@ -14437,42 +13357,32 @@ proto.walletrpc.SignTransactionsRequest.deserializeBinaryFromReader = function(m
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignTransactionsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignTransactionsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignTransactionsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignTransactionsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignTransactionsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignTransactionsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignTransactionsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getTransactionsList();
+  f = message.getTransactionsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       2,
@@ -14480,7 +13390,7 @@ proto.walletrpc.SignTransactionsRequest.prototype.serializeBinaryToWriter = func
       proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.serializeBinaryToWriter
     );
   }
-  f = this.getAdditionalScriptsList();
+  f = message.getAdditionalScriptsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       3,
@@ -14488,100 +13398,6 @@ proto.walletrpc.SignTransactionsRequest.prototype.serializeBinaryToWriter = func
       proto.walletrpc.SignTransactionsRequest.AdditionalScript.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignTransactionsRequest} The clone.
- */
-proto.walletrpc.SignTransactionsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignTransactionsRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * @return {!(string|Uint8Array)}
- */
-proto.walletrpc.SignTransactionsRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * This is a type-conversion wrapper around `getPassphrase()`
- * @return {string}
- */
-proto.walletrpc.SignTransactionsRequest.prototype.getPassphrase_asB64 = function() {
-  return /** @type {string} */ (jspb.Message.bytesAsB64(
-      this.getPassphrase()));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * Note that Uint8Array is not supported on all browsers.
- * @see http://caniuse.com/Uint8Array
- * This is a type-conversion wrapper around `getPassphrase()`
- * @return {!Uint8Array}
- */
-proto.walletrpc.SignTransactionsRequest.prototype.getPassphrase_asU8 = function() {
-  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
-      this.getPassphrase()));
-};
-
-
-/** @param {!(string|Uint8Array)} value  */
-proto.walletrpc.SignTransactionsRequest.prototype.setPassphrase = function(value) {
-  jspb.Message.setField(this, 1, value);
-};
-
-
-/**
- * repeated UnsignedTransaction transactions = 2;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.SignTransactionsRequest.UnsignedTransaction>}
- */
-proto.walletrpc.SignTransactionsRequest.prototype.getTransactionsList = function() {
-  return /** @type{!Array.<!proto.walletrpc.SignTransactionsRequest.UnsignedTransaction>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SignTransactionsRequest.UnsignedTransaction, 2));
-};
-
-
-/** @param {Array.<!proto.walletrpc.SignTransactionsRequest.UnsignedTransaction>} value  */
-proto.walletrpc.SignTransactionsRequest.prototype.setTransactionsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 2, value);
-};
-
-
-proto.walletrpc.SignTransactionsRequest.prototype.clearTransactionsList = function() {
-  this.setTransactionsList([]);
-};
-
-
-/**
- * repeated AdditionalScript additional_scripts = 3;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.SignTransactionsRequest.AdditionalScript>}
- */
-proto.walletrpc.SignTransactionsRequest.prototype.getAdditionalScriptsList = function() {
-  return /** @type{!Array.<!proto.walletrpc.SignTransactionsRequest.AdditionalScript>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SignTransactionsRequest.AdditionalScript, 3));
-};
-
-
-/** @param {Array.<!proto.walletrpc.SignTransactionsRequest.AdditionalScript>} value  */
-proto.walletrpc.SignTransactionsRequest.prototype.setAdditionalScriptsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 3, value);
-};
-
-
-proto.walletrpc.SignTransactionsRequest.prototype.clearAdditionalScriptsList = function() {
-  this.setAdditionalScriptsList([]);
 };
 
 
@@ -14632,8 +13448,8 @@ proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.toObject = fu
 proto.walletrpc.SignTransactionsRequest.AdditionalScript.toObject = function(includeInstance, msg) {
   var f, obj = {
     transactionHash: msg.getTransactionHash_asB64(),
-    outputIndex: msg.getOutputIndex(),
-    tree: msg.getTree(),
+    outputIndex: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    tree: jspb.Message.getFieldWithDefault(msg, 3, 0),
     pkScript: msg.getPkScript_asB64()
   };
 
@@ -14697,56 +13513,46 @@ proto.walletrpc.SignTransactionsRequest.AdditionalScript.deserializeBinaryFromRe
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignTransactionsRequest.AdditionalScript} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignTransactionsRequest.AdditionalScript.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignTransactionsRequest.AdditionalScript.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignTransactionsRequest.AdditionalScript} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignTransactionsRequest.AdditionalScript.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTransactionHash_asU8();
+  f = message.getTransactionHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getOutputIndex();
+  f = message.getOutputIndex();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getTree();
+  f = message.getTree();
   if (f !== 0) {
     writer.writeInt32(
       3,
       f
     );
   }
-  f = this.getPkScript_asU8();
+  f = message.getPkScript_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       4,
@@ -14757,20 +13563,11 @@ proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.serializeBina
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignTransactionsRequest.AdditionalScript} The clone.
- */
-proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignTransactionsRequest.AdditionalScript} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes transaction_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.getTransactionHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -14798,7 +13595,7 @@ proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.getTransactio
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.setTransactionHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -14809,11 +13606,11 @@ proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.setTransactio
  * @return {number}
  */
 proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.getOutputIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.setOutputIndex = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -14824,11 +13621,11 @@ proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.setOutputInde
  * @return {number}
  */
 proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.getTree = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.setTree = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -14839,7 +13636,7 @@ proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.setTree = fun
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.getPkScript = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 4, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
@@ -14867,7 +13664,7 @@ proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.getPkScript_a
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.SignTransactionsRequest.AdditionalScript.prototype.setPkScript = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -14970,35 +13767,25 @@ proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.deserializeBinaryFro
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignTransactionsRequest.UnsignedTransaction} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignTransactionsRequest.UnsignedTransaction} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSerializedTransaction_asU8();
+  f = message.getSerializedTransaction_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
@@ -15009,20 +13796,11 @@ proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.prototype.serializeB
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignTransactionsRequest.UnsignedTransaction} The clone.
- */
-proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignTransactionsRequest.UnsignedTransaction} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes serialized_transaction = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.prototype.getSerializedTransaction = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -15050,9 +13828,114 @@ proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.prototype.getSeriali
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.SignTransactionsRequest.UnsignedTransaction.prototype.setSerializedTransaction = function(value) {
   jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * optional bytes passphrase = 1;
+ * @return {!(string|Uint8Array)}
+ */
+proto.walletrpc.SignTransactionsRequest.prototype.getPassphrase = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * optional bytes passphrase = 1;
+ * This is a type-conversion wrapper around `getPassphrase()`
+ * @return {string}
+ */
+proto.walletrpc.SignTransactionsRequest.prototype.getPassphrase_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getPassphrase()));
+};
+
+
+/**
+ * optional bytes passphrase = 1;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getPassphrase()`
+ * @return {!Uint8Array}
+ */
+proto.walletrpc.SignTransactionsRequest.prototype.getPassphrase_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getPassphrase()));
+};
+
+
+/** @param {!(string|Uint8Array)} value */
+proto.walletrpc.SignTransactionsRequest.prototype.setPassphrase = function(value) {
+  jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * repeated UnsignedTransaction transactions = 2;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.SignTransactionsRequest.UnsignedTransaction>}
+ */
+proto.walletrpc.SignTransactionsRequest.prototype.getTransactionsList = function() {
+  return /** @type{!Array.<!proto.walletrpc.SignTransactionsRequest.UnsignedTransaction>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SignTransactionsRequest.UnsignedTransaction, 2));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.SignTransactionsRequest.UnsignedTransaction>} value */
+proto.walletrpc.SignTransactionsRequest.prototype.setTransactionsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 2, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.SignTransactionsRequest.UnsignedTransaction=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.SignTransactionsRequest.UnsignedTransaction}
+ */
+proto.walletrpc.SignTransactionsRequest.prototype.addTransactions = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.walletrpc.SignTransactionsRequest.UnsignedTransaction, opt_index);
+};
+
+
+proto.walletrpc.SignTransactionsRequest.prototype.clearTransactionsList = function() {
+  this.setTransactionsList([]);
+};
+
+
+/**
+ * repeated AdditionalScript additional_scripts = 3;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.SignTransactionsRequest.AdditionalScript>}
+ */
+proto.walletrpc.SignTransactionsRequest.prototype.getAdditionalScriptsList = function() {
+  return /** @type{!Array.<!proto.walletrpc.SignTransactionsRequest.AdditionalScript>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SignTransactionsRequest.AdditionalScript, 3));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.SignTransactionsRequest.AdditionalScript>} value */
+proto.walletrpc.SignTransactionsRequest.prototype.setAdditionalScriptsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 3, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.SignTransactionsRequest.AdditionalScript=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.SignTransactionsRequest.AdditionalScript}
+ */
+proto.walletrpc.SignTransactionsRequest.prototype.addAdditionalScripts = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.walletrpc.SignTransactionsRequest.AdditionalScript, opt_index);
+};
+
+
+proto.walletrpc.SignTransactionsRequest.prototype.clearAdditionalScriptsList = function() {
+  this.setAdditionalScriptsList([]);
 };
 
 
@@ -15150,8 +14033,7 @@ proto.walletrpc.SignTransactionsResponse.deserializeBinaryFromReader = function(
     case 1:
       var value = new proto.walletrpc.SignTransactionsResponse.SignedTransaction;
       reader.readMessage(value,proto.walletrpc.SignTransactionsResponse.SignedTransaction.deserializeBinaryFromReader);
-      msg.getTransactionsList().push(value);
-      msg.setTransactionsList(msg.getTransactionsList());
+      msg.addTransactions(value);
       break;
     default:
       reader.skipField();
@@ -15163,35 +14045,25 @@ proto.walletrpc.SignTransactionsResponse.deserializeBinaryFromReader = function(
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignTransactionsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignTransactionsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignTransactionsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignTransactionsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignTransactionsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignTransactionsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignTransactionsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTransactionsList();
+  f = message.getTransactionsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       1,
@@ -15199,38 +14071,6 @@ proto.walletrpc.SignTransactionsResponse.prototype.serializeBinaryToWriter = fun
       proto.walletrpc.SignTransactionsResponse.SignedTransaction.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignTransactionsResponse} The clone.
- */
-proto.walletrpc.SignTransactionsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignTransactionsResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * repeated SignedTransaction transactions = 1;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.SignTransactionsResponse.SignedTransaction>}
- */
-proto.walletrpc.SignTransactionsResponse.prototype.getTransactionsList = function() {
-  return /** @type{!Array.<!proto.walletrpc.SignTransactionsResponse.SignedTransaction>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SignTransactionsResponse.SignedTransaction, 1));
-};
-
-
-/** @param {Array.<!proto.walletrpc.SignTransactionsResponse.SignedTransaction>} value  */
-proto.walletrpc.SignTransactionsResponse.prototype.setTransactionsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 1, value);
-};
-
-
-proto.walletrpc.SignTransactionsResponse.prototype.clearTransactionsList = function() {
-  this.setTransactionsList([]);
 };
 
 
@@ -15343,42 +14183,32 @@ proto.walletrpc.SignTransactionsResponse.SignedTransaction.deserializeBinaryFrom
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignTransactionsResponse.SignedTransaction} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignTransactionsResponse.SignedTransaction.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignTransactionsResponse.SignedTransaction.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignTransactionsResponse.SignedTransaction.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignTransactionsResponse.SignedTransaction} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignTransactionsResponse.SignedTransaction.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignTransactionsResponse.SignedTransaction.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTransaction_asU8();
+  f = message.getTransaction_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getUnsignedInputIndexesList();
+  f = message.getUnsignedInputIndexesList();
   if (f.length > 0) {
     writer.writePackedUint32(
       2,
@@ -15389,20 +14219,11 @@ proto.walletrpc.SignTransactionsResponse.SignedTransaction.prototype.serializeBi
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignTransactionsResponse.SignedTransaction} The clone.
- */
-proto.walletrpc.SignTransactionsResponse.SignedTransaction.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignTransactionsResponse.SignedTransaction} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes transaction = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.SignTransactionsResponse.SignedTransaction.prototype.getTransaction = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -15430,7 +14251,7 @@ proto.walletrpc.SignTransactionsResponse.SignedTransaction.prototype.getTransact
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.SignTransactionsResponse.SignedTransaction.prototype.setTransaction = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -15447,14 +14268,56 @@ proto.walletrpc.SignTransactionsResponse.SignedTransaction.prototype.getUnsigned
 };
 
 
-/** @param {Array.<number>} value  */
+/** @param {!Array.<number>} value */
 proto.walletrpc.SignTransactionsResponse.SignedTransaction.prototype.setUnsignedInputIndexesList = function(value) {
   jspb.Message.setField(this, 2, value || []);
 };
 
 
+/**
+ * @param {!number} value
+ * @param {number=} opt_index
+ */
+proto.walletrpc.SignTransactionsResponse.SignedTransaction.prototype.addUnsignedInputIndexes = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
 proto.walletrpc.SignTransactionsResponse.SignedTransaction.prototype.clearUnsignedInputIndexesList = function() {
-  jspb.Message.setField(this, 2, []);
+  this.setUnsignedInputIndexesList([]);
+};
+
+
+/**
+ * repeated SignedTransaction transactions = 1;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.SignTransactionsResponse.SignedTransaction>}
+ */
+proto.walletrpc.SignTransactionsResponse.prototype.getTransactionsList = function() {
+  return /** @type{!Array.<!proto.walletrpc.SignTransactionsResponse.SignedTransaction>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SignTransactionsResponse.SignedTransaction, 1));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.SignTransactionsResponse.SignedTransaction>} value */
+proto.walletrpc.SignTransactionsResponse.prototype.setTransactionsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.SignTransactionsResponse.SignedTransaction=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.SignTransactionsResponse.SignedTransaction}
+ */
+proto.walletrpc.SignTransactionsResponse.prototype.addTransactions = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.walletrpc.SignTransactionsResponse.SignedTransaction, opt_index);
+};
+
+
+proto.walletrpc.SignTransactionsResponse.prototype.clearTransactionsList = function() {
+  this.setTransactionsList([]);
 };
 
 
@@ -15505,10 +14368,10 @@ proto.walletrpc.CreateSignatureRequest.prototype.toObject = function(opt_include
 proto.walletrpc.CreateSignatureRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     passphrase: msg.getPassphrase_asB64(),
-    address: msg.getAddress(),
+    address: jspb.Message.getFieldWithDefault(msg, 2, ""),
     serializedTransaction: msg.getSerializedTransaction_asB64(),
-    inputIndex: msg.getInputIndex(),
-    hashType: msg.getHashType(),
+    inputIndex: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    hashType: jspb.Message.getFieldWithDefault(msg, 5, 0),
     previousPkScript: msg.getPreviousPkScript_asB64()
   };
 
@@ -15580,70 +14443,60 @@ proto.walletrpc.CreateSignatureRequest.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CreateSignatureRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CreateSignatureRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CreateSignatureRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CreateSignatureRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CreateSignatureRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CreateSignatureRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CreateSignatureRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getAddress();
+  f = message.getAddress();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getSerializedTransaction_asU8();
+  f = message.getSerializedTransaction_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
       f
     );
   }
-  f = this.getInputIndex();
+  f = message.getInputIndex();
   if (f !== 0) {
     writer.writeUint32(
       4,
       f
     );
   }
-  f = this.getHashType();
+  f = message.getHashType();
   if (f !== 0.0) {
     writer.writeEnum(
       5,
       f
     );
   }
-  f = this.getPreviousPkScript_asU8();
+  f = message.getPreviousPkScript_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       6,
@@ -15654,20 +14507,23 @@ proto.walletrpc.CreateSignatureRequest.prototype.serializeBinaryToWriter = funct
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CreateSignatureRequest} The clone.
+ * @enum {number}
  */
-proto.walletrpc.CreateSignatureRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CreateSignatureRequest} */ (jspb.Message.cloneMessage(this));
+proto.walletrpc.CreateSignatureRequest.SigHashType = {
+  SIGHASH_OLD: 0,
+  SIGHASH_ALL: 1,
+  SIGHASH_NONE: 2,
+  SIGHASH_SINGLE: 3,
+  SIGHASH_ALLVALUE: 4,
+  SIGHASH_ANYONECANPAY: 128
 };
-
 
 /**
  * optional bytes passphrase = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.CreateSignatureRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -15695,7 +14551,7 @@ proto.walletrpc.CreateSignatureRequest.prototype.getPassphrase_asU8 = function()
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.CreateSignatureRequest.prototype.setPassphrase = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -15706,11 +14562,11 @@ proto.walletrpc.CreateSignatureRequest.prototype.setPassphrase = function(value)
  * @return {string}
  */
 proto.walletrpc.CreateSignatureRequest.prototype.getAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.CreateSignatureRequest.prototype.setAddress = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -15721,7 +14577,7 @@ proto.walletrpc.CreateSignatureRequest.prototype.setAddress = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.CreateSignatureRequest.prototype.getSerializedTransaction = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -15749,7 +14605,7 @@ proto.walletrpc.CreateSignatureRequest.prototype.getSerializedTransaction_asU8 =
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.CreateSignatureRequest.prototype.setSerializedTransaction = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -15760,11 +14616,11 @@ proto.walletrpc.CreateSignatureRequest.prototype.setSerializedTransaction = func
  * @return {number}
  */
 proto.walletrpc.CreateSignatureRequest.prototype.getInputIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.CreateSignatureRequest.prototype.setInputIndex = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -15775,11 +14631,11 @@ proto.walletrpc.CreateSignatureRequest.prototype.setInputIndex = function(value)
  * @return {!proto.walletrpc.CreateSignatureRequest.SigHashType}
  */
 proto.walletrpc.CreateSignatureRequest.prototype.getHashType = function() {
-  return /** @type {!proto.walletrpc.CreateSignatureRequest.SigHashType} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {!proto.walletrpc.CreateSignatureRequest.SigHashType} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {!proto.walletrpc.CreateSignatureRequest.SigHashType} value  */
+/** @param {!proto.walletrpc.CreateSignatureRequest.SigHashType} value */
 proto.walletrpc.CreateSignatureRequest.prototype.setHashType = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -15790,7 +14646,7 @@ proto.walletrpc.CreateSignatureRequest.prototype.setHashType = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.CreateSignatureRequest.prototype.getPreviousPkScript = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 6, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
@@ -15818,23 +14674,11 @@ proto.walletrpc.CreateSignatureRequest.prototype.getPreviousPkScript_asU8 = func
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.CreateSignatureRequest.prototype.setPreviousPkScript = function(value) {
   jspb.Message.setField(this, 6, value);
 };
 
-
-/**
- * @enum {number}
- */
-proto.walletrpc.CreateSignatureRequest.SigHashType = {
-  SIGHASH_OLD: 0,
-  SIGHASH_ALL: 1,
-  SIGHASH_NONE: 2,
-  SIGHASH_SINGLE: 3,
-  SIGHASH_ALLVALUE: 4,
-  SIGHASH_ANYONECANPAY: 128
-};
 
 
 /**
@@ -15938,42 +14782,32 @@ proto.walletrpc.CreateSignatureResponse.deserializeBinaryFromReader = function(m
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CreateSignatureResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CreateSignatureResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CreateSignatureResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CreateSignatureResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CreateSignatureResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CreateSignatureResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CreateSignatureResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSignature_asU8();
+  f = message.getSignature_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getPublicKey_asU8();
+  f = message.getPublicKey_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
@@ -15984,20 +14818,11 @@ proto.walletrpc.CreateSignatureResponse.prototype.serializeBinaryToWriter = func
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CreateSignatureResponse} The clone.
- */
-proto.walletrpc.CreateSignatureResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CreateSignatureResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes signature = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.CreateSignatureResponse.prototype.getSignature = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -16025,7 +14850,7 @@ proto.walletrpc.CreateSignatureResponse.prototype.getSignature_asU8 = function()
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.CreateSignatureResponse.prototype.setSignature = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -16036,7 +14861,7 @@ proto.walletrpc.CreateSignatureResponse.prototype.setSignature = function(value)
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.CreateSignatureResponse.prototype.getPublicKey = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -16064,7 +14889,7 @@ proto.walletrpc.CreateSignatureResponse.prototype.getPublicKey_asU8 = function()
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.CreateSignatureResponse.prototype.setPublicKey = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -16167,35 +14992,25 @@ proto.walletrpc.PublishTransactionRequest.deserializeBinaryFromReader = function
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.PublishTransactionRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.PublishTransactionRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.PublishTransactionRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.PublishTransactionRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.PublishTransactionRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.PublishTransactionRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.PublishTransactionRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSignedTransaction_asU8();
+  f = message.getSignedTransaction_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
@@ -16206,20 +15021,11 @@ proto.walletrpc.PublishTransactionRequest.prototype.serializeBinaryToWriter = fu
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.PublishTransactionRequest} The clone.
- */
-proto.walletrpc.PublishTransactionRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.PublishTransactionRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes signed_transaction = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.PublishTransactionRequest.prototype.getSignedTransaction = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -16247,7 +15053,7 @@ proto.walletrpc.PublishTransactionRequest.prototype.getSignedTransaction_asU8 = 
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.PublishTransactionRequest.prototype.setSignedTransaction = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -16350,35 +15156,25 @@ proto.walletrpc.PublishTransactionResponse.deserializeBinaryFromReader = functio
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.PublishTransactionResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.PublishTransactionResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.PublishTransactionResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.PublishTransactionResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.PublishTransactionResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.PublishTransactionResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.PublishTransactionResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTransactionHash_asU8();
+  f = message.getTransactionHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
@@ -16389,20 +15185,11 @@ proto.walletrpc.PublishTransactionResponse.prototype.serializeBinaryToWriter = f
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.PublishTransactionResponse} The clone.
- */
-proto.walletrpc.PublishTransactionResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.PublishTransactionResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes transaction_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.PublishTransactionResponse.prototype.getTransactionHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -16430,7 +15217,7 @@ proto.walletrpc.PublishTransactionResponse.prototype.getTransactionHash_asU8 = f
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.PublishTransactionResponse.prototype.setTransactionHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -16529,43 +15316,24 @@ proto.walletrpc.PublishUnminedTransactionsRequest.deserializeBinaryFromReader = 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.PublishUnminedTransactionsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.PublishUnminedTransactionsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.PublishUnminedTransactionsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.PublishUnminedTransactionsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.PublishUnminedTransactionsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.PublishUnminedTransactionsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.PublishUnminedTransactionsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.PublishUnminedTransactionsRequest} The clone.
- */
-proto.walletrpc.PublishUnminedTransactionsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.PublishUnminedTransactionsRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -16662,43 +15430,24 @@ proto.walletrpc.PublishUnminedTransactionsResponse.deserializeBinaryFromReader =
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.PublishUnminedTransactionsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.PublishUnminedTransactionsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.PublishUnminedTransactionsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.PublishUnminedTransactionsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.PublishUnminedTransactionsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.PublishUnminedTransactionsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.PublishUnminedTransactionsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.PublishUnminedTransactionsResponse} The clone.
- */
-proto.walletrpc.PublishUnminedTransactionsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.PublishUnminedTransactionsResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -16749,16 +15498,16 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.toObject = function(opt_include
 proto.walletrpc.PurchaseTicketsRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     passphrase: msg.getPassphrase_asB64(),
-    account: msg.getAccount(),
-    spendLimit: msg.getSpendLimit(),
-    requiredConfirmations: msg.getRequiredConfirmations(),
-    ticketAddress: msg.getTicketAddress(),
-    numTickets: msg.getNumTickets(),
-    poolAddress: msg.getPoolAddress(),
-    poolFees: msg.getPoolFees(),
-    expiry: msg.getExpiry(),
-    txFee: msg.getTxFee(),
-    ticketFee: msg.getTicketFee()
+    account: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    spendLimit: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    requiredConfirmations: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    ticketAddress: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    numTickets: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    poolAddress: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    poolFees: +jspb.Message.getFieldWithDefault(msg, 8, 0.0),
+    expiry: jspb.Message.getFieldWithDefault(msg, 9, 0),
+    txFee: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    ticketFee: jspb.Message.getFieldWithDefault(msg, 11, 0)
   };
 
   if (includeInstance) {
@@ -16849,105 +15598,95 @@ proto.walletrpc.PurchaseTicketsRequest.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.PurchaseTicketsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.PurchaseTicketsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.PurchaseTicketsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.PurchaseTicketsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.PurchaseTicketsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.PurchaseTicketsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.PurchaseTicketsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getAccount();
+  f = message.getAccount();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getSpendLimit();
+  f = message.getSpendLimit();
   if (f !== 0) {
     writer.writeInt64(
       3,
       f
     );
   }
-  f = this.getRequiredConfirmations();
+  f = message.getRequiredConfirmations();
   if (f !== 0) {
     writer.writeUint32(
       4,
       f
     );
   }
-  f = this.getTicketAddress();
+  f = message.getTicketAddress();
   if (f.length > 0) {
     writer.writeString(
       5,
       f
     );
   }
-  f = this.getNumTickets();
+  f = message.getNumTickets();
   if (f !== 0) {
     writer.writeUint32(
       6,
       f
     );
   }
-  f = this.getPoolAddress();
+  f = message.getPoolAddress();
   if (f.length > 0) {
     writer.writeString(
       7,
       f
     );
   }
-  f = this.getPoolFees();
+  f = message.getPoolFees();
   if (f !== 0.0) {
     writer.writeDouble(
       8,
       f
     );
   }
-  f = this.getExpiry();
+  f = message.getExpiry();
   if (f !== 0) {
     writer.writeUint32(
       9,
       f
     );
   }
-  f = this.getTxFee();
+  f = message.getTxFee();
   if (f !== 0) {
     writer.writeInt64(
       10,
       f
     );
   }
-  f = this.getTicketFee();
+  f = message.getTicketFee();
   if (f !== 0) {
     writer.writeInt64(
       11,
@@ -16958,20 +15697,11 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.serializeBinaryToWriter = funct
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.PurchaseTicketsRequest} The clone.
- */
-proto.walletrpc.PurchaseTicketsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.PurchaseTicketsRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes passphrase = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.PurchaseTicketsRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -16999,7 +15729,7 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.getPassphrase_asU8 = function()
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.PurchaseTicketsRequest.prototype.setPassphrase = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -17010,11 +15740,11 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.setPassphrase = function(value)
  * @return {number}
  */
 proto.walletrpc.PurchaseTicketsRequest.prototype.getAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.PurchaseTicketsRequest.prototype.setAccount = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -17025,11 +15755,11 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.setAccount = function(value) {
  * @return {number}
  */
 proto.walletrpc.PurchaseTicketsRequest.prototype.getSpendLimit = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.PurchaseTicketsRequest.prototype.setSpendLimit = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -17040,11 +15770,11 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.setSpendLimit = function(value)
  * @return {number}
  */
 proto.walletrpc.PurchaseTicketsRequest.prototype.getRequiredConfirmations = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.PurchaseTicketsRequest.prototype.setRequiredConfirmations = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -17055,11 +15785,11 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.setRequiredConfirmations = func
  * @return {string}
  */
 proto.walletrpc.PurchaseTicketsRequest.prototype.getTicketAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 5, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.PurchaseTicketsRequest.prototype.setTicketAddress = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -17070,11 +15800,11 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.setTicketAddress = function(val
  * @return {number}
  */
 proto.walletrpc.PurchaseTicketsRequest.prototype.getNumTickets = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 6, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.PurchaseTicketsRequest.prototype.setNumTickets = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -17085,11 +15815,11 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.setNumTickets = function(value)
  * @return {string}
  */
 proto.walletrpc.PurchaseTicketsRequest.prototype.getPoolAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 7, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.PurchaseTicketsRequest.prototype.setPoolAddress = function(value) {
   jspb.Message.setField(this, 7, value);
 };
@@ -17100,11 +15830,11 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.setPoolAddress = function(value
  * @return {number}
  */
 proto.walletrpc.PurchaseTicketsRequest.prototype.getPoolFees = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 8, 0));
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 8, 0.0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.PurchaseTicketsRequest.prototype.setPoolFees = function(value) {
   jspb.Message.setField(this, 8, value);
 };
@@ -17115,11 +15845,11 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.setPoolFees = function(value) {
  * @return {number}
  */
 proto.walletrpc.PurchaseTicketsRequest.prototype.getExpiry = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 9, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 9, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.PurchaseTicketsRequest.prototype.setExpiry = function(value) {
   jspb.Message.setField(this, 9, value);
 };
@@ -17130,11 +15860,11 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.setExpiry = function(value) {
  * @return {number}
  */
 proto.walletrpc.PurchaseTicketsRequest.prototype.getTxFee = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 10, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.PurchaseTicketsRequest.prototype.setTxFee = function(value) {
   jspb.Message.setField(this, 10, value);
 };
@@ -17145,11 +15875,11 @@ proto.walletrpc.PurchaseTicketsRequest.prototype.setTxFee = function(value) {
  * @return {number}
  */
 proto.walletrpc.PurchaseTicketsRequest.prototype.getTicketFee = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 11, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 11, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.PurchaseTicketsRequest.prototype.setTicketFee = function(value) {
   jspb.Message.setField(this, 11, value);
 };
@@ -17247,8 +15977,7 @@ proto.walletrpc.PurchaseTicketsResponse.deserializeBinaryFromReader = function(m
     switch (field) {
     case 1:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
-      msg.getTicketHashesList().push(value);
-      msg.setTicketHashesList(msg.getTicketHashesList());
+      msg.addTicketHashes(value);
       break;
     default:
       reader.skipField();
@@ -17260,50 +15989,31 @@ proto.walletrpc.PurchaseTicketsResponse.deserializeBinaryFromReader = function(m
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.PurchaseTicketsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.PurchaseTicketsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.PurchaseTicketsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.PurchaseTicketsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.PurchaseTicketsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.PurchaseTicketsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.PurchaseTicketsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTicketHashesList_asU8();
+  f = message.getTicketHashesList_asU8();
   if (f.length > 0) {
     writer.writeRepeatedBytes(
       1,
       f
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.PurchaseTicketsResponse} The clone.
- */
-proto.walletrpc.PurchaseTicketsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.PurchaseTicketsResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -17346,14 +16056,23 @@ proto.walletrpc.PurchaseTicketsResponse.prototype.getTicketHashesList_asU8 = fun
 };
 
 
-/** @param {!(Array<!Uint8Array>|Array<string>)} value  */
+/** @param {!(Array<!Uint8Array>|Array<string>)} value */
 proto.walletrpc.PurchaseTicketsResponse.prototype.setTicketHashesList = function(value) {
   jspb.Message.setField(this, 1, value || []);
 };
 
 
+/**
+ * @param {!(string|Uint8Array)} value
+ * @param {number=} opt_index
+ */
+proto.walletrpc.PurchaseTicketsResponse.prototype.addTicketHashes = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 1, value, opt_index);
+};
+
+
 proto.walletrpc.PurchaseTicketsResponse.prototype.clearTicketHashesList = function() {
-  jspb.Message.setField(this, 1, []);
+  this.setTicketHashesList([]);
 };
 
 
@@ -17454,35 +16173,25 @@ proto.walletrpc.RevokeTicketsRequest.deserializeBinaryFromReader = function(msg,
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RevokeTicketsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RevokeTicketsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RevokeTicketsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RevokeTicketsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RevokeTicketsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RevokeTicketsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RevokeTicketsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
@@ -17493,20 +16202,11 @@ proto.walletrpc.RevokeTicketsRequest.prototype.serializeBinaryToWriter = functio
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RevokeTicketsRequest} The clone.
- */
-proto.walletrpc.RevokeTicketsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RevokeTicketsRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes passphrase = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.RevokeTicketsRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -17534,7 +16234,7 @@ proto.walletrpc.RevokeTicketsRequest.prototype.getPassphrase_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.RevokeTicketsRequest.prototype.setPassphrase = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -17633,43 +16333,24 @@ proto.walletrpc.RevokeTicketsResponse.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RevokeTicketsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RevokeTicketsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RevokeTicketsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RevokeTicketsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RevokeTicketsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RevokeTicketsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RevokeTicketsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RevokeTicketsResponse} The clone.
- */
-proto.walletrpc.RevokeTicketsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RevokeTicketsResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -17766,43 +16447,24 @@ proto.walletrpc.LoadActiveDataFiltersRequest.deserializeBinaryFromReader = funct
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.LoadActiveDataFiltersRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.LoadActiveDataFiltersRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.LoadActiveDataFiltersRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.LoadActiveDataFiltersRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.LoadActiveDataFiltersRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.LoadActiveDataFiltersRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.LoadActiveDataFiltersRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.LoadActiveDataFiltersRequest} The clone.
- */
-proto.walletrpc.LoadActiveDataFiltersRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.LoadActiveDataFiltersRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -17899,43 +16561,24 @@ proto.walletrpc.LoadActiveDataFiltersResponse.deserializeBinaryFromReader = func
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.LoadActiveDataFiltersResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.LoadActiveDataFiltersResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.LoadActiveDataFiltersResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.LoadActiveDataFiltersResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.LoadActiveDataFiltersResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.LoadActiveDataFiltersResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.LoadActiveDataFiltersResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.LoadActiveDataFiltersResponse} The clone.
- */
-proto.walletrpc.LoadActiveDataFiltersResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.LoadActiveDataFiltersResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -17985,8 +16628,8 @@ proto.walletrpc.SignMessageRequest.prototype.toObject = function(opt_includeInst
  */
 proto.walletrpc.SignMessageRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    address: msg.getAddress(),
-    message: msg.getMessage(),
+    address: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    message: jspb.Message.getFieldWithDefault(msg, 2, ""),
     passphrase: msg.getPassphrase_asB64()
   };
 
@@ -18046,49 +16689,39 @@ proto.walletrpc.SignMessageRequest.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignMessageRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignMessageRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignMessageRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignMessageRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignMessageRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignMessageRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignMessageRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAddress();
+  f = message.getAddress();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getMessage();
+  f = message.getMessage();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
@@ -18099,24 +16732,15 @@ proto.walletrpc.SignMessageRequest.prototype.serializeBinaryToWriter = function 
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignMessageRequest} The clone.
- */
-proto.walletrpc.SignMessageRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignMessageRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string address = 1;
  * @return {string}
  */
 proto.walletrpc.SignMessageRequest.prototype.getAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.SignMessageRequest.prototype.setAddress = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -18127,11 +16751,11 @@ proto.walletrpc.SignMessageRequest.prototype.setAddress = function(value) {
  * @return {string}
  */
 proto.walletrpc.SignMessageRequest.prototype.getMessage = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.SignMessageRequest.prototype.setMessage = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -18142,7 +16766,7 @@ proto.walletrpc.SignMessageRequest.prototype.setMessage = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.SignMessageRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -18170,7 +16794,7 @@ proto.walletrpc.SignMessageRequest.prototype.getPassphrase_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.SignMessageRequest.prototype.setPassphrase = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -18273,35 +16897,25 @@ proto.walletrpc.SignMessageResponse.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignMessageResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignMessageResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignMessageResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignMessageResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignMessageResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignMessageResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignMessageResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSignature_asU8();
+  f = message.getSignature_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
@@ -18312,20 +16926,11 @@ proto.walletrpc.SignMessageResponse.prototype.serializeBinaryToWriter = function
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignMessageResponse} The clone.
- */
-proto.walletrpc.SignMessageResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignMessageResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes signature = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.SignMessageResponse.prototype.getSignature = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -18353,7 +16958,7 @@ proto.walletrpc.SignMessageResponse.prototype.getSignature_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.SignMessageResponse.prototype.setSignature = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -18458,8 +17063,7 @@ proto.walletrpc.SignMessagesRequest.deserializeBinaryFromReader = function(msg, 
     case 2:
       var value = new proto.walletrpc.SignMessagesRequest.Message;
       reader.readMessage(value,proto.walletrpc.SignMessagesRequest.Message.deserializeBinaryFromReader);
-      msg.getMessagesList().push(value);
-      msg.setMessagesList(msg.getMessagesList());
+      msg.addMessages(value);
       break;
     default:
       reader.skipField();
@@ -18471,42 +17075,32 @@ proto.walletrpc.SignMessagesRequest.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignMessagesRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignMessagesRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignMessagesRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignMessagesRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignMessagesRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignMessagesRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignMessagesRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getMessagesList();
+  f = message.getMessagesList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       2,
@@ -18514,77 +17108,6 @@ proto.walletrpc.SignMessagesRequest.prototype.serializeBinaryToWriter = function
       proto.walletrpc.SignMessagesRequest.Message.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignMessagesRequest} The clone.
- */
-proto.walletrpc.SignMessagesRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignMessagesRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * @return {!(string|Uint8Array)}
- */
-proto.walletrpc.SignMessagesRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * This is a type-conversion wrapper around `getPassphrase()`
- * @return {string}
- */
-proto.walletrpc.SignMessagesRequest.prototype.getPassphrase_asB64 = function() {
-  return /** @type {string} */ (jspb.Message.bytesAsB64(
-      this.getPassphrase()));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * Note that Uint8Array is not supported on all browsers.
- * @see http://caniuse.com/Uint8Array
- * This is a type-conversion wrapper around `getPassphrase()`
- * @return {!Uint8Array}
- */
-proto.walletrpc.SignMessagesRequest.prototype.getPassphrase_asU8 = function() {
-  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
-      this.getPassphrase()));
-};
-
-
-/** @param {!(string|Uint8Array)} value  */
-proto.walletrpc.SignMessagesRequest.prototype.setPassphrase = function(value) {
-  jspb.Message.setField(this, 1, value);
-};
-
-
-/**
- * repeated Message messages = 2;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.SignMessagesRequest.Message>}
- */
-proto.walletrpc.SignMessagesRequest.prototype.getMessagesList = function() {
-  return /** @type{!Array.<!proto.walletrpc.SignMessagesRequest.Message>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SignMessagesRequest.Message, 2));
-};
-
-
-/** @param {Array.<!proto.walletrpc.SignMessagesRequest.Message>} value  */
-proto.walletrpc.SignMessagesRequest.prototype.setMessagesList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 2, value);
-};
-
-
-proto.walletrpc.SignMessagesRequest.prototype.clearMessagesList = function() {
-  this.setMessagesList([]);
 };
 
 
@@ -18634,8 +17157,8 @@ proto.walletrpc.SignMessagesRequest.Message.prototype.toObject = function(opt_in
  */
 proto.walletrpc.SignMessagesRequest.Message.toObject = function(includeInstance, msg) {
   var f, obj = {
-    address: msg.getAddress(),
-    message: msg.getMessage()
+    address: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    message: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -18690,42 +17213,32 @@ proto.walletrpc.SignMessagesRequest.Message.deserializeBinaryFromReader = functi
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignMessagesRequest.Message} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignMessagesRequest.Message.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignMessagesRequest.Message.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignMessagesRequest.Message.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignMessagesRequest.Message} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignMessagesRequest.Message.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignMessagesRequest.Message.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAddress();
+  f = message.getAddress();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getMessage();
+  f = message.getMessage();
   if (f.length > 0) {
     writer.writeString(
       2,
@@ -18736,24 +17249,15 @@ proto.walletrpc.SignMessagesRequest.Message.prototype.serializeBinaryToWriter = 
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignMessagesRequest.Message} The clone.
- */
-proto.walletrpc.SignMessagesRequest.Message.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignMessagesRequest.Message} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string address = 1;
  * @return {string}
  */
 proto.walletrpc.SignMessagesRequest.Message.prototype.getAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.SignMessagesRequest.Message.prototype.setAddress = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -18764,13 +17268,85 @@ proto.walletrpc.SignMessagesRequest.Message.prototype.setAddress = function(valu
  * @return {string}
  */
 proto.walletrpc.SignMessagesRequest.Message.prototype.getMessage = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.SignMessagesRequest.Message.prototype.setMessage = function(value) {
   jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * optional bytes passphrase = 1;
+ * @return {!(string|Uint8Array)}
+ */
+proto.walletrpc.SignMessagesRequest.prototype.getPassphrase = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * optional bytes passphrase = 1;
+ * This is a type-conversion wrapper around `getPassphrase()`
+ * @return {string}
+ */
+proto.walletrpc.SignMessagesRequest.prototype.getPassphrase_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getPassphrase()));
+};
+
+
+/**
+ * optional bytes passphrase = 1;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getPassphrase()`
+ * @return {!Uint8Array}
+ */
+proto.walletrpc.SignMessagesRequest.prototype.getPassphrase_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getPassphrase()));
+};
+
+
+/** @param {!(string|Uint8Array)} value */
+proto.walletrpc.SignMessagesRequest.prototype.setPassphrase = function(value) {
+  jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * repeated Message messages = 2;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.SignMessagesRequest.Message>}
+ */
+proto.walletrpc.SignMessagesRequest.prototype.getMessagesList = function() {
+  return /** @type{!Array.<!proto.walletrpc.SignMessagesRequest.Message>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SignMessagesRequest.Message, 2));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.SignMessagesRequest.Message>} value */
+proto.walletrpc.SignMessagesRequest.prototype.setMessagesList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 2, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.SignMessagesRequest.Message=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.SignMessagesRequest.Message}
+ */
+proto.walletrpc.SignMessagesRequest.prototype.addMessages = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.walletrpc.SignMessagesRequest.Message, opt_index);
+};
+
+
+proto.walletrpc.SignMessagesRequest.prototype.clearMessagesList = function() {
+  this.setMessagesList([]);
 };
 
 
@@ -18868,8 +17444,7 @@ proto.walletrpc.SignMessagesResponse.deserializeBinaryFromReader = function(msg,
     case 1:
       var value = new proto.walletrpc.SignMessagesResponse.SignReply;
       reader.readMessage(value,proto.walletrpc.SignMessagesResponse.SignReply.deserializeBinaryFromReader);
-      msg.getRepliesList().push(value);
-      msg.setRepliesList(msg.getRepliesList());
+      msg.addReplies(value);
       break;
     default:
       reader.skipField();
@@ -18881,35 +17456,25 @@ proto.walletrpc.SignMessagesResponse.deserializeBinaryFromReader = function(msg,
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignMessagesResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignMessagesResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignMessagesResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignMessagesResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignMessagesResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignMessagesResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignMessagesResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getRepliesList();
+  f = message.getRepliesList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       1,
@@ -18917,38 +17482,6 @@ proto.walletrpc.SignMessagesResponse.prototype.serializeBinaryToWriter = functio
       proto.walletrpc.SignMessagesResponse.SignReply.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignMessagesResponse} The clone.
- */
-proto.walletrpc.SignMessagesResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignMessagesResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * repeated SignReply replies = 1;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.SignMessagesResponse.SignReply>}
- */
-proto.walletrpc.SignMessagesResponse.prototype.getRepliesList = function() {
-  return /** @type{!Array.<!proto.walletrpc.SignMessagesResponse.SignReply>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SignMessagesResponse.SignReply, 1));
-};
-
-
-/** @param {Array.<!proto.walletrpc.SignMessagesResponse.SignReply>} value  */
-proto.walletrpc.SignMessagesResponse.prototype.setRepliesList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 1, value);
-};
-
-
-proto.walletrpc.SignMessagesResponse.prototype.clearRepliesList = function() {
-  this.setRepliesList([]);
 };
 
 
@@ -18999,7 +17532,7 @@ proto.walletrpc.SignMessagesResponse.SignReply.prototype.toObject = function(opt
 proto.walletrpc.SignMessagesResponse.SignReply.toObject = function(includeInstance, msg) {
   var f, obj = {
     signature: msg.getSignature_asB64(),
-    error: msg.getError()
+    error: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -19054,42 +17587,32 @@ proto.walletrpc.SignMessagesResponse.SignReply.deserializeBinaryFromReader = fun
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SignMessagesResponse.SignReply} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SignMessagesResponse.SignReply.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SignMessagesResponse.SignReply.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SignMessagesResponse.SignReply.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SignMessagesResponse.SignReply} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SignMessagesResponse.SignReply.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SignMessagesResponse.SignReply.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSignature_asU8();
+  f = message.getSignature_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getError();
+  f = message.getError();
   if (f.length > 0) {
     writer.writeString(
       2,
@@ -19100,20 +17623,11 @@ proto.walletrpc.SignMessagesResponse.SignReply.prototype.serializeBinaryToWriter
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SignMessagesResponse.SignReply} The clone.
- */
-proto.walletrpc.SignMessagesResponse.SignReply.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SignMessagesResponse.SignReply} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes signature = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.SignMessagesResponse.SignReply.prototype.getSignature = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -19141,7 +17655,7 @@ proto.walletrpc.SignMessagesResponse.SignReply.prototype.getSignature_asU8 = fun
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.SignMessagesResponse.SignReply.prototype.setSignature = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -19152,13 +17666,46 @@ proto.walletrpc.SignMessagesResponse.SignReply.prototype.setSignature = function
  * @return {string}
  */
 proto.walletrpc.SignMessagesResponse.SignReply.prototype.getError = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.SignMessagesResponse.SignReply.prototype.setError = function(value) {
   jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * repeated SignReply replies = 1;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.SignMessagesResponse.SignReply>}
+ */
+proto.walletrpc.SignMessagesResponse.prototype.getRepliesList = function() {
+  return /** @type{!Array.<!proto.walletrpc.SignMessagesResponse.SignReply>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SignMessagesResponse.SignReply, 1));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.SignMessagesResponse.SignReply>} value */
+proto.walletrpc.SignMessagesResponse.prototype.setRepliesList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.SignMessagesResponse.SignReply=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.SignMessagesResponse.SignReply}
+ */
+proto.walletrpc.SignMessagesResponse.prototype.addReplies = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.walletrpc.SignMessagesResponse.SignReply, opt_index);
+};
+
+
+proto.walletrpc.SignMessagesResponse.prototype.clearRepliesList = function() {
+  this.setRepliesList([]);
 };
 
 
@@ -19255,43 +17802,24 @@ proto.walletrpc.TransactionNotificationsRequest.deserializeBinaryFromReader = fu
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.TransactionNotificationsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.TransactionNotificationsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.TransactionNotificationsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.TransactionNotificationsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.TransactionNotificationsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.TransactionNotificationsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.TransactionNotificationsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.TransactionNotificationsRequest} The clone.
- */
-proto.walletrpc.TransactionNotificationsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.TransactionNotificationsRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -19393,24 +17921,20 @@ proto.walletrpc.TransactionNotificationsResponse.deserializeBinaryFromReader = f
     case 1:
       var value = new proto.walletrpc.BlockDetails;
       reader.readMessage(value,proto.walletrpc.BlockDetails.deserializeBinaryFromReader);
-      msg.getAttachedBlocksList().push(value);
-      msg.setAttachedBlocksList(msg.getAttachedBlocksList());
+      msg.addAttachedBlocks(value);
       break;
     case 2:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
-      msg.getDetachedBlocksList().push(value);
-      msg.setDetachedBlocksList(msg.getDetachedBlocksList());
+      msg.addDetachedBlocks(value);
       break;
     case 3:
       var value = new proto.walletrpc.TransactionDetails;
       reader.readMessage(value,proto.walletrpc.TransactionDetails.deserializeBinaryFromReader);
-      msg.getUnminedTransactionsList().push(value);
-      msg.setUnminedTransactionsList(msg.getUnminedTransactionsList());
+      msg.addUnminedTransactions(value);
       break;
     case 4:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
-      msg.getUnminedTransactionHashesList().push(value);
-      msg.setUnminedTransactionHashesList(msg.getUnminedTransactionHashesList());
+      msg.addUnminedTransactionHashes(value);
       break;
     default:
       reader.skipField();
@@ -19422,35 +17946,25 @@ proto.walletrpc.TransactionNotificationsResponse.deserializeBinaryFromReader = f
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.TransactionNotificationsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.TransactionNotificationsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.TransactionNotificationsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.TransactionNotificationsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.TransactionNotificationsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.TransactionNotificationsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.TransactionNotificationsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAttachedBlocksList();
+  f = message.getAttachedBlocksList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       1,
@@ -19458,14 +17972,14 @@ proto.walletrpc.TransactionNotificationsResponse.prototype.serializeBinaryToWrit
       proto.walletrpc.BlockDetails.serializeBinaryToWriter
     );
   }
-  f = this.getDetachedBlocksList_asU8();
+  f = message.getDetachedBlocksList_asU8();
   if (f.length > 0) {
     writer.writeRepeatedBytes(
       2,
       f
     );
   }
-  f = this.getUnminedTransactionsList();
+  f = message.getUnminedTransactionsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       3,
@@ -19473,22 +17987,13 @@ proto.walletrpc.TransactionNotificationsResponse.prototype.serializeBinaryToWrit
       proto.walletrpc.TransactionDetails.serializeBinaryToWriter
     );
   }
-  f = this.getUnminedTransactionHashesList_asU8();
+  f = message.getUnminedTransactionHashesList_asU8();
   if (f.length > 0) {
     writer.writeRepeatedBytes(
       4,
       f
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.TransactionNotificationsResponse} The clone.
- */
-proto.walletrpc.TransactionNotificationsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.TransactionNotificationsResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -19504,9 +18009,19 @@ proto.walletrpc.TransactionNotificationsResponse.prototype.getAttachedBlocksList
 };
 
 
-/** @param {Array.<!proto.walletrpc.BlockDetails>} value  */
+/** @param {!Array.<!proto.walletrpc.BlockDetails>} value */
 proto.walletrpc.TransactionNotificationsResponse.prototype.setAttachedBlocksList = function(value) {
   jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.BlockDetails=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.BlockDetails}
+ */
+proto.walletrpc.TransactionNotificationsResponse.prototype.addAttachedBlocks = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.walletrpc.BlockDetails, opt_index);
 };
 
 
@@ -19554,14 +18069,23 @@ proto.walletrpc.TransactionNotificationsResponse.prototype.getDetachedBlocksList
 };
 
 
-/** @param {!(Array<!Uint8Array>|Array<string>)} value  */
+/** @param {!(Array<!Uint8Array>|Array<string>)} value */
 proto.walletrpc.TransactionNotificationsResponse.prototype.setDetachedBlocksList = function(value) {
   jspb.Message.setField(this, 2, value || []);
 };
 
 
+/**
+ * @param {!(string|Uint8Array)} value
+ * @param {number=} opt_index
+ */
+proto.walletrpc.TransactionNotificationsResponse.prototype.addDetachedBlocks = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
 proto.walletrpc.TransactionNotificationsResponse.prototype.clearDetachedBlocksList = function() {
-  jspb.Message.setField(this, 2, []);
+  this.setDetachedBlocksList([]);
 };
 
 
@@ -19577,9 +18101,19 @@ proto.walletrpc.TransactionNotificationsResponse.prototype.getUnminedTransaction
 };
 
 
-/** @param {Array.<!proto.walletrpc.TransactionDetails>} value  */
+/** @param {!Array.<!proto.walletrpc.TransactionDetails>} value */
 proto.walletrpc.TransactionNotificationsResponse.prototype.setUnminedTransactionsList = function(value) {
   jspb.Message.setRepeatedWrapperField(this, 3, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.TransactionDetails=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.TransactionDetails}
+ */
+proto.walletrpc.TransactionNotificationsResponse.prototype.addUnminedTransactions = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.walletrpc.TransactionDetails, opt_index);
 };
 
 
@@ -19627,14 +18161,23 @@ proto.walletrpc.TransactionNotificationsResponse.prototype.getUnminedTransaction
 };
 
 
-/** @param {!(Array<!Uint8Array>|Array<string>)} value  */
+/** @param {!(Array<!Uint8Array>|Array<string>)} value */
 proto.walletrpc.TransactionNotificationsResponse.prototype.setUnminedTransactionHashesList = function(value) {
   jspb.Message.setField(this, 4, value || []);
 };
 
 
+/**
+ * @param {!(string|Uint8Array)} value
+ * @param {number=} opt_index
+ */
+proto.walletrpc.TransactionNotificationsResponse.prototype.addUnminedTransactionHashes = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+
 proto.walletrpc.TransactionNotificationsResponse.prototype.clearUnminedTransactionHashesList = function() {
-  jspb.Message.setField(this, 4, []);
+  this.setUnminedTransactionHashesList([]);
 };
 
 
@@ -19731,43 +18274,24 @@ proto.walletrpc.AccountNotificationsRequest.deserializeBinaryFromReader = functi
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.AccountNotificationsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.AccountNotificationsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.AccountNotificationsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.AccountNotificationsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.AccountNotificationsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.AccountNotificationsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.AccountNotificationsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.AccountNotificationsRequest} The clone.
- */
-proto.walletrpc.AccountNotificationsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.AccountNotificationsRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -19817,11 +18341,11 @@ proto.walletrpc.AccountNotificationsResponse.prototype.toObject = function(opt_i
  */
 proto.walletrpc.AccountNotificationsResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accountNumber: msg.getAccountNumber(),
-    accountName: msg.getAccountName(),
-    externalKeyCount: msg.getExternalKeyCount(),
-    internalKeyCount: msg.getInternalKeyCount(),
-    importedKeyCount: msg.getImportedKeyCount()
+    accountNumber: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    accountName: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    externalKeyCount: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    internalKeyCount: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    importedKeyCount: jspb.Message.getFieldWithDefault(msg, 5, 0)
   };
 
   if (includeInstance) {
@@ -19888,63 +18412,53 @@ proto.walletrpc.AccountNotificationsResponse.deserializeBinaryFromReader = funct
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.AccountNotificationsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.AccountNotificationsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.AccountNotificationsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.AccountNotificationsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.AccountNotificationsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.AccountNotificationsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.AccountNotificationsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccountNumber();
+  f = message.getAccountNumber();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getAccountName();
+  f = message.getAccountName();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getExternalKeyCount();
+  f = message.getExternalKeyCount();
   if (f !== 0) {
     writer.writeUint32(
       3,
       f
     );
   }
-  f = this.getInternalKeyCount();
+  f = message.getInternalKeyCount();
   if (f !== 0) {
     writer.writeUint32(
       4,
       f
     );
   }
-  f = this.getImportedKeyCount();
+  f = message.getImportedKeyCount();
   if (f !== 0) {
     writer.writeUint32(
       5,
@@ -19955,24 +18469,15 @@ proto.walletrpc.AccountNotificationsResponse.prototype.serializeBinaryToWriter =
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.AccountNotificationsResponse} The clone.
- */
-proto.walletrpc.AccountNotificationsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.AccountNotificationsResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account_number = 1;
  * @return {number}
  */
 proto.walletrpc.AccountNotificationsResponse.prototype.getAccountNumber = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AccountNotificationsResponse.prototype.setAccountNumber = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -19983,11 +18488,11 @@ proto.walletrpc.AccountNotificationsResponse.prototype.setAccountNumber = functi
  * @return {string}
  */
 proto.walletrpc.AccountNotificationsResponse.prototype.getAccountName = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.AccountNotificationsResponse.prototype.setAccountName = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -19998,11 +18503,11 @@ proto.walletrpc.AccountNotificationsResponse.prototype.setAccountName = function
  * @return {number}
  */
 proto.walletrpc.AccountNotificationsResponse.prototype.getExternalKeyCount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AccountNotificationsResponse.prototype.setExternalKeyCount = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -20013,11 +18518,11 @@ proto.walletrpc.AccountNotificationsResponse.prototype.setExternalKeyCount = fun
  * @return {number}
  */
 proto.walletrpc.AccountNotificationsResponse.prototype.getInternalKeyCount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AccountNotificationsResponse.prototype.setInternalKeyCount = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -20028,11 +18533,11 @@ proto.walletrpc.AccountNotificationsResponse.prototype.setInternalKeyCount = fun
  * @return {number}
  */
 proto.walletrpc.AccountNotificationsResponse.prototype.getImportedKeyCount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AccountNotificationsResponse.prototype.setImportedKeyCount = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -20092,7 +18597,7 @@ proto.walletrpc.ConfirmationNotificationsRequest.prototype.toObject = function(o
 proto.walletrpc.ConfirmationNotificationsRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     txHashesList: msg.getTxHashesList_asB64(),
-    stopAfter: msg.getStopAfter()
+    stopAfter: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -20131,8 +18636,7 @@ proto.walletrpc.ConfirmationNotificationsRequest.deserializeBinaryFromReader = f
     switch (field) {
     case 1:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
-      msg.getTxHashesList().push(value);
-      msg.setTxHashesList(msg.getTxHashesList());
+      msg.addTxHashes(value);
       break;
     case 2:
       var value = /** @type {number} */ (reader.readInt32());
@@ -20148,57 +18652,38 @@ proto.walletrpc.ConfirmationNotificationsRequest.deserializeBinaryFromReader = f
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ConfirmationNotificationsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ConfirmationNotificationsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ConfirmationNotificationsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ConfirmationNotificationsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ConfirmationNotificationsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ConfirmationNotificationsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ConfirmationNotificationsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTxHashesList_asU8();
+  f = message.getTxHashesList_asU8();
   if (f.length > 0) {
     writer.writeRepeatedBytes(
       1,
       f
     );
   }
-  f = this.getStopAfter();
+  f = message.getStopAfter();
   if (f !== 0) {
     writer.writeInt32(
       2,
       f
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ConfirmationNotificationsRequest} The clone.
- */
-proto.walletrpc.ConfirmationNotificationsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ConfirmationNotificationsRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -20241,14 +18726,23 @@ proto.walletrpc.ConfirmationNotificationsRequest.prototype.getTxHashesList_asU8 
 };
 
 
-/** @param {!(Array<!Uint8Array>|Array<string>)} value  */
+/** @param {!(Array<!Uint8Array>|Array<string>)} value */
 proto.walletrpc.ConfirmationNotificationsRequest.prototype.setTxHashesList = function(value) {
   jspb.Message.setField(this, 1, value || []);
 };
 
 
+/**
+ * @param {!(string|Uint8Array)} value
+ * @param {number=} opt_index
+ */
+proto.walletrpc.ConfirmationNotificationsRequest.prototype.addTxHashes = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 1, value, opt_index);
+};
+
+
 proto.walletrpc.ConfirmationNotificationsRequest.prototype.clearTxHashesList = function() {
-  jspb.Message.setField(this, 1, []);
+  this.setTxHashesList([]);
 };
 
 
@@ -20257,11 +18751,11 @@ proto.walletrpc.ConfirmationNotificationsRequest.prototype.clearTxHashesList = f
  * @return {number}
  */
 proto.walletrpc.ConfirmationNotificationsRequest.prototype.getStopAfter = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ConfirmationNotificationsRequest.prototype.setStopAfter = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -20361,8 +18855,7 @@ proto.walletrpc.ConfirmationNotificationsResponse.deserializeBinaryFromReader = 
     case 1:
       var value = new proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations;
       reader.readMessage(value,proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.deserializeBinaryFromReader);
-      msg.getConfirmationsList().push(value);
-      msg.setConfirmationsList(msg.getConfirmationsList());
+      msg.addConfirmations(value);
       break;
     default:
       reader.skipField();
@@ -20374,35 +18867,25 @@ proto.walletrpc.ConfirmationNotificationsResponse.deserializeBinaryFromReader = 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ConfirmationNotificationsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ConfirmationNotificationsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ConfirmationNotificationsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ConfirmationNotificationsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ConfirmationNotificationsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ConfirmationNotificationsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ConfirmationNotificationsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getConfirmationsList();
+  f = message.getConfirmationsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       1,
@@ -20410,38 +18893,6 @@ proto.walletrpc.ConfirmationNotificationsResponse.prototype.serializeBinaryToWri
       proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ConfirmationNotificationsResponse} The clone.
- */
-proto.walletrpc.ConfirmationNotificationsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ConfirmationNotificationsResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * repeated TransactionConfirmations confirmations = 1;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations>}
- */
-proto.walletrpc.ConfirmationNotificationsResponse.prototype.getConfirmationsList = function() {
-  return /** @type{!Array.<!proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations, 1));
-};
-
-
-/** @param {Array.<!proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations>} value  */
-proto.walletrpc.ConfirmationNotificationsResponse.prototype.setConfirmationsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 1, value);
-};
-
-
-proto.walletrpc.ConfirmationNotificationsResponse.prototype.clearConfirmationsList = function() {
-  this.setConfirmationsList([]);
 };
 
 
@@ -20492,9 +18943,9 @@ proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.proto
 proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.toObject = function(includeInstance, msg) {
   var f, obj = {
     txHash: msg.getTxHash_asB64(),
-    confirmations: msg.getConfirmations(),
+    confirmations: jspb.Message.getFieldWithDefault(msg, 2, 0),
     blockHash: msg.getBlockHash_asB64(),
-    blockHeight: msg.getBlockHeight()
+    blockHeight: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -20557,56 +19008,46 @@ proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.deser
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTxHash_asU8();
+  f = message.getTxHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getConfirmations();
+  f = message.getConfirmations();
   if (f !== 0) {
     writer.writeInt32(
       2,
       f
     );
   }
-  f = this.getBlockHash_asU8();
+  f = message.getBlockHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
       f
     );
   }
-  f = this.getBlockHeight();
+  f = message.getBlockHeight();
   if (f !== 0) {
     writer.writeInt32(
       4,
@@ -20617,20 +19058,11 @@ proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.proto
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations} The clone.
- */
-proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes tx_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.prototype.getTxHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -20658,7 +19090,7 @@ proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.proto
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.prototype.setTxHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -20669,11 +19101,11 @@ proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.proto
  * @return {number}
  */
 proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.prototype.getConfirmations = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.prototype.setConfirmations = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -20684,7 +19116,7 @@ proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.proto
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.prototype.getBlockHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -20712,7 +19144,7 @@ proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.proto
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.prototype.setBlockHash = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -20723,13 +19155,46 @@ proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.proto
  * @return {number}
  */
 proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.prototype.getBlockHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations.prototype.setBlockHeight = function(value) {
   jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * repeated TransactionConfirmations confirmations = 1;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations>}
+ */
+proto.walletrpc.ConfirmationNotificationsResponse.prototype.getConfirmationsList = function() {
+  return /** @type{!Array.<!proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations, 1));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations>} value */
+proto.walletrpc.ConfirmationNotificationsResponse.prototype.setConfirmationsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations}
+ */
+proto.walletrpc.ConfirmationNotificationsResponse.prototype.addConfirmations = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.walletrpc.ConfirmationNotificationsResponse.TransactionConfirmations, opt_index);
+};
+
+
+proto.walletrpc.ConfirmationNotificationsResponse.prototype.clearConfirmationsList = function() {
+  this.setConfirmationsList([]);
 };
 
 
@@ -20840,49 +19305,39 @@ proto.walletrpc.CreateWalletRequest.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CreateWalletRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CreateWalletRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CreateWalletRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CreateWalletRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CreateWalletRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CreateWalletRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CreateWalletRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPublicPassphrase_asU8();
+  f = message.getPublicPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getPrivatePassphrase_asU8();
+  f = message.getPrivatePassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
       f
     );
   }
-  f = this.getSeed_asU8();
+  f = message.getSeed_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
@@ -20893,20 +19348,11 @@ proto.walletrpc.CreateWalletRequest.prototype.serializeBinaryToWriter = function
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CreateWalletRequest} The clone.
- */
-proto.walletrpc.CreateWalletRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CreateWalletRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes public_passphrase = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.CreateWalletRequest.prototype.getPublicPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -20934,7 +19380,7 @@ proto.walletrpc.CreateWalletRequest.prototype.getPublicPassphrase_asU8 = functio
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.CreateWalletRequest.prototype.setPublicPassphrase = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -20945,7 +19391,7 @@ proto.walletrpc.CreateWalletRequest.prototype.setPublicPassphrase = function(val
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.CreateWalletRequest.prototype.getPrivatePassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -20973,7 +19419,7 @@ proto.walletrpc.CreateWalletRequest.prototype.getPrivatePassphrase_asU8 = functi
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.CreateWalletRequest.prototype.setPrivatePassphrase = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -20984,7 +19430,7 @@ proto.walletrpc.CreateWalletRequest.prototype.setPrivatePassphrase = function(va
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.CreateWalletRequest.prototype.getSeed = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -21012,7 +19458,7 @@ proto.walletrpc.CreateWalletRequest.prototype.getSeed_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.CreateWalletRequest.prototype.setSeed = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -21111,43 +19557,24 @@ proto.walletrpc.CreateWalletResponse.deserializeBinaryFromReader = function(msg,
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CreateWalletResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CreateWalletResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CreateWalletResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CreateWalletResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CreateWalletResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CreateWalletResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CreateWalletResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CreateWalletResponse} The clone.
- */
-proto.walletrpc.CreateWalletResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CreateWalletResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -21197,7 +19624,7 @@ proto.walletrpc.CreateWatchingOnlyWalletRequest.prototype.toObject = function(op
  */
 proto.walletrpc.CreateWatchingOnlyWalletRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    extendedPubKey: msg.getExtendedPubKey(),
+    extendedPubKey: jspb.Message.getFieldWithDefault(msg, 1, ""),
     publicPassphrase: msg.getPublicPassphrase_asB64()
   };
 
@@ -21253,42 +19680,32 @@ proto.walletrpc.CreateWatchingOnlyWalletRequest.deserializeBinaryFromReader = fu
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CreateWatchingOnlyWalletRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CreateWatchingOnlyWalletRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CreateWatchingOnlyWalletRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CreateWatchingOnlyWalletRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CreateWatchingOnlyWalletRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CreateWatchingOnlyWalletRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CreateWatchingOnlyWalletRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getExtendedPubKey();
+  f = message.getExtendedPubKey();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getPublicPassphrase_asU8();
+  f = message.getPublicPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
@@ -21299,24 +19716,15 @@ proto.walletrpc.CreateWatchingOnlyWalletRequest.prototype.serializeBinaryToWrite
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CreateWatchingOnlyWalletRequest} The clone.
- */
-proto.walletrpc.CreateWatchingOnlyWalletRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CreateWatchingOnlyWalletRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string extended_pub_key = 1;
  * @return {string}
  */
 proto.walletrpc.CreateWatchingOnlyWalletRequest.prototype.getExtendedPubKey = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.CreateWatchingOnlyWalletRequest.prototype.setExtendedPubKey = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -21327,7 +19735,7 @@ proto.walletrpc.CreateWatchingOnlyWalletRequest.prototype.setExtendedPubKey = fu
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.CreateWatchingOnlyWalletRequest.prototype.getPublicPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -21355,7 +19763,7 @@ proto.walletrpc.CreateWatchingOnlyWalletRequest.prototype.getPublicPassphrase_as
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.CreateWatchingOnlyWalletRequest.prototype.setPublicPassphrase = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -21454,43 +19862,24 @@ proto.walletrpc.CreateWatchingOnlyWalletResponse.deserializeBinaryFromReader = f
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CreateWatchingOnlyWalletResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CreateWatchingOnlyWalletResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CreateWatchingOnlyWalletResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CreateWatchingOnlyWalletResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CreateWatchingOnlyWalletResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CreateWatchingOnlyWalletResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CreateWatchingOnlyWalletResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CreateWatchingOnlyWalletResponse} The clone.
- */
-proto.walletrpc.CreateWatchingOnlyWalletResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CreateWatchingOnlyWalletResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -21591,35 +19980,25 @@ proto.walletrpc.OpenWalletRequest.deserializeBinaryFromReader = function(msg, re
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.OpenWalletRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.OpenWalletRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.OpenWalletRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.OpenWalletRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.OpenWalletRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.OpenWalletRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.OpenWalletRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPublicPassphrase_asU8();
+  f = message.getPublicPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
@@ -21630,20 +20009,11 @@ proto.walletrpc.OpenWalletRequest.prototype.serializeBinaryToWriter = function (
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.OpenWalletRequest} The clone.
- */
-proto.walletrpc.OpenWalletRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.OpenWalletRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes public_passphrase = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.OpenWalletRequest.prototype.getPublicPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -21671,7 +20041,7 @@ proto.walletrpc.OpenWalletRequest.prototype.getPublicPassphrase_asU8 = function(
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.OpenWalletRequest.prototype.setPublicPassphrase = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -21723,7 +20093,7 @@ proto.walletrpc.OpenWalletResponse.prototype.toObject = function(opt_includeInst
  */
 proto.walletrpc.OpenWalletResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    watchingOnly: msg.getWatchingOnly()
+    watchingOnly: jspb.Message.getFieldWithDefault(msg, 1, false)
   };
 
   if (includeInstance) {
@@ -21774,35 +20144,25 @@ proto.walletrpc.OpenWalletResponse.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.OpenWalletResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.OpenWalletResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.OpenWalletResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.OpenWalletResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.OpenWalletResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.OpenWalletResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.OpenWalletResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getWatchingOnly();
+  f = message.getWatchingOnly();
   if (f) {
     writer.writeBool(
       1,
@@ -21813,26 +20173,17 @@ proto.walletrpc.OpenWalletResponse.prototype.serializeBinaryToWriter = function 
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.OpenWalletResponse} The clone.
- */
-proto.walletrpc.OpenWalletResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.OpenWalletResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bool watching_only = 1;
  * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
  * You should avoid comparisons like {@code val === true/false} in those cases.
  * @return {boolean}
  */
 proto.walletrpc.OpenWalletResponse.prototype.getWatchingOnly = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 1, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 1, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.OpenWalletResponse.prototype.setWatchingOnly = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -21931,43 +20282,24 @@ proto.walletrpc.CloseWalletRequest.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CloseWalletRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CloseWalletRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CloseWalletRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CloseWalletRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CloseWalletRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CloseWalletRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CloseWalletRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CloseWalletRequest} The clone.
- */
-proto.walletrpc.CloseWalletRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CloseWalletRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -22064,43 +20396,24 @@ proto.walletrpc.CloseWalletResponse.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CloseWalletResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CloseWalletResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CloseWalletResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CloseWalletResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CloseWalletResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CloseWalletResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CloseWalletResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CloseWalletResponse} The clone.
- */
-proto.walletrpc.CloseWalletResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CloseWalletResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -22197,43 +20510,24 @@ proto.walletrpc.WalletExistsRequest.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.WalletExistsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.WalletExistsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.WalletExistsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.WalletExistsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.WalletExistsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.WalletExistsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.WalletExistsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.WalletExistsRequest} The clone.
- */
-proto.walletrpc.WalletExistsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.WalletExistsRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -22283,7 +20577,7 @@ proto.walletrpc.WalletExistsResponse.prototype.toObject = function(opt_includeIn
  */
 proto.walletrpc.WalletExistsResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    exists: msg.getExists()
+    exists: jspb.Message.getFieldWithDefault(msg, 1, false)
   };
 
   if (includeInstance) {
@@ -22334,35 +20628,25 @@ proto.walletrpc.WalletExistsResponse.deserializeBinaryFromReader = function(msg,
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.WalletExistsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.WalletExistsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.WalletExistsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.WalletExistsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.WalletExistsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.WalletExistsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.WalletExistsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getExists();
+  f = message.getExists();
   if (f) {
     writer.writeBool(
       1,
@@ -22373,26 +20657,17 @@ proto.walletrpc.WalletExistsResponse.prototype.serializeBinaryToWriter = functio
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.WalletExistsResponse} The clone.
- */
-proto.walletrpc.WalletExistsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.WalletExistsResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bool exists = 1;
  * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
  * You should avoid comparisons like {@code val === true/false} in those cases.
  * @return {boolean}
  */
 proto.walletrpc.WalletExistsResponse.prototype.getExists = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 1, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 1, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.WalletExistsResponse.prototype.setExists = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -22444,8 +20719,8 @@ proto.walletrpc.StartConsensusRpcRequest.prototype.toObject = function(opt_inclu
  */
 proto.walletrpc.StartConsensusRpcRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    networkAddress: msg.getNetworkAddress(),
-    username: msg.getUsername(),
+    networkAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    username: jspb.Message.getFieldWithDefault(msg, 2, ""),
     password: msg.getPassword_asB64(),
     certificate: msg.getCertificate_asB64()
   };
@@ -22510,56 +20785,46 @@ proto.walletrpc.StartConsensusRpcRequest.deserializeBinaryFromReader = function(
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.StartConsensusRpcRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.StartConsensusRpcRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.StartConsensusRpcRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.StartConsensusRpcRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.StartConsensusRpcRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.StartConsensusRpcRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.StartConsensusRpcRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getNetworkAddress();
+  f = message.getNetworkAddress();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getUsername();
+  f = message.getUsername();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getPassword_asU8();
+  f = message.getPassword_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
       f
     );
   }
-  f = this.getCertificate_asU8();
+  f = message.getCertificate_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       4,
@@ -22570,24 +20835,15 @@ proto.walletrpc.StartConsensusRpcRequest.prototype.serializeBinaryToWriter = fun
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.StartConsensusRpcRequest} The clone.
- */
-proto.walletrpc.StartConsensusRpcRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.StartConsensusRpcRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string network_address = 1;
  * @return {string}
  */
 proto.walletrpc.StartConsensusRpcRequest.prototype.getNetworkAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.StartConsensusRpcRequest.prototype.setNetworkAddress = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -22598,11 +20854,11 @@ proto.walletrpc.StartConsensusRpcRequest.prototype.setNetworkAddress = function(
  * @return {string}
  */
 proto.walletrpc.StartConsensusRpcRequest.prototype.getUsername = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.StartConsensusRpcRequest.prototype.setUsername = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -22613,7 +20869,7 @@ proto.walletrpc.StartConsensusRpcRequest.prototype.setUsername = function(value)
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.StartConsensusRpcRequest.prototype.getPassword = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -22641,7 +20897,7 @@ proto.walletrpc.StartConsensusRpcRequest.prototype.getPassword_asU8 = function()
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.StartConsensusRpcRequest.prototype.setPassword = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -22652,7 +20908,7 @@ proto.walletrpc.StartConsensusRpcRequest.prototype.setPassword = function(value)
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.StartConsensusRpcRequest.prototype.getCertificate = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 4, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
@@ -22680,7 +20936,7 @@ proto.walletrpc.StartConsensusRpcRequest.prototype.getCertificate_asU8 = functio
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.StartConsensusRpcRequest.prototype.setCertificate = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -22779,43 +21035,24 @@ proto.walletrpc.StartConsensusRpcResponse.deserializeBinaryFromReader = function
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.StartConsensusRpcResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.StartConsensusRpcResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.StartConsensusRpcResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.StartConsensusRpcResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.StartConsensusRpcResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.StartConsensusRpcResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.StartConsensusRpcResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.StartConsensusRpcResponse} The clone.
- */
-proto.walletrpc.StartConsensusRpcResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.StartConsensusRpcResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -22865,7 +21102,7 @@ proto.walletrpc.DiscoverAddressesRequest.prototype.toObject = function(opt_inclu
  */
 proto.walletrpc.DiscoverAddressesRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    discoverAccounts: msg.getDiscoverAccounts(),
+    discoverAccounts: jspb.Message.getFieldWithDefault(msg, 1, false),
     privatePassphrase: msg.getPrivatePassphrase_asB64(),
     startingBlockHash: msg.getStartingBlockHash_asB64()
   };
@@ -22926,49 +21163,39 @@ proto.walletrpc.DiscoverAddressesRequest.deserializeBinaryFromReader = function(
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.DiscoverAddressesRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.DiscoverAddressesRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.DiscoverAddressesRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.DiscoverAddressesRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.DiscoverAddressesRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.DiscoverAddressesRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.DiscoverAddressesRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getDiscoverAccounts();
+  f = message.getDiscoverAccounts();
   if (f) {
     writer.writeBool(
       1,
       f
     );
   }
-  f = this.getPrivatePassphrase_asU8();
+  f = message.getPrivatePassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
       f
     );
   }
-  f = this.getStartingBlockHash_asU8();
+  f = message.getStartingBlockHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
@@ -22979,26 +21206,17 @@ proto.walletrpc.DiscoverAddressesRequest.prototype.serializeBinaryToWriter = fun
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.DiscoverAddressesRequest} The clone.
- */
-proto.walletrpc.DiscoverAddressesRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.DiscoverAddressesRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bool discover_accounts = 1;
  * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
  * You should avoid comparisons like {@code val === true/false} in those cases.
  * @return {boolean}
  */
 proto.walletrpc.DiscoverAddressesRequest.prototype.getDiscoverAccounts = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 1, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 1, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.DiscoverAddressesRequest.prototype.setDiscoverAccounts = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -23009,7 +21227,7 @@ proto.walletrpc.DiscoverAddressesRequest.prototype.setDiscoverAccounts = functio
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.DiscoverAddressesRequest.prototype.getPrivatePassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -23037,7 +21255,7 @@ proto.walletrpc.DiscoverAddressesRequest.prototype.getPrivatePassphrase_asU8 = f
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.DiscoverAddressesRequest.prototype.setPrivatePassphrase = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -23048,7 +21266,7 @@ proto.walletrpc.DiscoverAddressesRequest.prototype.setPrivatePassphrase = functi
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.DiscoverAddressesRequest.prototype.getStartingBlockHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -23076,7 +21294,7 @@ proto.walletrpc.DiscoverAddressesRequest.prototype.getStartingBlockHash_asU8 = f
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.DiscoverAddressesRequest.prototype.setStartingBlockHash = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -23175,43 +21393,24 @@ proto.walletrpc.DiscoverAddressesResponse.deserializeBinaryFromReader = function
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.DiscoverAddressesResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.DiscoverAddressesResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.DiscoverAddressesResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.DiscoverAddressesResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.DiscoverAddressesResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.DiscoverAddressesResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.DiscoverAddressesResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.DiscoverAddressesResponse} The clone.
- */
-proto.walletrpc.DiscoverAddressesResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.DiscoverAddressesResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -23308,43 +21507,24 @@ proto.walletrpc.FetchMissingCFiltersRequest.deserializeBinaryFromReader = functi
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.FetchMissingCFiltersRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.FetchMissingCFiltersRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.FetchMissingCFiltersRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.FetchMissingCFiltersRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.FetchMissingCFiltersRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.FetchMissingCFiltersRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.FetchMissingCFiltersRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.FetchMissingCFiltersRequest} The clone.
- */
-proto.walletrpc.FetchMissingCFiltersRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.FetchMissingCFiltersRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -23441,43 +21621,24 @@ proto.walletrpc.FetchMissingCFiltersResponse.deserializeBinaryFromReader = funct
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.FetchMissingCFiltersResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.FetchMissingCFiltersResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.FetchMissingCFiltersResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.FetchMissingCFiltersResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.FetchMissingCFiltersResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.FetchMissingCFiltersResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.FetchMissingCFiltersResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.FetchMissingCFiltersResponse} The clone.
- */
-proto.walletrpc.FetchMissingCFiltersResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.FetchMissingCFiltersResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -23574,43 +21735,24 @@ proto.walletrpc.SubscribeToBlockNotificationsRequest.deserializeBinaryFromReader
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SubscribeToBlockNotificationsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SubscribeToBlockNotificationsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SubscribeToBlockNotificationsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SubscribeToBlockNotificationsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SubscribeToBlockNotificationsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SubscribeToBlockNotificationsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SubscribeToBlockNotificationsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SubscribeToBlockNotificationsRequest} The clone.
- */
-proto.walletrpc.SubscribeToBlockNotificationsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SubscribeToBlockNotificationsRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -23707,43 +21849,24 @@ proto.walletrpc.SubscribeToBlockNotificationsResponse.deserializeBinaryFromReade
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SubscribeToBlockNotificationsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SubscribeToBlockNotificationsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SubscribeToBlockNotificationsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SubscribeToBlockNotificationsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SubscribeToBlockNotificationsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SubscribeToBlockNotificationsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SubscribeToBlockNotificationsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SubscribeToBlockNotificationsResponse} The clone.
- */
-proto.walletrpc.SubscribeToBlockNotificationsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SubscribeToBlockNotificationsResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -23840,43 +21963,24 @@ proto.walletrpc.FetchHeadersRequest.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.FetchHeadersRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.FetchHeadersRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.FetchHeadersRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.FetchHeadersRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.FetchHeadersRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.FetchHeadersRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.FetchHeadersRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.FetchHeadersRequest} The clone.
- */
-proto.walletrpc.FetchHeadersRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.FetchHeadersRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -23926,11 +22030,11 @@ proto.walletrpc.FetchHeadersResponse.prototype.toObject = function(opt_includeIn
  */
 proto.walletrpc.FetchHeadersResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    fetchedHeadersCount: msg.getFetchedHeadersCount(),
+    fetchedHeadersCount: jspb.Message.getFieldWithDefault(msg, 1, 0),
     firstNewBlockHash: msg.getFirstNewBlockHash_asB64(),
-    firstNewBlockHeight: msg.getFirstNewBlockHeight(),
+    firstNewBlockHeight: jspb.Message.getFieldWithDefault(msg, 3, 0),
     mainChainTipBlockHash: msg.getMainChainTipBlockHash_asB64(),
-    mainChainTipBlockHeight: msg.getMainChainTipBlockHeight()
+    mainChainTipBlockHeight: jspb.Message.getFieldWithDefault(msg, 5, 0)
   };
 
   if (includeInstance) {
@@ -23997,63 +22101,53 @@ proto.walletrpc.FetchHeadersResponse.deserializeBinaryFromReader = function(msg,
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.FetchHeadersResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.FetchHeadersResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.FetchHeadersResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.FetchHeadersResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.FetchHeadersResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.FetchHeadersResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.FetchHeadersResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getFetchedHeadersCount();
+  f = message.getFetchedHeadersCount();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getFirstNewBlockHash_asU8();
+  f = message.getFirstNewBlockHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
       f
     );
   }
-  f = this.getFirstNewBlockHeight();
+  f = message.getFirstNewBlockHeight();
   if (f !== 0) {
     writer.writeInt32(
       3,
       f
     );
   }
-  f = this.getMainChainTipBlockHash_asU8();
+  f = message.getMainChainTipBlockHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       4,
       f
     );
   }
-  f = this.getMainChainTipBlockHeight();
+  f = message.getMainChainTipBlockHeight();
   if (f !== 0) {
     writer.writeInt32(
       5,
@@ -24064,24 +22158,15 @@ proto.walletrpc.FetchHeadersResponse.prototype.serializeBinaryToWriter = functio
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.FetchHeadersResponse} The clone.
- */
-proto.walletrpc.FetchHeadersResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.FetchHeadersResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 fetched_headers_count = 1;
  * @return {number}
  */
 proto.walletrpc.FetchHeadersResponse.prototype.getFetchedHeadersCount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FetchHeadersResponse.prototype.setFetchedHeadersCount = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -24092,7 +22177,7 @@ proto.walletrpc.FetchHeadersResponse.prototype.setFetchedHeadersCount = function
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.FetchHeadersResponse.prototype.getFirstNewBlockHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -24120,7 +22205,7 @@ proto.walletrpc.FetchHeadersResponse.prototype.getFirstNewBlockHash_asU8 = funct
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.FetchHeadersResponse.prototype.setFirstNewBlockHash = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -24131,11 +22216,11 @@ proto.walletrpc.FetchHeadersResponse.prototype.setFirstNewBlockHash = function(v
  * @return {number}
  */
 proto.walletrpc.FetchHeadersResponse.prototype.getFirstNewBlockHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FetchHeadersResponse.prototype.setFirstNewBlockHeight = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -24146,7 +22231,7 @@ proto.walletrpc.FetchHeadersResponse.prototype.setFirstNewBlockHeight = function
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.FetchHeadersResponse.prototype.getMainChainTipBlockHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 4, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
@@ -24174,7 +22259,7 @@ proto.walletrpc.FetchHeadersResponse.prototype.getMainChainTipBlockHash_asU8 = f
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.FetchHeadersResponse.prototype.setMainChainTipBlockHash = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -24185,11 +22270,11 @@ proto.walletrpc.FetchHeadersResponse.prototype.setMainChainTipBlockHash = functi
  * @return {number}
  */
 proto.walletrpc.FetchHeadersResponse.prototype.getMainChainTipBlockHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FetchHeadersResponse.prototype.setMainChainTipBlockHeight = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -24241,8 +22326,8 @@ proto.walletrpc.FetchHeadersNotification.prototype.toObject = function(opt_inclu
  */
 proto.walletrpc.FetchHeadersNotification.toObject = function(includeInstance, msg) {
   var f, obj = {
-    fetchedHeadersCount: msg.getFetchedHeadersCount(),
-    lastHeaderTime: msg.getLastHeaderTime()
+    fetchedHeadersCount: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    lastHeaderTime: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -24297,42 +22382,32 @@ proto.walletrpc.FetchHeadersNotification.deserializeBinaryFromReader = function(
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.FetchHeadersNotification} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.FetchHeadersNotification.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.FetchHeadersNotification.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.FetchHeadersNotification.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.FetchHeadersNotification} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.FetchHeadersNotification.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.FetchHeadersNotification.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getFetchedHeadersCount();
+  f = message.getFetchedHeadersCount();
   if (f !== 0) {
     writer.writeInt32(
       1,
       f
     );
   }
-  f = this.getLastHeaderTime();
+  f = message.getLastHeaderTime();
   if (f !== 0) {
     writer.writeInt64(
       2,
@@ -24343,24 +22418,15 @@ proto.walletrpc.FetchHeadersNotification.prototype.serializeBinaryToWriter = fun
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.FetchHeadersNotification} The clone.
- */
-proto.walletrpc.FetchHeadersNotification.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.FetchHeadersNotification} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional int32 fetched_headers_count = 1;
  * @return {number}
  */
 proto.walletrpc.FetchHeadersNotification.prototype.getFetchedHeadersCount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FetchHeadersNotification.prototype.setFetchedHeadersCount = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -24371,11 +22437,11 @@ proto.walletrpc.FetchHeadersNotification.prototype.setFetchedHeadersCount = func
  * @return {number}
  */
 proto.walletrpc.FetchHeadersNotification.prototype.getLastHeaderTime = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FetchHeadersNotification.prototype.setLastHeaderTime = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -24427,8 +22493,8 @@ proto.walletrpc.FetchMissingCFiltersNotification.prototype.toObject = function(o
  */
 proto.walletrpc.FetchMissingCFiltersNotification.toObject = function(includeInstance, msg) {
   var f, obj = {
-    fetchedCfiltersStartHeight: msg.getFetchedCfiltersStartHeight(),
-    fetchedCfiltersEndHeight: msg.getFetchedCfiltersEndHeight()
+    fetchedCfiltersStartHeight: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    fetchedCfiltersEndHeight: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -24483,42 +22549,32 @@ proto.walletrpc.FetchMissingCFiltersNotification.deserializeBinaryFromReader = f
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.FetchMissingCFiltersNotification} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.FetchMissingCFiltersNotification.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.FetchMissingCFiltersNotification.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.FetchMissingCFiltersNotification.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.FetchMissingCFiltersNotification} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.FetchMissingCFiltersNotification.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.FetchMissingCFiltersNotification.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getFetchedCfiltersStartHeight();
+  f = message.getFetchedCfiltersStartHeight();
   if (f !== 0) {
     writer.writeInt32(
       1,
       f
     );
   }
-  f = this.getFetchedCfiltersEndHeight();
+  f = message.getFetchedCfiltersEndHeight();
   if (f !== 0) {
     writer.writeInt32(
       2,
@@ -24529,24 +22585,15 @@ proto.walletrpc.FetchMissingCFiltersNotification.prototype.serializeBinaryToWrit
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.FetchMissingCFiltersNotification} The clone.
- */
-proto.walletrpc.FetchMissingCFiltersNotification.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.FetchMissingCFiltersNotification} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional int32 fetched_cfilters_start_height = 1;
  * @return {number}
  */
 proto.walletrpc.FetchMissingCFiltersNotification.prototype.getFetchedCfiltersStartHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FetchMissingCFiltersNotification.prototype.setFetchedCfiltersStartHeight = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -24557,11 +22604,11 @@ proto.walletrpc.FetchMissingCFiltersNotification.prototype.setFetchedCfiltersSta
  * @return {number}
  */
 proto.walletrpc.FetchMissingCFiltersNotification.prototype.getFetchedCfiltersEndHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.FetchMissingCFiltersNotification.prototype.setFetchedCfiltersEndHeight = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -24613,7 +22660,7 @@ proto.walletrpc.RescanProgressNotification.prototype.toObject = function(opt_inc
  */
 proto.walletrpc.RescanProgressNotification.toObject = function(includeInstance, msg) {
   var f, obj = {
-    rescannedThrough: msg.getRescannedThrough()
+    rescannedThrough: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -24664,35 +22711,25 @@ proto.walletrpc.RescanProgressNotification.deserializeBinaryFromReader = functio
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RescanProgressNotification} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RescanProgressNotification.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RescanProgressNotification.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RescanProgressNotification.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RescanProgressNotification} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RescanProgressNotification.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RescanProgressNotification.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getRescannedThrough();
+  f = message.getRescannedThrough();
   if (f !== 0) {
     writer.writeInt32(
       1,
@@ -24703,24 +22740,15 @@ proto.walletrpc.RescanProgressNotification.prototype.serializeBinaryToWriter = f
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RescanProgressNotification} The clone.
- */
-proto.walletrpc.RescanProgressNotification.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RescanProgressNotification} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional int32 rescanned_through = 1;
  * @return {number}
  */
 proto.walletrpc.RescanProgressNotification.prototype.getRescannedThrough = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.RescanProgressNotification.prototype.setRescannedThrough = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -24772,8 +22800,8 @@ proto.walletrpc.PeerNotification.prototype.toObject = function(opt_includeInstan
  */
 proto.walletrpc.PeerNotification.toObject = function(includeInstance, msg) {
   var f, obj = {
-    peerCount: msg.getPeerCount(),
-    address: msg.getAddress()
+    peerCount: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    address: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -24828,42 +22856,32 @@ proto.walletrpc.PeerNotification.deserializeBinaryFromReader = function(msg, rea
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.PeerNotification} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.PeerNotification.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.PeerNotification.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.PeerNotification.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.PeerNotification} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.PeerNotification.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.PeerNotification.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPeerCount();
+  f = message.getPeerCount();
   if (f !== 0) {
     writer.writeInt32(
       1,
       f
     );
   }
-  f = this.getAddress();
+  f = message.getAddress();
   if (f.length > 0) {
     writer.writeString(
       2,
@@ -24874,24 +22892,15 @@ proto.walletrpc.PeerNotification.prototype.serializeBinaryToWriter = function (w
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.PeerNotification} The clone.
- */
-proto.walletrpc.PeerNotification.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.PeerNotification} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional int32 peer_count = 1;
  * @return {number}
  */
 proto.walletrpc.PeerNotification.prototype.getPeerCount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.PeerNotification.prototype.setPeerCount = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -24902,11 +22911,11 @@ proto.walletrpc.PeerNotification.prototype.setPeerCount = function(value) {
  * @return {string}
  */
 proto.walletrpc.PeerNotification.prototype.getAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.PeerNotification.prototype.setAddress = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -24958,11 +22967,11 @@ proto.walletrpc.RpcSyncRequest.prototype.toObject = function(opt_includeInstance
  */
 proto.walletrpc.RpcSyncRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    networkAddress: msg.getNetworkAddress(),
-    username: msg.getUsername(),
+    networkAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    username: jspb.Message.getFieldWithDefault(msg, 2, ""),
     password: msg.getPassword_asB64(),
     certificate: msg.getCertificate_asB64(),
-    discoverAccounts: msg.getDiscoverAccounts(),
+    discoverAccounts: jspb.Message.getFieldWithDefault(msg, 5, false),
     privatePassphrase: msg.getPrivatePassphrase_asB64()
   };
 
@@ -25034,70 +23043,60 @@ proto.walletrpc.RpcSyncRequest.deserializeBinaryFromReader = function(msg, reade
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RpcSyncRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RpcSyncRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RpcSyncRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RpcSyncRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RpcSyncRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RpcSyncRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RpcSyncRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getNetworkAddress();
+  f = message.getNetworkAddress();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getUsername();
+  f = message.getUsername();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getPassword_asU8();
+  f = message.getPassword_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
       f
     );
   }
-  f = this.getCertificate_asU8();
+  f = message.getCertificate_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       4,
       f
     );
   }
-  f = this.getDiscoverAccounts();
+  f = message.getDiscoverAccounts();
   if (f) {
     writer.writeBool(
       5,
       f
     );
   }
-  f = this.getPrivatePassphrase_asU8();
+  f = message.getPrivatePassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       6,
@@ -25108,24 +23107,15 @@ proto.walletrpc.RpcSyncRequest.prototype.serializeBinaryToWriter = function (wri
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RpcSyncRequest} The clone.
- */
-proto.walletrpc.RpcSyncRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RpcSyncRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string network_address = 1;
  * @return {string}
  */
 proto.walletrpc.RpcSyncRequest.prototype.getNetworkAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.RpcSyncRequest.prototype.setNetworkAddress = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -25136,11 +23126,11 @@ proto.walletrpc.RpcSyncRequest.prototype.setNetworkAddress = function(value) {
  * @return {string}
  */
 proto.walletrpc.RpcSyncRequest.prototype.getUsername = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.RpcSyncRequest.prototype.setUsername = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -25151,7 +23141,7 @@ proto.walletrpc.RpcSyncRequest.prototype.setUsername = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.RpcSyncRequest.prototype.getPassword = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -25179,7 +23169,7 @@ proto.walletrpc.RpcSyncRequest.prototype.getPassword_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.RpcSyncRequest.prototype.setPassword = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -25190,7 +23180,7 @@ proto.walletrpc.RpcSyncRequest.prototype.setPassword = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.RpcSyncRequest.prototype.getCertificate = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 4, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
@@ -25218,7 +23208,7 @@ proto.walletrpc.RpcSyncRequest.prototype.getCertificate_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.RpcSyncRequest.prototype.setCertificate = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -25231,11 +23221,11 @@ proto.walletrpc.RpcSyncRequest.prototype.setCertificate = function(value) {
  * @return {boolean}
  */
 proto.walletrpc.RpcSyncRequest.prototype.getDiscoverAccounts = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 5, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 5, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.RpcSyncRequest.prototype.setDiscoverAccounts = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -25246,7 +23236,7 @@ proto.walletrpc.RpcSyncRequest.prototype.setDiscoverAccounts = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.RpcSyncRequest.prototype.getPrivatePassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 6, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
@@ -25274,7 +23264,7 @@ proto.walletrpc.RpcSyncRequest.prototype.getPrivatePassphrase_asU8 = function() 
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.RpcSyncRequest.prototype.setPrivatePassphrase = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -25326,8 +23316,8 @@ proto.walletrpc.RpcSyncResponse.prototype.toObject = function(opt_includeInstanc
  */
 proto.walletrpc.RpcSyncResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    synced: msg.getSynced(),
-    notificationType: msg.getNotificationType(),
+    synced: jspb.Message.getFieldWithDefault(msg, 1, false),
+    notificationType: jspb.Message.getFieldWithDefault(msg, 2, 0),
     fetchHeaders: (f = msg.getFetchHeaders()) && proto.walletrpc.FetchHeadersNotification.toObject(includeInstance, f),
     fetchMissingCfilters: (f = msg.getFetchMissingCfilters()) && proto.walletrpc.FetchMissingCFiltersNotification.toObject(includeInstance, f),
     rescanProgress: (f = msg.getRescanProgress()) && proto.walletrpc.RescanProgressNotification.toObject(includeInstance, f),
@@ -25406,49 +23396,39 @@ proto.walletrpc.RpcSyncResponse.deserializeBinaryFromReader = function(msg, read
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RpcSyncResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RpcSyncResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RpcSyncResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RpcSyncResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RpcSyncResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RpcSyncResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RpcSyncResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSynced();
+  f = message.getSynced();
   if (f) {
     writer.writeBool(
       1,
       f
     );
   }
-  f = this.getNotificationType();
+  f = message.getNotificationType();
   if (f !== 0.0) {
     writer.writeEnum(
       2,
       f
     );
   }
-  f = this.getFetchHeaders();
+  f = message.getFetchHeaders();
   if (f != null) {
     writer.writeMessage(
       3,
@@ -25456,7 +23436,7 @@ proto.walletrpc.RpcSyncResponse.prototype.serializeBinaryToWriter = function (wr
       proto.walletrpc.FetchHeadersNotification.serializeBinaryToWriter
     );
   }
-  f = this.getFetchMissingCfilters();
+  f = message.getFetchMissingCfilters();
   if (f != null) {
     writer.writeMessage(
       4,
@@ -25464,7 +23444,7 @@ proto.walletrpc.RpcSyncResponse.prototype.serializeBinaryToWriter = function (wr
       proto.walletrpc.FetchMissingCFiltersNotification.serializeBinaryToWriter
     );
   }
-  f = this.getRescanProgress();
+  f = message.getRescanProgress();
   if (f != null) {
     writer.writeMessage(
       5,
@@ -25472,7 +23452,7 @@ proto.walletrpc.RpcSyncResponse.prototype.serializeBinaryToWriter = function (wr
       proto.walletrpc.RescanProgressNotification.serializeBinaryToWriter
     );
   }
-  f = this.getPeerInformation();
+  f = message.getPeerInformation();
   if (f != null) {
     writer.writeMessage(
       6,
@@ -25484,26 +23464,17 @@ proto.walletrpc.RpcSyncResponse.prototype.serializeBinaryToWriter = function (wr
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RpcSyncResponse} The clone.
- */
-proto.walletrpc.RpcSyncResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RpcSyncResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bool synced = 1;
  * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
  * You should avoid comparisons like {@code val === true/false} in those cases.
  * @return {boolean}
  */
 proto.walletrpc.RpcSyncResponse.prototype.getSynced = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 1, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 1, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.RpcSyncResponse.prototype.setSynced = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -25514,11 +23485,11 @@ proto.walletrpc.RpcSyncResponse.prototype.setSynced = function(value) {
  * @return {!proto.walletrpc.SyncNotificationType}
  */
 proto.walletrpc.RpcSyncResponse.prototype.getNotificationType = function() {
-  return /** @type {!proto.walletrpc.SyncNotificationType} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {!proto.walletrpc.SyncNotificationType} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {!proto.walletrpc.SyncNotificationType} value  */
+/** @param {!proto.walletrpc.SyncNotificationType} value */
 proto.walletrpc.RpcSyncResponse.prototype.setNotificationType = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -25526,15 +23497,15 @@ proto.walletrpc.RpcSyncResponse.prototype.setNotificationType = function(value) 
 
 /**
  * optional FetchHeadersNotification fetch_headers = 3;
- * @return {proto.walletrpc.FetchHeadersNotification}
+ * @return {?proto.walletrpc.FetchHeadersNotification}
  */
 proto.walletrpc.RpcSyncResponse.prototype.getFetchHeaders = function() {
-  return /** @type{proto.walletrpc.FetchHeadersNotification} */ (
+  return /** @type{?proto.walletrpc.FetchHeadersNotification} */ (
     jspb.Message.getWrapperField(this, proto.walletrpc.FetchHeadersNotification, 3));
 };
 
 
-/** @param {proto.walletrpc.FetchHeadersNotification|undefined} value  */
+/** @param {?proto.walletrpc.FetchHeadersNotification|undefined} value */
 proto.walletrpc.RpcSyncResponse.prototype.setFetchHeaders = function(value) {
   jspb.Message.setWrapperField(this, 3, value);
 };
@@ -25547,7 +23518,7 @@ proto.walletrpc.RpcSyncResponse.prototype.clearFetchHeaders = function() {
 
 /**
  * Returns whether this field is set.
- * @return{!boolean}
+ * @return {!boolean}
  */
 proto.walletrpc.RpcSyncResponse.prototype.hasFetchHeaders = function() {
   return jspb.Message.getField(this, 3) != null;
@@ -25556,15 +23527,15 @@ proto.walletrpc.RpcSyncResponse.prototype.hasFetchHeaders = function() {
 
 /**
  * optional FetchMissingCFiltersNotification fetch_missing_cfilters = 4;
- * @return {proto.walletrpc.FetchMissingCFiltersNotification}
+ * @return {?proto.walletrpc.FetchMissingCFiltersNotification}
  */
 proto.walletrpc.RpcSyncResponse.prototype.getFetchMissingCfilters = function() {
-  return /** @type{proto.walletrpc.FetchMissingCFiltersNotification} */ (
+  return /** @type{?proto.walletrpc.FetchMissingCFiltersNotification} */ (
     jspb.Message.getWrapperField(this, proto.walletrpc.FetchMissingCFiltersNotification, 4));
 };
 
 
-/** @param {proto.walletrpc.FetchMissingCFiltersNotification|undefined} value  */
+/** @param {?proto.walletrpc.FetchMissingCFiltersNotification|undefined} value */
 proto.walletrpc.RpcSyncResponse.prototype.setFetchMissingCfilters = function(value) {
   jspb.Message.setWrapperField(this, 4, value);
 };
@@ -25577,7 +23548,7 @@ proto.walletrpc.RpcSyncResponse.prototype.clearFetchMissingCfilters = function()
 
 /**
  * Returns whether this field is set.
- * @return{!boolean}
+ * @return {!boolean}
  */
 proto.walletrpc.RpcSyncResponse.prototype.hasFetchMissingCfilters = function() {
   return jspb.Message.getField(this, 4) != null;
@@ -25586,15 +23557,15 @@ proto.walletrpc.RpcSyncResponse.prototype.hasFetchMissingCfilters = function() {
 
 /**
  * optional RescanProgressNotification rescan_progress = 5;
- * @return {proto.walletrpc.RescanProgressNotification}
+ * @return {?proto.walletrpc.RescanProgressNotification}
  */
 proto.walletrpc.RpcSyncResponse.prototype.getRescanProgress = function() {
-  return /** @type{proto.walletrpc.RescanProgressNotification} */ (
+  return /** @type{?proto.walletrpc.RescanProgressNotification} */ (
     jspb.Message.getWrapperField(this, proto.walletrpc.RescanProgressNotification, 5));
 };
 
 
-/** @param {proto.walletrpc.RescanProgressNotification|undefined} value  */
+/** @param {?proto.walletrpc.RescanProgressNotification|undefined} value */
 proto.walletrpc.RpcSyncResponse.prototype.setRescanProgress = function(value) {
   jspb.Message.setWrapperField(this, 5, value);
 };
@@ -25607,7 +23578,7 @@ proto.walletrpc.RpcSyncResponse.prototype.clearRescanProgress = function() {
 
 /**
  * Returns whether this field is set.
- * @return{!boolean}
+ * @return {!boolean}
  */
 proto.walletrpc.RpcSyncResponse.prototype.hasRescanProgress = function() {
   return jspb.Message.getField(this, 5) != null;
@@ -25616,15 +23587,15 @@ proto.walletrpc.RpcSyncResponse.prototype.hasRescanProgress = function() {
 
 /**
  * optional PeerNotification peer_information = 6;
- * @return {proto.walletrpc.PeerNotification}
+ * @return {?proto.walletrpc.PeerNotification}
  */
 proto.walletrpc.RpcSyncResponse.prototype.getPeerInformation = function() {
-  return /** @type{proto.walletrpc.PeerNotification} */ (
+  return /** @type{?proto.walletrpc.PeerNotification} */ (
     jspb.Message.getWrapperField(this, proto.walletrpc.PeerNotification, 6));
 };
 
 
-/** @param {proto.walletrpc.PeerNotification|undefined} value  */
+/** @param {?proto.walletrpc.PeerNotification|undefined} value */
 proto.walletrpc.RpcSyncResponse.prototype.setPeerInformation = function(value) {
   jspb.Message.setWrapperField(this, 6, value);
 };
@@ -25637,7 +23608,7 @@ proto.walletrpc.RpcSyncResponse.prototype.clearPeerInformation = function() {
 
 /**
  * Returns whether this field is set.
- * @return{!boolean}
+ * @return {!boolean}
  */
 proto.walletrpc.RpcSyncResponse.prototype.hasPeerInformation = function() {
   return jspb.Message.getField(this, 6) != null;
@@ -25697,7 +23668,7 @@ proto.walletrpc.SpvSyncRequest.prototype.toObject = function(opt_includeInstance
  */
 proto.walletrpc.SpvSyncRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    discoverAccounts: msg.getDiscoverAccounts(),
+    discoverAccounts: jspb.Message.getFieldWithDefault(msg, 1, false),
     privatePassphrase: msg.getPrivatePassphrase_asB64(),
     spvConnectList: jspb.Message.getField(msg, 3)
   };
@@ -25746,8 +23717,7 @@ proto.walletrpc.SpvSyncRequest.deserializeBinaryFromReader = function(msg, reade
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
-      msg.getSpvConnectList().push(value);
-      msg.setSpvConnectList(msg.getSpvConnectList());
+      msg.addSpvConnect(value);
       break;
     default:
       reader.skipField();
@@ -25759,49 +23729,39 @@ proto.walletrpc.SpvSyncRequest.deserializeBinaryFromReader = function(msg, reade
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SpvSyncRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SpvSyncRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SpvSyncRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SpvSyncRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SpvSyncRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SpvSyncRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SpvSyncRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getDiscoverAccounts();
+  f = message.getDiscoverAccounts();
   if (f) {
     writer.writeBool(
       1,
       f
     );
   }
-  f = this.getPrivatePassphrase_asU8();
+  f = message.getPrivatePassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
       f
     );
   }
-  f = this.getSpvConnectList();
+  f = message.getSpvConnectList();
   if (f.length > 0) {
     writer.writeRepeatedString(
       3,
@@ -25812,26 +23772,17 @@ proto.walletrpc.SpvSyncRequest.prototype.serializeBinaryToWriter = function (wri
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SpvSyncRequest} The clone.
- */
-proto.walletrpc.SpvSyncRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SpvSyncRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bool discover_accounts = 1;
  * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
  * You should avoid comparisons like {@code val === true/false} in those cases.
  * @return {boolean}
  */
 proto.walletrpc.SpvSyncRequest.prototype.getDiscoverAccounts = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 1, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 1, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.SpvSyncRequest.prototype.setDiscoverAccounts = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -25842,7 +23793,7 @@ proto.walletrpc.SpvSyncRequest.prototype.setDiscoverAccounts = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.SpvSyncRequest.prototype.getPrivatePassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -25870,7 +23821,7 @@ proto.walletrpc.SpvSyncRequest.prototype.getPrivatePassphrase_asU8 = function() 
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.SpvSyncRequest.prototype.setPrivatePassphrase = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -25887,14 +23838,23 @@ proto.walletrpc.SpvSyncRequest.prototype.getSpvConnectList = function() {
 };
 
 
-/** @param {Array.<string>} value  */
+/** @param {!Array.<string>} value */
 proto.walletrpc.SpvSyncRequest.prototype.setSpvConnectList = function(value) {
   jspb.Message.setField(this, 3, value || []);
 };
 
 
+/**
+ * @param {!string} value
+ * @param {number=} opt_index
+ */
+proto.walletrpc.SpvSyncRequest.prototype.addSpvConnect = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
 proto.walletrpc.SpvSyncRequest.prototype.clearSpvConnectList = function() {
-  jspb.Message.setField(this, 3, []);
+  this.setSpvConnectList([]);
 };
 
 
@@ -25944,8 +23904,8 @@ proto.walletrpc.SpvSyncResponse.prototype.toObject = function(opt_includeInstanc
  */
 proto.walletrpc.SpvSyncResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    synced: msg.getSynced(),
-    notificationType: msg.getNotificationType(),
+    synced: jspb.Message.getFieldWithDefault(msg, 1, false),
+    notificationType: jspb.Message.getFieldWithDefault(msg, 2, 0),
     fetchHeaders: (f = msg.getFetchHeaders()) && proto.walletrpc.FetchHeadersNotification.toObject(includeInstance, f),
     fetchMissingCfilters: (f = msg.getFetchMissingCfilters()) && proto.walletrpc.FetchMissingCFiltersNotification.toObject(includeInstance, f),
     rescanProgress: (f = msg.getRescanProgress()) && proto.walletrpc.RescanProgressNotification.toObject(includeInstance, f),
@@ -26024,49 +23984,39 @@ proto.walletrpc.SpvSyncResponse.deserializeBinaryFromReader = function(msg, read
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SpvSyncResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SpvSyncResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SpvSyncResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SpvSyncResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SpvSyncResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SpvSyncResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SpvSyncResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSynced();
+  f = message.getSynced();
   if (f) {
     writer.writeBool(
       1,
       f
     );
   }
-  f = this.getNotificationType();
+  f = message.getNotificationType();
   if (f !== 0.0) {
     writer.writeEnum(
       2,
       f
     );
   }
-  f = this.getFetchHeaders();
+  f = message.getFetchHeaders();
   if (f != null) {
     writer.writeMessage(
       3,
@@ -26074,7 +24024,7 @@ proto.walletrpc.SpvSyncResponse.prototype.serializeBinaryToWriter = function (wr
       proto.walletrpc.FetchHeadersNotification.serializeBinaryToWriter
     );
   }
-  f = this.getFetchMissingCfilters();
+  f = message.getFetchMissingCfilters();
   if (f != null) {
     writer.writeMessage(
       4,
@@ -26082,7 +24032,7 @@ proto.walletrpc.SpvSyncResponse.prototype.serializeBinaryToWriter = function (wr
       proto.walletrpc.FetchMissingCFiltersNotification.serializeBinaryToWriter
     );
   }
-  f = this.getRescanProgress();
+  f = message.getRescanProgress();
   if (f != null) {
     writer.writeMessage(
       5,
@@ -26090,7 +24040,7 @@ proto.walletrpc.SpvSyncResponse.prototype.serializeBinaryToWriter = function (wr
       proto.walletrpc.RescanProgressNotification.serializeBinaryToWriter
     );
   }
-  f = this.getPeerInformation();
+  f = message.getPeerInformation();
   if (f != null) {
     writer.writeMessage(
       6,
@@ -26102,26 +24052,17 @@ proto.walletrpc.SpvSyncResponse.prototype.serializeBinaryToWriter = function (wr
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SpvSyncResponse} The clone.
- */
-proto.walletrpc.SpvSyncResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SpvSyncResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bool synced = 1;
  * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
  * You should avoid comparisons like {@code val === true/false} in those cases.
  * @return {boolean}
  */
 proto.walletrpc.SpvSyncResponse.prototype.getSynced = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 1, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 1, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.SpvSyncResponse.prototype.setSynced = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -26132,11 +24073,11 @@ proto.walletrpc.SpvSyncResponse.prototype.setSynced = function(value) {
  * @return {!proto.walletrpc.SyncNotificationType}
  */
 proto.walletrpc.SpvSyncResponse.prototype.getNotificationType = function() {
-  return /** @type {!proto.walletrpc.SyncNotificationType} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {!proto.walletrpc.SyncNotificationType} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {!proto.walletrpc.SyncNotificationType} value  */
+/** @param {!proto.walletrpc.SyncNotificationType} value */
 proto.walletrpc.SpvSyncResponse.prototype.setNotificationType = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -26144,15 +24085,15 @@ proto.walletrpc.SpvSyncResponse.prototype.setNotificationType = function(value) 
 
 /**
  * optional FetchHeadersNotification fetch_headers = 3;
- * @return {proto.walletrpc.FetchHeadersNotification}
+ * @return {?proto.walletrpc.FetchHeadersNotification}
  */
 proto.walletrpc.SpvSyncResponse.prototype.getFetchHeaders = function() {
-  return /** @type{proto.walletrpc.FetchHeadersNotification} */ (
+  return /** @type{?proto.walletrpc.FetchHeadersNotification} */ (
     jspb.Message.getWrapperField(this, proto.walletrpc.FetchHeadersNotification, 3));
 };
 
 
-/** @param {proto.walletrpc.FetchHeadersNotification|undefined} value  */
+/** @param {?proto.walletrpc.FetchHeadersNotification|undefined} value */
 proto.walletrpc.SpvSyncResponse.prototype.setFetchHeaders = function(value) {
   jspb.Message.setWrapperField(this, 3, value);
 };
@@ -26165,7 +24106,7 @@ proto.walletrpc.SpvSyncResponse.prototype.clearFetchHeaders = function() {
 
 /**
  * Returns whether this field is set.
- * @return{!boolean}
+ * @return {!boolean}
  */
 proto.walletrpc.SpvSyncResponse.prototype.hasFetchHeaders = function() {
   return jspb.Message.getField(this, 3) != null;
@@ -26174,15 +24115,15 @@ proto.walletrpc.SpvSyncResponse.prototype.hasFetchHeaders = function() {
 
 /**
  * optional FetchMissingCFiltersNotification fetch_missing_cfilters = 4;
- * @return {proto.walletrpc.FetchMissingCFiltersNotification}
+ * @return {?proto.walletrpc.FetchMissingCFiltersNotification}
  */
 proto.walletrpc.SpvSyncResponse.prototype.getFetchMissingCfilters = function() {
-  return /** @type{proto.walletrpc.FetchMissingCFiltersNotification} */ (
+  return /** @type{?proto.walletrpc.FetchMissingCFiltersNotification} */ (
     jspb.Message.getWrapperField(this, proto.walletrpc.FetchMissingCFiltersNotification, 4));
 };
 
 
-/** @param {proto.walletrpc.FetchMissingCFiltersNotification|undefined} value  */
+/** @param {?proto.walletrpc.FetchMissingCFiltersNotification|undefined} value */
 proto.walletrpc.SpvSyncResponse.prototype.setFetchMissingCfilters = function(value) {
   jspb.Message.setWrapperField(this, 4, value);
 };
@@ -26195,7 +24136,7 @@ proto.walletrpc.SpvSyncResponse.prototype.clearFetchMissingCfilters = function()
 
 /**
  * Returns whether this field is set.
- * @return{!boolean}
+ * @return {!boolean}
  */
 proto.walletrpc.SpvSyncResponse.prototype.hasFetchMissingCfilters = function() {
   return jspb.Message.getField(this, 4) != null;
@@ -26204,15 +24145,15 @@ proto.walletrpc.SpvSyncResponse.prototype.hasFetchMissingCfilters = function() {
 
 /**
  * optional RescanProgressNotification rescan_progress = 5;
- * @return {proto.walletrpc.RescanProgressNotification}
+ * @return {?proto.walletrpc.RescanProgressNotification}
  */
 proto.walletrpc.SpvSyncResponse.prototype.getRescanProgress = function() {
-  return /** @type{proto.walletrpc.RescanProgressNotification} */ (
+  return /** @type{?proto.walletrpc.RescanProgressNotification} */ (
     jspb.Message.getWrapperField(this, proto.walletrpc.RescanProgressNotification, 5));
 };
 
 
-/** @param {proto.walletrpc.RescanProgressNotification|undefined} value  */
+/** @param {?proto.walletrpc.RescanProgressNotification|undefined} value */
 proto.walletrpc.SpvSyncResponse.prototype.setRescanProgress = function(value) {
   jspb.Message.setWrapperField(this, 5, value);
 };
@@ -26225,7 +24166,7 @@ proto.walletrpc.SpvSyncResponse.prototype.clearRescanProgress = function() {
 
 /**
  * Returns whether this field is set.
- * @return{!boolean}
+ * @return {!boolean}
  */
 proto.walletrpc.SpvSyncResponse.prototype.hasRescanProgress = function() {
   return jspb.Message.getField(this, 5) != null;
@@ -26234,15 +24175,15 @@ proto.walletrpc.SpvSyncResponse.prototype.hasRescanProgress = function() {
 
 /**
  * optional PeerNotification peer_information = 6;
- * @return {proto.walletrpc.PeerNotification}
+ * @return {?proto.walletrpc.PeerNotification}
  */
 proto.walletrpc.SpvSyncResponse.prototype.getPeerInformation = function() {
-  return /** @type{proto.walletrpc.PeerNotification} */ (
+  return /** @type{?proto.walletrpc.PeerNotification} */ (
     jspb.Message.getWrapperField(this, proto.walletrpc.PeerNotification, 6));
 };
 
 
-/** @param {proto.walletrpc.PeerNotification|undefined} value  */
+/** @param {?proto.walletrpc.PeerNotification|undefined} value */
 proto.walletrpc.SpvSyncResponse.prototype.setPeerInformation = function(value) {
   jspb.Message.setWrapperField(this, 6, value);
 };
@@ -26255,7 +24196,7 @@ proto.walletrpc.SpvSyncResponse.prototype.clearPeerInformation = function() {
 
 /**
  * Returns whether this field is set.
- * @return{!boolean}
+ * @return {!boolean}
  */
 proto.walletrpc.SpvSyncResponse.prototype.hasPeerInformation = function() {
   return jspb.Message.getField(this, 6) != null;
@@ -26355,43 +24296,24 @@ proto.walletrpc.RescanPointRequest.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RescanPointRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RescanPointRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RescanPointRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RescanPointRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RescanPointRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RescanPointRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RescanPointRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RescanPointRequest} The clone.
- */
-proto.walletrpc.RescanPointRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RescanPointRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -26492,35 +24414,25 @@ proto.walletrpc.RescanPointResponse.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RescanPointResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RescanPointResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RescanPointResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RescanPointResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RescanPointResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RescanPointResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RescanPointResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getRescanPointHash_asU8();
+  f = message.getRescanPointHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
@@ -26531,20 +24443,11 @@ proto.walletrpc.RescanPointResponse.prototype.serializeBinaryToWriter = function
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RescanPointResponse} The clone.
- */
-proto.walletrpc.RescanPointResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RescanPointResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes rescan_point_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.RescanPointResponse.prototype.getRescanPointHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -26572,7 +24475,7 @@ proto.walletrpc.RescanPointResponse.prototype.getRescanPointHash_asU8 = function
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.RescanPointResponse.prototype.setRescanPointHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -26624,7 +24527,7 @@ proto.walletrpc.GenerateRandomSeedRequest.prototype.toObject = function(opt_incl
  */
 proto.walletrpc.GenerateRandomSeedRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    seedLength: msg.getSeedLength()
+    seedLength: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -26675,35 +24578,25 @@ proto.walletrpc.GenerateRandomSeedRequest.deserializeBinaryFromReader = function
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GenerateRandomSeedRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GenerateRandomSeedRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GenerateRandomSeedRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GenerateRandomSeedRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GenerateRandomSeedRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GenerateRandomSeedRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GenerateRandomSeedRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSeedLength();
+  f = message.getSeedLength();
   if (f !== 0) {
     writer.writeUint32(
       1,
@@ -26714,24 +24607,15 @@ proto.walletrpc.GenerateRandomSeedRequest.prototype.serializeBinaryToWriter = fu
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GenerateRandomSeedRequest} The clone.
- */
-proto.walletrpc.GenerateRandomSeedRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GenerateRandomSeedRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 seed_length = 1;
  * @return {number}
  */
 proto.walletrpc.GenerateRandomSeedRequest.prototype.getSeedLength = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GenerateRandomSeedRequest.prototype.setSeedLength = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -26784,8 +24668,8 @@ proto.walletrpc.GenerateRandomSeedResponse.prototype.toObject = function(opt_inc
 proto.walletrpc.GenerateRandomSeedResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     seedBytes: msg.getSeedBytes_asB64(),
-    seedHex: msg.getSeedHex(),
-    seedMnemonic: msg.getSeedMnemonic()
+    seedHex: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    seedMnemonic: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -26844,49 +24728,39 @@ proto.walletrpc.GenerateRandomSeedResponse.deserializeBinaryFromReader = functio
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GenerateRandomSeedResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GenerateRandomSeedResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GenerateRandomSeedResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GenerateRandomSeedResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GenerateRandomSeedResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GenerateRandomSeedResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GenerateRandomSeedResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSeedBytes_asU8();
+  f = message.getSeedBytes_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getSeedHex();
+  f = message.getSeedHex();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getSeedMnemonic();
+  f = message.getSeedMnemonic();
   if (f.length > 0) {
     writer.writeString(
       3,
@@ -26897,20 +24771,11 @@ proto.walletrpc.GenerateRandomSeedResponse.prototype.serializeBinaryToWriter = f
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GenerateRandomSeedResponse} The clone.
- */
-proto.walletrpc.GenerateRandomSeedResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GenerateRandomSeedResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes seed_bytes = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.GenerateRandomSeedResponse.prototype.getSeedBytes = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -26938,7 +24803,7 @@ proto.walletrpc.GenerateRandomSeedResponse.prototype.getSeedBytes_asU8 = functio
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.GenerateRandomSeedResponse.prototype.setSeedBytes = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -26949,11 +24814,11 @@ proto.walletrpc.GenerateRandomSeedResponse.prototype.setSeedBytes = function(val
  * @return {string}
  */
 proto.walletrpc.GenerateRandomSeedResponse.prototype.getSeedHex = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.GenerateRandomSeedResponse.prototype.setSeedHex = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -26964,11 +24829,11 @@ proto.walletrpc.GenerateRandomSeedResponse.prototype.setSeedHex = function(value
  * @return {string}
  */
 proto.walletrpc.GenerateRandomSeedResponse.prototype.getSeedMnemonic = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.GenerateRandomSeedResponse.prototype.setSeedMnemonic = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -27020,7 +24885,7 @@ proto.walletrpc.DecodeSeedRequest.prototype.toObject = function(opt_includeInsta
  */
 proto.walletrpc.DecodeSeedRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userInput: msg.getUserInput()
+    userInput: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -27071,35 +24936,25 @@ proto.walletrpc.DecodeSeedRequest.deserializeBinaryFromReader = function(msg, re
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.DecodeSeedRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.DecodeSeedRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.DecodeSeedRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.DecodeSeedRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.DecodeSeedRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.DecodeSeedRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.DecodeSeedRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getUserInput();
+  f = message.getUserInput();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -27110,24 +24965,15 @@ proto.walletrpc.DecodeSeedRequest.prototype.serializeBinaryToWriter = function (
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.DecodeSeedRequest} The clone.
- */
-proto.walletrpc.DecodeSeedRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.DecodeSeedRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string user_input = 1;
  * @return {string}
  */
 proto.walletrpc.DecodeSeedRequest.prototype.getUserInput = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.DecodeSeedRequest.prototype.setUserInput = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -27230,35 +25076,25 @@ proto.walletrpc.DecodeSeedResponse.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.DecodeSeedResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.DecodeSeedResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.DecodeSeedResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.DecodeSeedResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.DecodeSeedResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.DecodeSeedResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.DecodeSeedResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getDecodedSeed_asU8();
+  f = message.getDecodedSeed_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
@@ -27269,20 +25105,11 @@ proto.walletrpc.DecodeSeedResponse.prototype.serializeBinaryToWriter = function 
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.DecodeSeedResponse} The clone.
- */
-proto.walletrpc.DecodeSeedResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.DecodeSeedResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes decoded_seed = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.DecodeSeedResponse.prototype.getDecodedSeed = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -27310,7 +25137,7 @@ proto.walletrpc.DecodeSeedResponse.prototype.getDecodedSeed_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.DecodeSeedResponse.prototype.setDecodedSeed = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -27363,12 +25190,12 @@ proto.walletrpc.RunTicketBuyerRequest.prototype.toObject = function(opt_includeI
 proto.walletrpc.RunTicketBuyerRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     passphrase: msg.getPassphrase_asB64(),
-    account: msg.getAccount(),
-    votingAccount: msg.getVotingAccount(),
-    balanceToMaintain: msg.getBalanceToMaintain(),
-    votingAddress: msg.getVotingAddress(),
-    poolAddress: msg.getPoolAddress(),
-    poolFees: msg.getPoolFees()
+    account: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    votingAccount: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    balanceToMaintain: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    votingAddress: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    poolAddress: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    poolFees: +jspb.Message.getFieldWithDefault(msg, 7, 0.0)
   };
 
   if (includeInstance) {
@@ -27443,77 +25270,67 @@ proto.walletrpc.RunTicketBuyerRequest.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RunTicketBuyerRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RunTicketBuyerRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RunTicketBuyerRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RunTicketBuyerRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RunTicketBuyerRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RunTicketBuyerRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RunTicketBuyerRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getAccount();
+  f = message.getAccount();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getVotingAccount();
+  f = message.getVotingAccount();
   if (f !== 0) {
     writer.writeUint32(
       3,
       f
     );
   }
-  f = this.getBalanceToMaintain();
+  f = message.getBalanceToMaintain();
   if (f !== 0) {
     writer.writeInt64(
       4,
       f
     );
   }
-  f = this.getVotingAddress();
+  f = message.getVotingAddress();
   if (f.length > 0) {
     writer.writeString(
       5,
       f
     );
   }
-  f = this.getPoolAddress();
+  f = message.getPoolAddress();
   if (f.length > 0) {
     writer.writeString(
       6,
       f
     );
   }
-  f = this.getPoolFees();
+  f = message.getPoolFees();
   if (f !== 0.0) {
     writer.writeDouble(
       7,
@@ -27524,20 +25341,11 @@ proto.walletrpc.RunTicketBuyerRequest.prototype.serializeBinaryToWriter = functi
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RunTicketBuyerRequest} The clone.
- */
-proto.walletrpc.RunTicketBuyerRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RunTicketBuyerRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes passphrase = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.RunTicketBuyerRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -27565,7 +25373,7 @@ proto.walletrpc.RunTicketBuyerRequest.prototype.getPassphrase_asU8 = function() 
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.RunTicketBuyerRequest.prototype.setPassphrase = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -27576,11 +25384,11 @@ proto.walletrpc.RunTicketBuyerRequest.prototype.setPassphrase = function(value) 
  * @return {number}
  */
 proto.walletrpc.RunTicketBuyerRequest.prototype.getAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.RunTicketBuyerRequest.prototype.setAccount = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -27591,11 +25399,11 @@ proto.walletrpc.RunTicketBuyerRequest.prototype.setAccount = function(value) {
  * @return {number}
  */
 proto.walletrpc.RunTicketBuyerRequest.prototype.getVotingAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.RunTicketBuyerRequest.prototype.setVotingAccount = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -27606,11 +25414,11 @@ proto.walletrpc.RunTicketBuyerRequest.prototype.setVotingAccount = function(valu
  * @return {number}
  */
 proto.walletrpc.RunTicketBuyerRequest.prototype.getBalanceToMaintain = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.RunTicketBuyerRequest.prototype.setBalanceToMaintain = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -27621,11 +25429,11 @@ proto.walletrpc.RunTicketBuyerRequest.prototype.setBalanceToMaintain = function(
  * @return {string}
  */
 proto.walletrpc.RunTicketBuyerRequest.prototype.getVotingAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 5, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.RunTicketBuyerRequest.prototype.setVotingAddress = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -27636,11 +25444,11 @@ proto.walletrpc.RunTicketBuyerRequest.prototype.setVotingAddress = function(valu
  * @return {string}
  */
 proto.walletrpc.RunTicketBuyerRequest.prototype.getPoolAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 6, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.RunTicketBuyerRequest.prototype.setPoolAddress = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -27651,11 +25459,11 @@ proto.walletrpc.RunTicketBuyerRequest.prototype.setPoolAddress = function(value)
  * @return {number}
  */
 proto.walletrpc.RunTicketBuyerRequest.prototype.getPoolFees = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 7, 0));
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 7, 0.0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.RunTicketBuyerRequest.prototype.setPoolFees = function(value) {
   jspb.Message.setField(this, 7, value);
 };
@@ -27754,43 +25562,24 @@ proto.walletrpc.RunTicketBuyerResponse.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.RunTicketBuyerResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.RunTicketBuyerResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.RunTicketBuyerResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.RunTicketBuyerResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.RunTicketBuyerResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.RunTicketBuyerResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.RunTicketBuyerResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.RunTicketBuyerResponse} The clone.
- */
-proto.walletrpc.RunTicketBuyerResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.RunTicketBuyerResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -27841,15 +25630,15 @@ proto.walletrpc.StartAutoBuyerRequest.prototype.toObject = function(opt_includeI
 proto.walletrpc.StartAutoBuyerRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     passphrase: msg.getPassphrase_asB64(),
-    account: msg.getAccount(),
-    balanceToMaintain: msg.getBalanceToMaintain(),
-    maxFeePerKb: msg.getMaxFeePerKb(),
-    maxPriceRelative: msg.getMaxPriceRelative(),
-    maxPriceAbsolute: msg.getMaxPriceAbsolute(),
-    votingAddress: msg.getVotingAddress(),
-    poolAddress: msg.getPoolAddress(),
-    poolFees: msg.getPoolFees(),
-    maxPerBlock: msg.getMaxPerBlock()
+    account: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    balanceToMaintain: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    maxFeePerKb: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    maxPriceRelative: +jspb.Message.getFieldWithDefault(msg, 5, 0.0),
+    maxPriceAbsolute: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    votingAddress: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    poolAddress: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    poolFees: +jspb.Message.getFieldWithDefault(msg, 9, 0.0),
+    maxPerBlock: jspb.Message.getFieldWithDefault(msg, 10, 0)
   };
 
   if (includeInstance) {
@@ -27936,98 +25725,88 @@ proto.walletrpc.StartAutoBuyerRequest.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.StartAutoBuyerRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.StartAutoBuyerRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.StartAutoBuyerRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.StartAutoBuyerRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.StartAutoBuyerRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.StartAutoBuyerRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.StartAutoBuyerRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getAccount();
+  f = message.getAccount();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getBalanceToMaintain();
+  f = message.getBalanceToMaintain();
   if (f !== 0) {
     writer.writeInt64(
       3,
       f
     );
   }
-  f = this.getMaxFeePerKb();
+  f = message.getMaxFeePerKb();
   if (f !== 0) {
     writer.writeInt64(
       4,
       f
     );
   }
-  f = this.getMaxPriceRelative();
+  f = message.getMaxPriceRelative();
   if (f !== 0.0) {
     writer.writeDouble(
       5,
       f
     );
   }
-  f = this.getMaxPriceAbsolute();
+  f = message.getMaxPriceAbsolute();
   if (f !== 0) {
     writer.writeInt64(
       6,
       f
     );
   }
-  f = this.getVotingAddress();
+  f = message.getVotingAddress();
   if (f.length > 0) {
     writer.writeString(
       7,
       f
     );
   }
-  f = this.getPoolAddress();
+  f = message.getPoolAddress();
   if (f.length > 0) {
     writer.writeString(
       8,
       f
     );
   }
-  f = this.getPoolFees();
+  f = message.getPoolFees();
   if (f !== 0.0) {
     writer.writeDouble(
       9,
       f
     );
   }
-  f = this.getMaxPerBlock();
+  f = message.getMaxPerBlock();
   if (f !== 0) {
     writer.writeInt64(
       10,
@@ -28038,20 +25817,11 @@ proto.walletrpc.StartAutoBuyerRequest.prototype.serializeBinaryToWriter = functi
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.StartAutoBuyerRequest} The clone.
- */
-proto.walletrpc.StartAutoBuyerRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.StartAutoBuyerRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes passphrase = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.StartAutoBuyerRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -28079,7 +25849,7 @@ proto.walletrpc.StartAutoBuyerRequest.prototype.getPassphrase_asU8 = function() 
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.StartAutoBuyerRequest.prototype.setPassphrase = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -28090,11 +25860,11 @@ proto.walletrpc.StartAutoBuyerRequest.prototype.setPassphrase = function(value) 
  * @return {number}
  */
 proto.walletrpc.StartAutoBuyerRequest.prototype.getAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StartAutoBuyerRequest.prototype.setAccount = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -28105,11 +25875,11 @@ proto.walletrpc.StartAutoBuyerRequest.prototype.setAccount = function(value) {
  * @return {number}
  */
 proto.walletrpc.StartAutoBuyerRequest.prototype.getBalanceToMaintain = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StartAutoBuyerRequest.prototype.setBalanceToMaintain = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -28120,11 +25890,11 @@ proto.walletrpc.StartAutoBuyerRequest.prototype.setBalanceToMaintain = function(
  * @return {number}
  */
 proto.walletrpc.StartAutoBuyerRequest.prototype.getMaxFeePerKb = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StartAutoBuyerRequest.prototype.setMaxFeePerKb = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -28135,11 +25905,11 @@ proto.walletrpc.StartAutoBuyerRequest.prototype.setMaxFeePerKb = function(value)
  * @return {number}
  */
 proto.walletrpc.StartAutoBuyerRequest.prototype.getMaxPriceRelative = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 5, 0.0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StartAutoBuyerRequest.prototype.setMaxPriceRelative = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -28150,11 +25920,11 @@ proto.walletrpc.StartAutoBuyerRequest.prototype.setMaxPriceRelative = function(v
  * @return {number}
  */
 proto.walletrpc.StartAutoBuyerRequest.prototype.getMaxPriceAbsolute = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 6, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StartAutoBuyerRequest.prototype.setMaxPriceAbsolute = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -28165,11 +25935,11 @@ proto.walletrpc.StartAutoBuyerRequest.prototype.setMaxPriceAbsolute = function(v
  * @return {string}
  */
 proto.walletrpc.StartAutoBuyerRequest.prototype.getVotingAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 7, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.StartAutoBuyerRequest.prototype.setVotingAddress = function(value) {
   jspb.Message.setField(this, 7, value);
 };
@@ -28180,11 +25950,11 @@ proto.walletrpc.StartAutoBuyerRequest.prototype.setVotingAddress = function(valu
  * @return {string}
  */
 proto.walletrpc.StartAutoBuyerRequest.prototype.getPoolAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 8, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.StartAutoBuyerRequest.prototype.setPoolAddress = function(value) {
   jspb.Message.setField(this, 8, value);
 };
@@ -28195,11 +25965,11 @@ proto.walletrpc.StartAutoBuyerRequest.prototype.setPoolAddress = function(value)
  * @return {number}
  */
 proto.walletrpc.StartAutoBuyerRequest.prototype.getPoolFees = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 9, 0));
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 9, 0.0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StartAutoBuyerRequest.prototype.setPoolFees = function(value) {
   jspb.Message.setField(this, 9, value);
 };
@@ -28210,11 +25980,11 @@ proto.walletrpc.StartAutoBuyerRequest.prototype.setPoolFees = function(value) {
  * @return {number}
  */
 proto.walletrpc.StartAutoBuyerRequest.prototype.getMaxPerBlock = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 10, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.StartAutoBuyerRequest.prototype.setMaxPerBlock = function(value) {
   jspb.Message.setField(this, 10, value);
 };
@@ -28313,43 +26083,24 @@ proto.walletrpc.StartAutoBuyerResponse.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.StartAutoBuyerResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.StartAutoBuyerResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.StartAutoBuyerResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.StartAutoBuyerResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.StartAutoBuyerResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.StartAutoBuyerResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.StartAutoBuyerResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.StartAutoBuyerResponse} The clone.
- */
-proto.walletrpc.StartAutoBuyerResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.StartAutoBuyerResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -28446,43 +26197,24 @@ proto.walletrpc.StopAutoBuyerRequest.deserializeBinaryFromReader = function(msg,
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.StopAutoBuyerRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.StopAutoBuyerRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.StopAutoBuyerRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.StopAutoBuyerRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.StopAutoBuyerRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.StopAutoBuyerRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.StopAutoBuyerRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.StopAutoBuyerRequest} The clone.
- */
-proto.walletrpc.StopAutoBuyerRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.StopAutoBuyerRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -28579,43 +26311,24 @@ proto.walletrpc.StopAutoBuyerResponse.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.StopAutoBuyerResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.StopAutoBuyerResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.StopAutoBuyerResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.StopAutoBuyerResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.StopAutoBuyerResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.StopAutoBuyerResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.StopAutoBuyerResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.StopAutoBuyerResponse} The clone.
- */
-proto.walletrpc.StopAutoBuyerResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.StopAutoBuyerResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -28712,43 +26425,24 @@ proto.walletrpc.TicketBuyerConfigRequest.deserializeBinaryFromReader = function(
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.TicketBuyerConfigRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.TicketBuyerConfigRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.TicketBuyerConfigRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.TicketBuyerConfigRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.TicketBuyerConfigRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.TicketBuyerConfigRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.TicketBuyerConfigRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.TicketBuyerConfigRequest} The clone.
- */
-proto.walletrpc.TicketBuyerConfigRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.TicketBuyerConfigRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -28798,26 +26492,26 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.toObject = function(opt_incl
  */
 proto.walletrpc.TicketBuyerConfigResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    account: msg.getAccount(),
-    avgPriceMode: msg.getAvgPriceMode(),
-    avgPricevwapDelta: msg.getAvgPricevwapDelta(),
-    balanceToMaintain: msg.getBalanceToMaintain(),
-    blocksToAvg: msg.getBlocksToAvg(),
-    dontWaitForTickets: msg.getDontWaitForTickets(),
-    expiryDelta: msg.getExpiryDelta(),
-    feeSource: msg.getFeeSource(),
-    feeTargetScaling: msg.getFeeTargetScaling(),
-    minFee: msg.getMinFee(),
-    maxFee: msg.getMaxFee(),
-    maxPerBlock: msg.getMaxPerBlock(),
-    maxPriceAbsolute: msg.getMaxPriceAbsolute(),
-    maxPriceRelative: msg.getMaxPriceRelative(),
-    maxInMempool: msg.getMaxInMempool(),
-    poolAddress: msg.getPoolAddress(),
-    poolFees: msg.getPoolFees(),
-    spreadTicketPurchases: msg.getSpreadTicketPurchases(),
-    votingAddress: msg.getVotingAddress(),
-    txFee: msg.getTxFee()
+    account: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    avgPriceMode: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    avgPricevwapDelta: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    balanceToMaintain: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    blocksToAvg: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    dontWaitForTickets: jspb.Message.getFieldWithDefault(msg, 6, false),
+    expiryDelta: jspb.Message.getFieldWithDefault(msg, 7, 0),
+    feeSource: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    feeTargetScaling: +jspb.Message.getFieldWithDefault(msg, 9, 0.0),
+    minFee: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    maxFee: jspb.Message.getFieldWithDefault(msg, 12, 0),
+    maxPerBlock: jspb.Message.getFieldWithDefault(msg, 13, 0),
+    maxPriceAbsolute: jspb.Message.getFieldWithDefault(msg, 14, 0),
+    maxPriceRelative: +jspb.Message.getFieldWithDefault(msg, 15, 0.0),
+    maxInMempool: jspb.Message.getFieldWithDefault(msg, 17, 0),
+    poolAddress: jspb.Message.getFieldWithDefault(msg, 18, ""),
+    poolFees: +jspb.Message.getFieldWithDefault(msg, 19, 0.0),
+    spreadTicketPurchases: jspb.Message.getFieldWithDefault(msg, 20, false),
+    votingAddress: jspb.Message.getFieldWithDefault(msg, 21, ""),
+    txFee: jspb.Message.getFieldWithDefault(msg, 22, 0)
   };
 
   if (includeInstance) {
@@ -28944,168 +26638,158 @@ proto.walletrpc.TicketBuyerConfigResponse.deserializeBinaryFromReader = function
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.TicketBuyerConfigResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.TicketBuyerConfigResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.TicketBuyerConfigResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.TicketBuyerConfigResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.TicketBuyerConfigResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.TicketBuyerConfigResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccount();
+  f = message.getAccount();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getAvgPriceMode();
+  f = message.getAvgPriceMode();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getAvgPricevwapDelta();
+  f = message.getAvgPricevwapDelta();
   if (f !== 0) {
     writer.writeInt64(
       3,
       f
     );
   }
-  f = this.getBalanceToMaintain();
+  f = message.getBalanceToMaintain();
   if (f !== 0) {
     writer.writeInt64(
       4,
       f
     );
   }
-  f = this.getBlocksToAvg();
+  f = message.getBlocksToAvg();
   if (f !== 0) {
     writer.writeInt64(
       5,
       f
     );
   }
-  f = this.getDontWaitForTickets();
+  f = message.getDontWaitForTickets();
   if (f) {
     writer.writeBool(
       6,
       f
     );
   }
-  f = this.getExpiryDelta();
+  f = message.getExpiryDelta();
   if (f !== 0) {
     writer.writeInt64(
       7,
       f
     );
   }
-  f = this.getFeeSource();
+  f = message.getFeeSource();
   if (f.length > 0) {
     writer.writeString(
       8,
       f
     );
   }
-  f = this.getFeeTargetScaling();
+  f = message.getFeeTargetScaling();
   if (f !== 0.0) {
     writer.writeDouble(
       9,
       f
     );
   }
-  f = this.getMinFee();
+  f = message.getMinFee();
   if (f !== 0) {
     writer.writeInt64(
       10,
       f
     );
   }
-  f = this.getMaxFee();
+  f = message.getMaxFee();
   if (f !== 0) {
     writer.writeInt64(
       12,
       f
     );
   }
-  f = this.getMaxPerBlock();
+  f = message.getMaxPerBlock();
   if (f !== 0) {
     writer.writeInt64(
       13,
       f
     );
   }
-  f = this.getMaxPriceAbsolute();
+  f = message.getMaxPriceAbsolute();
   if (f !== 0) {
     writer.writeInt64(
       14,
       f
     );
   }
-  f = this.getMaxPriceRelative();
+  f = message.getMaxPriceRelative();
   if (f !== 0.0) {
     writer.writeDouble(
       15,
       f
     );
   }
-  f = this.getMaxInMempool();
+  f = message.getMaxInMempool();
   if (f !== 0) {
     writer.writeInt64(
       17,
       f
     );
   }
-  f = this.getPoolAddress();
+  f = message.getPoolAddress();
   if (f.length > 0) {
     writer.writeString(
       18,
       f
     );
   }
-  f = this.getPoolFees();
+  f = message.getPoolFees();
   if (f !== 0.0) {
     writer.writeDouble(
       19,
       f
     );
   }
-  f = this.getSpreadTicketPurchases();
+  f = message.getSpreadTicketPurchases();
   if (f) {
     writer.writeBool(
       20,
       f
     );
   }
-  f = this.getVotingAddress();
+  f = message.getVotingAddress();
   if (f.length > 0) {
     writer.writeString(
       21,
       f
     );
   }
-  f = this.getTxFee();
+  f = message.getTxFee();
   if (f !== 0) {
     writer.writeInt64(
       22,
@@ -29116,24 +26800,15 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.serializeBinaryToWriter = fu
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.TicketBuyerConfigResponse} The clone.
- */
-proto.walletrpc.TicketBuyerConfigResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.TicketBuyerConfigResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account = 1;
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setAccount = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -29144,11 +26819,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setAccount = function(value)
  * @return {string}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getAvgPriceMode = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setAvgPriceMode = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -29159,11 +26834,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setAvgPriceMode = function(v
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getAvgPricevwapDelta = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setAvgPricevwapDelta = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -29174,11 +26849,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setAvgPricevwapDelta = funct
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getBalanceToMaintain = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setBalanceToMaintain = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -29189,11 +26864,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setBalanceToMaintain = funct
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getBlocksToAvg = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setBlocksToAvg = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -29206,11 +26881,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setBlocksToAvg = function(va
  * @return {boolean}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getDontWaitForTickets = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 6, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 6, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setDontWaitForTickets = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -29221,11 +26896,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setDontWaitForTickets = func
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getExpiryDelta = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 7, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setExpiryDelta = function(value) {
   jspb.Message.setField(this, 7, value);
 };
@@ -29236,11 +26911,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setExpiryDelta = function(va
  * @return {string}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getFeeSource = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 8, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setFeeSource = function(value) {
   jspb.Message.setField(this, 8, value);
 };
@@ -29251,11 +26926,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setFeeSource = function(valu
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getFeeTargetScaling = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 9, 0));
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 9, 0.0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setFeeTargetScaling = function(value) {
   jspb.Message.setField(this, 9, value);
 };
@@ -29266,11 +26941,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setFeeTargetScaling = functi
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getMinFee = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 10, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setMinFee = function(value) {
   jspb.Message.setField(this, 10, value);
 };
@@ -29281,11 +26956,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setMinFee = function(value) 
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getMaxFee = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 12, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 12, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setMaxFee = function(value) {
   jspb.Message.setField(this, 12, value);
 };
@@ -29296,11 +26971,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setMaxFee = function(value) 
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getMaxPerBlock = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 13, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 13, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setMaxPerBlock = function(value) {
   jspb.Message.setField(this, 13, value);
 };
@@ -29311,11 +26986,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setMaxPerBlock = function(va
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getMaxPriceAbsolute = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 14, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 14, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setMaxPriceAbsolute = function(value) {
   jspb.Message.setField(this, 14, value);
 };
@@ -29326,11 +27001,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setMaxPriceAbsolute = functi
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getMaxPriceRelative = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 15, 0));
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 15, 0.0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setMaxPriceRelative = function(value) {
   jspb.Message.setField(this, 15, value);
 };
@@ -29341,11 +27016,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setMaxPriceRelative = functi
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getMaxInMempool = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 17, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 17, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setMaxInMempool = function(value) {
   jspb.Message.setField(this, 17, value);
 };
@@ -29356,11 +27031,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setMaxInMempool = function(v
  * @return {string}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getPoolAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 18, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 18, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setPoolAddress = function(value) {
   jspb.Message.setField(this, 18, value);
 };
@@ -29371,11 +27046,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setPoolAddress = function(va
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getPoolFees = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 19, 0));
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 19, 0.0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setPoolFees = function(value) {
   jspb.Message.setField(this, 19, value);
 };
@@ -29388,11 +27063,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setPoolFees = function(value
  * @return {boolean}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getSpreadTicketPurchases = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 20, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 20, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setSpreadTicketPurchases = function(value) {
   jspb.Message.setField(this, 20, value);
 };
@@ -29403,11 +27078,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setSpreadTicketPurchases = f
  * @return {string}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getVotingAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 21, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 21, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setVotingAddress = function(value) {
   jspb.Message.setField(this, 21, value);
 };
@@ -29418,11 +27093,11 @@ proto.walletrpc.TicketBuyerConfigResponse.prototype.setVotingAddress = function(
  * @return {number}
  */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.getTxFee = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 22, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 22, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.TicketBuyerConfigResponse.prototype.setTxFee = function(value) {
   jspb.Message.setField(this, 22, value);
 };
@@ -29474,7 +27149,7 @@ proto.walletrpc.SetAccountRequest.prototype.toObject = function(opt_includeInsta
  */
 proto.walletrpc.SetAccountRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    account: msg.getAccount()
+    account: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -29525,35 +27200,25 @@ proto.walletrpc.SetAccountRequest.deserializeBinaryFromReader = function(msg, re
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetAccountRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetAccountRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetAccountRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetAccountRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetAccountRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetAccountRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetAccountRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccount();
+  f = message.getAccount();
   if (f !== 0) {
     writer.writeUint32(
       1,
@@ -29564,24 +27229,15 @@ proto.walletrpc.SetAccountRequest.prototype.serializeBinaryToWriter = function (
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetAccountRequest} The clone.
- */
-proto.walletrpc.SetAccountRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetAccountRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account = 1;
  * @return {number}
  */
 proto.walletrpc.SetAccountRequest.prototype.getAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SetAccountRequest.prototype.setAccount = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -29680,43 +27336,24 @@ proto.walletrpc.SetAccountResponse.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetAccountResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetAccountResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetAccountResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetAccountResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetAccountResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetAccountResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetAccountResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetAccountResponse} The clone.
- */
-proto.walletrpc.SetAccountResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetAccountResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -29766,7 +27403,7 @@ proto.walletrpc.SetBalanceToMaintainRequest.prototype.toObject = function(opt_in
  */
 proto.walletrpc.SetBalanceToMaintainRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    balanceToMaintain: msg.getBalanceToMaintain()
+    balanceToMaintain: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -29817,35 +27454,25 @@ proto.walletrpc.SetBalanceToMaintainRequest.deserializeBinaryFromReader = functi
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetBalanceToMaintainRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetBalanceToMaintainRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetBalanceToMaintainRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetBalanceToMaintainRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetBalanceToMaintainRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetBalanceToMaintainRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetBalanceToMaintainRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getBalanceToMaintain();
+  f = message.getBalanceToMaintain();
   if (f !== 0) {
     writer.writeInt64(
       1,
@@ -29856,24 +27483,15 @@ proto.walletrpc.SetBalanceToMaintainRequest.prototype.serializeBinaryToWriter = 
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetBalanceToMaintainRequest} The clone.
- */
-proto.walletrpc.SetBalanceToMaintainRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetBalanceToMaintainRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional int64 balance_to_maintain = 1;
  * @return {number}
  */
 proto.walletrpc.SetBalanceToMaintainRequest.prototype.getBalanceToMaintain = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SetBalanceToMaintainRequest.prototype.setBalanceToMaintain = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -29972,43 +27590,24 @@ proto.walletrpc.SetBalanceToMaintainResponse.deserializeBinaryFromReader = funct
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetBalanceToMaintainResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetBalanceToMaintainResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetBalanceToMaintainResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetBalanceToMaintainResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetBalanceToMaintainResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetBalanceToMaintainResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetBalanceToMaintainResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetBalanceToMaintainResponse} The clone.
- */
-proto.walletrpc.SetBalanceToMaintainResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetBalanceToMaintainResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -30058,7 +27657,7 @@ proto.walletrpc.SetMaxFeeRequest.prototype.toObject = function(opt_includeInstan
  */
 proto.walletrpc.SetMaxFeeRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    maxFeePerKb: msg.getMaxFeePerKb()
+    maxFeePerKb: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -30109,35 +27708,25 @@ proto.walletrpc.SetMaxFeeRequest.deserializeBinaryFromReader = function(msg, rea
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetMaxFeeRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetMaxFeeRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetMaxFeeRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetMaxFeeRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetMaxFeeRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetMaxFeeRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetMaxFeeRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getMaxFeePerKb();
+  f = message.getMaxFeePerKb();
   if (f !== 0) {
     writer.writeInt64(
       1,
@@ -30148,24 +27737,15 @@ proto.walletrpc.SetMaxFeeRequest.prototype.serializeBinaryToWriter = function (w
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetMaxFeeRequest} The clone.
- */
-proto.walletrpc.SetMaxFeeRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetMaxFeeRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional int64 max_fee_per_kb = 1;
  * @return {number}
  */
 proto.walletrpc.SetMaxFeeRequest.prototype.getMaxFeePerKb = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SetMaxFeeRequest.prototype.setMaxFeePerKb = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -30264,43 +27844,24 @@ proto.walletrpc.SetMaxFeeResponse.deserializeBinaryFromReader = function(msg, re
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetMaxFeeResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetMaxFeeResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetMaxFeeResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetMaxFeeResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetMaxFeeResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetMaxFeeResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetMaxFeeResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetMaxFeeResponse} The clone.
- */
-proto.walletrpc.SetMaxFeeResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetMaxFeeResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -30350,7 +27911,7 @@ proto.walletrpc.SetMaxPriceRelativeRequest.prototype.toObject = function(opt_inc
  */
 proto.walletrpc.SetMaxPriceRelativeRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    maxPriceRelative: msg.getMaxPriceRelative()
+    maxPriceRelative: +jspb.Message.getFieldWithDefault(msg, 1, 0.0)
   };
 
   if (includeInstance) {
@@ -30401,35 +27962,25 @@ proto.walletrpc.SetMaxPriceRelativeRequest.deserializeBinaryFromReader = functio
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetMaxPriceRelativeRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetMaxPriceRelativeRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetMaxPriceRelativeRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetMaxPriceRelativeRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetMaxPriceRelativeRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetMaxPriceRelativeRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetMaxPriceRelativeRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getMaxPriceRelative();
+  f = message.getMaxPriceRelative();
   if (f !== 0.0) {
     writer.writeDouble(
       1,
@@ -30440,24 +27991,15 @@ proto.walletrpc.SetMaxPriceRelativeRequest.prototype.serializeBinaryToWriter = f
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetMaxPriceRelativeRequest} The clone.
- */
-proto.walletrpc.SetMaxPriceRelativeRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetMaxPriceRelativeRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional double max_price_relative = 1;
  * @return {number}
  */
 proto.walletrpc.SetMaxPriceRelativeRequest.prototype.getMaxPriceRelative = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 1, 0.0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SetMaxPriceRelativeRequest.prototype.setMaxPriceRelative = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -30556,43 +28098,24 @@ proto.walletrpc.SetMaxPriceRelativeResponse.deserializeBinaryFromReader = functi
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetMaxPriceRelativeResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetMaxPriceRelativeResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetMaxPriceRelativeResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetMaxPriceRelativeResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetMaxPriceRelativeResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetMaxPriceRelativeResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetMaxPriceRelativeResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetMaxPriceRelativeResponse} The clone.
- */
-proto.walletrpc.SetMaxPriceRelativeResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetMaxPriceRelativeResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -30642,7 +28165,7 @@ proto.walletrpc.SetMaxPriceAbsoluteRequest.prototype.toObject = function(opt_inc
  */
 proto.walletrpc.SetMaxPriceAbsoluteRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    maxPriceAbsolute: msg.getMaxPriceAbsolute()
+    maxPriceAbsolute: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -30693,35 +28216,25 @@ proto.walletrpc.SetMaxPriceAbsoluteRequest.deserializeBinaryFromReader = functio
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetMaxPriceAbsoluteRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetMaxPriceAbsoluteRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetMaxPriceAbsoluteRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetMaxPriceAbsoluteRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetMaxPriceAbsoluteRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetMaxPriceAbsoluteRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetMaxPriceAbsoluteRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getMaxPriceAbsolute();
+  f = message.getMaxPriceAbsolute();
   if (f !== 0) {
     writer.writeInt64(
       1,
@@ -30732,24 +28245,15 @@ proto.walletrpc.SetMaxPriceAbsoluteRequest.prototype.serializeBinaryToWriter = f
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetMaxPriceAbsoluteRequest} The clone.
- */
-proto.walletrpc.SetMaxPriceAbsoluteRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetMaxPriceAbsoluteRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional int64 max_price_absolute = 1;
  * @return {number}
  */
 proto.walletrpc.SetMaxPriceAbsoluteRequest.prototype.getMaxPriceAbsolute = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SetMaxPriceAbsoluteRequest.prototype.setMaxPriceAbsolute = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -30848,43 +28352,24 @@ proto.walletrpc.SetMaxPriceAbsoluteResponse.deserializeBinaryFromReader = functi
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetMaxPriceAbsoluteResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetMaxPriceAbsoluteResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetMaxPriceAbsoluteResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetMaxPriceAbsoluteResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetMaxPriceAbsoluteResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetMaxPriceAbsoluteResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetMaxPriceAbsoluteResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetMaxPriceAbsoluteResponse} The clone.
- */
-proto.walletrpc.SetMaxPriceAbsoluteResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetMaxPriceAbsoluteResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -30934,7 +28419,7 @@ proto.walletrpc.SetVotingAddressRequest.prototype.toObject = function(opt_includ
  */
 proto.walletrpc.SetVotingAddressRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    votingAddress: msg.getVotingAddress()
+    votingAddress: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -30985,35 +28470,25 @@ proto.walletrpc.SetVotingAddressRequest.deserializeBinaryFromReader = function(m
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetVotingAddressRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetVotingAddressRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetVotingAddressRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetVotingAddressRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetVotingAddressRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetVotingAddressRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetVotingAddressRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getVotingAddress();
+  f = message.getVotingAddress();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -31024,24 +28499,15 @@ proto.walletrpc.SetVotingAddressRequest.prototype.serializeBinaryToWriter = func
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetVotingAddressRequest} The clone.
- */
-proto.walletrpc.SetVotingAddressRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetVotingAddressRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string voting_address = 1;
  * @return {string}
  */
 proto.walletrpc.SetVotingAddressRequest.prototype.getVotingAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.SetVotingAddressRequest.prototype.setVotingAddress = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -31140,43 +28606,24 @@ proto.walletrpc.SetVotingAddressResponse.deserializeBinaryFromReader = function(
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetVotingAddressResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetVotingAddressResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetVotingAddressResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetVotingAddressResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetVotingAddressResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetVotingAddressResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetVotingAddressResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetVotingAddressResponse} The clone.
- */
-proto.walletrpc.SetVotingAddressResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetVotingAddressResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -31226,7 +28673,7 @@ proto.walletrpc.SetPoolAddressRequest.prototype.toObject = function(opt_includeI
  */
 proto.walletrpc.SetPoolAddressRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    poolAddress: msg.getPoolAddress()
+    poolAddress: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -31277,35 +28724,25 @@ proto.walletrpc.SetPoolAddressRequest.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetPoolAddressRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetPoolAddressRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetPoolAddressRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetPoolAddressRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetPoolAddressRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetPoolAddressRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetPoolAddressRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPoolAddress();
+  f = message.getPoolAddress();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -31316,24 +28753,15 @@ proto.walletrpc.SetPoolAddressRequest.prototype.serializeBinaryToWriter = functi
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetPoolAddressRequest} The clone.
- */
-proto.walletrpc.SetPoolAddressRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetPoolAddressRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string pool_address = 1;
  * @return {string}
  */
 proto.walletrpc.SetPoolAddressRequest.prototype.getPoolAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.SetPoolAddressRequest.prototype.setPoolAddress = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -31432,43 +28860,24 @@ proto.walletrpc.SetPoolAddressResponse.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetPoolAddressResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetPoolAddressResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetPoolAddressResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetPoolAddressResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetPoolAddressResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetPoolAddressResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetPoolAddressResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetPoolAddressResponse} The clone.
- */
-proto.walletrpc.SetPoolAddressResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetPoolAddressResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -31518,7 +28927,7 @@ proto.walletrpc.SetPoolFeesRequest.prototype.toObject = function(opt_includeInst
  */
 proto.walletrpc.SetPoolFeesRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    poolFees: msg.getPoolFees()
+    poolFees: +jspb.Message.getFieldWithDefault(msg, 1, 0.0)
   };
 
   if (includeInstance) {
@@ -31569,35 +28978,25 @@ proto.walletrpc.SetPoolFeesRequest.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetPoolFeesRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetPoolFeesRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetPoolFeesRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetPoolFeesRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetPoolFeesRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetPoolFeesRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetPoolFeesRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPoolFees();
+  f = message.getPoolFees();
   if (f !== 0.0) {
     writer.writeDouble(
       1,
@@ -31608,24 +29007,15 @@ proto.walletrpc.SetPoolFeesRequest.prototype.serializeBinaryToWriter = function 
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetPoolFeesRequest} The clone.
- */
-proto.walletrpc.SetPoolFeesRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetPoolFeesRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional double pool_fees = 1;
  * @return {number}
  */
 proto.walletrpc.SetPoolFeesRequest.prototype.getPoolFees = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 1, 0.0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SetPoolFeesRequest.prototype.setPoolFees = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -31724,43 +29114,24 @@ proto.walletrpc.SetPoolFeesResponse.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetPoolFeesResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetPoolFeesResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetPoolFeesResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetPoolFeesResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetPoolFeesResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetPoolFeesResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetPoolFeesResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetPoolFeesResponse} The clone.
- */
-proto.walletrpc.SetPoolFeesResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetPoolFeesResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -31810,7 +29181,7 @@ proto.walletrpc.SetMaxPerBlockRequest.prototype.toObject = function(opt_includeI
  */
 proto.walletrpc.SetMaxPerBlockRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    maxPerBlock: msg.getMaxPerBlock()
+    maxPerBlock: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -31861,35 +29232,25 @@ proto.walletrpc.SetMaxPerBlockRequest.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetMaxPerBlockRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetMaxPerBlockRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetMaxPerBlockRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetMaxPerBlockRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetMaxPerBlockRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetMaxPerBlockRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetMaxPerBlockRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getMaxPerBlock();
+  f = message.getMaxPerBlock();
   if (f !== 0) {
     writer.writeInt64(
       1,
@@ -31900,24 +29261,15 @@ proto.walletrpc.SetMaxPerBlockRequest.prototype.serializeBinaryToWriter = functi
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetMaxPerBlockRequest} The clone.
- */
-proto.walletrpc.SetMaxPerBlockRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetMaxPerBlockRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional int64 max_per_block = 1;
  * @return {number}
  */
 proto.walletrpc.SetMaxPerBlockRequest.prototype.getMaxPerBlock = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SetMaxPerBlockRequest.prototype.setMaxPerBlock = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -32016,43 +29368,24 @@ proto.walletrpc.SetMaxPerBlockResponse.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetMaxPerBlockResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetMaxPerBlockResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetMaxPerBlockResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetMaxPerBlockResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetMaxPerBlockResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetMaxPerBlockResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetMaxPerBlockResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetMaxPerBlockResponse} The clone.
- */
-proto.walletrpc.SetMaxPerBlockResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetMaxPerBlockResponse} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -32149,43 +29482,24 @@ proto.walletrpc.AgendasRequest.deserializeBinaryFromReader = function(msg, reade
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.AgendasRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.AgendasRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.AgendasRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.AgendasRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.AgendasRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.AgendasRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.AgendasRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.AgendasRequest} The clone.
- */
-proto.walletrpc.AgendasRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.AgendasRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -32242,7 +29556,7 @@ proto.walletrpc.AgendasResponse.prototype.toObject = function(opt_includeInstanc
  */
 proto.walletrpc.AgendasResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    version: msg.getVersion(),
+    version: jspb.Message.getFieldWithDefault(msg, 1, 0),
     agendasList: jspb.Message.toObjectList(msg.getAgendasList(),
     proto.walletrpc.AgendasResponse.Agenda.toObject, includeInstance)
   };
@@ -32288,8 +29602,7 @@ proto.walletrpc.AgendasResponse.deserializeBinaryFromReader = function(msg, read
     case 2:
       var value = new proto.walletrpc.AgendasResponse.Agenda;
       reader.readMessage(value,proto.walletrpc.AgendasResponse.Agenda.deserializeBinaryFromReader);
-      msg.getAgendasList().push(value);
-      msg.setAgendasList(msg.getAgendasList());
+      msg.addAgendas(value);
       break;
     default:
       reader.skipField();
@@ -32301,42 +29614,32 @@ proto.walletrpc.AgendasResponse.deserializeBinaryFromReader = function(msg, read
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.AgendasResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.AgendasResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.AgendasResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.AgendasResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.AgendasResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.AgendasResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.AgendasResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getVersion();
+  f = message.getVersion();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getAgendasList();
+  f = message.getAgendasList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       2,
@@ -32344,53 +29647,6 @@ proto.walletrpc.AgendasResponse.prototype.serializeBinaryToWriter = function (wr
       proto.walletrpc.AgendasResponse.Agenda.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.AgendasResponse} The clone.
- */
-proto.walletrpc.AgendasResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.AgendasResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * optional uint32 version = 1;
- * @return {number}
- */
-proto.walletrpc.AgendasResponse.prototype.getVersion = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.AgendasResponse.prototype.setVersion = function(value) {
-  jspb.Message.setField(this, 1, value);
-};
-
-
-/**
- * repeated Agenda agendas = 2;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.AgendasResponse.Agenda>}
- */
-proto.walletrpc.AgendasResponse.prototype.getAgendasList = function() {
-  return /** @type{!Array.<!proto.walletrpc.AgendasResponse.Agenda>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.AgendasResponse.Agenda, 2));
-};
-
-
-/** @param {Array.<!proto.walletrpc.AgendasResponse.Agenda>} value  */
-proto.walletrpc.AgendasResponse.prototype.setAgendasList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 2, value);
-};
-
-
-proto.walletrpc.AgendasResponse.prototype.clearAgendasList = function() {
-  this.setAgendasList([]);
 };
 
 
@@ -32447,13 +29703,13 @@ proto.walletrpc.AgendasResponse.Agenda.prototype.toObject = function(opt_include
  */
 proto.walletrpc.AgendasResponse.Agenda.toObject = function(includeInstance, msg) {
   var f, obj = {
-    id: msg.getId(),
-    description: msg.getDescription(),
-    mask: msg.getMask(),
+    id: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    description: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    mask: jspb.Message.getFieldWithDefault(msg, 3, 0),
     choicesList: jspb.Message.toObjectList(msg.getChoicesList(),
     proto.walletrpc.AgendasResponse.Choice.toObject, includeInstance),
-    startTime: msg.getStartTime(),
-    expireTime: msg.getExpireTime()
+    startTime: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    expireTime: jspb.Message.getFieldWithDefault(msg, 6, 0)
   };
 
   if (includeInstance) {
@@ -32505,8 +29761,7 @@ proto.walletrpc.AgendasResponse.Agenda.deserializeBinaryFromReader = function(ms
     case 4:
       var value = new proto.walletrpc.AgendasResponse.Choice;
       reader.readMessage(value,proto.walletrpc.AgendasResponse.Choice.deserializeBinaryFromReader);
-      msg.getChoicesList().push(value);
-      msg.setChoicesList(msg.getChoicesList());
+      msg.addChoices(value);
       break;
     case 5:
       var value = /** @type {number} */ (reader.readInt64());
@@ -32526,56 +29781,46 @@ proto.walletrpc.AgendasResponse.Agenda.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.AgendasResponse.Agenda} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.AgendasResponse.Agenda.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.AgendasResponse.Agenda.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.AgendasResponse.Agenda.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.AgendasResponse.Agenda} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.AgendasResponse.Agenda.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.AgendasResponse.Agenda.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getId();
+  f = message.getId();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getDescription();
+  f = message.getDescription();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getMask();
+  f = message.getMask();
   if (f !== 0) {
     writer.writeUint32(
       3,
       f
     );
   }
-  f = this.getChoicesList();
+  f = message.getChoicesList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       4,
@@ -32583,14 +29828,14 @@ proto.walletrpc.AgendasResponse.Agenda.prototype.serializeBinaryToWriter = funct
       proto.walletrpc.AgendasResponse.Choice.serializeBinaryToWriter
     );
   }
-  f = this.getStartTime();
+  f = message.getStartTime();
   if (f !== 0) {
     writer.writeInt64(
       5,
       f
     );
   }
-  f = this.getExpireTime();
+  f = message.getExpireTime();
   if (f !== 0) {
     writer.writeInt64(
       6,
@@ -32601,24 +29846,15 @@ proto.walletrpc.AgendasResponse.Agenda.prototype.serializeBinaryToWriter = funct
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.AgendasResponse.Agenda} The clone.
- */
-proto.walletrpc.AgendasResponse.Agenda.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.AgendasResponse.Agenda} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string id = 1;
  * @return {string}
  */
 proto.walletrpc.AgendasResponse.Agenda.prototype.getId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.AgendasResponse.Agenda.prototype.setId = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -32629,11 +29865,11 @@ proto.walletrpc.AgendasResponse.Agenda.prototype.setId = function(value) {
  * @return {string}
  */
 proto.walletrpc.AgendasResponse.Agenda.prototype.getDescription = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.AgendasResponse.Agenda.prototype.setDescription = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -32644,11 +29880,11 @@ proto.walletrpc.AgendasResponse.Agenda.prototype.setDescription = function(value
  * @return {number}
  */
 proto.walletrpc.AgendasResponse.Agenda.prototype.getMask = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AgendasResponse.Agenda.prototype.setMask = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -32666,9 +29902,19 @@ proto.walletrpc.AgendasResponse.Agenda.prototype.getChoicesList = function() {
 };
 
 
-/** @param {Array.<!proto.walletrpc.AgendasResponse.Choice>} value  */
+/** @param {!Array.<!proto.walletrpc.AgendasResponse.Choice>} value */
 proto.walletrpc.AgendasResponse.Agenda.prototype.setChoicesList = function(value) {
   jspb.Message.setRepeatedWrapperField(this, 4, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.AgendasResponse.Choice=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.AgendasResponse.Choice}
+ */
+proto.walletrpc.AgendasResponse.Agenda.prototype.addChoices = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.walletrpc.AgendasResponse.Choice, opt_index);
 };
 
 
@@ -32682,11 +29928,11 @@ proto.walletrpc.AgendasResponse.Agenda.prototype.clearChoicesList = function() {
  * @return {number}
  */
 proto.walletrpc.AgendasResponse.Agenda.prototype.getStartTime = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AgendasResponse.Agenda.prototype.setStartTime = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -32697,11 +29943,11 @@ proto.walletrpc.AgendasResponse.Agenda.prototype.setStartTime = function(value) 
  * @return {number}
  */
 proto.walletrpc.AgendasResponse.Agenda.prototype.getExpireTime = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 6, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AgendasResponse.Agenda.prototype.setExpireTime = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -32753,11 +29999,11 @@ proto.walletrpc.AgendasResponse.Choice.prototype.toObject = function(opt_include
  */
 proto.walletrpc.AgendasResponse.Choice.toObject = function(includeInstance, msg) {
   var f, obj = {
-    id: msg.getId(),
-    description: msg.getDescription(),
-    bits: msg.getBits(),
-    isAbstain: msg.getIsAbstain(),
-    isNo: msg.getIsNo()
+    id: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    description: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    bits: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    isAbstain: jspb.Message.getFieldWithDefault(msg, 4, false),
+    isNo: jspb.Message.getFieldWithDefault(msg, 5, false)
   };
 
   if (includeInstance) {
@@ -32824,63 +30070,53 @@ proto.walletrpc.AgendasResponse.Choice.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.AgendasResponse.Choice} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.AgendasResponse.Choice.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.AgendasResponse.Choice.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.AgendasResponse.Choice.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.AgendasResponse.Choice} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.AgendasResponse.Choice.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.AgendasResponse.Choice.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getId();
+  f = message.getId();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getDescription();
+  f = message.getDescription();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getBits();
+  f = message.getBits();
   if (f !== 0) {
     writer.writeUint32(
       3,
       f
     );
   }
-  f = this.getIsAbstain();
+  f = message.getIsAbstain();
   if (f) {
     writer.writeBool(
       4,
       f
     );
   }
-  f = this.getIsNo();
+  f = message.getIsNo();
   if (f) {
     writer.writeBool(
       5,
@@ -32891,24 +30127,15 @@ proto.walletrpc.AgendasResponse.Choice.prototype.serializeBinaryToWriter = funct
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.AgendasResponse.Choice} The clone.
- */
-proto.walletrpc.AgendasResponse.Choice.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.AgendasResponse.Choice} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string id = 1;
  * @return {string}
  */
 proto.walletrpc.AgendasResponse.Choice.prototype.getId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.AgendasResponse.Choice.prototype.setId = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -32919,11 +30146,11 @@ proto.walletrpc.AgendasResponse.Choice.prototype.setId = function(value) {
  * @return {string}
  */
 proto.walletrpc.AgendasResponse.Choice.prototype.getDescription = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.AgendasResponse.Choice.prototype.setDescription = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -32934,11 +30161,11 @@ proto.walletrpc.AgendasResponse.Choice.prototype.setDescription = function(value
  * @return {number}
  */
 proto.walletrpc.AgendasResponse.Choice.prototype.getBits = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.AgendasResponse.Choice.prototype.setBits = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -32951,11 +30178,11 @@ proto.walletrpc.AgendasResponse.Choice.prototype.setBits = function(value) {
  * @return {boolean}
  */
 proto.walletrpc.AgendasResponse.Choice.prototype.getIsAbstain = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 4, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 4, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.AgendasResponse.Choice.prototype.setIsAbstain = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -32968,13 +30195,61 @@ proto.walletrpc.AgendasResponse.Choice.prototype.setIsAbstain = function(value) 
  * @return {boolean}
  */
 proto.walletrpc.AgendasResponse.Choice.prototype.getIsNo = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 5, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 5, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.AgendasResponse.Choice.prototype.setIsNo = function(value) {
   jspb.Message.setField(this, 5, value);
+};
+
+
+/**
+ * optional uint32 version = 1;
+ * @return {number}
+ */
+proto.walletrpc.AgendasResponse.prototype.getVersion = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.AgendasResponse.prototype.setVersion = function(value) {
+  jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * repeated Agenda agendas = 2;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.AgendasResponse.Agenda>}
+ */
+proto.walletrpc.AgendasResponse.prototype.getAgendasList = function() {
+  return /** @type{!Array.<!proto.walletrpc.AgendasResponse.Agenda>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.AgendasResponse.Agenda, 2));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.AgendasResponse.Agenda>} value */
+proto.walletrpc.AgendasResponse.prototype.setAgendasList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 2, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.AgendasResponse.Agenda=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.AgendasResponse.Agenda}
+ */
+proto.walletrpc.AgendasResponse.prototype.addAgendas = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.walletrpc.AgendasResponse.Agenda, opt_index);
+};
+
+
+proto.walletrpc.AgendasResponse.prototype.clearAgendasList = function() {
+  this.setAgendasList([]);
 };
 
 
@@ -33071,43 +30346,24 @@ proto.walletrpc.VoteChoicesRequest.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.VoteChoicesRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.VoteChoicesRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.VoteChoicesRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.VoteChoicesRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.VoteChoicesRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.VoteChoicesRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.VoteChoicesRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.VoteChoicesRequest} The clone.
- */
-proto.walletrpc.VoteChoicesRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.VoteChoicesRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -33164,10 +30420,10 @@ proto.walletrpc.VoteChoicesResponse.prototype.toObject = function(opt_includeIns
  */
 proto.walletrpc.VoteChoicesResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    version: msg.getVersion(),
+    version: jspb.Message.getFieldWithDefault(msg, 1, 0),
     choicesList: jspb.Message.toObjectList(msg.getChoicesList(),
     proto.walletrpc.VoteChoicesResponse.Choice.toObject, includeInstance),
-    votebits: msg.getVotebits()
+    votebits: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -33211,8 +30467,7 @@ proto.walletrpc.VoteChoicesResponse.deserializeBinaryFromReader = function(msg, 
     case 2:
       var value = new proto.walletrpc.VoteChoicesResponse.Choice;
       reader.readMessage(value,proto.walletrpc.VoteChoicesResponse.Choice.deserializeBinaryFromReader);
-      msg.getChoicesList().push(value);
-      msg.setChoicesList(msg.getChoicesList());
+      msg.addChoices(value);
       break;
     case 3:
       var value = /** @type {number} */ (reader.readUint32());
@@ -33228,42 +30483,32 @@ proto.walletrpc.VoteChoicesResponse.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.VoteChoicesResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.VoteChoicesResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.VoteChoicesResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.VoteChoicesResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.VoteChoicesResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.VoteChoicesResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.VoteChoicesResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getVersion();
+  f = message.getVersion();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getChoicesList();
+  f = message.getChoicesList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       2,
@@ -33271,75 +30516,13 @@ proto.walletrpc.VoteChoicesResponse.prototype.serializeBinaryToWriter = function
       proto.walletrpc.VoteChoicesResponse.Choice.serializeBinaryToWriter
     );
   }
-  f = this.getVotebits();
+  f = message.getVotebits();
   if (f !== 0) {
     writer.writeUint32(
       3,
       f
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.VoteChoicesResponse} The clone.
- */
-proto.walletrpc.VoteChoicesResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.VoteChoicesResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * optional uint32 version = 1;
- * @return {number}
- */
-proto.walletrpc.VoteChoicesResponse.prototype.getVersion = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.VoteChoicesResponse.prototype.setVersion = function(value) {
-  jspb.Message.setField(this, 1, value);
-};
-
-
-/**
- * repeated Choice choices = 2;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.VoteChoicesResponse.Choice>}
- */
-proto.walletrpc.VoteChoicesResponse.prototype.getChoicesList = function() {
-  return /** @type{!Array.<!proto.walletrpc.VoteChoicesResponse.Choice>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.VoteChoicesResponse.Choice, 2));
-};
-
-
-/** @param {Array.<!proto.walletrpc.VoteChoicesResponse.Choice>} value  */
-proto.walletrpc.VoteChoicesResponse.prototype.setChoicesList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 2, value);
-};
-
-
-proto.walletrpc.VoteChoicesResponse.prototype.clearChoicesList = function() {
-  this.setChoicesList([]);
-};
-
-
-/**
- * optional uint32 votebits = 3;
- * @return {number}
- */
-proto.walletrpc.VoteChoicesResponse.prototype.getVotebits = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.VoteChoicesResponse.prototype.setVotebits = function(value) {
-  jspb.Message.setField(this, 3, value);
 };
 
 
@@ -33389,10 +30572,10 @@ proto.walletrpc.VoteChoicesResponse.Choice.prototype.toObject = function(opt_inc
  */
 proto.walletrpc.VoteChoicesResponse.Choice.toObject = function(includeInstance, msg) {
   var f, obj = {
-    agendaId: msg.getAgendaId(),
-    agendaDescription: msg.getAgendaDescription(),
-    choiceId: msg.getChoiceId(),
-    choiceDescription: msg.getChoiceDescription()
+    agendaId: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    agendaDescription: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    choiceId: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    choiceDescription: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -33455,56 +30638,46 @@ proto.walletrpc.VoteChoicesResponse.Choice.deserializeBinaryFromReader = functio
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.VoteChoicesResponse.Choice} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.VoteChoicesResponse.Choice.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.VoteChoicesResponse.Choice.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.VoteChoicesResponse.Choice.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.VoteChoicesResponse.Choice} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.VoteChoicesResponse.Choice.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.VoteChoicesResponse.Choice.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAgendaId();
+  f = message.getAgendaId();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getAgendaDescription();
+  f = message.getAgendaDescription();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getChoiceId();
+  f = message.getChoiceId();
   if (f.length > 0) {
     writer.writeString(
       3,
       f
     );
   }
-  f = this.getChoiceDescription();
+  f = message.getChoiceDescription();
   if (f.length > 0) {
     writer.writeString(
       4,
@@ -33515,24 +30688,15 @@ proto.walletrpc.VoteChoicesResponse.Choice.prototype.serializeBinaryToWriter = f
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.VoteChoicesResponse.Choice} The clone.
- */
-proto.walletrpc.VoteChoicesResponse.Choice.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.VoteChoicesResponse.Choice} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string agenda_id = 1;
  * @return {string}
  */
 proto.walletrpc.VoteChoicesResponse.Choice.prototype.getAgendaId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.VoteChoicesResponse.Choice.prototype.setAgendaId = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -33543,11 +30707,11 @@ proto.walletrpc.VoteChoicesResponse.Choice.prototype.setAgendaId = function(valu
  * @return {string}
  */
 proto.walletrpc.VoteChoicesResponse.Choice.prototype.getAgendaDescription = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.VoteChoicesResponse.Choice.prototype.setAgendaDescription = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -33558,11 +30722,11 @@ proto.walletrpc.VoteChoicesResponse.Choice.prototype.setAgendaDescription = func
  * @return {string}
  */
 proto.walletrpc.VoteChoicesResponse.Choice.prototype.getChoiceId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.VoteChoicesResponse.Choice.prototype.setChoiceId = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -33573,13 +30737,76 @@ proto.walletrpc.VoteChoicesResponse.Choice.prototype.setChoiceId = function(valu
  * @return {string}
  */
 proto.walletrpc.VoteChoicesResponse.Choice.prototype.getChoiceDescription = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 4, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.VoteChoicesResponse.Choice.prototype.setChoiceDescription = function(value) {
   jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * optional uint32 version = 1;
+ * @return {number}
+ */
+proto.walletrpc.VoteChoicesResponse.prototype.getVersion = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.VoteChoicesResponse.prototype.setVersion = function(value) {
+  jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * repeated Choice choices = 2;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.VoteChoicesResponse.Choice>}
+ */
+proto.walletrpc.VoteChoicesResponse.prototype.getChoicesList = function() {
+  return /** @type{!Array.<!proto.walletrpc.VoteChoicesResponse.Choice>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.VoteChoicesResponse.Choice, 2));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.VoteChoicesResponse.Choice>} value */
+proto.walletrpc.VoteChoicesResponse.prototype.setChoicesList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 2, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.VoteChoicesResponse.Choice=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.VoteChoicesResponse.Choice}
+ */
+proto.walletrpc.VoteChoicesResponse.prototype.addChoices = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.walletrpc.VoteChoicesResponse.Choice, opt_index);
+};
+
+
+proto.walletrpc.VoteChoicesResponse.prototype.clearChoicesList = function() {
+  this.setChoicesList([]);
+};
+
+
+/**
+ * optional uint32 votebits = 3;
+ * @return {number}
+ */
+proto.walletrpc.VoteChoicesResponse.prototype.getVotebits = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.VoteChoicesResponse.prototype.setVotebits = function(value) {
+  jspb.Message.setField(this, 3, value);
 };
 
 
@@ -33677,8 +30904,7 @@ proto.walletrpc.SetVoteChoicesRequest.deserializeBinaryFromReader = function(msg
     case 1:
       var value = new proto.walletrpc.SetVoteChoicesRequest.Choice;
       reader.readMessage(value,proto.walletrpc.SetVoteChoicesRequest.Choice.deserializeBinaryFromReader);
-      msg.getChoicesList().push(value);
-      msg.setChoicesList(msg.getChoicesList());
+      msg.addChoices(value);
       break;
     default:
       reader.skipField();
@@ -33690,35 +30916,25 @@ proto.walletrpc.SetVoteChoicesRequest.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetVoteChoicesRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetVoteChoicesRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetVoteChoicesRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetVoteChoicesRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetVoteChoicesRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetVoteChoicesRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetVoteChoicesRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getChoicesList();
+  f = message.getChoicesList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       1,
@@ -33726,38 +30942,6 @@ proto.walletrpc.SetVoteChoicesRequest.prototype.serializeBinaryToWriter = functi
       proto.walletrpc.SetVoteChoicesRequest.Choice.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetVoteChoicesRequest} The clone.
- */
-proto.walletrpc.SetVoteChoicesRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetVoteChoicesRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * repeated Choice choices = 1;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.SetVoteChoicesRequest.Choice>}
- */
-proto.walletrpc.SetVoteChoicesRequest.prototype.getChoicesList = function() {
-  return /** @type{!Array.<!proto.walletrpc.SetVoteChoicesRequest.Choice>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SetVoteChoicesRequest.Choice, 1));
-};
-
-
-/** @param {Array.<!proto.walletrpc.SetVoteChoicesRequest.Choice>} value  */
-proto.walletrpc.SetVoteChoicesRequest.prototype.setChoicesList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 1, value);
-};
-
-
-proto.walletrpc.SetVoteChoicesRequest.prototype.clearChoicesList = function() {
-  this.setChoicesList([]);
 };
 
 
@@ -33807,8 +30991,8 @@ proto.walletrpc.SetVoteChoicesRequest.Choice.prototype.toObject = function(opt_i
  */
 proto.walletrpc.SetVoteChoicesRequest.Choice.toObject = function(includeInstance, msg) {
   var f, obj = {
-    agendaId: msg.getAgendaId(),
-    choiceId: msg.getChoiceId()
+    agendaId: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    choiceId: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -33863,42 +31047,32 @@ proto.walletrpc.SetVoteChoicesRequest.Choice.deserializeBinaryFromReader = funct
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetVoteChoicesRequest.Choice} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetVoteChoicesRequest.Choice.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetVoteChoicesRequest.Choice.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetVoteChoicesRequest.Choice.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetVoteChoicesRequest.Choice} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetVoteChoicesRequest.Choice.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetVoteChoicesRequest.Choice.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAgendaId();
+  f = message.getAgendaId();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getChoiceId();
+  f = message.getChoiceId();
   if (f.length > 0) {
     writer.writeString(
       2,
@@ -33909,24 +31083,15 @@ proto.walletrpc.SetVoteChoicesRequest.Choice.prototype.serializeBinaryToWriter =
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetVoteChoicesRequest.Choice} The clone.
- */
-proto.walletrpc.SetVoteChoicesRequest.Choice.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetVoteChoicesRequest.Choice} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string agenda_id = 1;
  * @return {string}
  */
 proto.walletrpc.SetVoteChoicesRequest.Choice.prototype.getAgendaId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.SetVoteChoicesRequest.Choice.prototype.setAgendaId = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -33937,13 +31102,46 @@ proto.walletrpc.SetVoteChoicesRequest.Choice.prototype.setAgendaId = function(va
  * @return {string}
  */
 proto.walletrpc.SetVoteChoicesRequest.Choice.prototype.getChoiceId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.SetVoteChoicesRequest.Choice.prototype.setChoiceId = function(value) {
   jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * repeated Choice choices = 1;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.SetVoteChoicesRequest.Choice>}
+ */
+proto.walletrpc.SetVoteChoicesRequest.prototype.getChoicesList = function() {
+  return /** @type{!Array.<!proto.walletrpc.SetVoteChoicesRequest.Choice>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.SetVoteChoicesRequest.Choice, 1));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.SetVoteChoicesRequest.Choice>} value */
+proto.walletrpc.SetVoteChoicesRequest.prototype.setChoicesList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.SetVoteChoicesRequest.Choice=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.SetVoteChoicesRequest.Choice}
+ */
+proto.walletrpc.SetVoteChoicesRequest.prototype.addChoices = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.walletrpc.SetVoteChoicesRequest.Choice, opt_index);
+};
+
+
+proto.walletrpc.SetVoteChoicesRequest.prototype.clearChoicesList = function() {
+  this.setChoicesList([]);
 };
 
 
@@ -33993,7 +31191,7 @@ proto.walletrpc.SetVoteChoicesResponse.prototype.toObject = function(opt_include
  */
 proto.walletrpc.SetVoteChoicesResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    votebits: msg.getVotebits()
+    votebits: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -34044,35 +31242,25 @@ proto.walletrpc.SetVoteChoicesResponse.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SetVoteChoicesResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SetVoteChoicesResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SetVoteChoicesResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SetVoteChoicesResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SetVoteChoicesResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SetVoteChoicesResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SetVoteChoicesResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getVotebits();
+  f = message.getVotebits();
   if (f !== 0) {
     writer.writeUint32(
       1,
@@ -34083,24 +31271,15 @@ proto.walletrpc.SetVoteChoicesResponse.prototype.serializeBinaryToWriter = funct
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SetVoteChoicesResponse} The clone.
- */
-proto.walletrpc.SetVoteChoicesResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SetVoteChoicesResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 votebits = 1;
  * @return {number}
  */
 proto.walletrpc.SetVoteChoicesResponse.prototype.getVotebits = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SetVoteChoicesResponse.prototype.setVotebits = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -34152,8 +31331,8 @@ proto.walletrpc.VerifyMessageRequest.prototype.toObject = function(opt_includeIn
  */
 proto.walletrpc.VerifyMessageRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    address: msg.getAddress(),
-    message: msg.getMessage(),
+    address: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    message: jspb.Message.getFieldWithDefault(msg, 2, ""),
     signature: msg.getSignature_asB64()
   };
 
@@ -34213,49 +31392,39 @@ proto.walletrpc.VerifyMessageRequest.deserializeBinaryFromReader = function(msg,
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.VerifyMessageRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.VerifyMessageRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.VerifyMessageRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.VerifyMessageRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.VerifyMessageRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.VerifyMessageRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.VerifyMessageRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAddress();
+  f = message.getAddress();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getMessage();
+  f = message.getMessage();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getSignature_asU8();
+  f = message.getSignature_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       3,
@@ -34266,24 +31435,15 @@ proto.walletrpc.VerifyMessageRequest.prototype.serializeBinaryToWriter = functio
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.VerifyMessageRequest} The clone.
- */
-proto.walletrpc.VerifyMessageRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.VerifyMessageRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string address = 1;
  * @return {string}
  */
 proto.walletrpc.VerifyMessageRequest.prototype.getAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.VerifyMessageRequest.prototype.setAddress = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -34294,11 +31454,11 @@ proto.walletrpc.VerifyMessageRequest.prototype.setAddress = function(value) {
  * @return {string}
  */
 proto.walletrpc.VerifyMessageRequest.prototype.getMessage = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.VerifyMessageRequest.prototype.setMessage = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -34309,7 +31469,7 @@ proto.walletrpc.VerifyMessageRequest.prototype.setMessage = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.VerifyMessageRequest.prototype.getSignature = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -34337,7 +31497,7 @@ proto.walletrpc.VerifyMessageRequest.prototype.getSignature_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.VerifyMessageRequest.prototype.setSignature = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -34389,7 +31549,7 @@ proto.walletrpc.VerifyMessageResponse.prototype.toObject = function(opt_includeI
  */
 proto.walletrpc.VerifyMessageResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    valid: msg.getValid()
+    valid: jspb.Message.getFieldWithDefault(msg, 1, false)
   };
 
   if (includeInstance) {
@@ -34440,35 +31600,25 @@ proto.walletrpc.VerifyMessageResponse.deserializeBinaryFromReader = function(msg
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.VerifyMessageResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.VerifyMessageResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.VerifyMessageResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.VerifyMessageResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.VerifyMessageResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.VerifyMessageResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.VerifyMessageResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getValid();
+  f = message.getValid();
   if (f) {
     writer.writeBool(
       1,
@@ -34479,26 +31629,17 @@ proto.walletrpc.VerifyMessageResponse.prototype.serializeBinaryToWriter = functi
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.VerifyMessageResponse} The clone.
- */
-proto.walletrpc.VerifyMessageResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.VerifyMessageResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bool valid = 1;
  * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
  * You should avoid comparisons like {@code val === true/false} in those cases.
  * @return {boolean}
  */
 proto.walletrpc.VerifyMessageResponse.prototype.getValid = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 1, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 1, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.VerifyMessageResponse.prototype.setValid = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -34558,10 +31699,10 @@ proto.walletrpc.DecodedTransaction.prototype.toObject = function(opt_includeInst
 proto.walletrpc.DecodedTransaction.toObject = function(includeInstance, msg) {
   var f, obj = {
     transactionHash: msg.getTransactionHash_asB64(),
-    version: msg.getVersion(),
-    lockTime: msg.getLockTime(),
-    expiry: msg.getExpiry(),
-    transactionType: msg.getTransactionType(),
+    version: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    lockTime: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    expiry: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    transactionType: jspb.Message.getFieldWithDefault(msg, 5, 0),
     inputsList: jspb.Message.toObjectList(msg.getInputsList(),
     proto.walletrpc.DecodedTransaction.Input.toObject, includeInstance),
     outputsList: jspb.Message.toObjectList(msg.getOutputsList(),
@@ -34625,14 +31766,12 @@ proto.walletrpc.DecodedTransaction.deserializeBinaryFromReader = function(msg, r
     case 6:
       var value = new proto.walletrpc.DecodedTransaction.Input;
       reader.readMessage(value,proto.walletrpc.DecodedTransaction.Input.deserializeBinaryFromReader);
-      msg.getInputsList().push(value);
-      msg.setInputsList(msg.getInputsList());
+      msg.addInputs(value);
       break;
     case 7:
       var value = new proto.walletrpc.DecodedTransaction.Output;
       reader.readMessage(value,proto.walletrpc.DecodedTransaction.Output.deserializeBinaryFromReader);
-      msg.getOutputsList().push(value);
-      msg.setOutputsList(msg.getOutputsList());
+      msg.addOutputs(value);
       break;
     default:
       reader.skipField();
@@ -34644,70 +31783,60 @@ proto.walletrpc.DecodedTransaction.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.DecodedTransaction} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.DecodedTransaction.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.DecodedTransaction.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.DecodedTransaction.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.DecodedTransaction} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.DecodedTransaction.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.DecodedTransaction.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTransactionHash_asU8();
+  f = message.getTransactionHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getVersion();
+  f = message.getVersion();
   if (f !== 0) {
     writer.writeInt32(
       2,
       f
     );
   }
-  f = this.getLockTime();
+  f = message.getLockTime();
   if (f !== 0) {
     writer.writeUint32(
       3,
       f
     );
   }
-  f = this.getExpiry();
+  f = message.getExpiry();
   if (f !== 0) {
     writer.writeUint32(
       4,
       f
     );
   }
-  f = this.getTransactionType();
+  f = message.getTransactionType();
   if (f !== 0.0) {
     writer.writeEnum(
       5,
       f
     );
   }
-  f = this.getInputsList();
+  f = message.getInputsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       6,
@@ -34715,7 +31844,7 @@ proto.walletrpc.DecodedTransaction.prototype.serializeBinaryToWriter = function 
       proto.walletrpc.DecodedTransaction.Input.serializeBinaryToWriter
     );
   }
-  f = this.getOutputsList();
+  f = message.getOutputsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       7,
@@ -34723,160 +31852,6 @@ proto.walletrpc.DecodedTransaction.prototype.serializeBinaryToWriter = function 
       proto.walletrpc.DecodedTransaction.Output.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.DecodedTransaction} The clone.
- */
-proto.walletrpc.DecodedTransaction.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.DecodedTransaction} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * optional bytes transaction_hash = 1;
- * @return {!(string|Uint8Array)}
- */
-proto.walletrpc.DecodedTransaction.prototype.getTransactionHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
-};
-
-
-/**
- * optional bytes transaction_hash = 1;
- * This is a type-conversion wrapper around `getTransactionHash()`
- * @return {string}
- */
-proto.walletrpc.DecodedTransaction.prototype.getTransactionHash_asB64 = function() {
-  return /** @type {string} */ (jspb.Message.bytesAsB64(
-      this.getTransactionHash()));
-};
-
-
-/**
- * optional bytes transaction_hash = 1;
- * Note that Uint8Array is not supported on all browsers.
- * @see http://caniuse.com/Uint8Array
- * This is a type-conversion wrapper around `getTransactionHash()`
- * @return {!Uint8Array}
- */
-proto.walletrpc.DecodedTransaction.prototype.getTransactionHash_asU8 = function() {
-  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
-      this.getTransactionHash()));
-};
-
-
-/** @param {!(string|Uint8Array)} value  */
-proto.walletrpc.DecodedTransaction.prototype.setTransactionHash = function(value) {
-  jspb.Message.setField(this, 1, value);
-};
-
-
-/**
- * optional int32 version = 2;
- * @return {number}
- */
-proto.walletrpc.DecodedTransaction.prototype.getVersion = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.DecodedTransaction.prototype.setVersion = function(value) {
-  jspb.Message.setField(this, 2, value);
-};
-
-
-/**
- * optional uint32 lock_time = 3;
- * @return {number}
- */
-proto.walletrpc.DecodedTransaction.prototype.getLockTime = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.DecodedTransaction.prototype.setLockTime = function(value) {
-  jspb.Message.setField(this, 3, value);
-};
-
-
-/**
- * optional uint32 expiry = 4;
- * @return {number}
- */
-proto.walletrpc.DecodedTransaction.prototype.getExpiry = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
-};
-
-
-/** @param {number} value  */
-proto.walletrpc.DecodedTransaction.prototype.setExpiry = function(value) {
-  jspb.Message.setField(this, 4, value);
-};
-
-
-/**
- * optional TransactionDetails.TransactionType transaction_type = 5;
- * @return {!proto.walletrpc.TransactionDetails.TransactionType}
- */
-proto.walletrpc.DecodedTransaction.prototype.getTransactionType = function() {
-  return /** @type {!proto.walletrpc.TransactionDetails.TransactionType} */ (jspb.Message.getFieldProto3(this, 5, 0));
-};
-
-
-/** @param {!proto.walletrpc.TransactionDetails.TransactionType} value  */
-proto.walletrpc.DecodedTransaction.prototype.setTransactionType = function(value) {
-  jspb.Message.setField(this, 5, value);
-};
-
-
-/**
- * repeated Input inputs = 6;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.DecodedTransaction.Input>}
- */
-proto.walletrpc.DecodedTransaction.prototype.getInputsList = function() {
-  return /** @type{!Array.<!proto.walletrpc.DecodedTransaction.Input>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.DecodedTransaction.Input, 6));
-};
-
-
-/** @param {Array.<!proto.walletrpc.DecodedTransaction.Input>} value  */
-proto.walletrpc.DecodedTransaction.prototype.setInputsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 6, value);
-};
-
-
-proto.walletrpc.DecodedTransaction.prototype.clearInputsList = function() {
-  this.setInputsList([]);
-};
-
-
-/**
- * repeated Output outputs = 7;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.DecodedTransaction.Output>}
- */
-proto.walletrpc.DecodedTransaction.prototype.getOutputsList = function() {
-  return /** @type{!Array.<!proto.walletrpc.DecodedTransaction.Output>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.DecodedTransaction.Output, 7));
-};
-
-
-/** @param {Array.<!proto.walletrpc.DecodedTransaction.Output>} value  */
-proto.walletrpc.DecodedTransaction.prototype.setOutputsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 7, value);
-};
-
-
-proto.walletrpc.DecodedTransaction.prototype.clearOutputsList = function() {
-  this.setOutputsList([]);
 };
 
 
@@ -34927,14 +31902,14 @@ proto.walletrpc.DecodedTransaction.Input.prototype.toObject = function(opt_inclu
 proto.walletrpc.DecodedTransaction.Input.toObject = function(includeInstance, msg) {
   var f, obj = {
     previousTransactionHash: msg.getPreviousTransactionHash_asB64(),
-    previousTransactionIndex: msg.getPreviousTransactionIndex(),
-    tree: msg.getTree(),
-    sequence: msg.getSequence(),
-    amountIn: msg.getAmountIn(),
-    blockHeight: msg.getBlockHeight(),
-    blockIndex: msg.getBlockIndex(),
+    previousTransactionIndex: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    tree: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    sequence: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    amountIn: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    blockHeight: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    blockIndex: jspb.Message.getFieldWithDefault(msg, 7, 0),
     signatureScript: msg.getSignatureScript_asB64(),
-    signatureScriptAsm: msg.getSignatureScriptAsm()
+    signatureScriptAsm: jspb.Message.getFieldWithDefault(msg, 9, "")
   };
 
   if (includeInstance) {
@@ -35017,91 +31992,81 @@ proto.walletrpc.DecodedTransaction.Input.deserializeBinaryFromReader = function(
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.DecodedTransaction.Input} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.DecodedTransaction.Input.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.DecodedTransaction.Input.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.DecodedTransaction.Input.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.DecodedTransaction.Input} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.DecodedTransaction.Input.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.DecodedTransaction.Input.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getPreviousTransactionHash_asU8();
+  f = message.getPreviousTransactionHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getPreviousTransactionIndex();
+  f = message.getPreviousTransactionIndex();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getTree();
+  f = message.getTree();
   if (f !== 0.0) {
     writer.writeEnum(
       3,
       f
     );
   }
-  f = this.getSequence();
+  f = message.getSequence();
   if (f !== 0) {
     writer.writeUint32(
       4,
       f
     );
   }
-  f = this.getAmountIn();
+  f = message.getAmountIn();
   if (f !== 0) {
     writer.writeInt64(
       5,
       f
     );
   }
-  f = this.getBlockHeight();
+  f = message.getBlockHeight();
   if (f !== 0) {
     writer.writeUint32(
       6,
       f
     );
   }
-  f = this.getBlockIndex();
+  f = message.getBlockIndex();
   if (f !== 0) {
     writer.writeUint32(
       7,
       f
     );
   }
-  f = this.getSignatureScript_asU8();
+  f = message.getSignatureScript_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       8,
       f
     );
   }
-  f = this.getSignatureScriptAsm();
+  f = message.getSignatureScriptAsm();
   if (f.length > 0) {
     writer.writeString(
       9,
@@ -35112,20 +32077,20 @@ proto.walletrpc.DecodedTransaction.Input.prototype.serializeBinaryToWriter = fun
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.DecodedTransaction.Input} The clone.
+ * @enum {number}
  */
-proto.walletrpc.DecodedTransaction.Input.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.DecodedTransaction.Input} */ (jspb.Message.cloneMessage(this));
+proto.walletrpc.DecodedTransaction.Input.TreeType = {
+  REGULAR: 0,
+  UNKNOWN: -1,
+  STAKE: 1
 };
-
 
 /**
  * optional bytes previous_transaction_hash = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.DecodedTransaction.Input.prototype.getPreviousTransactionHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -35153,7 +32118,7 @@ proto.walletrpc.DecodedTransaction.Input.prototype.getPreviousTransactionHash_as
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.DecodedTransaction.Input.prototype.setPreviousTransactionHash = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -35164,11 +32129,11 @@ proto.walletrpc.DecodedTransaction.Input.prototype.setPreviousTransactionHash = 
  * @return {number}
  */
 proto.walletrpc.DecodedTransaction.Input.prototype.getPreviousTransactionIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.DecodedTransaction.Input.prototype.setPreviousTransactionIndex = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -35179,11 +32144,11 @@ proto.walletrpc.DecodedTransaction.Input.prototype.setPreviousTransactionIndex =
  * @return {!proto.walletrpc.DecodedTransaction.Input.TreeType}
  */
 proto.walletrpc.DecodedTransaction.Input.prototype.getTree = function() {
-  return /** @type {!proto.walletrpc.DecodedTransaction.Input.TreeType} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {!proto.walletrpc.DecodedTransaction.Input.TreeType} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {!proto.walletrpc.DecodedTransaction.Input.TreeType} value  */
+/** @param {!proto.walletrpc.DecodedTransaction.Input.TreeType} value */
 proto.walletrpc.DecodedTransaction.Input.prototype.setTree = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -35194,11 +32159,11 @@ proto.walletrpc.DecodedTransaction.Input.prototype.setTree = function(value) {
  * @return {number}
  */
 proto.walletrpc.DecodedTransaction.Input.prototype.getSequence = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.DecodedTransaction.Input.prototype.setSequence = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -35209,11 +32174,11 @@ proto.walletrpc.DecodedTransaction.Input.prototype.setSequence = function(value)
  * @return {number}
  */
 proto.walletrpc.DecodedTransaction.Input.prototype.getAmountIn = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.DecodedTransaction.Input.prototype.setAmountIn = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -35224,11 +32189,11 @@ proto.walletrpc.DecodedTransaction.Input.prototype.setAmountIn = function(value)
  * @return {number}
  */
 proto.walletrpc.DecodedTransaction.Input.prototype.getBlockHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 6, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.DecodedTransaction.Input.prototype.setBlockHeight = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -35239,11 +32204,11 @@ proto.walletrpc.DecodedTransaction.Input.prototype.setBlockHeight = function(val
  * @return {number}
  */
 proto.walletrpc.DecodedTransaction.Input.prototype.getBlockIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 7, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.DecodedTransaction.Input.prototype.setBlockIndex = function(value) {
   jspb.Message.setField(this, 7, value);
 };
@@ -35254,7 +32219,7 @@ proto.walletrpc.DecodedTransaction.Input.prototype.setBlockIndex = function(valu
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.DecodedTransaction.Input.prototype.getSignatureScript = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 8, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
 };
 
 
@@ -35282,7 +32247,7 @@ proto.walletrpc.DecodedTransaction.Input.prototype.getSignatureScript_asU8 = fun
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.DecodedTransaction.Input.prototype.setSignatureScript = function(value) {
   jspb.Message.setField(this, 8, value);
 };
@@ -35293,24 +32258,15 @@ proto.walletrpc.DecodedTransaction.Input.prototype.setSignatureScript = function
  * @return {string}
  */
 proto.walletrpc.DecodedTransaction.Input.prototype.getSignatureScriptAsm = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 9, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.DecodedTransaction.Input.prototype.setSignatureScriptAsm = function(value) {
   jspb.Message.setField(this, 9, value);
 };
 
-
-/**
- * @enum {number}
- */
-proto.walletrpc.DecodedTransaction.Input.TreeType = {
-  REGULAR: 0,
-  UNKNOWN: -1,
-  STAKE: 1
-};
 
 
 /**
@@ -35365,15 +32321,15 @@ proto.walletrpc.DecodedTransaction.Output.prototype.toObject = function(opt_incl
  */
 proto.walletrpc.DecodedTransaction.Output.toObject = function(includeInstance, msg) {
   var f, obj = {
-    value: msg.getValue(),
-    index: msg.getIndex(),
-    version: msg.getVersion(),
+    value: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    index: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    version: jspb.Message.getFieldWithDefault(msg, 3, 0),
     script: msg.getScript_asB64(),
-    scriptAsm: msg.getScriptAsm(),
-    requiredSignatures: msg.getRequiredSignatures(),
-    scriptClass: msg.getScriptClass(),
+    scriptAsm: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    requiredSignatures: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    scriptClass: jspb.Message.getFieldWithDefault(msg, 7, 0),
     addressesList: jspb.Message.getField(msg, 8),
-    commitmentAmount: msg.getCommitmentAmount()
+    commitmentAmount: jspb.Message.getFieldWithDefault(msg, 9, 0)
   };
 
   if (includeInstance) {
@@ -35440,8 +32396,7 @@ proto.walletrpc.DecodedTransaction.Output.deserializeBinaryFromReader = function
       break;
     case 8:
       var value = /** @type {string} */ (reader.readString());
-      msg.getAddressesList().push(value);
-      msg.setAddressesList(msg.getAddressesList());
+      msg.addAddresses(value);
       break;
     case 9:
       var value = /** @type {number} */ (reader.readInt64());
@@ -35457,91 +32412,81 @@ proto.walletrpc.DecodedTransaction.Output.deserializeBinaryFromReader = function
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.DecodedTransaction.Output} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.DecodedTransaction.Output.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.DecodedTransaction.Output.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.DecodedTransaction.Output.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.DecodedTransaction.Output} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.DecodedTransaction.Output.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.DecodedTransaction.Output.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getValue();
+  f = message.getValue();
   if (f !== 0) {
     writer.writeInt64(
       1,
       f
     );
   }
-  f = this.getIndex();
+  f = message.getIndex();
   if (f !== 0) {
     writer.writeUint32(
       2,
       f
     );
   }
-  f = this.getVersion();
+  f = message.getVersion();
   if (f !== 0) {
     writer.writeInt32(
       3,
       f
     );
   }
-  f = this.getScript_asU8();
+  f = message.getScript_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       4,
       f
     );
   }
-  f = this.getScriptAsm();
+  f = message.getScriptAsm();
   if (f.length > 0) {
     writer.writeString(
       5,
       f
     );
   }
-  f = this.getRequiredSignatures();
+  f = message.getRequiredSignatures();
   if (f !== 0) {
     writer.writeInt32(
       6,
       f
     );
   }
-  f = this.getScriptClass();
+  f = message.getScriptClass();
   if (f !== 0.0) {
     writer.writeEnum(
       7,
       f
     );
   }
-  f = this.getAddressesList();
+  f = message.getAddressesList();
   if (f.length > 0) {
     writer.writeRepeatedString(
       8,
       f
     );
   }
-  f = this.getCommitmentAmount();
+  f = message.getCommitmentAmount();
   if (f !== 0) {
     writer.writeInt64(
       9,
@@ -35552,24 +32497,33 @@ proto.walletrpc.DecodedTransaction.Output.prototype.serializeBinaryToWriter = fu
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.DecodedTransaction.Output} The clone.
+ * @enum {number}
  */
-proto.walletrpc.DecodedTransaction.Output.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.DecodedTransaction.Output} */ (jspb.Message.cloneMessage(this));
+proto.walletrpc.DecodedTransaction.Output.ScriptClass = {
+  NON_STANDARD: 0,
+  PUB_KEY: 1,
+  PUB_KEY_HASH: 2,
+  SCRIPT_HASH: 3,
+  MULTI_SIG: 4,
+  NULL_DATA: 5,
+  STAKE_SUBMISSION: 6,
+  STAKE_GEN: 7,
+  STAKE_REVOCATION: 8,
+  STAKE_SUB_CHANGE: 9,
+  PUB_KEY_ALT: 10,
+  PUB_KEY_HASH_ALT: 11
 };
-
 
 /**
  * optional int64 value = 1;
  * @return {number}
  */
 proto.walletrpc.DecodedTransaction.Output.prototype.getValue = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.DecodedTransaction.Output.prototype.setValue = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -35580,11 +32534,11 @@ proto.walletrpc.DecodedTransaction.Output.prototype.setValue = function(value) {
  * @return {number}
  */
 proto.walletrpc.DecodedTransaction.Output.prototype.getIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.DecodedTransaction.Output.prototype.setIndex = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -35595,11 +32549,11 @@ proto.walletrpc.DecodedTransaction.Output.prototype.setIndex = function(value) {
  * @return {number}
  */
 proto.walletrpc.DecodedTransaction.Output.prototype.getVersion = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.DecodedTransaction.Output.prototype.setVersion = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -35610,7 +32564,7 @@ proto.walletrpc.DecodedTransaction.Output.prototype.setVersion = function(value)
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.DecodedTransaction.Output.prototype.getScript = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 4, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
@@ -35638,7 +32592,7 @@ proto.walletrpc.DecodedTransaction.Output.prototype.getScript_asU8 = function() 
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.DecodedTransaction.Output.prototype.setScript = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -35649,11 +32603,11 @@ proto.walletrpc.DecodedTransaction.Output.prototype.setScript = function(value) 
  * @return {string}
  */
 proto.walletrpc.DecodedTransaction.Output.prototype.getScriptAsm = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 5, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.DecodedTransaction.Output.prototype.setScriptAsm = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -35664,11 +32618,11 @@ proto.walletrpc.DecodedTransaction.Output.prototype.setScriptAsm = function(valu
  * @return {number}
  */
 proto.walletrpc.DecodedTransaction.Output.prototype.getRequiredSignatures = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 6, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.DecodedTransaction.Output.prototype.setRequiredSignatures = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -35679,11 +32633,11 @@ proto.walletrpc.DecodedTransaction.Output.prototype.setRequiredSignatures = func
  * @return {!proto.walletrpc.DecodedTransaction.Output.ScriptClass}
  */
 proto.walletrpc.DecodedTransaction.Output.prototype.getScriptClass = function() {
-  return /** @type {!proto.walletrpc.DecodedTransaction.Output.ScriptClass} */ (jspb.Message.getFieldProto3(this, 7, 0));
+  return /** @type {!proto.walletrpc.DecodedTransaction.Output.ScriptClass} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
 };
 
 
-/** @param {!proto.walletrpc.DecodedTransaction.Output.ScriptClass} value  */
+/** @param {!proto.walletrpc.DecodedTransaction.Output.ScriptClass} value */
 proto.walletrpc.DecodedTransaction.Output.prototype.setScriptClass = function(value) {
   jspb.Message.setField(this, 7, value);
 };
@@ -35700,14 +32654,23 @@ proto.walletrpc.DecodedTransaction.Output.prototype.getAddressesList = function(
 };
 
 
-/** @param {Array.<string>} value  */
+/** @param {!Array.<string>} value */
 proto.walletrpc.DecodedTransaction.Output.prototype.setAddressesList = function(value) {
   jspb.Message.setField(this, 8, value || []);
 };
 
 
+/**
+ * @param {!string} value
+ * @param {number=} opt_index
+ */
+proto.walletrpc.DecodedTransaction.Output.prototype.addAddresses = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 8, value, opt_index);
+};
+
+
 proto.walletrpc.DecodedTransaction.Output.prototype.clearAddressesList = function() {
-  jspb.Message.setField(this, 8, []);
+  this.setAddressesList([]);
 };
 
 
@@ -35716,33 +32679,180 @@ proto.walletrpc.DecodedTransaction.Output.prototype.clearAddressesList = functio
  * @return {number}
  */
 proto.walletrpc.DecodedTransaction.Output.prototype.getCommitmentAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 9, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 9, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.DecodedTransaction.Output.prototype.setCommitmentAmount = function(value) {
   jspb.Message.setField(this, 9, value);
 };
 
 
 /**
- * @enum {number}
+ * optional bytes transaction_hash = 1;
+ * @return {!(string|Uint8Array)}
  */
-proto.walletrpc.DecodedTransaction.Output.ScriptClass = {
-  NON_STANDARD: 0,
-  PUB_KEY: 1,
-  PUB_KEY_HASH: 2,
-  SCRIPT_HASH: 3,
-  MULTI_SIG: 4,
-  NULL_DATA: 5,
-  STAKE_SUBMISSION: 6,
-  STAKE_GEN: 7,
-  STAKE_REVOCATION: 8,
-  STAKE_SUB_CHANGE: 9,
-  PUB_KEY_ALT: 10,
-  PUB_KEY_HASH_ALT: 11
+proto.walletrpc.DecodedTransaction.prototype.getTransactionHash = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
+
+
+/**
+ * optional bytes transaction_hash = 1;
+ * This is a type-conversion wrapper around `getTransactionHash()`
+ * @return {string}
+ */
+proto.walletrpc.DecodedTransaction.prototype.getTransactionHash_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getTransactionHash()));
+};
+
+
+/**
+ * optional bytes transaction_hash = 1;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getTransactionHash()`
+ * @return {!Uint8Array}
+ */
+proto.walletrpc.DecodedTransaction.prototype.getTransactionHash_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getTransactionHash()));
+};
+
+
+/** @param {!(string|Uint8Array)} value */
+proto.walletrpc.DecodedTransaction.prototype.setTransactionHash = function(value) {
+  jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * optional int32 version = 2;
+ * @return {number}
+ */
+proto.walletrpc.DecodedTransaction.prototype.getVersion = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.DecodedTransaction.prototype.setVersion = function(value) {
+  jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * optional uint32 lock_time = 3;
+ * @return {number}
+ */
+proto.walletrpc.DecodedTransaction.prototype.getLockTime = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.DecodedTransaction.prototype.setLockTime = function(value) {
+  jspb.Message.setField(this, 3, value);
+};
+
+
+/**
+ * optional uint32 expiry = 4;
+ * @return {number}
+ */
+proto.walletrpc.DecodedTransaction.prototype.getExpiry = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/** @param {number} value */
+proto.walletrpc.DecodedTransaction.prototype.setExpiry = function(value) {
+  jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * optional TransactionDetails.TransactionType transaction_type = 5;
+ * @return {!proto.walletrpc.TransactionDetails.TransactionType}
+ */
+proto.walletrpc.DecodedTransaction.prototype.getTransactionType = function() {
+  return /** @type {!proto.walletrpc.TransactionDetails.TransactionType} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/** @param {!proto.walletrpc.TransactionDetails.TransactionType} value */
+proto.walletrpc.DecodedTransaction.prototype.setTransactionType = function(value) {
+  jspb.Message.setField(this, 5, value);
+};
+
+
+/**
+ * repeated Input inputs = 6;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.DecodedTransaction.Input>}
+ */
+proto.walletrpc.DecodedTransaction.prototype.getInputsList = function() {
+  return /** @type{!Array.<!proto.walletrpc.DecodedTransaction.Input>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.DecodedTransaction.Input, 6));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.DecodedTransaction.Input>} value */
+proto.walletrpc.DecodedTransaction.prototype.setInputsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 6, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.DecodedTransaction.Input=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.DecodedTransaction.Input}
+ */
+proto.walletrpc.DecodedTransaction.prototype.addInputs = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.walletrpc.DecodedTransaction.Input, opt_index);
+};
+
+
+proto.walletrpc.DecodedTransaction.prototype.clearInputsList = function() {
+  this.setInputsList([]);
+};
+
+
+/**
+ * repeated Output outputs = 7;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.DecodedTransaction.Output>}
+ */
+proto.walletrpc.DecodedTransaction.prototype.getOutputsList = function() {
+  return /** @type{!Array.<!proto.walletrpc.DecodedTransaction.Output>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.DecodedTransaction.Output, 7));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.DecodedTransaction.Output>} value */
+proto.walletrpc.DecodedTransaction.prototype.setOutputsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 7, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.DecodedTransaction.Output=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.DecodedTransaction.Output}
+ */
+proto.walletrpc.DecodedTransaction.prototype.addOutputs = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 7, opt_value, proto.walletrpc.DecodedTransaction.Output, opt_index);
+};
+
+
+proto.walletrpc.DecodedTransaction.prototype.clearOutputsList = function() {
+  this.setOutputsList([]);
+};
+
 
 
 /**
@@ -35841,35 +32951,25 @@ proto.walletrpc.DecodeRawTransactionRequest.deserializeBinaryFromReader = functi
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.DecodeRawTransactionRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.DecodeRawTransactionRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.DecodeRawTransactionRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.DecodeRawTransactionRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.DecodeRawTransactionRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.DecodeRawTransactionRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.DecodeRawTransactionRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSerializedTransaction_asU8();
+  f = message.getSerializedTransaction_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
@@ -35880,20 +32980,11 @@ proto.walletrpc.DecodeRawTransactionRequest.prototype.serializeBinaryToWriter = 
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.DecodeRawTransactionRequest} The clone.
- */
-proto.walletrpc.DecodeRawTransactionRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.DecodeRawTransactionRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes serialized_transaction = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.DecodeRawTransactionRequest.prototype.getSerializedTransaction = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -35921,7 +33012,7 @@ proto.walletrpc.DecodeRawTransactionRequest.prototype.getSerializedTransaction_a
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.DecodeRawTransactionRequest.prototype.setSerializedTransaction = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -36025,35 +33116,25 @@ proto.walletrpc.DecodeRawTransactionResponse.deserializeBinaryFromReader = funct
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.DecodeRawTransactionResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.DecodeRawTransactionResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.DecodeRawTransactionResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.DecodeRawTransactionResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.DecodeRawTransactionResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.DecodeRawTransactionResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.DecodeRawTransactionResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTransaction();
+  f = message.getTransaction();
   if (f != null) {
     writer.writeMessage(
       1,
@@ -36065,25 +33146,16 @@ proto.walletrpc.DecodeRawTransactionResponse.prototype.serializeBinaryToWriter =
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.DecodeRawTransactionResponse} The clone.
- */
-proto.walletrpc.DecodeRawTransactionResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.DecodeRawTransactionResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional DecodedTransaction transaction = 1;
- * @return {proto.walletrpc.DecodedTransaction}
+ * @return {?proto.walletrpc.DecodedTransaction}
  */
 proto.walletrpc.DecodeRawTransactionResponse.prototype.getTransaction = function() {
-  return /** @type{proto.walletrpc.DecodedTransaction} */ (
+  return /** @type{?proto.walletrpc.DecodedTransaction} */ (
     jspb.Message.getWrapperField(this, proto.walletrpc.DecodedTransaction, 1));
 };
 
 
-/** @param {proto.walletrpc.DecodedTransaction|undefined} value  */
+/** @param {?proto.walletrpc.DecodedTransaction|undefined} value */
 proto.walletrpc.DecodeRawTransactionResponse.prototype.setTransaction = function(value) {
   jspb.Message.setWrapperField(this, 1, value);
 };
@@ -36096,7 +33168,7 @@ proto.walletrpc.DecodeRawTransactionResponse.prototype.clearTransaction = functi
 
 /**
  * Returns whether this field is set.
- * @return{!boolean}
+ * @return {!boolean}
  */
 proto.walletrpc.DecodeRawTransactionResponse.prototype.hasTransaction = function() {
   return jspb.Message.getField(this, 1) != null;
@@ -36149,7 +33221,7 @@ proto.walletrpc.ValidateAddressRequest.prototype.toObject = function(opt_include
  */
 proto.walletrpc.ValidateAddressRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    address: msg.getAddress()
+    address: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -36200,35 +33272,25 @@ proto.walletrpc.ValidateAddressRequest.deserializeBinaryFromReader = function(ms
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ValidateAddressRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ValidateAddressRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ValidateAddressRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ValidateAddressRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ValidateAddressRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ValidateAddressRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ValidateAddressRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAddress();
+  f = message.getAddress();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -36239,24 +33301,15 @@ proto.walletrpc.ValidateAddressRequest.prototype.serializeBinaryToWriter = funct
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ValidateAddressRequest} The clone.
- */
-proto.walletrpc.ValidateAddressRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ValidateAddressRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string address = 1;
  * @return {string}
  */
 proto.walletrpc.ValidateAddressRequest.prototype.getAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.ValidateAddressRequest.prototype.setAddress = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -36315,18 +33368,18 @@ proto.walletrpc.ValidateAddressResponse.prototype.toObject = function(opt_includ
  */
 proto.walletrpc.ValidateAddressResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    isValid: msg.getIsValid(),
-    isMine: msg.getIsMine(),
-    accountNumber: msg.getAccountNumber(),
-    pubKeyAddr: msg.getPubKeyAddr(),
+    isValid: jspb.Message.getFieldWithDefault(msg, 1, false),
+    isMine: jspb.Message.getFieldWithDefault(msg, 2, false),
+    accountNumber: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    pubKeyAddr: jspb.Message.getFieldWithDefault(msg, 4, ""),
     pubKey: msg.getPubKey_asB64(),
-    isScript: msg.getIsScript(),
+    isScript: jspb.Message.getFieldWithDefault(msg, 6, false),
     pkScriptAddrsList: jspb.Message.getField(msg, 7),
-    scriptType: msg.getScriptType(),
+    scriptType: jspb.Message.getFieldWithDefault(msg, 8, 0),
     payToAddrScript: msg.getPayToAddrScript_asB64(),
-    sigsRequired: msg.getSigsRequired(),
-    isInternal: msg.getIsInternal(),
-    index: msg.getIndex()
+    sigsRequired: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    isInternal: jspb.Message.getFieldWithDefault(msg, 11, false),
+    index: jspb.Message.getFieldWithDefault(msg, 12, 0)
   };
 
   if (includeInstance) {
@@ -36389,8 +33442,7 @@ proto.walletrpc.ValidateAddressResponse.deserializeBinaryFromReader = function(m
       break;
     case 7:
       var value = /** @type {string} */ (reader.readString());
-      msg.getPkScriptAddrsList().push(value);
-      msg.setPkScriptAddrsList(msg.getPkScriptAddrsList());
+      msg.addPkScriptAddrs(value);
       break;
     case 8:
       var value = /** @type {!proto.walletrpc.ValidateAddressResponse.ScriptType} */ (reader.readEnum());
@@ -36422,112 +33474,102 @@ proto.walletrpc.ValidateAddressResponse.deserializeBinaryFromReader = function(m
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.ValidateAddressResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.ValidateAddressResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.ValidateAddressResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.ValidateAddressResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.ValidateAddressResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.ValidateAddressResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.ValidateAddressResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getIsValid();
+  f = message.getIsValid();
   if (f) {
     writer.writeBool(
       1,
       f
     );
   }
-  f = this.getIsMine();
+  f = message.getIsMine();
   if (f) {
     writer.writeBool(
       2,
       f
     );
   }
-  f = this.getAccountNumber();
+  f = message.getAccountNumber();
   if (f !== 0) {
     writer.writeUint32(
       3,
       f
     );
   }
-  f = this.getPubKeyAddr();
+  f = message.getPubKeyAddr();
   if (f.length > 0) {
     writer.writeString(
       4,
       f
     );
   }
-  f = this.getPubKey_asU8();
+  f = message.getPubKey_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       5,
       f
     );
   }
-  f = this.getIsScript();
+  f = message.getIsScript();
   if (f) {
     writer.writeBool(
       6,
       f
     );
   }
-  f = this.getPkScriptAddrsList();
+  f = message.getPkScriptAddrsList();
   if (f.length > 0) {
     writer.writeRepeatedString(
       7,
       f
     );
   }
-  f = this.getScriptType();
+  f = message.getScriptType();
   if (f !== 0.0) {
     writer.writeEnum(
       8,
       f
     );
   }
-  f = this.getPayToAddrScript_asU8();
+  f = message.getPayToAddrScript_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       9,
       f
     );
   }
-  f = this.getSigsRequired();
+  f = message.getSigsRequired();
   if (f !== 0) {
     writer.writeUint32(
       10,
       f
     );
   }
-  f = this.getIsInternal();
+  f = message.getIsInternal();
   if (f) {
     writer.writeBool(
       11,
       f
     );
   }
-  f = this.getIndex();
+  f = message.getIndex();
   if (f !== 0) {
     writer.writeUint32(
       12,
@@ -36538,13 +33580,22 @@ proto.walletrpc.ValidateAddressResponse.prototype.serializeBinaryToWriter = func
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.ValidateAddressResponse} The clone.
+ * @enum {number}
  */
-proto.walletrpc.ValidateAddressResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.ValidateAddressResponse} */ (jspb.Message.cloneMessage(this));
+proto.walletrpc.ValidateAddressResponse.ScriptType = {
+  NONSTANDARDTY: 0,
+  PUBKEYTY: 1,
+  PUBKEYHASHTY: 2,
+  SCRIPTHASHTY: 3,
+  MULTISIGTY: 4,
+  NULLDATATY: 5,
+  STAKESUBMISSIONTY: 6,
+  STAKEGENTY: 7,
+  STAKEREVOCATIONTY: 8,
+  STAKESUBCHANGETY: 9,
+  PUBKEYALTTY: 10,
+  PUBKEYHASHALTTY: 11
 };
-
 
 /**
  * optional bool is_valid = 1;
@@ -36553,11 +33604,11 @@ proto.walletrpc.ValidateAddressResponse.prototype.cloneMessage = function() {
  * @return {boolean}
  */
 proto.walletrpc.ValidateAddressResponse.prototype.getIsValid = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 1, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 1, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.ValidateAddressResponse.prototype.setIsValid = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -36570,11 +33621,11 @@ proto.walletrpc.ValidateAddressResponse.prototype.setIsValid = function(value) {
  * @return {boolean}
  */
 proto.walletrpc.ValidateAddressResponse.prototype.getIsMine = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 2, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 2, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.ValidateAddressResponse.prototype.setIsMine = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -36585,11 +33636,11 @@ proto.walletrpc.ValidateAddressResponse.prototype.setIsMine = function(value) {
  * @return {number}
  */
 proto.walletrpc.ValidateAddressResponse.prototype.getAccountNumber = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ValidateAddressResponse.prototype.setAccountNumber = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -36600,11 +33651,11 @@ proto.walletrpc.ValidateAddressResponse.prototype.setAccountNumber = function(va
  * @return {string}
  */
 proto.walletrpc.ValidateAddressResponse.prototype.getPubKeyAddr = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 4, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.ValidateAddressResponse.prototype.setPubKeyAddr = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -36615,7 +33666,7 @@ proto.walletrpc.ValidateAddressResponse.prototype.setPubKeyAddr = function(value
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.ValidateAddressResponse.prototype.getPubKey = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 5, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
@@ -36643,7 +33694,7 @@ proto.walletrpc.ValidateAddressResponse.prototype.getPubKey_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.ValidateAddressResponse.prototype.setPubKey = function(value) {
   jspb.Message.setField(this, 5, value);
 };
@@ -36656,11 +33707,11 @@ proto.walletrpc.ValidateAddressResponse.prototype.setPubKey = function(value) {
  * @return {boolean}
  */
 proto.walletrpc.ValidateAddressResponse.prototype.getIsScript = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 6, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 6, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.ValidateAddressResponse.prototype.setIsScript = function(value) {
   jspb.Message.setField(this, 6, value);
 };
@@ -36677,14 +33728,23 @@ proto.walletrpc.ValidateAddressResponse.prototype.getPkScriptAddrsList = functio
 };
 
 
-/** @param {Array.<string>} value  */
+/** @param {!Array.<string>} value */
 proto.walletrpc.ValidateAddressResponse.prototype.setPkScriptAddrsList = function(value) {
   jspb.Message.setField(this, 7, value || []);
 };
 
 
+/**
+ * @param {!string} value
+ * @param {number=} opt_index
+ */
+proto.walletrpc.ValidateAddressResponse.prototype.addPkScriptAddrs = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 7, value, opt_index);
+};
+
+
 proto.walletrpc.ValidateAddressResponse.prototype.clearPkScriptAddrsList = function() {
-  jspb.Message.setField(this, 7, []);
+  this.setPkScriptAddrsList([]);
 };
 
 
@@ -36693,11 +33753,11 @@ proto.walletrpc.ValidateAddressResponse.prototype.clearPkScriptAddrsList = funct
  * @return {!proto.walletrpc.ValidateAddressResponse.ScriptType}
  */
 proto.walletrpc.ValidateAddressResponse.prototype.getScriptType = function() {
-  return /** @type {!proto.walletrpc.ValidateAddressResponse.ScriptType} */ (jspb.Message.getFieldProto3(this, 8, 0));
+  return /** @type {!proto.walletrpc.ValidateAddressResponse.ScriptType} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
 };
 
 
-/** @param {!proto.walletrpc.ValidateAddressResponse.ScriptType} value  */
+/** @param {!proto.walletrpc.ValidateAddressResponse.ScriptType} value */
 proto.walletrpc.ValidateAddressResponse.prototype.setScriptType = function(value) {
   jspb.Message.setField(this, 8, value);
 };
@@ -36708,7 +33768,7 @@ proto.walletrpc.ValidateAddressResponse.prototype.setScriptType = function(value
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.ValidateAddressResponse.prototype.getPayToAddrScript = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 9, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
 };
 
 
@@ -36736,7 +33796,7 @@ proto.walletrpc.ValidateAddressResponse.prototype.getPayToAddrScript_asU8 = func
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.ValidateAddressResponse.prototype.setPayToAddrScript = function(value) {
   jspb.Message.setField(this, 9, value);
 };
@@ -36747,11 +33807,11 @@ proto.walletrpc.ValidateAddressResponse.prototype.setPayToAddrScript = function(
  * @return {number}
  */
 proto.walletrpc.ValidateAddressResponse.prototype.getSigsRequired = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 10, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ValidateAddressResponse.prototype.setSigsRequired = function(value) {
   jspb.Message.setField(this, 10, value);
 };
@@ -36764,11 +33824,11 @@ proto.walletrpc.ValidateAddressResponse.prototype.setSigsRequired = function(val
  * @return {boolean}
  */
 proto.walletrpc.ValidateAddressResponse.prototype.getIsInternal = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldProto3(this, 11, false));
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 11, false));
 };
 
 
-/** @param {boolean} value  */
+/** @param {boolean} value */
 proto.walletrpc.ValidateAddressResponse.prototype.setIsInternal = function(value) {
   jspb.Message.setField(this, 11, value);
 };
@@ -36779,33 +33839,15 @@ proto.walletrpc.ValidateAddressResponse.prototype.setIsInternal = function(value
  * @return {number}
  */
 proto.walletrpc.ValidateAddressResponse.prototype.getIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 12, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 12, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.ValidateAddressResponse.prototype.setIndex = function(value) {
   jspb.Message.setField(this, 12, value);
 };
 
-
-/**
- * @enum {number}
- */
-proto.walletrpc.ValidateAddressResponse.ScriptType = {
-  NONSTANDARDTY: 0,
-  PUBKEYTY: 1,
-  PUBKEYHASHTY: 2,
-  SCRIPTHASHTY: 3,
-  MULTISIGTY: 4,
-  NULLDATATY: 5,
-  STAKESUBMISSIONTY: 6,
-  STAKEGENTY: 7,
-  STAKEREVOCATIONTY: 8,
-  STAKESUBCHANGETY: 9,
-  PUBKEYALTTY: 10,
-  PUBKEYHASHALTTY: 11
-};
 
 
 /**
@@ -36899,8 +33941,7 @@ proto.walletrpc.CommittedTicketsRequest.deserializeBinaryFromReader = function(m
     switch (field) {
     case 1:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
-      msg.getTicketsList().push(value);
-      msg.setTicketsList(msg.getTicketsList());
+      msg.addTickets(value);
       break;
     default:
       reader.skipField();
@@ -36912,50 +33953,31 @@ proto.walletrpc.CommittedTicketsRequest.deserializeBinaryFromReader = function(m
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CommittedTicketsRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CommittedTicketsRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CommittedTicketsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CommittedTicketsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CommittedTicketsRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CommittedTicketsRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CommittedTicketsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTicketsList_asU8();
+  f = message.getTicketsList_asU8();
   if (f.length > 0) {
     writer.writeRepeatedBytes(
       1,
       f
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CommittedTicketsRequest} The clone.
- */
-proto.walletrpc.CommittedTicketsRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CommittedTicketsRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -36998,14 +34020,23 @@ proto.walletrpc.CommittedTicketsRequest.prototype.getTicketsList_asU8 = function
 };
 
 
-/** @param {!(Array<!Uint8Array>|Array<string>)} value  */
+/** @param {!(Array<!Uint8Array>|Array<string>)} value */
 proto.walletrpc.CommittedTicketsRequest.prototype.setTicketsList = function(value) {
   jspb.Message.setField(this, 1, value || []);
 };
 
 
+/**
+ * @param {!(string|Uint8Array)} value
+ * @param {number=} opt_index
+ */
+proto.walletrpc.CommittedTicketsRequest.prototype.addTickets = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 1, value, opt_index);
+};
+
+
 proto.walletrpc.CommittedTicketsRequest.prototype.clearTicketsList = function() {
-  jspb.Message.setField(this, 1, []);
+  this.setTicketsList([]);
 };
 
 
@@ -37055,7 +34086,7 @@ proto.walletrpc.GetAccountExtendedPubKeyRequest.prototype.toObject = function(op
  */
 proto.walletrpc.GetAccountExtendedPubKeyRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accountNumber: msg.getAccountNumber()
+    accountNumber: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -37106,35 +34137,25 @@ proto.walletrpc.GetAccountExtendedPubKeyRequest.deserializeBinaryFromReader = fu
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetAccountExtendedPubKeyRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetAccountExtendedPubKeyRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetAccountExtendedPubKeyRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetAccountExtendedPubKeyRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetAccountExtendedPubKeyRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetAccountExtendedPubKeyRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetAccountExtendedPubKeyRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccountNumber();
+  f = message.getAccountNumber();
   if (f !== 0) {
     writer.writeUint32(
       1,
@@ -37145,24 +34166,15 @@ proto.walletrpc.GetAccountExtendedPubKeyRequest.prototype.serializeBinaryToWrite
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetAccountExtendedPubKeyRequest} The clone.
- */
-proto.walletrpc.GetAccountExtendedPubKeyRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetAccountExtendedPubKeyRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account_number = 1;
  * @return {number}
  */
 proto.walletrpc.GetAccountExtendedPubKeyRequest.prototype.getAccountNumber = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GetAccountExtendedPubKeyRequest.prototype.setAccountNumber = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -37214,7 +34226,7 @@ proto.walletrpc.GetAccountExtendedPubKeyResponse.prototype.toObject = function(o
  */
 proto.walletrpc.GetAccountExtendedPubKeyResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accExtendedPubKey: msg.getAccExtendedPubKey()
+    accExtendedPubKey: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -37265,35 +34277,25 @@ proto.walletrpc.GetAccountExtendedPubKeyResponse.deserializeBinaryFromReader = f
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetAccountExtendedPubKeyResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetAccountExtendedPubKeyResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetAccountExtendedPubKeyResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetAccountExtendedPubKeyResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetAccountExtendedPubKeyResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetAccountExtendedPubKeyResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetAccountExtendedPubKeyResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccExtendedPubKey();
+  f = message.getAccExtendedPubKey();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -37304,24 +34306,15 @@ proto.walletrpc.GetAccountExtendedPubKeyResponse.prototype.serializeBinaryToWrit
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetAccountExtendedPubKeyResponse} The clone.
- */
-proto.walletrpc.GetAccountExtendedPubKeyResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetAccountExtendedPubKeyResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string acc_extended_pub_key = 1;
  * @return {string}
  */
 proto.walletrpc.GetAccountExtendedPubKeyResponse.prototype.getAccExtendedPubKey = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.GetAccountExtendedPubKeyResponse.prototype.setAccExtendedPubKey = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -37373,7 +34366,7 @@ proto.walletrpc.GetAccountExtendedPrivKeyRequest.prototype.toObject = function(o
  */
 proto.walletrpc.GetAccountExtendedPrivKeyRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accountNumber: msg.getAccountNumber(),
+    accountNumber: jspb.Message.getFieldWithDefault(msg, 1, 0),
     passphrase: msg.getPassphrase_asB64()
   };
 
@@ -37429,42 +34422,32 @@ proto.walletrpc.GetAccountExtendedPrivKeyRequest.deserializeBinaryFromReader = f
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetAccountExtendedPrivKeyRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetAccountExtendedPrivKeyRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetAccountExtendedPrivKeyRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetAccountExtendedPrivKeyRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetAccountExtendedPrivKeyRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetAccountExtendedPrivKeyRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetAccountExtendedPrivKeyRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccountNumber();
+  f = message.getAccountNumber();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getPassphrase_asU8();
+  f = message.getPassphrase_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
@@ -37475,24 +34458,15 @@ proto.walletrpc.GetAccountExtendedPrivKeyRequest.prototype.serializeBinaryToWrit
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetAccountExtendedPrivKeyRequest} The clone.
- */
-proto.walletrpc.GetAccountExtendedPrivKeyRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetAccountExtendedPrivKeyRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 account_number = 1;
  * @return {number}
  */
 proto.walletrpc.GetAccountExtendedPrivKeyRequest.prototype.getAccountNumber = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.GetAccountExtendedPrivKeyRequest.prototype.setAccountNumber = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -37503,7 +34477,7 @@ proto.walletrpc.GetAccountExtendedPrivKeyRequest.prototype.setAccountNumber = fu
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.GetAccountExtendedPrivKeyRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -37531,7 +34505,7 @@ proto.walletrpc.GetAccountExtendedPrivKeyRequest.prototype.getPassphrase_asU8 = 
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.GetAccountExtendedPrivKeyRequest.prototype.setPassphrase = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -37583,7 +34557,7 @@ proto.walletrpc.GetAccountExtendedPrivKeyResponse.prototype.toObject = function(
  */
 proto.walletrpc.GetAccountExtendedPrivKeyResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accExtendedPrivKey: msg.getAccExtendedPrivKey()
+    accExtendedPrivKey: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -37634,35 +34608,25 @@ proto.walletrpc.GetAccountExtendedPrivKeyResponse.deserializeBinaryFromReader = 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.GetAccountExtendedPrivKeyResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.GetAccountExtendedPrivKeyResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.GetAccountExtendedPrivKeyResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.GetAccountExtendedPrivKeyResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.GetAccountExtendedPrivKeyResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.GetAccountExtendedPrivKeyResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.GetAccountExtendedPrivKeyResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getAccExtendedPrivKey();
+  f = message.getAccExtendedPrivKey();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -37673,24 +34637,15 @@ proto.walletrpc.GetAccountExtendedPrivKeyResponse.prototype.serializeBinaryToWri
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.GetAccountExtendedPrivKeyResponse} The clone.
- */
-proto.walletrpc.GetAccountExtendedPrivKeyResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.GetAccountExtendedPrivKeyResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string acc_extended_priv_key = 1;
  * @return {string}
  */
 proto.walletrpc.GetAccountExtendedPrivKeyResponse.prototype.getAccExtendedPrivKey = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.GetAccountExtendedPrivKeyResponse.prototype.setAccExtendedPrivKey = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -37790,8 +34745,7 @@ proto.walletrpc.CommittedTicketsResponse.deserializeBinaryFromReader = function(
     case 1:
       var value = new proto.walletrpc.CommittedTicketsResponse.TicketAddress;
       reader.readMessage(value,proto.walletrpc.CommittedTicketsResponse.TicketAddress.deserializeBinaryFromReader);
-      msg.getTicketaddressesList().push(value);
-      msg.setTicketaddressesList(msg.getTicketaddressesList());
+      msg.addTicketaddresses(value);
       break;
     default:
       reader.skipField();
@@ -37803,35 +34757,25 @@ proto.walletrpc.CommittedTicketsResponse.deserializeBinaryFromReader = function(
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CommittedTicketsResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CommittedTicketsResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CommittedTicketsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CommittedTicketsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CommittedTicketsResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CommittedTicketsResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CommittedTicketsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTicketaddressesList();
+  f = message.getTicketaddressesList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       1,
@@ -37839,38 +34783,6 @@ proto.walletrpc.CommittedTicketsResponse.prototype.serializeBinaryToWriter = fun
       proto.walletrpc.CommittedTicketsResponse.TicketAddress.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CommittedTicketsResponse} The clone.
- */
-proto.walletrpc.CommittedTicketsResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CommittedTicketsResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
- * repeated TicketAddress ticketAddresses = 1;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.walletrpc.CommittedTicketsResponse.TicketAddress>}
- */
-proto.walletrpc.CommittedTicketsResponse.prototype.getTicketaddressesList = function() {
-  return /** @type{!Array.<!proto.walletrpc.CommittedTicketsResponse.TicketAddress>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.CommittedTicketsResponse.TicketAddress, 1));
-};
-
-
-/** @param {Array.<!proto.walletrpc.CommittedTicketsResponse.TicketAddress>} value  */
-proto.walletrpc.CommittedTicketsResponse.prototype.setTicketaddressesList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 1, value);
-};
-
-
-proto.walletrpc.CommittedTicketsResponse.prototype.clearTicketaddressesList = function() {
-  this.setTicketaddressesList([]);
 };
 
 
@@ -37921,7 +34833,7 @@ proto.walletrpc.CommittedTicketsResponse.TicketAddress.prototype.toObject = func
 proto.walletrpc.CommittedTicketsResponse.TicketAddress.toObject = function(includeInstance, msg) {
   var f, obj = {
     ticket: msg.getTicket_asB64(),
-    address: msg.getAddress()
+    address: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -37976,42 +34888,32 @@ proto.walletrpc.CommittedTicketsResponse.TicketAddress.deserializeBinaryFromRead
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.CommittedTicketsResponse.TicketAddress} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.CommittedTicketsResponse.TicketAddress.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.CommittedTicketsResponse.TicketAddress.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.CommittedTicketsResponse.TicketAddress.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.CommittedTicketsResponse.TicketAddress} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.CommittedTicketsResponse.TicketAddress.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.CommittedTicketsResponse.TicketAddress.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getTicket_asU8();
+  f = message.getTicket_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getAddress();
+  f = message.getAddress();
   if (f.length > 0) {
     writer.writeString(
       2,
@@ -38022,20 +34924,11 @@ proto.walletrpc.CommittedTicketsResponse.TicketAddress.prototype.serializeBinary
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.CommittedTicketsResponse.TicketAddress} The clone.
- */
-proto.walletrpc.CommittedTicketsResponse.TicketAddress.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.CommittedTicketsResponse.TicketAddress} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes ticket = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.CommittedTicketsResponse.TicketAddress.prototype.getTicket = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -38063,7 +34956,7 @@ proto.walletrpc.CommittedTicketsResponse.TicketAddress.prototype.getTicket_asU8 
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.CommittedTicketsResponse.TicketAddress.prototype.setTicket = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -38074,13 +34967,46 @@ proto.walletrpc.CommittedTicketsResponse.TicketAddress.prototype.setTicket = fun
  * @return {string}
  */
 proto.walletrpc.CommittedTicketsResponse.TicketAddress.prototype.getAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.CommittedTicketsResponse.TicketAddress.prototype.setAddress = function(value) {
   jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * repeated TicketAddress ticketAddresses = 1;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.walletrpc.CommittedTicketsResponse.TicketAddress>}
+ */
+proto.walletrpc.CommittedTicketsResponse.prototype.getTicketaddressesList = function() {
+  return /** @type{!Array.<!proto.walletrpc.CommittedTicketsResponse.TicketAddress>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.walletrpc.CommittedTicketsResponse.TicketAddress, 1));
+};
+
+
+/** @param {!Array.<!proto.walletrpc.CommittedTicketsResponse.TicketAddress>} value */
+proto.walletrpc.CommittedTicketsResponse.prototype.setTicketaddressesList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.walletrpc.CommittedTicketsResponse.TicketAddress=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.walletrpc.CommittedTicketsResponse.TicketAddress}
+ */
+proto.walletrpc.CommittedTicketsResponse.prototype.addTicketaddresses = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.walletrpc.CommittedTicketsResponse.TicketAddress, opt_index);
+};
+
+
+proto.walletrpc.CommittedTicketsResponse.prototype.clearTicketaddressesList = function() {
+  this.setTicketaddressesList([]);
 };
 
 
@@ -38177,43 +35103,24 @@ proto.walletrpc.BestBlockRequest.deserializeBinaryFromReader = function(msg, rea
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.BestBlockRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.BestBlockRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.BestBlockRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.BestBlockRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.BestBlockRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.BestBlockRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.BestBlockRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-};
-
-
-/**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.BestBlockRequest} The clone.
- */
-proto.walletrpc.BestBlockRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.BestBlockRequest} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -38263,7 +35170,7 @@ proto.walletrpc.BestBlockResponse.prototype.toObject = function(opt_includeInsta
  */
 proto.walletrpc.BestBlockResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    height: msg.getHeight(),
+    height: jspb.Message.getFieldWithDefault(msg, 1, 0),
     hash: msg.getHash_asB64()
   };
 
@@ -38319,42 +35226,32 @@ proto.walletrpc.BestBlockResponse.deserializeBinaryFromReader = function(msg, re
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.BestBlockResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.BestBlockResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.BestBlockResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.BestBlockResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.BestBlockResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.BestBlockResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.BestBlockResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getHeight();
+  f = message.getHeight();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = this.getHash_asU8();
+  f = message.getHash_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       2,
@@ -38365,24 +35262,15 @@ proto.walletrpc.BestBlockResponse.prototype.serializeBinaryToWriter = function (
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.BestBlockResponse} The clone.
- */
-proto.walletrpc.BestBlockResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.BestBlockResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional uint32 height = 1;
  * @return {number}
  */
 proto.walletrpc.BestBlockResponse.prototype.getHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.BestBlockResponse.prototype.setHeight = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -38393,7 +35281,7 @@ proto.walletrpc.BestBlockResponse.prototype.setHeight = function(value) {
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.BestBlockResponse.prototype.getHash = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -38421,7 +35309,7 @@ proto.walletrpc.BestBlockResponse.prototype.getHash_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.BestBlockResponse.prototype.setHash = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -38473,10 +35361,10 @@ proto.walletrpc.SweepAccountRequest.prototype.toObject = function(opt_includeIns
  */
 proto.walletrpc.SweepAccountRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    sourceAccount: msg.getSourceAccount(),
-    destinationAddress: msg.getDestinationAddress(),
-    requiredConfirmations: msg.getRequiredConfirmations(),
-    feePerKb: msg.getFeePerKb()
+    sourceAccount: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    destinationAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    requiredConfirmations: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    feePerKb: +jspb.Message.getFieldWithDefault(msg, 4, 0.0)
   };
 
   if (includeInstance) {
@@ -38539,56 +35427,46 @@ proto.walletrpc.SweepAccountRequest.deserializeBinaryFromReader = function(msg, 
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SweepAccountRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SweepAccountRequest.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SweepAccountRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SweepAccountRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SweepAccountRequest} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SweepAccountRequest.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SweepAccountRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getSourceAccount();
+  f = message.getSourceAccount();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = this.getDestinationAddress();
+  f = message.getDestinationAddress();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = this.getRequiredConfirmations();
+  f = message.getRequiredConfirmations();
   if (f !== 0) {
     writer.writeUint32(
       3,
       f
     );
   }
-  f = this.getFeePerKb();
+  f = message.getFeePerKb();
   if (f !== 0.0) {
     writer.writeDouble(
       4,
@@ -38599,24 +35477,15 @@ proto.walletrpc.SweepAccountRequest.prototype.serializeBinaryToWriter = function
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SweepAccountRequest} The clone.
- */
-proto.walletrpc.SweepAccountRequest.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SweepAccountRequest} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional string source_account = 1;
  * @return {string}
  */
 proto.walletrpc.SweepAccountRequest.prototype.getSourceAccount = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.SweepAccountRequest.prototype.setSourceAccount = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -38627,11 +35496,11 @@ proto.walletrpc.SweepAccountRequest.prototype.setSourceAccount = function(value)
  * @return {string}
  */
 proto.walletrpc.SweepAccountRequest.prototype.getDestinationAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {string} value  */
+/** @param {string} value */
 proto.walletrpc.SweepAccountRequest.prototype.setDestinationAddress = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -38642,11 +35511,11 @@ proto.walletrpc.SweepAccountRequest.prototype.setDestinationAddress = function(v
  * @return {number}
  */
 proto.walletrpc.SweepAccountRequest.prototype.getRequiredConfirmations = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SweepAccountRequest.prototype.setRequiredConfirmations = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -38657,11 +35526,11 @@ proto.walletrpc.SweepAccountRequest.prototype.setRequiredConfirmations = functio
  * @return {number}
  */
 proto.walletrpc.SweepAccountRequest.prototype.getFeePerKb = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 4, 0.0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SweepAccountRequest.prototype.setFeePerKb = function(value) {
   jspb.Message.setField(this, 4, value);
 };
@@ -38714,9 +35583,9 @@ proto.walletrpc.SweepAccountResponse.prototype.toObject = function(opt_includeIn
 proto.walletrpc.SweepAccountResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     unsignedTransaction: msg.getUnsignedTransaction_asB64(),
-    totalPreviousOutputAmount: msg.getTotalPreviousOutputAmount(),
-    totalOutputAmount: msg.getTotalOutputAmount(),
-    estimatedSignedSize: msg.getEstimatedSignedSize()
+    totalPreviousOutputAmount: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    totalOutputAmount: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    estimatedSignedSize: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -38779,56 +35648,46 @@ proto.walletrpc.SweepAccountResponse.deserializeBinaryFromReader = function(msg,
 
 
 /**
- * Class method variant: serializes the given message to binary data
- * (in protobuf wire format), writing to the given BinaryWriter.
- * @param {!proto.walletrpc.SweepAccountResponse} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.walletrpc.SweepAccountResponse.serializeBinaryToWriter = function(message, writer) {
-  message.serializeBinaryToWriter(writer);
-};
-
-
-/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.walletrpc.SweepAccountResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  this.serializeBinaryToWriter(writer);
+  proto.walletrpc.SweepAccountResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format),
- * writing to the given BinaryWriter.
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.walletrpc.SweepAccountResponse} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.walletrpc.SweepAccountResponse.prototype.serializeBinaryToWriter = function (writer) {
+proto.walletrpc.SweepAccountResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = this.getUnsignedTransaction_asU8();
+  f = message.getUnsignedTransaction_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = this.getTotalPreviousOutputAmount();
+  f = message.getTotalPreviousOutputAmount();
   if (f !== 0) {
     writer.writeInt64(
       2,
       f
     );
   }
-  f = this.getTotalOutputAmount();
+  f = message.getTotalOutputAmount();
   if (f !== 0) {
     writer.writeInt64(
       3,
       f
     );
   }
-  f = this.getEstimatedSignedSize();
+  f = message.getEstimatedSignedSize();
   if (f !== 0) {
     writer.writeUint32(
       4,
@@ -38839,20 +35698,11 @@ proto.walletrpc.SweepAccountResponse.prototype.serializeBinaryToWriter = functio
 
 
 /**
- * Creates a deep clone of this proto. No data is shared with the original.
- * @return {!proto.walletrpc.SweepAccountResponse} The clone.
- */
-proto.walletrpc.SweepAccountResponse.prototype.cloneMessage = function() {
-  return /** @type {!proto.walletrpc.SweepAccountResponse} */ (jspb.Message.cloneMessage(this));
-};
-
-
-/**
  * optional bytes unsigned_transaction = 1;
  * @return {!(string|Uint8Array)}
  */
 proto.walletrpc.SweepAccountResponse.prototype.getUnsignedTransaction = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
@@ -38880,7 +35730,7 @@ proto.walletrpc.SweepAccountResponse.prototype.getUnsignedTransaction_asU8 = fun
 };
 
 
-/** @param {!(string|Uint8Array)} value  */
+/** @param {!(string|Uint8Array)} value */
 proto.walletrpc.SweepAccountResponse.prototype.setUnsignedTransaction = function(value) {
   jspb.Message.setField(this, 1, value);
 };
@@ -38891,11 +35741,11 @@ proto.walletrpc.SweepAccountResponse.prototype.setUnsignedTransaction = function
  * @return {number}
  */
 proto.walletrpc.SweepAccountResponse.prototype.getTotalPreviousOutputAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SweepAccountResponse.prototype.setTotalPreviousOutputAmount = function(value) {
   jspb.Message.setField(this, 2, value);
 };
@@ -38906,11 +35756,11 @@ proto.walletrpc.SweepAccountResponse.prototype.setTotalPreviousOutputAmount = fu
  * @return {number}
  */
 proto.walletrpc.SweepAccountResponse.prototype.getTotalOutputAmount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 3, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SweepAccountResponse.prototype.setTotalOutputAmount = function(value) {
   jspb.Message.setField(this, 3, value);
 };
@@ -38921,11 +35771,11 @@ proto.walletrpc.SweepAccountResponse.prototype.setTotalOutputAmount = function(v
  * @return {number}
  */
 proto.walletrpc.SweepAccountResponse.prototype.getEstimatedSignedSize = function() {
-  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
-/** @param {number} value  */
+/** @param {number} value */
 proto.walletrpc.SweepAccountResponse.prototype.setEstimatedSignedSize = function(value) {
   jspb.Message.setField(this, 4, value);
 };

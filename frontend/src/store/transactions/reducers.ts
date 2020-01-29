@@ -29,10 +29,10 @@ export const transactionsInitialState: ITransactionState = {
 	activeTypeFilter: TransactionType.REGULAR,
 
 	// ConstructTransaction
-	constructTransactionRequest: null,
 	constructTransactionResponse: null,
 	constructTransactionAttempting: false,
 	errorConstructTransaction: null,
+	changeScriptByAccount: {}
 }
 
 
@@ -68,21 +68,23 @@ export default function transactions(
 		case CONSTRUCTTRANSACTIONATTEMPT:
 			return {
 				...state,
-				getConstructTransactionRequest: true,
+				constructTransactionAttempting: true,
 				errorConstructTransaction: null,
 			};
 		case CONSTRUCTTRANSACTIONFAILED:
 			return {
 				...state,
-				getConstructTransactionRequest: false,
+				constructTransactionAttempting: false,
 				errorConstructTransaction: action.error,
 			};
 		case CONSTRUCTTRANSACTIONSUCCESS:
+			console.log('###REDUCER',action)
 			return {
 				...state,
-				getConstructTransactionRequest: false,
-				_ConstructTransaction: action.payload,
-				errorConstructTransaction: null
+				constructTransactionAttempting: false,
+				constructTransactionResponse: action.response,
+				errorConstructTransaction: null,
+				changeScriptByAccount: action.changeScriptByAccount,
 			};
 		default:
 			neverReached(action);

@@ -269,3 +269,4 @@ export type WalletTotals = {
 	total: number
 }
 
+

@@ -37,3 +37,23 @@ export const TicketStatusLabels = {
 	7: 'REVOKED'
 }
 
+export const ATOMS_DIVISOR = 100000000;
+export const DEFAULT_FEE = 0.00004;
+export const DEFAULT_REQUIRED_CONFIRMATIONS = 3;
+
+export const CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED = 0;
+export const CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL = 1;
+
+export enum Networks {
+	MAINNET,
+	TESTNET,
+	SIMNET,
+}
+
+type Configuration = {
+	CurrentNetwork: Networks
+}
+
+export const Configuration: Configuration = {
+	CurrentNetwork: Networks.SIMNET
+}

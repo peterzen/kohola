@@ -1,11 +1,12 @@
 import { Moment } from "moment";
 import { formatTimestamp, reverseHash } from "../../helpers";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Transaction } from "../../models";
 import _ from "lodash";
 import { sprintf } from "sprintf-js";
 
 
+import { Button } from 'react-bootstrap';
 
 interface TimestampProps {
 	ts: Moment
@@ -29,12 +30,12 @@ export function TransactionHash(props: TransactionHashProps) {
 interface AmountProps {
 	amount: number
 	rounding?: number
-	showCurrency?:boolean
+	showCurrency?: boolean
 }
 
 export function Amount(props: AmountProps) {
 
-	const showCurrency=props.showCurrency||false
+	const showCurrency = props.showCurrency || false
 	const rounding = props.rounding || 4;
 	const dcrAmount = props.amount / 100000000;
 	const split = dcrAmount.toFixed(rounding).toString().split(".");
@@ -44,7 +45,7 @@ export function Amount(props: AmountProps) {
 
 	return (
 		<span className="amount" title={dcrAmount.toString()}>
-			<span>{sprintf("%s%02.02f", negativeZero ? '-':'', head)}</span>
+			<span>{sprintf("%s%02.02f", negativeZero ? '-' : '', head)}</span>
 			<span className="fractions" >{tail}</span>&nbsp;
 			{showCurrency ? <span className="currency">DCR</span> : ""}
 		</span>
@@ -74,3 +75,46 @@ export function NoRouteMatch() {
   		</div>
 	)
 }
+
+
+
+
+
+
+function simulateNetworkRequest() {
+	return new Promise(resolve => setTimeout(resolve, 2000));
+}
+
+export function LoadingButton(props: {
+	label: string,
+	loadingLabel: string,
+	onClick: any
+}) {
+	const [isLoading, setLoading] = useState(false);
+
+	useEffect(() => {
+		if (isLoading) {
+			simulateNetworkRequest().then(() => {
+				setLoading(false);
+			});
+		}
+	}, [isLoading]);
+
+	function handleClick() {
+		setLoading(true);
+		return props.onClick(arguments);
+	}
+
+	return (
+		<Button
+			type="submit"
+			variant="primary"
+			disabled={isLoading}
+			onClick={!isLoading ? handleClick : null}
+		>
+			{isLoading ? props.loadingLabel : props.label}
+		</Button>
+	);
+}
+
+
