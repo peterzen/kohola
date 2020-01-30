@@ -16,7 +16,7 @@ class Home extends React.Component {
 			<div>
 				<WalletBalanceContainer />
 				<hr />
-				<SendDialogContainer />
+				{/* <SendDialogContainer /> */}
 				<hr/>
 				<RecentTransactions />
 			</div>

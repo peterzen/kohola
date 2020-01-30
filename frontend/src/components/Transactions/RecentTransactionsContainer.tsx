@@ -8,9 +8,11 @@ import { ITransactionState } from '../../store/transactions/types';
 import { getFilteredTransactions } from '../../store/transactions/selectors';
 import { loadTransactionsAttempt } from '../../store/transactions/actions';
 
-import { Spinner } from 'react-bootstrap';
+import { Spinner, Button } from 'react-bootstrap';
 import TransactionTable from './TransactionTable';
 import TransactionDetailsModal from './TransactionDetailsComponent';
+import SendDialogContainer from './SendTransaction/SendDialogContainer';
+import SendTransactionModal from './SendTransaction/SendTransactionModal';
 
 
 class RecentTransactionsComponent extends React.Component<Props, InternalState> {
@@ -19,6 +21,7 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 		super(props)
 		this.state = {
 			showModal: false,
+			showSendTxModal: false,
 			selectedItem: null
 		}
 	}
@@ -33,14 +36,26 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 		return (
 			<div>
 				<h4>Recent transactions ({txList.length})</h4>
+				<Button
+					variant="primary"
+					onClick={_.bind(this.showSendTxModal, this)}>Send funds</Button>
 				<TransactionTable items={txList} onItemClick={_.bind(this.itemClickHandler, this)} />
 				<TransactionDetailsModal
 					tx={this.state.selectedItem}
 					modalTitle="Transaction details"
 					show={this.state.showModal}
 					onHide={_.bind(this.hideModal, this)} />
+				<SendTransactionModal
+					show={this.state.showSendTxModal}
+					onHide={_.bind(this.hideSendTxModal, this)} />
 			</div>
 		)
+	}
+	showSendTxModal() {
+		this.setState({ showSendTxModal: true })
+	}
+	hideSendTxModal() {
+		this.setState({ showSendTxModal: false })
 	}
 	hideModal() {
 		this.setState({ showModal: false })
@@ -77,6 +92,7 @@ type Props = ITransactionState & DispatchProps & OwnProps
 
 interface InternalState {
 	showModal: boolean
+	showSendTxModal: boolean
 	selectedItem: Transaction | null
 }
 

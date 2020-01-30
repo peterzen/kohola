@@ -19,49 +19,47 @@ import SignDialog, { ISignDialogFormData } from "./SignDialog"
 import PublishDialog from "./PublishDialog"
 import PublishConfirmDialog from "./PublishConfirmDialog"
 
+
+
 class SendDialogContainer extends React.Component<Props, InternalState>{
 	render() {
 		const currentStep = this.props.currentStep
 		return (
-			<Row>
-				<Col>
-					{currentStep == SendTransactionSteps.CONSTRUCT_DIALOG && (
-						<SendDialogForm
-							error={this.props.errorConstructTransaction}
-							accounts={this.props.accounts}
-							onFormComplete={_.bind(this.onConstructAttempt, this)}
+			<div>
+				{currentStep == SendTransactionSteps.CONSTRUCT_DIALOG && (
+					<SendDialogForm
+						error={this.props.errorConstructTransaction}
+						accounts={this.props.accounts}
+						onFormComplete={_.bind(this.onConstructAttempt, this)}
+					/>
+				)}
+				{currentStep == SendTransactionSteps.SIGN_DIALOG &&
+					this.props.constructTransactionResponse != null &&
+					this.props.constructTransactionRequest != null && (
+						<SignDialog
+							error={this.props.errorSignTransaction}
+							txInfo={this.props.txInfo}
+							constructTransactionResponse={this.props.constructTransactionResponse}
+							onCancel={_.bind(this.onSignCancel, this)}
+							onFormComplete={_.bind(this.onSignAttempt, this)}
 						/>
 					)}
-					{currentStep == SendTransactionSteps.SIGN_DIALOG &&
-						this.props.constructTransactionResponse != null &&
-						this.props.constructTransactionRequest != null && (
-							<SignDialog
-								error={this.props.errorSignTransaction}
-								txInfo={this.props.txInfo}
-								constructTransactionResponse={this.props.constructTransactionResponse}
-								onCancel={_.bind(this.onSignCancel, this)}
-								onFormComplete={_.bind(this.onSignAttempt, this)}
-							/>
-						)}
-					{currentStep == SendTransactionSteps.PUBLISH_DIALOG &&
-						this.props.signTransactionResponse != null && (
-							<PublishDialog
-								error={this.props.errorPublishTransaction}
-								signTransactionResponse={this.props.signTransactionResponse}
-								onCancel={_.bind(this.onPublishCancel, this)}
-								onFormComplete={_.bind(this.onPublishAttempt, this)}
-							/>
-						)}
-					{currentStep == SendTransactionSteps.PUBLISH_CONFIRM_DIALOG &&
-						this.props.publishTransactionResponse != null && (
-							<PublishConfirmDialog
-								publishTransactionResponse={this.props.publishTransactionResponse}
-							/>
-						)}
-				</Col>
-				<Col>
-				</Col>
-			</Row>
+				{currentStep == SendTransactionSteps.PUBLISH_DIALOG &&
+					this.props.signTransactionResponse != null && (
+						<PublishDialog
+							error={this.props.errorPublishTransaction}
+							signTransactionResponse={this.props.signTransactionResponse}
+							onCancel={_.bind(this.onPublishCancel, this)}
+							onFormComplete={_.bind(this.onPublishAttempt, this)}
+						/>
+					)}
+				{currentStep == SendTransactionSteps.PUBLISH_CONFIRM_DIALOG &&
+					this.props.publishTransactionResponse != null && (
+						<PublishConfirmDialog
+							publishTransactionResponse={this.props.publishTransactionResponse}
+						/>
+					)}
+			</div>
 		)
 	}
 

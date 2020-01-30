@@ -3,7 +3,7 @@ import * as React from "react"
 
 import { IndexedWalletAccounts, WalletAccount } from "../../../models"
 
-import { Form, Button, InputGroup, FormControl } from 'react-bootstrap';
+import { Form, Button, InputGroup, FormControl, Row, Col } from 'react-bootstrap';
 import { LoadingButton } from "../../Shared/shared"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -54,7 +54,6 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 				</Form.Group>
 				<Form.Group controlId="destinationAddressControl">
 					<Form.Label>Destination address</Form.Label>
-					<div>SseN9XYdBWYQdjFyq1hENB2k91Mvo1VMZ48</div>
 					<InputGroup className="mb-3">
 						<FormControl
 							required
@@ -113,10 +112,14 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 					</Form.Control.Feedback>
 				</Form.Group>
 				<DialogAlert error={this.props.error} />
-				<Button
-					tabIndex={4}
-					variant="primary"
-					type="submit">Create tx</Button>
+				<Row>
+					<Col className="text-right">
+						<Button
+							tabIndex={4}
+							variant="primary"
+							type="submit">Create tx</Button>
+					</Col>
+				</Row>
 			</Form>
 		)
 	}
