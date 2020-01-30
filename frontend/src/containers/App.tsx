@@ -9,7 +9,6 @@ import Home from "./Home"
 import Staking from "./Staking"
 import Navbar from "../components/Navbar"
 import { NoRouteMatch } from '../components/Shared/shared';
-import Footer from '../components/Footer';
 
 import { hot } from 'react-hot-loader/root'
 
@@ -30,7 +29,6 @@ const App = ({ history }: AppProps) => {
 					</Switch>
 				</Container>
 			</main>
-			<Footer/>
 		</ConnectedRouter>
 	)
 }

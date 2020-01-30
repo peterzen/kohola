@@ -9,8 +9,8 @@ import { formatHash } from "../helpers";
 class BestBlockComponent extends React.Component<BestBlockState, BestBlockState> {
 	render() {
 		return (
-			<span>
-				Block height: <span title={formatHash(this.props.currentBlock.getHash_asB64())}><strong>{this.props.currentBlock.getHeight()}</strong></span>
+			<span title={formatHash(this.props.currentBlock.getHash_asB64())}>
+				Block height: <strong>{this.props.currentBlock.getHeight()}</strong>
 			</span>
 		)
 	}
