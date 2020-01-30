@@ -1,9 +1,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IApplicationState } from "../store/types";
-import { INetworkState } from "../store/networkinfo/types";
-import { loadNetworkAttempt } from "../store/networkinfo/actions";
+import { IApplicationState } from "../../store/types";
+import { INetworkState } from "../../store/networkinfo/types";
+import { loadNetworkAttempt } from "../../store/networkinfo/actions";
 
 export interface NetworkOwnProps {
 	// propFromParent: number

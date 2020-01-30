@@ -1,10 +1,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { BestBlockState } from "../store/networkinfo/types";
-import { IApplicationState } from "../store/types";
+import { BestBlockState } from "../../store/networkinfo/types";
+import { IApplicationState } from "../../store/types";
 
-import { formatHash } from "../helpers";
+import { formatHash } from "../../helpers";
 
 class BestBlockComponent extends React.Component<BestBlockState, BestBlockState> {
 	render() {

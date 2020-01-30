@@ -7,7 +7,7 @@ import { Container } from 'react-bootstrap'
 
 import Home from "./Home"
 import Staking from "./Staking"
-import Navbar from "../components/Navbar"
+import Navbar from "../components/Fixtures/Navbar"
 import { NoRouteMatch } from '../components/Shared/shared';
 
 import { hot } from 'react-hot-loader/root'

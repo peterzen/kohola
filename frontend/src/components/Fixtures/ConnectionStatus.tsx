@@ -1,8 +1,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IApplicationState } from "../store/types";
-import { PingState } from "../store/ping/types";
+import { IApplicationState } from "../../store/types";
+import { PingState } from "../../store/ping/types";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faCircle

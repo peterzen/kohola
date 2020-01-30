@@ -21,10 +21,8 @@ import { IGetState, AppError } from '../types';
 import { loadTicketsAttempt, loadStakeInfoAttempt } from '../staking/actions';
 import { loadWalletBalance } from '../walletbalance/actions';
 import { ConstructTransactionRequest, SignTransactionRequest, PublishTransactionRequest } from '../../proto/api_pb';
-import { rawToHex } from '../../helpers/byteActions';
 import { ConstructTxOutput } from '../../datasources/models';
 import { getChangeScriptCache } from './selectors';
-import { WalletAccount } from '../../models';
 import { lookupAccount } from '../accounts/selectors';
 
 

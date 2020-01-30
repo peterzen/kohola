@@ -10,7 +10,7 @@ export default class SendTransactionModal extends React.Component<Props, Interna
 		// console.log("GenericModalDialog render")
 		return (
 			<Modal
-				centered
+				centered	
 				onEntered={this.onEntered}
 				onExit={_.bind(this.onExit,this)}
 				show={this.props.show}
