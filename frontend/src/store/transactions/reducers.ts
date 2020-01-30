@@ -3,7 +3,7 @@ import {
 	ITransactionState, TransactionsActionTypes,
 	GETTRANSACTION_ATTEMPT, GETTRANSACTION_FAILED, GETTRANSACTION_SUCCESS,
 	TRANSACTIONNOTIFICATIONS_SUBSCRIBE, TRANSACTIONNOTIFICATIONS_RECEIVED,
-	CONSTRUCTTRANSACTIONATTEMPT, CONSTRUCTTRANSACTIONFAILED, CONSTRUCTTRANSACTIONSUCCESS, SIGNTRANSACTIONATTEMPT, SIGNTRANSACTIONFAILED, SIGNTRANSACTIONSUCCESS, PUBLISHTRANSACTIONATTEMPT, PUBLISHTRANSACTIONFAILED, PUBLISHTRANSACTIONSUCCESS, COMMITTEDTICKETSATTEMPT, COMMITTEDTICKETSFAILED, COMMITTEDTICKETSSUCCESS, VALIDATEADDRESSATTEMPT, VALIDATEADDRESSFAILED, VALIDATEADDRESSSUCCESS, SWEEPACCOUNTATTEMPT, SWEEPACCOUNTFAILED, SWEEPACCOUNTSUCCESS,
+	CONSTRUCTTRANSACTIONATTEMPT, CONSTRUCTTRANSACTIONFAILED, CONSTRUCTTRANSACTIONSUCCESS, SIGNTRANSACTIONATTEMPT, SIGNTRANSACTIONFAILED, SIGNTRANSACTIONSUCCESS, PUBLISHTRANSACTIONATTEMPT, PUBLISHTRANSACTIONFAILED, PUBLISHTRANSACTIONSUCCESS, COMMITTEDTICKETSATTEMPT, COMMITTEDTICKETSFAILED, COMMITTEDTICKETSSUCCESS, VALIDATEADDRESSATTEMPT, VALIDATEADDRESSFAILED, VALIDATEADDRESSSUCCESS, SWEEPACCOUNTATTEMPT, SWEEPACCOUNTFAILED, SWEEPACCOUNTSUCCESS, SendTransactionSteps, SIGNTRANSACTIONCANCEL,
 } from './types'
 import { TransactionType } from '../../constants';
 
@@ -29,15 +29,21 @@ export const transactionsInitialState: ITransactionState = {
 	activeTypeFilter: TransactionType.REGULAR,
 
 	// ConstructTransaction
+	changeScriptCache: {},
+	errorConstructTransaction: null,
+	constructTransactionRequest: null,
 	constructTransactionResponse: null,
 	constructTransactionAttempting: false,
-	errorConstructTransaction: null,
-	changeScriptCache: {},
 
 	// SignTransaction
 	signTransactionAttempting: false,
 	signTransactionResponse: null,
 	errorSignTransaction: null,
+
+	// PublishTransaction
+	publishTransactionAttempting: false,
+	publishTransactionResponse: null,
+	errorPublishTransaction: null,
 
 	// CommittedTickets
 	committedTicketsAttempting: false,
@@ -52,7 +58,10 @@ export const transactionsInitialState: ITransactionState = {
 	// SweepAccount
 	sweepAccountAttempting: false,
 	sweepAccountResponse: null,
-	errorSweepAccount: null
+	errorSweepAccount: null,
+
+	// Send transaction GUI
+	sendTransactionCurrentStep: SendTransactionSteps.CONSTRUCT_DIALOG
 }
 
 
@@ -93,22 +102,28 @@ export default function transactions(
 		case CONSTRUCTTRANSACTIONATTEMPT:
 			return {
 				...state,
-				constructTransactionAttempting: true,
 				errorConstructTransaction: null,
+				constructTransactionRequest: null,
+				constructTransactionResponse: null,
+				constructTransactionAttempting: true,
 			};
 		case CONSTRUCTTRANSACTIONFAILED:
 			return {
 				...state,
-				constructTransactionAttempting: false,
 				errorConstructTransaction: action.error,
+				constructTransactionRequest: null,
+				constructTransactionAttempting: false,
 			};
 		case CONSTRUCTTRANSACTIONSUCCESS:
 			return {
 				...state,
-				constructTransactionAttempting: false,
-				constructTransactionResponse: action.response,
+				txInfo: action.txInfo,
+				changeScriptCache: action.changeScriptCache,
 				errorConstructTransaction: null,
-				changeScriptByAccount: action.changeScriptCache,
+				sendTransactionCurrentStep: action.currentStep,
+				constructTransactionRequest: action.constructTxReq,
+				constructTransactionResponse: action.constructTxResp,
+				constructTransactionAttempting: false,
 			};
 
 		// SignTransaction
@@ -118,6 +133,13 @@ export default function transactions(
 				signTransactionAttempting: true,
 				errorSignTransaction: null,
 			};
+		case SIGNTRANSACTIONCANCEL:
+			return {
+				...state,
+				signTransactionAttempting: false,
+				errorSignTransaction: null,
+				sendTransactionCurrentStep: action.currentStep,
+			}
 		case SIGNTRANSACTIONFAILED:
 			return {
 				...state,
@@ -127,8 +149,9 @@ export default function transactions(
 		case SIGNTRANSACTIONSUCCESS:
 			return {
 				...state,
-				signTransactionAttempting: false,
+				sendTransactionCurrentStep: action.currentStep,
 				signTransactionResponse: action.payload,
+				signTransactionAttempting: false,
 				errorSignTransaction: null
 			};
 
@@ -148,9 +171,13 @@ export default function transactions(
 		case PUBLISHTRANSACTIONSUCCESS:
 			return {
 				...state,
-				publishTransactionAttempting: false,
+				txInfo: null,
+				errorPublishTransaction: null,
+				signTransactionResponse: null,
+				sendTransactionCurrentStep: action.currentStep,
 				publishTransactionResponse: action.payload,
-				errorPublishTransaction: null
+				publishTransactionAttempting: false,
+				constructTransactionResponse: null,
 			};
 
 		// CommittedTickets

@@ -236,7 +236,8 @@ const DcrwalletDatasource = {
 		request: api.SignTransactionRequest
 	): Promise<api.SignTransactionResponse> => {
 		return new Promise<api.SignTransactionResponse>((resolve, reject) => {
-			grpcInvoke(WalletService.ConstructTransaction, request, {
+			console.log("INVOKE",request)
+			grpcInvoke(WalletService.SignTransaction, request, {
 				onMessage: (response: api.SignTransactionResponse) => {
 					resolve(response);
 				},
@@ -258,7 +259,7 @@ const DcrwalletDatasource = {
 		request: api.PublishTransactionRequest
 	): Promise<api.PublishTransactionResponse> => {
 		return new Promise<api.PublishTransactionResponse>((resolve, reject) => {
-			grpcInvoke(WalletService.ConstructTransaction, request, {
+			grpcInvoke(WalletService.PublishTransaction, request, {
 				onMessage: (response: api.PublishTransactionResponse) => {
 					resolve(response);
 				},

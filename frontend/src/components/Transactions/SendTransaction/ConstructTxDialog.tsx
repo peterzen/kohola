@@ -1,36 +1,19 @@
 import _ from "lodash"
 import * as React from "react"
 
-import { IndexedWalletAccounts, WalletAccount } from "../../models"
+import { IndexedWalletAccounts, WalletAccount } from "../../../models"
 
-import { Form, Button, InputGroup, FormControl, Alert } from 'react-bootstrap';
-import { LoadingButton } from "../Shared/shared"
+import { Form, Button, InputGroup, FormControl } from 'react-bootstrap';
+import { LoadingButton } from "../../Shared/shared"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faPaste,
 } from '@fortawesome/free-solid-svg-icons'
-import { isValidAddress } from "../../helpers/validators"
-import { ATOMS_DIVISOR, DEFAULT_REQUIRED_CONFIRMATIONS } from "../../constants"
-import { AppError } from "../../store/types";
-
-const ConstructTxFeedback = (props: { error: AppError | null }) => {
-	if (props.error == null) return null;
-	let msg = "";
-	switch (props.error.status) {
-		case 8:
-			msg = "Insufficient balance."
-			break;
-		default:
-			msg = props.error.msg
-			break;
-	}
-	return (
-		<Alert variant="danger" className="mt-3 mb-3 p-2">
-			{msg}
-		</Alert>
-	)
-}
+import { isValidAddress } from "../../../helpers/validators"
+import { ATOMS_DIVISOR, DEFAULT_REQUIRED_CONFIRMATIONS } from "../../../constants"
+import { AppError } from "../../../store/types";
+import DialogAlert from "./DialogAlert";
 
 export default class SendDialogForm extends React.Component<OwnProps, ISendDialogFormData>{
 	constructor(props: OwnProps) {
@@ -129,16 +112,11 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 						Invalid amount
 					</Form.Control.Feedback>
 				</Form.Group>
-				<ConstructTxFeedback error={this.props.error} />
+				<DialogAlert error={this.props.error} />
 				<Button
 					tabIndex={4}
 					variant="primary"
 					type="submit">Create tx</Button>
-				{/* <LoadingButton
-							label="Create transaction"
-							loadingLabel="Creating tx"
-							onClick={this.handleSubmitBtn}
-						/> */}
 			</Form>
 		)
 	}
@@ -198,17 +176,17 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 interface OwnProps {
 	error: AppError | null
 	accounts: IndexedWalletAccounts
-	onFormComplete: (formData: ISendDialogFormData) => Promise<any>
+	onFormComplete: (formData: ISendDialogFormData) => void
 }
 
 
 export interface ISendDialogFormData {
-	error: AppError | null,
-	amount: number,
-	amountRef: React.RefObject<any>,
-	sendAllToggle: boolean | undefined,
-	sourceAccount: WalletAccount,
-	formIsValidated: boolean,
-	destinationAddress: string[],
-	requiredConfirmations: number,
+	error: AppError | null
+	amount: number
+	amountRef: React.RefObject<any>
+	sendAllToggle: boolean | undefined
+	sourceAccount: WalletAccount
+	formIsValidated: boolean
+	destinationAddress: string[]
+	requiredConfirmations: number
 }

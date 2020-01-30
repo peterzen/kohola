@@ -9,18 +9,20 @@ import {
 	TransactionsActionTypes, TransactionNotificationsReceived,
 	GETTRANSACTION_ATTEMPT, GETTRANSACTION_SUCCESS, GETTRANSACTION_FAILED,
 	TRANSACTIONNOTIFICATIONS_RECEIVED,
-	CONSTRUCTTRANSACTIONATTEMPT, CONSTRUCTTRANSACTIONSUCCESS, CONSTRUCTTRANSACTIONFAILED, SIGNTRANSACTIONATTEMPT, SIGNTRANSACTIONSUCCESS, SIGNTRANSACTIONFAILED, PUBLISHTRANSACTIONATTEMPT, PUBLISHTRANSACTIONSUCCESS, PUBLISHTRANSACTIONFAILED
+	CONSTRUCTTRANSACTIONATTEMPT, CONSTRUCTTRANSACTIONSUCCESS, CONSTRUCTTRANSACTIONFAILED, SIGNTRANSACTIONATTEMPT, SIGNTRANSACTIONSUCCESS, SIGNTRANSACTIONFAILED, PUBLISHTRANSACTIONATTEMPT, PUBLISHTRANSACTIONSUCCESS, PUBLISHTRANSACTIONFAILED, SendTransactionSteps, HumanreadableTxInfo, SIGNTRANSACTIONCANCEL
 } from './types';
 
-import { CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED, CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL } from '../../constants';
+import { CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED, CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL, DEFAULT_FEE } from '../../constants';
 
 import { IGetState, AppError } from '../types';
 import { loadTicketsAttempt, loadStakeInfoAttempt } from '../staking/actions';
 import { loadWalletBalance } from '../walletbalance/actions';
-import { ConstructTransactionRequest } from '../../proto/api_pb';
+import { ConstructTransactionRequest, SignTransactionRequest, PublishTransactionRequest } from '../../proto/api_pb';
 import { rawToHex } from '../../helpers/byteActions';
 import { ConstructTxOutput } from '../../datasources/models';
 import { getChangeScriptCache } from './selectors';
+import { WalletAccount } from '../../models';
+import { lookupAccount } from '../accounts/selectors';
 
 
 export const loadTransactionsAttempt: ActionCreator<any> = () => {
@@ -53,7 +55,6 @@ export const subscribeTransactionNotifications: ActionCreator<any> = () => {
 		});
 	}
 }
-
 
 
 export const constructTransactionAttempt: ActionCreator<any> = (
@@ -101,7 +102,11 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 						status: 1,
 						msg: "Too many outputs provided for a send all request."
 					};
-					dispatch({ error, type: CONSTRUCTTRANSACTIONFAILED });
+					dispatch({
+						error,
+						currentStep: SendTransactionSteps.CONSTRUCT_DIALOG,
+						type: CONSTRUCTTRANSACTIONFAILED
+					});
 				};
 			} else if (outputs.length == 0) {
 				return (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>) => {
@@ -109,7 +114,11 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 						status: 2,
 						msg: "No destination specified for send all request."
 					};
-					dispatch({ error, type: CONSTRUCTTRANSACTIONFAILED });
+					dispatch({
+						error,
+						currentStep: SendTransactionSteps.CONSTRUCT_DIALOG,
+						type: CONSTRUCTTRANSACTIONFAILED
+					});
 				};
 			} else {
 				const output = outputs[0];
@@ -122,6 +131,8 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 
 		dispatch({ type: CONSTRUCTTRANSACTIONATTEMPT });
 
+		let rawTx;
+
 		try {
 			const constructTxResponse = await DcrwalletDatasource.constructTransaction(request);
 			const changeScriptCache = getChangeScriptCache(getState()) || {};
@@ -131,7 +142,7 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 				// limit exhaustion (see above note on issue dcrwallet#1622).
 				const changeIndex = constructTxResponse.getChangeIndex();
 				if (changeIndex > -1) {
-					const rawTx = Buffer.from(constructTxResponse.getUnsignedTransaction_asU8());
+					rawTx = Buffer.from(constructTxResponse.getUnsignedTransaction_asU8());
 					const decoded = decodeRawTransaction(rawTx);
 					changeScriptCache[account] = decoded.outputs[changeIndex].script;
 				}
@@ -139,37 +150,33 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 			} else {
 				totalAmount = constructTxResponse.getTotalOutputAmount();
 			}
-			const rawTx = rawToHex(constructTxResponse.getUnsignedTransaction_asU8());
-			dispatch({
-				response: constructTxResponse,
-				changeScriptCache: changeScriptCache,
-				rawTx: rawTx,
+
+			// for displaying the confirmation dialog
+			const humanreadableTxInfo: HumanreadableTxInfo = {
+				rawTx: decodeRawTransaction(Buffer.from(constructTxResponse.getUnsignedTransaction_asU8())),
+				outputs: outputs,
 				totalAmount: totalAmount,
-				type: CONSTRUCTTRANSACTIONSUCCESS
+				sourceAccount: lookupAccount(getState(), account),
+				constructTxReq: request,
+			}
+
+			dispatch({
+				type: CONSTRUCTTRANSACTIONSUCCESS,
+				txInfo: humanreadableTxInfo,
+				constructTxReq: request,
+				constructTxResp: constructTxResponse,
+				changeScriptCache: changeScriptCache,
+				currentStep: SendTransactionSteps.SIGN_DIALOG,
 			});
+
 			return constructTxResponse;
 		}
 		catch (error) {
-			dispatch({ error, type: CONSTRUCTTRANSACTIONFAILED });
-			return
-			debugger
-			if (String(error).indexOf("insufficient balance") > 0) {
-				const error: AppError = {
-					status: 3,
-					msg: "Insufficient balance"
-				};
-				dispatch({ error, type: CONSTRUCTTRANSACTIONFAILED });
-			} else if (String(error).indexOf("violates the unused address gap limit policy") > 0) {
-				// Work around dcrwallet#1622: generate a new address in the internal
-				// branch using the wrap gap policy so that change addresses can be
-				// regenerated again.
-				// We'll still error out to let the user know wrapping has occurred.
-				// TODO
-				wallet.getNextAddress(sel.walletService(getState()), account, 1);
-				dispatch({ error, type: CONSTRUCTTRANSACTIONFAILED });
-			} else {
-				dispatch({ error, type: CONSTRUCTTRANSACTIONFAILED });
-			}
+			dispatch({
+				error,
+				currentStep: SendTransactionSteps.SIGN_DIALOG,
+				type: CONSTRUCTTRANSACTIONFAILED
+			});
 		}
 	}
 };
@@ -177,22 +184,53 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 
 
 
+export const cancelSignTransaction: ActionCreator<any> = () => {
+	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>): Promise<any> => {
+		dispatch({
+			type: SIGNTRANSACTIONCANCEL,
+			currentStep: SendTransactionSteps.CONSTRUCT_DIALOG
+		});
+	}
+};
 
-export const signTransactionAttempt: ActionCreator<any> = () => {
+
+
+
+export const signTransactionAttempt: ActionCreator<any> = (
+	passphrase: string,
+) => {
 	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
 
-		const { signTransactionAttempting } = getState().transactions;
+		const { signTransactionAttempting, constructTransactionResponse } = getState().transactions;
+
 
 		if (signTransactionAttempting) {
 			return Promise.resolve();
 		}
 
+		if (constructTransactionResponse == null) {
+			throw "null constructTransactionResponse"
+		}
+
+		const rawTx = constructTransactionResponse.getUnsignedTransaction_asU8()
+		const request = new SignTransactionRequest()
+		request.setPassphrase(new Uint8Array(Buffer.from(passphrase)))
+		request.setSerializedTransaction(new Uint8Array(Buffer.from(rawTx)))
+
 		dispatch({ type: SIGNTRANSACTIONATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.signTransaction()
-			dispatch({ type: SIGNTRANSACTIONSUCCESS, payload: resp });
+			const resp = await DcrwalletDatasource.signTransaction(request)
+			dispatch({
+				type: SIGNTRANSACTIONSUCCESS,
+				payload: resp,
+				currentStep: SendTransactionSteps.PUBLISH_DIALOG
+			});
 		} catch (error) {
-			dispatch({ error, type: SIGNTRANSACTIONFAILED });
+			dispatch({
+				error,
+				type: SIGNTRANSACTIONFAILED
+			});
+
 		}
 	}
 };
@@ -201,18 +239,35 @@ export const signTransactionAttempt: ActionCreator<any> = () => {
 export const publishTransactionAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
 
-		const { publishTransactionAttempting } = getState().transactions;
+		const { publishTransactionAttempting, signTransactionResponse } = getState().transactions;
 
 		if (publishTransactionAttempting) {
 			return Promise.resolve();
 		}
 
+		if (signTransactionResponse == null) {
+			throw {
+				status: 10,
+				msg: "Signed tx should not be null"
+			}
+		}
+		const tx = signTransactionResponse.getTransaction_asU8();
+		const request = new PublishTransactionRequest()
+		request.setSignedTransaction(new Uint8Array(Buffer.from(tx)))
+
 		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.publishTransaction()
-			dispatch({ type: PUBLISHTRANSACTIONSUCCESS, payload: resp });
+			const resp = await DcrwalletDatasource.publishTransaction(request)
+			dispatch({
+				type: PUBLISHTRANSACTIONSUCCESS,
+				payload: resp,
+				currentStep: SendTransactionSteps.PUBLISH_CONFIRM_DIALOG
+			});
 		} catch (error) {
-			dispatch({ error, type: PUBLISHTRANSACTIONFAILED });
+			dispatch({
+				error,
+				type: PUBLISHTRANSACTIONFAILED
+			});
 		}
 	}
 };

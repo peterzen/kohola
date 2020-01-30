@@ -7,6 +7,7 @@ import { sprintf } from "sprintf-js";
 
 
 import { Button } from 'react-bootstrap';
+import { rawHashToHex } from "../../helpers/byteActions";
 
 interface TimestampProps {
 	ts: Moment
@@ -17,13 +18,19 @@ export function Timestamp(props: TimestampProps) {
 	)
 }
 
-interface TransactionHashProps {
-	tx: Transaction
-}
-
-export function TransactionHash(props: TransactionHashProps) {
+export function TransactionHash(props: { tx: Transaction }) {
 	return (
 		<span className="tx-hash" title={props.tx.getHash()}>{_.truncate(props.tx.getHash(), { length: 15 })}</span>
+	)
+}
+
+export function TxHash(props: { hash: Buffer, truncate?: boolean }) {
+	const h = rawHashToHex(props.hash)
+	let truncate = true;
+	if (props.truncate != undefined) truncate = props.truncate;
+	const truncLength = truncate ? 15 : 100
+	return (
+		<span className="tx-hash" title={h}>{_.truncate(h, { length: truncLength })}</span>
 	)
 }
 

@@ -1,5 +1,5 @@
 import { AppError } from "../types";
-import { Transaction } from "../../models";
+import { Transaction, WalletAccount } from "../../models";
 import {
 	TransactionDetails,
 	TransactionNotificationsResponse,
@@ -11,8 +11,9 @@ import {
 	ValidateAddressResponse,
 	SweepAccountResponse,
 } from "../../proto/api_pb";
-import { DecodedrawTx } from "../../datasources/models";
+import { DecodedrawTx, ConstructTxOutput } from "../../datasources/models";
 import { ProtobufMessage } from "@improbable-eng/grpc-web/dist/typings/message";
+import { HumanreadableTxInfo } from "./actions";
 
 export interface GetTransactionsState {
 	readonly txList: Transaction[]
@@ -59,9 +60,11 @@ export interface TransactionNotificationsReceived {
 
 // ConstructTransaction
 export interface ConstructTransactionState {
-	readonly constructTransactionAttempting: boolean,
-	readonly constructTransactionResponse: ConstructTransactionResponse | null,
+	readonly txInfo: HumanreadableTxInfo | null,
 	readonly errorConstructTransaction: AppError | null,
+	readonly constructTransactionRequest: ConstructTransactionRequest | null,
+	readonly constructTransactionResponse: ConstructTransactionResponse | null,
+	readonly constructTransactionAttempting: boolean,
 	readonly changeScriptCache: IChangeScriptByAccount,
 }
 
@@ -76,16 +79,26 @@ export interface ConstructTransactionAttemptAction {
 export interface ConstructTransactionFailedAction {
 	type: typeof CONSTRUCTTRANSACTIONFAILED
 	error: AppError
+	currentStep: SendTransactionSteps
 }
 
 export interface ConstructTransactionSuccessAction {
 	type: typeof CONSTRUCTTRANSACTIONSUCCESS
-	rawTx: string,
-	response: ConstructTransactionResponse,
-	totalAmount: number,
-	changeScriptCache: IChangeScriptByAccount
+	txInfo: HumanreadableTxInfo,
+	constructTxReq: ConstructTransactionRequest;
+	constructTxResp: ConstructTransactionResponse,
+	changeScriptCache: IChangeScriptByAccount,
+	currentStep: SendTransactionSteps
 }
 
+export type HumanreadableTxInfo = {
+	rawTx: DecodedrawTx,
+	outputs: ConstructTxOutput[]
+	totalAmount: number,
+	sourceAccount: WalletAccount,
+	changeScript?: Buffer,
+	constructTxReq: ConstructTransactionRequest,
+}
 
 
 export interface IChangeScriptByAccount {
@@ -103,9 +116,15 @@ export interface SignTransactionState {
 export const SIGNTRANSACTIONATTEMPT = 'SIGNTRANSACTIONATTEMPT'
 export const SIGNTRANSACTIONFAILED = 'SIGNTRANSACTIONFAILED'
 export const SIGNTRANSACTIONSUCCESS = 'SIGNTRANSACTIONSUCCESS'
+export const SIGNTRANSACTIONCANCEL = 'SIGNTRANSACTIONCANCEL'
 
 export interface SignTransactionAttemptAction {
 	type: typeof SIGNTRANSACTIONATTEMPT,
+}
+
+export interface SignTransactionCancelAction {
+	type: typeof SIGNTRANSACTIONCANCEL,
+	currentStep: SendTransactionSteps
 }
 
 export interface SignTransactionFailedAction {
@@ -116,6 +135,7 @@ export interface SignTransactionFailedAction {
 export interface SignTransactionSuccessAction {
 	type: typeof SIGNTRANSACTIONSUCCESS,
 	payload: SignTransactionResponse,
+	currentStep: SendTransactionSteps,
 }
 
 
@@ -142,6 +162,7 @@ export interface PublishTransactionFailedAction {
 export interface PublishTransactionSuccessAction {
 	type: typeof PUBLISHTRANSACTIONSUCCESS,
 	payload: PublishTransactionResponse,
+	currentStep: SendTransactionSteps,
 }
 
 // ValidateAddress
@@ -220,6 +241,19 @@ export interface SweepAccountSuccessAction {
 	payload: SweepAccountResponse,
 }
 
+
+export enum SendTransactionSteps {
+	CONSTRUCT_DIALOG,
+	SIGN_DIALOG,
+	PUBLISH_DIALOG,
+	PUBLISH_CONFIRM_DIALOG
+}
+
+// Send transaction
+export interface GUISendTransaction {
+	sendTransactionCurrentStep: SendTransactionSteps
+}
+
 export type ITransactionState =
 	GetTransactionsState &
 	ConstructTransactionState &
@@ -227,7 +261,8 @@ export type ITransactionState =
 	PublishTransactionState &
 	CommittedTicketsState &
 	ValidateAddressState &
-	SweepAccountState
+	SweepAccountState &
+	GUISendTransaction
 
 export type TransactionsActionTypes =
 	GetTransactionAttemptAction |
@@ -239,6 +274,7 @@ export type TransactionsActionTypes =
 	ConstructTransactionFailedAction |
 	ConstructTransactionSuccessAction |
 	SignTransactionAttemptAction |
+	SignTransactionCancelAction |
 	SignTransactionFailedAction |
 	SignTransactionSuccessAction |
 	PublishTransactionAttemptAction |
