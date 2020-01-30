@@ -8,44 +8,33 @@ import StakeInfoComponent from '../components/Staking/StakeInfoComponent';
 import AgendasComponent from '../components/Staking/AgendasComponent';
 import { IStakingState } from '../store/staking/types';
 import TicketsOverviewContainer from '../components/Staking/TicketsOverviewContainer';
+import { Row, Col } from 'react-bootstrap';
 
-class StakingContainer extends React.Component<Props, InternalState> {
+class StakingContainer extends React.Component<{}, {}> {
 
 	render() {
 		return (
 			<div>
 				<StakeInfoComponent />
 				<hr />
-				<TicketPriceComponent />
-				{/* <TicketBuyerConfigComponent/> */}
-				<AgendasComponent />
-				<TicketsOverviewContainer />
+				<Row>
+					<Col>
+						<TicketsOverviewContainer />
+					</Col>
+					<Col>
+						<TicketPriceComponent />
+						<AgendasComponent />
+					</Col>
+				</Row>
 			</div>
 		)
 	}
-
 }
 
-
-const mapStateToProps = (state: IApplicationState, ownProps: StakingOwnProps): IStakingState => {
+const mapStateToProps = (state: IApplicationState): IStakingState => {
 	return {
 		...state.staking
 	};
-}
-
-
-export interface StakingOwnProps {
-	// propFromParent: number
-}
-
-interface DispatchProps {
-	// onSomeEvent: () => void
-}
-
-type Props = IStakingState & DispatchProps & StakingOwnProps
-
-interface InternalState {
-	// internalComponentStateField: string
 }
 
 export default withRouter(connect(mapStateToProps)(StakingContainer));
