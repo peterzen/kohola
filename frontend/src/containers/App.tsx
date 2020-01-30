@@ -22,7 +22,7 @@ const App = ({ history }: AppProps) => {
 		<ConnectedRouter history={history}>
 			<main>
 				<Navbar />
-				<Container fluid={true}>
+				<Container fluid={true} className="mt-5">
 					<Switch>
 						<Route path="/staking" component={Staking} />
 						<Route exact path="/" component={Home} />

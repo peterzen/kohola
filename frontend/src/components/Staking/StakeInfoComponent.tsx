@@ -1,6 +1,5 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 import { Container, Row, Col } from 'react-bootstrap';
 
 import { IApplicationState } from "../../store/types";
@@ -85,4 +84,4 @@ interface InternalState {
 	// internalComponentStateField: string
 }
 
-export default withRouter(connect(mapStateToProps)(StakeInfoComponent));
+export default connect(mapStateToProps)(StakeInfoComponent)

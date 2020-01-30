@@ -1,6 +1,5 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 
 import { IApplicationState } from "../store/types";
 import { PingState } from "../store/ping/types";
@@ -9,8 +8,7 @@ import { PingState } from "../store/ping/types";
 class ConnectionStatusComponent extends React.Component<PingState, any> {
 
     render() {
-        let connected = this.props.getPingResponse !== null ? "[*]" : "";
-
+        const connected = this.props.getPingResponse !== null ? "[*]" : "";
         return (
             <span>
                 {connected}
@@ -27,5 +25,4 @@ const mapStateToProps = function (state: IApplicationState, ownProps: any) {
     };
 }
 
-export default withRouter(connect(mapStateToProps, {
-})(ConnectionStatusComponent));
+export default connect(mapStateToProps)(ConnectionStatusComponent)

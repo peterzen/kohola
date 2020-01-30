@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
-import { IStakingState, ITicketPriceState } from '../../store/staking/types';
+import { ITicketPriceState } from '../../store/staking/types';
 import { IApplicationState } from '../../store/types';
 import { loadTicketPriceAttempt } from '../../store/staking/actions';
 
@@ -41,4 +40,4 @@ const mapStateToProps = (state: IApplicationState, ownProps: TicketPriceOwnProps
 	};
 }
 
-export default withRouter(connect(mapStateToProps)(TicketPriceComponent));
+export default connect(mapStateToProps)(TicketPriceComponent)

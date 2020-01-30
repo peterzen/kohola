@@ -12,11 +12,8 @@ import TicketsOverviewContainer from '../components/Staking/TicketsOverviewConta
 class StakingContainer extends React.Component<Props, InternalState> {
 
 	render() {
-		const title = "Staking";
-
 		return (
 			<div>
-				<h1>{title}</h1>
 				<StakeInfoComponent />
 				<hr />
 				<TicketPriceComponent />

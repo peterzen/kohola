@@ -1,6 +1,5 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 
 import { IApplicationState } from "../store/types";
 import { INetworkState } from "../store/networkinfo/types";
@@ -42,4 +41,4 @@ const mapStateToProps = (state: IApplicationState, ownProps: NetworkOwnProps): I
 		errorNetwork: state.networkinfo.errorNetwork,
 	};
 }
-export default withRouter(connect(mapStateToProps)(NetworkComponent));
+export default connect(mapStateToProps)(NetworkComponent)

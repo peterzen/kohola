@@ -1,13 +1,11 @@
 
 import * as React from 'react';
-import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom';
 
 import { IApplicationState } from '../store/types';
 
 import { Navbar, Nav } from 'react-bootstrap';
 
-class NavbarComponent extends React.Component {
+export default class NavbarComponent extends React.Component {
 
 	render() {
 		return (
@@ -25,12 +23,3 @@ class NavbarComponent extends React.Component {
 	}
 }
 
-
-
-const mapStateToProps = (state: IApplicationState, ownProps: any) => {
-	return {
-		...state
-	};
-}
-
-export default withRouter(connect(mapStateToProps)(NavbarComponent));

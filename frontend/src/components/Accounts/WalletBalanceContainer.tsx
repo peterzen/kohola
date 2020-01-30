@@ -28,9 +28,9 @@ class WalletBalanceContainer extends React.Component<Props, InternalState>{
 
 	render() {
 		return (
-			<div className="mt-3">
+			<div>
 				<WalletTotalsComponent totals={this.props.walletTotals} />
-				<div className="mt-3" />
+				<div className="mt-5" />
 				<AccountBalanceTable
 					menuHandler={_.bind(this.menuHandler, this)}
 					accounts={this.props.accounts}
