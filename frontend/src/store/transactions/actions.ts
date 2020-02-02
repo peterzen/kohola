@@ -24,6 +24,7 @@ import { ConstructTransactionRequest, SignTransactionRequest, PublishTransaction
 import { ConstructTxOutput } from '../../datasources/models';
 import { getChangeScriptCache } from './selectors';
 import { lookupAccount } from '../accounts/selectors';
+import { loadBestBlockHeightAttempt } from '../networkinfo/actions';
 
 
 export const loadTransactionsAttempt: ActionCreator<any> = () => {
@@ -49,10 +50,11 @@ export const subscribeTransactionNotifications: ActionCreator<any> = () => {
 	return (dispatch: Dispatch<TransactionNotificationsReceived>) => {
 		DcrwalletDatasource.txNotifications((message) => {
 			dispatch({ type: TRANSACTIONNOTIFICATIONS_RECEIVED, payload: message });
+			dispatch(loadBestBlockHeightAttempt());
+			dispatch(loadStakeInfoAttempt());
 			dispatch(loadTransactionsAttempt());
 			dispatch(loadTicketsAttempt());
 			dispatch(loadWalletBalance());
-			dispatch(loadStakeInfoAttempt());
 		});
 	}
 }
