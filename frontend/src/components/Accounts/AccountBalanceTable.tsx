@@ -48,7 +48,7 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 				<th>Total</th>
 				<th><Amount amount={totals.unconfirmed} /></th>
 				<th><Amount amount={totals.immature_stake} /></th>
-				{/* <th>{totals.immature_coinbase}</th> */}
+				<th><Amount amount={totals.immature_coinbase}/></th>
 				<th><Amount amount={totals.votingauth} /></th>
 				<th><Amount amount={totals.locked} /></th>
 				<th><Amount amount={totals.spendable} /></th>
@@ -66,6 +66,7 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 						<th></th>
 						<th>unconfirmed</th>
 						<th>immature stake</th>
+						<th>coinbase</th>
 						<th>votingauth</th>
 						<th>locked</th>
 						<th>spendable</th>
