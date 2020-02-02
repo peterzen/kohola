@@ -12,14 +12,17 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/decred/dcrd/dcrjson/v3"
 	dcrdtypes "github.com/decred/dcrd/rpc/jsonrpc/types/v2"
 	wallettypes "github.com/decred/dcrwallet/rpc/jsonrpc/types"
+
+	"github.com/zserge/lorca"
 )
 
 // commandUsage display the usage for a specific command.
@@ -48,41 +51,22 @@ func usage(errorMessage string) {
 		appName)
 }
 
-var cfg *config
-
 func main() {
 
-	var err error
-
-	cfg, _, err = loadConfig()
-	// cfg, args, err := loadConfig()
-	if err != nil {
-		log.Println("Load config error", err)
-		os.Exit(1)
-	}
+	// cfg, _, err := loadConfig()
+	// // cfg, args, err := loadConfig()
+	// if err != nil {
+	// 	log.Println("Load config error", err)
+	// 	os.Exit(1)
+	// }
 
 	// paramsList := make([]string, 0)
-	// runCmd("getbalance", paramsList)
+	// runCmd(cfg, "getbalance", paramsList)
 
-	// create router instance
-	router := NewRouter()
-
-	// handle events with messages named `wsPing` with handler
-	// wsPing (from above).
-	router.Handle("wsPing", wsPing)
-	router.Handle("getbalance", getBalance)
-
-	http.Handle("/", http.FileServer(http.Dir("../frontend/dist")))
-
-	// handle all requests to /, upgrade to WebSocket via our router handler.
-	http.Handle("/ws", router)
-
-	// start server.
-	http.ListenAndServe(":8080", nil)
+	launchUI()
 }
 
-
-func runCmd(methodStr string, paramsList []string) (string, error) {
+func runCmd(cfg *config, methodStr string, paramsList []string) (string, error) {
 
 	// Ensure the specified method identifies a valid registered command and
 	// is one of the usable types.
@@ -177,7 +161,7 @@ func runCmd(methodStr string, paramsList []string) (string, error) {
 				err)
 			return "", err
 		}
-		jsonResult :=dst.String()
+		jsonResult := dst.String()
 		fmt.Println(jsonResult)
 		return jsonResult, nil
 	} else if strings.HasPrefix(strResult, `"`) {
@@ -194,4 +178,36 @@ func runCmd(methodStr string, paramsList []string) (string, error) {
 	}
 
 	return "", nil
+}
+
+func launchUI() {
+	args := []string{}
+	if runtime.GOOS == "linux" {
+		args = append(args, "--class=Lorca")
+	}
+	ui, err := lorca.New("https://localhost:8081", "", 1024, 800, args...)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer ui.Close()
+
+	// A simple way to know when UI is ready (uses body.onload event in JS)
+	ui.Bind("start", func() {
+		log.Println("UI is ready")
+	})
+
+	// Wait until the interrupt signal arrives or browser window is closed
+	sigc := make(chan os.Signal)
+	signal.Notify(sigc, os.Interrupt)
+	select {
+	case <-sigc:
+	case <-ui.Done():
+	}
+
+	log.Println("exiting...")
+
+	// Create and bind Go object to the UI
+	// c := &counter{}
+	// ui.Bind("counterAdd", c.Add)
+	// ui.Bind("counterValue", c.Value)
 }

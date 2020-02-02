@@ -10,4 +10,6 @@ require (
 	github.com/decred/go-socks v1.1.0
 	github.com/gorilla/websocket v1.4.1
 	github.com/jessevdk/go-flags v1.4.0
+	github.com/zserge/lorca v0.1.8
+
 )
