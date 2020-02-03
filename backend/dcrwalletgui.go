@@ -22,6 +22,7 @@ import (
 	dcrdtypes "github.com/decred/dcrd/rpc/jsonrpc/types/v2"
 	wallettypes "github.com/decred/dcrwallet/rpc/jsonrpc/types"
 
+	"github.com/getlantern/systray"
 	"github.com/zserge/lorca"
 )
 
@@ -53,6 +54,7 @@ func usage(errorMessage string) {
 
 func main() {
 
+	go initSystray()
 	// cfg, _, err := loadConfig()
 	// // cfg, args, err := loadConfig()
 	// if err != nil {
@@ -210,4 +212,22 @@ func launchUI() {
 	// c := &counter{}
 	// ui.Bind("counterAdd", c.Add)
 	// ui.Bind("counterValue", c.Value)
+}
+
+func initSystray() {
+	systray.Run(onReady, onExit)
+}
+
+func onReady() {
+	// systray.SetIcon(icon.Data)
+	systray.SetTitle("dcrwalletgui")
+	systray.SetTooltip("dcrwalletgui")
+	_ = systray.AddMenuItem("Quit", "Exit wallet")
+
+	// Sets the icon of a menu item. Only available on Mac.
+	// mQuit.SetIcon(icon.Data)
+}
+
+func onExit() {
+	// clean up here
 }
