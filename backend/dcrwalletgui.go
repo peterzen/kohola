@@ -48,7 +48,12 @@ type balance struct {
 	request *pb.BalanceRequest
 }
 
-func (b *balance) GetBalance(accountNumber uint32, requiredConfirmations int32) *pb.BalanceResponse {
+type lorcaBalanceResponse struct {
+	Payload *pb.BalanceResponse `json:"payload,omitempty"`
+	Err     error               `json:"error,omitempty"`
+}
+
+func (b *balance) GetBalance(accountNumber uint32, requiredConfirmations int32) (r lorcaBalanceResponse) {
 	b.Lock()
 	defer b.Unlock()
 
@@ -60,9 +65,12 @@ func (b *balance) GetBalance(accountNumber uint32, requiredConfirmations int32) 
 	balanceResponse, err := walletServiceClient.Balance(context.Background(), b.request)
 	if err != nil {
 		fmt.Println(err)
+		r.Err = err
+		return r
 	}
+	r.Payload = balanceResponse
 	fmt.Println("Spendable balance: ", dcrutil.Amount(balanceResponse.Spendable))
-	return balanceResponse
+	return r
 }
 
 func launchUI() {
