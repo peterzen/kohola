@@ -8,13 +8,13 @@ import { loadBestBlockHeightAttempt } from './networkinfo/actions';
 
 export const initializeData: ActionCreator<any> = () => {
 	return (dispatch: Dispatch) => {
-		dispatch(pingAttempt());
+		// dispatch(pingAttempt());
 		return dispatch(loadBestBlockHeightAttempt())
 			.then(() => {
 				return Promise.all([
 					dispatch(loadAccountsAttempt()),
-					dispatch(subscribeAccountNotifications()),
-					dispatch(subscribeTransactionNotifications()),
+					// dispatch(subscribeAccountNotifications()),
+					// dispatch(subscribeTransactionNotifications()),
 				])
 			})
 	}

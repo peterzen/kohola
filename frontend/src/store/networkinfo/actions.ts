@@ -16,7 +16,7 @@ export const loadBestBlockHeightAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, NetworkInfoActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { getBestBlockHeightRequest } = getState().networkinfo;
-		const timer = setTimeout(() => dispatch(loadBestBlockHeightAttempt()), 5 * 60 * 1000);
+		// const timer = setTimeout(() => dispatch(loadBestBlockHeightAttempt()), 5 * 60 * 1000);
 
 		if (getBestBlockHeightRequest) {
 			return Promise.resolve();
