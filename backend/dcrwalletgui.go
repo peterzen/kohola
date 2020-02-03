@@ -9,9 +9,9 @@ import (
 	"fmt"
 	"github.com/decred/dcrd/dcrutil"
 	pb "github.com/decred/dcrwallet/rpc/walletrpc"
+	proto "github.com/golang/protobuf/proto"
 
 	"context"
-	"github.com/getlantern/systray"
 	"github.com/zserge/lorca"
 	"log"
 	"os"
@@ -43,14 +43,14 @@ func main() {
 	launchUI()
 }
 
+type lorcaBalanceResponse struct {
+	Payload []byte `json:"payload,omitempty"`
+	Err     error  `json:"error,omitempty"`
+}
+
 type balance struct {
 	sync.Mutex
 	request *pb.BalanceRequest
-}
-
-type lorcaBalanceResponse struct {
-	Payload *pb.BalanceResponse `json:"payload,omitempty"`
-	Err     error               `json:"error,omitempty"`
 }
 
 func (b *balance) GetBalance(accountNumber uint32, requiredConfirmations int32) (r lorcaBalanceResponse) {
@@ -68,8 +68,37 @@ func (b *balance) GetBalance(accountNumber uint32, requiredConfirmations int32) 
 		r.Err = err
 		return r
 	}
-	r.Payload = balanceResponse
+	r.Payload, err = proto.Marshal(balanceResponse)
+	if err != nil {
+		r.Err = err
+		return r
+	}
 	fmt.Println("Spendable balance: ", dcrutil.Amount(balanceResponse.Spendable))
+	return r
+}
+
+type stakeinfo struct {
+	sync.Mutex
+	request *pb.StakeInfoRequest
+}
+
+func (s *stakeinfo) GetStakeInfo() (r lorcaBalanceResponse) {
+	s.Lock()
+	defer s.Unlock()
+
+	s.request = &pb.StakeInfoRequest{}
+
+	response, err := walletServiceClient.StakeInfo(context.Background(), s.request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
 	return r
 }
 
@@ -95,7 +124,10 @@ func launchUI() {
 	})
 
 	b := &balance{}
-	ui.Bind("GetBalance", b.GetBalance)
+	ui.Bind("walletrpc__GetBalance", b.GetBalance)
+
+	s := &stakeinfo{}
+	ui.Bind("walletrpc__GetStakeInfo", s.GetStakeInfo)
 
 	// Wait until the interrupt signal arrives or browser window is closed
 	sigc := make(chan os.Signal)
@@ -106,24 +138,6 @@ func launchUI() {
 	}
 
 	log.Println("exiting...")
-}
-
-func initSystray() {
-	systray.Run(onReady, onExit)
-}
-
-func onReady() {
-	// systray.SetIcon(icon.Data)
-	systray.SetTitle("dcrwalletgui")
-	systray.SetTooltip("dcrwalletgui")
-	_ = systray.AddMenuItem("Quit", "Exit wallet")
-
-	// Sets the icon of a menu item. Only available on Mac.
-	// mQuit.SetIcon(icon.Data)
-}
-
-func onExit() {
-	// clean up here
 }
 
 func showDialog() {
