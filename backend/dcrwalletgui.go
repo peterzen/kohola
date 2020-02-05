@@ -7,20 +7,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/decred/dcrd/dcrutil"
-	pb "github.com/decred/dcrwallet/rpc/walletrpc"
-	proto "github.com/golang/protobuf/proto"
 
-	"context"
 	"github.com/zserge/lorca"
 	"log"
 	"os"
 	"os/signal"
 	"runtime"
-	"sync"
 )
-
-var walletServiceClient pb.WalletServiceClient
 
 func main() {
 
@@ -32,74 +25,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	walletServiceClient, err = NewWalletClient(cfg)
-	if err != nil {
-		log.Println("rpc client error", err)
-	}
-	// fmt.Println("%v", walletServiceClient)
+	// InitFrontendApi(cfg)
 
-	DoBalanceRequest(walletServiceClient)
+	InitFrontendGRPC(cfg)
 
 	launchUI()
-}
-
-type lorcaBalanceResponse struct {
-	Payload []byte `json:"payload,omitempty"`
-	Err     error  `json:"error,omitempty"`
-}
-
-type balance struct {
-	sync.Mutex
-	request *pb.BalanceRequest
-}
-
-func (b *balance) GetBalance(accountNumber uint32, requiredConfirmations int32) (r lorcaBalanceResponse) {
-	b.Lock()
-	defer b.Unlock()
-
-	b.request = &pb.BalanceRequest{
-		AccountNumber:         accountNumber,
-		RequiredConfirmations: requiredConfirmations,
-	}
-
-	balanceResponse, err := walletServiceClient.Balance(context.Background(), b.request)
-	if err != nil {
-		fmt.Println(err)
-		r.Err = err
-		return r
-	}
-	r.Payload, err = proto.Marshal(balanceResponse)
-	if err != nil {
-		r.Err = err
-		return r
-	}
-	fmt.Println("Spendable balance: ", dcrutil.Amount(balanceResponse.Spendable))
-	return r
-}
-
-type stakeinfo struct {
-	sync.Mutex
-	request *pb.StakeInfoRequest
-}
-
-func (s *stakeinfo) GetStakeInfo() (r lorcaBalanceResponse) {
-	s.Lock()
-	defer s.Unlock()
-
-	s.request = &pb.StakeInfoRequest{}
-
-	response, err := walletServiceClient.StakeInfo(context.Background(), s.request)
-	if err != nil {
-		fmt.Println(err)
-		r.Err = err
-		return r
-	}
-	r.Payload, err = proto.Marshal(response)
-	if err != nil {
-		r.Err = err
-		return r
-	}
-	return r
 }
 
 func launchUI() {
@@ -113,7 +43,7 @@ func launchUI() {
 	}
 	defer ui.Close()
 
-	// A simple way to know when UI is ready (uses body.onload event in JS)
+	// captures the body.unload event from the frontend
 	ui.Bind("start", func() {
 		log.Println("UI is ready")
 	})
@@ -123,11 +53,7 @@ func launchUI() {
 		ui.Close()
 	})
 
-	b := &balance{}
-	ui.Bind("walletrpc__GetBalance", b.GetBalance)
-
-	s := &stakeinfo{}
-	ui.Bind("walletrpc__GetStakeInfo", s.GetStakeInfo)
+	ExportAPI(ui)
 
 	// Wait until the interrupt signal arrives or browser window is closed
 	sigc := make(chan os.Signal)
