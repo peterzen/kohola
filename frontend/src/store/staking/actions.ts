@@ -4,12 +4,14 @@ import { ThunkDispatch } from 'redux-thunk';
 import { IGetState } from '../types';
 import DcrwalletDatasource from '../../datasources/dcrwallet';
 
+
 import {
 	StakingActionTypes,
 	GETTICKETS_ATTEMPT, GETTICKETS_SUCCESS, GETTICKETS_FAILED,
 	GETTICKETPRICE_ATTEMPT, GETTICKETPRICE_SUCCESS, GETTICKETPRICE_FAILED,
 	AGENDASATTEMPT, AGENDASSUCCESS, AGENDASFAILED, STAKEINFOATTEMPT, STAKEINFOSUCCESS, STAKEINFOFAILED
 } from './types';
+import  LorcaBackend from '../../datasources/lorca';
 
 
 export const loadTicketsAttempt: ActionCreator<any> = () => {
@@ -24,7 +26,7 @@ export const loadTicketsAttempt: ActionCreator<any> = () => {
 		}
 		dispatch({ type: GETTICKETS_ATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.fetchTickets(startBlockHeight, endBlockHeight, targetTicketCount)
+			const resp = await LorcaBackend.fetchTickets(startBlockHeight, endBlockHeight, targetTicketCount)
 			dispatch({ payload: resp, type: GETTICKETS_SUCCESS });
 		}
 		catch (error) {
@@ -43,7 +45,7 @@ export const loadTicketPriceAttempt: ActionCreator<any> = () => {
 		}
 		dispatch({ type: GETTICKETPRICE_ATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.fetchTicketPrice()
+			const resp = await LorcaBackend.fetchTicketPrice()
 			dispatch({ type: GETTICKETPRICE_SUCCESS, payload: resp });
 		}
 		catch (error) {
@@ -88,7 +90,7 @@ export const loadStakeInfoAttempt: ActionCreator<any> = () => {
 
 		dispatch({ type: STAKEINFOATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.fetchStakeInfo()
+			const resp = await LorcaBackend.fetchStakeInfo()
 			dispatch({ type: STAKEINFOSUCCESS, payload: resp });
 		} catch (error) {
 			dispatch({ error, type: STAKEINFOFAILED });

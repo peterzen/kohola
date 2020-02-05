@@ -9,13 +9,14 @@ import {
 } from './types';
 
 import { IGetState } from '../types';
+import LorcaBackend from '../../datasources/lorca';
 
 export const pingAttempt: ActionCreator<any> = () => {
 
 	return async (dispatch: ThunkDispatch<{}, {}, PingActionTypes>, getState: IGetState): Promise<any> => {
 		const pingTimer = setTimeout(() => dispatch(pingAttempt()), 10000);
 		try {
-			const resp = await DcrwalletDatasource.Ping();
+			const resp = await LorcaBackend.doPing();
 			dispatch({ type: GETPING_SUCCESS, pingTimer: pingTimer, getPingResponse: resp });
 		} catch (error) {
 			dispatch({ error, pingTimer, type: GETPING_FAILED });

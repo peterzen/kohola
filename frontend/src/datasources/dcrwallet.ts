@@ -18,12 +18,7 @@ interface IGetTicketsCallback {
 
 const DcrwalletDatasource = {
 	Ping: grpcInvokerFactory(WalletService.Ping),
-	fetchNetwork: grpcInvokerFactory(WalletService.Network),
 	fetchAgendas: grpcInvokerFactory(AgendaService.Agendas),
-	fetchAccounts: grpcInvokerFactory(WalletService.Accounts),
-	fetchBestBlock: grpcInvokerFactory(WalletService.BestBlock),
-	fetchStakeInfo: grpcInvokerFactory(WalletService.StakeInfo),
-	fetchTicketPrice: grpcInvokerFactory(WalletService.TicketPrice),
 	fetchVoteChoices: grpcInvokerFactory(VotingService.VoteChoices),
 	fetchStopAutoBuyer: grpcInvokerFactory(TicketBuyerService.StopAutoBuyer),
 	fetchTicketBuyerConfig: grpcInvokerFactory(TicketBuyerService.TicketBuyerConfig),

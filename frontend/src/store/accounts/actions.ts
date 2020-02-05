@@ -15,6 +15,7 @@ import { IGetState } from '../types';
 import DcrwalletDatasource from '../../datasources/dcrwallet';
 import { IndexedWalletAccounts, WalletAccount } from '../../models';
 import { loadWalletBalance } from '../walletbalance/actions';
+import LorcaBackend from '../../datasources/lorca';
 
 
 const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
@@ -34,7 +35,7 @@ export const loadAccountsAttempt: ActionCreator<any> = () => {
 		}
 		dispatch({ type: GETACCOUNTS_ATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.fetchAccounts();
+			const resp = await LorcaBackend.fetchAccounts();
 			dispatch({ payload: mapAccounts(resp.getAccountsList()), type: GETACCOUNTS_SUCCESS });
 		}
 		catch (error) {
@@ -65,7 +66,7 @@ export const loadNextAddressAttempt: ActionCreator<any> = (account: WalletAccoun
 
 		dispatch({ type: NEXTADDRESSATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.fetchNextAddress(account, 0, 2)
+			const resp = await LorcaBackend.fetchNextAddress(account, 0, 2)
 			dispatch({ type: NEXTADDRESSSUCCESS, payload: resp, account: account });
 		} catch (error) {
 			dispatch({ error, type: NEXTADDRESSFAILED });
