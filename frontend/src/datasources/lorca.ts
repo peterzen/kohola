@@ -1,12 +1,15 @@
-const w = (window as any)
 
-import { BalanceResponse, StakeInfoResponse, AccountsResponse, BestBlockResponse, VoteChoicesResponse, PingResponse, NetworkResponse, TicketPriceResponse, GetTicketsResponse, NextAddressRequest, NextAddressResponse } from '../proto/api_pb';
-import { Ticket, WalletAccount, NextAddress } from '../models';
 import _ from 'lodash';
-import { grpcInvoke } from '../middleware/walletrpc';
-import { WalletService } from '../proto/api_pb_service';
-import { grpc } from '@improbable-eng/grpc-web';
 
+import {
+	StakeInfoResponse,
+	AccountsResponse, BestBlockResponse, VoteChoicesResponse, PingResponse, NetworkResponse,
+	TicketPriceResponse, GetTicketsResponse, NextAddressRequest, NextAddressResponse,
+	BalanceResponse,
+	GetTransactionsResponse
+} from '../proto/api_pb';
+import { Ticket, WalletAccount, NextAddress, WalletBalance, AccountBalance, Transaction } from '../models';
+import { AppError } from '../store/types';
 
 interface ILorcaMessage {
 	error: {
@@ -16,6 +19,8 @@ interface ILorcaMessage {
 	payload: Uint8Array
 	apayload: Uint8Array[]
 }
+
+const w = (window as any)
 
 function endpointFactory<T>(methodName: string, req: T) {
 
@@ -41,18 +46,6 @@ function endpointFactory<T>(methodName: string, req: T) {
 }
 
 const LorcaBackend = {
-	fetchBalance: async (accountNumber: number, requiredConfirmations: number) => {
-		return new Promise<BalanceResponse>((resolve, reject) => {
-			w.walletrpc__GetBalance(accountNumber, requiredConfirmations)
-				.then((r: ILorcaMessage) => {
-					if (r.error != undefined) {
-						return reject(r.error)
-					}
-					resolve(BalanceResponse.deserializeBinary(r.payload))
-				})
-
-		})
-	},
 	fetchTickets: async (
 		startBlockHeight: number,
 		endBlockHeight: number,
@@ -85,7 +78,6 @@ const LorcaBackend = {
 	): Promise<NextAddress> {
 
 		return new Promise<NextAddress>((resolve, reject) => {
-			debugger
 			w.walletrpc__NextAddress(account.getAccountNumber(), kind, gapPolicy)
 				.then((r: ILorcaMessage) => {
 					if (r.error != undefined) {
@@ -94,6 +86,84 @@ const LorcaBackend = {
 					resolve(NextAddressResponse.deserializeBinary(r.payload))
 				})
 		});
+	},
+
+	fetchAccountBalance: async (accountNumber: number, requiredConfirmations: number) => {
+		return new Promise<BalanceResponse>((resolve, reject) => {
+			w.walletrpc__GetBalance(accountNumber, requiredConfirmations)
+				.then((r: ILorcaMessage) => {
+					if (r.error != undefined) {
+						return reject(r.error)
+					}
+					resolve(BalanceResponse.deserializeBinary(r.payload))
+				})
+		})
+	},
+
+	fetchWalletBalance: async function (accountNumbers: number[]): Promise<WalletBalance> {
+
+		const promises: Promise<AccountBalance>[] = [];
+		const walletBalance: WalletBalance = {};
+
+		accountNumbers.forEach((accountNumber) => {
+
+			const p = LorcaBackend.fetchAccountBalance(accountNumber, 1)
+				.then((balance: AccountBalance) => {
+					walletBalance[accountNumber] = balance;
+					return Promise.resolve(balance)
+
+				})
+			promises.push(p);
+		});
+		return new Promise<WalletBalance>((resolve, reject) => {
+			Promise.all(promises)
+				.then(() => {
+					resolve(walletBalance);
+				})
+				.catch((err: AppError) => {
+					reject(err);
+				});
+		})
+	},
+
+	fetchTransactions: async function (
+		startBlockHeight: number,
+		endBlockHeight: number,
+		txCount: number,
+	): Promise<Transaction[]> {
+
+		return new Promise<Transaction[]>((resolve, reject) => {
+
+			const foundTx: Transaction[] = [];
+			const txResponses: GetTransactionsResponse[] = []
+
+			w.walletrpc__GetTransactions(startBlockHeight, endBlockHeight, txCount)
+				.then((r: ILorcaMessage) => {
+					if (r.error != undefined) {
+						return reject(r.error)
+					}
+					const tix: Ticket[] = []
+					_.each(r.apayload, (s: Uint8Array) => {
+						const tr = GetTransactionsResponse.deserializeBinary(s)
+						txResponses.push(tr)
+					})
+					return Promise.resolve()
+				})
+				.then(() => {
+					_.each(txResponses, (resp) => {
+						let minedBlockDetails = resp.getMinedTransactions();
+						if (minedBlockDetails !== undefined) {
+							foundTx.push(...minedBlockDetails.getTransactionsList().map((tx) => new Transaction(tx, minedBlockDetails)));
+						}
+
+						let unminedTxList = resp.getUnminedTransactionsList();
+						if (unminedTxList.length) {
+							foundTx.push(...unminedTxList.map((tx) => new Transaction(tx)));
+						}
+					})
+					resolve(foundTx)
+				})
+		})
 	},
 
 	doPing: endpointFactory("walletrpc__Ping", PingResponse),

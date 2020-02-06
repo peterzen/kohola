@@ -7,7 +7,11 @@ export const getAccounts = (state: IApplicationState): IndexedWalletAccounts => 
 }
 
 export const getAllAccountNumbers = (state: IApplicationState): number[] => {
-	return _.keys(state.accounts.accounts)
+	return _.chain(state.accounts.accounts)
+		.keys()
+		.map((s) => parseInt(s))
+		.value()
+
 }
 
 export const lookupAccount = (state: IApplicationState, accountNumber: number): WalletAccount => {

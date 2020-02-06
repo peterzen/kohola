@@ -7,8 +7,8 @@ import {
 } from './types';
 
 import { IGetState } from '../types';
-import DcrwalletDatasource from '../../datasources/dcrwallet';
 import { getAllAccountNumbers } from '../accounts/selectors';
+import LorcaBackend from '../../datasources/lorca';
 
 export const loadWalletBalance: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, GetBalanceActionTypes>, getState: IGetState): Promise<any> => {
@@ -19,7 +19,7 @@ export const loadWalletBalance: ActionCreator<any> = () => {
 		dispatch({ type: GETBALANCE_ATTEMPT });
 		const accountNumbers = getAllAccountNumbers(getState());
 		try {
-			const resp = await DcrwalletDatasource.fetchWalletBalance(accountNumbers)
+			const resp = await LorcaBackend.fetchWalletBalance(accountNumbers)
 			dispatch({ payload: resp, type: GETBALANCE_SUCCESS });
 		}
 		catch (error) {

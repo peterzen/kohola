@@ -12,9 +12,9 @@ import { AppError } from "../../../store/types";
 import { ConstructTransactionResponse, ConstructTransactionRequest } from "../../../proto/api_pb";
 import { rawToHex } from "../../../helpers/byteActions";
 import { DecodedrawTx } from "../../../datasources/models";
-import { decodeRawTransaction } from "../../../datasources/dcrwallet";
 import { HumanreadableTxInfo } from "../../../store/transactions/types";
 import DialogAlert from "./DialogAlert";
+import { decodeRawTransaction } from "../../../helpers/tx";
 
 const ReviewTx = (props: {
 	txInfo: HumanreadableTxInfo,

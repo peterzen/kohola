@@ -197,6 +197,39 @@ func getTickets(
 	}
 }
 
+func getTransactions(
+	startingBlockHeight int32,
+	endingBlockHeight int32,
+	targetTransactionCount int32) (r lorcaResponse) {
+	request := &pb.GetTransactionsRequest{
+		StartingBlockHeight:    startingBlockHeight,
+		EndingBlockHeight:      endingBlockHeight,
+		TargetTransactionCount: targetTransactionCount,
+	}
+	stream, err := walletServiceClient.GetTransactions(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.APayload = make([][]byte, 0)
+	for {
+		getTxResponse, err := stream.Recv()
+		if err == io.EOF {
+			return r
+		}
+		if err != nil {
+			log.Fatalf("Failed to receive a GetTransactionsResponse: %#v", err)
+		}
+		b, err := proto.Marshal(getTxResponse)
+		if err != nil {
+			r.Err = err
+			return r
+		}
+		r.APayload = append(r.APayload, b)
+	}
+}
+
 func getVoteChoices() (r lorcaResponse) {
 	request := &pb.VoteChoicesRequest{}
 	response, err := votingServiceClient.VoteChoices(context.Background(), request)
@@ -354,6 +387,7 @@ func ExportAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__GetTickets", getTickets)
 	ui.Bind("walletrpc__ListUnspent", listUnspent)
 	ui.Bind("walletrpc__NextAddress", getNextAddress)
+	ui.Bind("walletrpc__GetTransactions", getTransactions)
 }
 
 // TODO

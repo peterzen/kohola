@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Dispatch, ActionCreator } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
-import DcrwalletDatasource, { decodeRawTransaction } from '../../datasources/dcrwallet';
+import DcrwalletDatasource from '../../datasources/dcrwallet';
 
 import {
 	TransactionsActionTypes, TransactionNotificationsReceived, SendTransactionSteps, HumanreadableTxInfo,
@@ -25,6 +25,8 @@ import { ConstructTxOutput } from '../../datasources/models';
 import { getChangeScriptCache } from './selectors';
 import { lookupAccount } from '../accounts/selectors';
 import { loadBestBlockHeightAttempt } from '../networkinfo/actions';
+import { decodeRawTransaction } from '../../helpers/tx';
+import LorcaBackend from '../../datasources/lorca';
 
 
 export const loadTransactionsAttempt: ActionCreator<any> = () => {
@@ -35,7 +37,7 @@ export const loadTransactionsAttempt: ActionCreator<any> = () => {
 		}
 		dispatch({ type: GETTRANSACTION_ATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.fetchTransactions(startBlockHeight, endBlockHeight, targetTxCount)
+			const resp = await LorcaBackend.fetchTransactions(startBlockHeight, endBlockHeight, targetTxCount)
 			dispatch({ payload: resp, type: GETTRANSACTION_SUCCESS });
 		}
 		catch (error) {
@@ -73,7 +75,7 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 			return Promise.resolve()
 		}
 
-		var request = new ConstructTransactionRequest();
+		const request = new ConstructTransactionRequest();
 		request.setSourceAccount(account);
 		request.setRequiredConfirmations(confirmations);
 		let totalAmount = 0;
@@ -313,57 +315,3 @@ export const committedTicketsAttempt: ActionCreator<any> = () => {
 	}
 };
 
-
-/*
-
-
-export const CLEARTX = "CLEARTX";
-
-export const clearTransaction = () => ({ type: CLEARTX });
-
-export const SIGNTX_ATTEMPT = "SIGNTX_ATTEMPT";
-export const SIGNTX_FAILED = "SIGNTX_FAILED";
-export const SIGNTX_SUCCESS = "SIGNTX_SUCCESS";
-
-export const signTransactionAttempt = (passphrase, rawTx) => (dispatch, getState) => {
-  dispatch({ type: SIGNTX_ATTEMPT });
-  return wallet.signTransaction(sel.walletService(getState()), passphrase, rawTx)
-    .then(signTransactionResponse => {
-      dispatch({ signTransactionResponse: signTransactionResponse, type: SIGNTX_SUCCESS });
-      dispatch(publishTransactionAttempt(signTransactionResponse.getTransaction()));
-    })
-    .catch(error => dispatch({ error, type: SIGNTX_FAILED }));
-};
-
-export const PUBLISHTX_ATTEMPT = "PUBLISHTX_ATTEMPT";
-export const PUBLISHTX_FAILED = "PUBLISHTX_FAILED";
-export const PUBLISHTX_SUCCESS = "PUBLISHTX_SUCCESS";
-
-export const publishTransactionAttempt = (tx) => (dispatch, getState) => {
-  dispatch({ type: PUBLISHTX_ATTEMPT });
-  return wallet.publishTransaction(sel.walletService(getState()), tx)
-    .then(res => {
-      // If one of the outputs of the just published tx is one of the recorded
-      // change scripts, clear it as to prevent address reuse. This is needed
-      // due to dcrwallet#1622.
-      const rawTx = Buffer.from(tx, "hex");
-      const decoded = wallet.decodeRawTransaction(rawTx);
-      const changeScriptByAccount = getState().control.changeScriptByAccount || {};
-      const newChangeScriptByAccount = {};
-      Object.keys(changeScriptByAccount).forEach(account => {
-        const foundScript = decoded.outputs.some(out => {
-          if (out.script.equals(changeScriptByAccount[account])) {
-            return true;
-          }
-        });
-        if (!foundScript) {
-          newChangeScriptByAccount[account] = changeScriptByAccount[account];
-        }
-      });
-
-      dispatch({ hash: reverseRawHash(res.getTransactionHash()),
-        changeScriptByAccount: newChangeScriptByAccount, type: PUBLISHTX_SUCCESS });
-    })
-    .catch(error => dispatch({ error, type: PUBLISHTX_FAILED }));
-};
-*/
