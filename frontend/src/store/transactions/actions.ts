@@ -139,7 +139,7 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 		let rawTx;
 
 		try {
-			const constructTxResponse = await DcrwalletDatasource.constructTransaction(request);
+			const constructTxResponse = await LorcaBackend.constructTransaction(request);
 			const changeScriptCache = getChangeScriptCache(getState()) || {};
 			if (!sendAllFlag) {
 				// Store the change address we just generated so that future changes to
@@ -224,7 +224,7 @@ export const signTransactionAttempt: ActionCreator<any> = (
 
 		dispatch({ type: SIGNTRANSACTIONATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.signTransaction(request)
+			const resp = await LorcaBackend.signTransaction(request)
 			dispatch({
 				type: SIGNTRANSACTIONSUCCESS,
 				payload: resp,
@@ -262,7 +262,7 @@ export const publishTransactionAttempt: ActionCreator<any> = () => {
 
 		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.publishTransaction(request)
+			const resp = await LorcaBackend.publishTransaction(request)
 			dispatch({
 				type: PUBLISHTRANSACTIONSUCCESS,
 				payload: resp,

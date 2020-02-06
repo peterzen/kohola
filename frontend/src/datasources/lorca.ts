@@ -6,10 +6,17 @@ import {
 	AccountsResponse, BestBlockResponse, VoteChoicesResponse, PingResponse, NetworkResponse,
 	TicketPriceResponse, GetTicketsResponse, NextAddressRequest, NextAddressResponse,
 	BalanceResponse,
-	GetTransactionsResponse
+	GetTransactionsResponse,
+	ConstructTransactionRequest,
+	ConstructTransactionResponse,
+	SignTransactionRequest,
+	SignTransactionResponse,
+	PublishTransactionRequest,
+	PublishTransactionResponse
 } from '../proto/api_pb';
 import { Ticket, WalletAccount, NextAddress, WalletBalance, AccountBalance, Transaction } from '../models';
 import { AppError } from '../store/types';
+import { rawToHex } from '../helpers/byteActions';
 
 interface ILorcaMessage {
 	error: {
@@ -84,6 +91,72 @@ const LorcaBackend = {
 						return reject(r.error)
 					}
 					resolve(NextAddressResponse.deserializeBinary(r.payload))
+				})
+		});
+	},
+
+	constructTransaction: async function (
+		request: ConstructTransactionRequest
+	): Promise<ConstructTransactionResponse> {
+
+		return new Promise<ConstructTransactionResponse>((resolve, reject) => {
+			
+			const ser = rawToHex(request.serializeBinary().buffer)
+			// XXX we shouldn't have to serialize to hex but the built-in 
+			// lorca JSON serializer fails on this object. 
+			w.walletrpc__ConstructTransaction(ser)
+				.then((r: ILorcaMessage) => {
+					if (r.error != undefined) {
+						return reject(r.error)
+					}
+					resolve(ConstructTransactionResponse.deserializeBinary(r.payload))
+				})
+				.catch((e) => {
+					console.error("Serialization error", e)
+				})
+		});
+	},
+
+	signTransaction: async function (
+		request: SignTransactionRequest
+	): Promise<SignTransactionResponse> {
+
+		return new Promise<SignTransactionResponse>((resolve, reject) => {
+			
+			const ser = rawToHex(request.serializeBinary().buffer)
+			// XXX we shouldn't have to serialize to hex but the built-in 
+			// lorca JSON serializer fails on this object. 
+			w.walletrpc__SignTransaction(ser)
+				.then((r: ILorcaMessage) => {
+					if (r.error != undefined) {
+						return reject(r.error)
+					}
+					resolve(SignTransactionResponse.deserializeBinary(r.payload))
+				})
+				.catch((e) => {
+					console.error("Serialization error", e)
+				})
+		});
+	},
+
+	publishTransaction: async function (
+		request: PublishTransactionRequest
+	): Promise<PublishTransactionResponse> {
+
+		return new Promise<PublishTransactionResponse>((resolve, reject) => {
+			
+			const ser = rawToHex(request.serializeBinary().buffer)
+			// XXX we shouldn't have to serialize to hex but the built-in 
+			// lorca JSON serializer fails on this object. 
+			w.walletrpc__PublishTransaction(ser)
+				.then((r: ILorcaMessage) => {
+					if (r.error != undefined) {
+						return reject(r.error)
+					}
+					resolve(PublishTransactionResponse.deserializeBinary(r.payload))
+				})
+				.catch((e) => {
+					console.error("Serialization error", e)
 				})
 		});
 	},
@@ -170,7 +243,6 @@ const LorcaBackend = {
 	fetchAccounts: endpointFactory("walletrpc__GetAccounts", AccountsResponse),
 	fetchStakeInfo: endpointFactory("walletrpc__GetStakeInfo", StakeInfoResponse),
 	fetchTicketPrice: endpointFactory("walletrpc__GetTicketPrice", TicketPriceResponse),
-	// getTickets: endpointFactory("walletrpc__GetTickets", GetTicketsResponse),
 	fetchBestBlock: endpointFactory("walletrpc__GetBestBlock", BestBlockResponse),
 	fetchNetwork: endpointFactory("walletrpc__GetNetwork", NetworkResponse),
 	fetchVoteChoices: endpointFactory("walletrpc__GetVoteChoices", VoteChoicesResponse),

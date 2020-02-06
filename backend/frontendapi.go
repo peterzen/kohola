@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/hex"
 	"fmt"
 	"github.com/decred/dcrd/dcrutil"
 	"github.com/decred/dcrd/rpcclient/v6"
@@ -24,6 +25,12 @@ var (
 	votingServiceClient pb.VotingServiceClient
 	agendaServiceClient pb.AgendaServiceClient
 )
+
+type lorcaResponse struct {
+	Payload  []byte   `json:"payload,omitempty"`
+	APayload [][]byte `json:"apayload,omitempty"`
+	Err      error    `json:"error,omitempty"`
+}
 
 // NewGRPCClient connects to the wallet gRPC server
 func newGRPCClient(cfg *config) (*grpc.ClientConn, error) {
@@ -54,12 +61,6 @@ func newVotingClient(conn *grpc.ClientConn) walletrpc.VotingServiceClient {
 func newAgendasClient(conn *grpc.ClientConn) walletrpc.AgendaServiceClient {
 	c := walletrpc.NewAgendaServiceClient(conn)
 	return c
-}
-
-type lorcaResponse struct {
-	Payload  []byte   `json:"payload,omitempty"`
-	APayload [][]byte `json:"apayload,omitempty"`
-	Err      error    `json:"error,omitempty"`
 }
 
 func getBalance(accountNumber uint32, requiredConfirmations int32) (r lorcaResponse) {
@@ -285,6 +286,60 @@ func getNextAddress(
 	return r
 }
 
+func constructTransaction(requestAsHex string) (r lorcaResponse) {
+	request := &pb.ConstructTransactionRequest{}
+	bytes, err := hex.DecodeString(requestAsHex)
+	err = proto.Unmarshal(bytes, request)
+	response, err := walletServiceClient.ConstructTransaction(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	return r
+}
+
+func signTransaction(requestAsHex string) (r lorcaResponse) {
+	request := &pb.SignTransactionRequest{}
+	bytes, err := hex.DecodeString(requestAsHex)
+	err = proto.Unmarshal(bytes, request)
+	response, err := walletServiceClient.SignTransaction(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	return r
+}
+
+func publishTransaction(requestAsHex string) (r lorcaResponse) {
+	request := &pb.PublishTransactionRequest{}
+	bytes, err := hex.DecodeString(requestAsHex)
+	err = proto.Unmarshal(bytes, request)
+	response, err := walletServiceClient.PublishTransaction(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	return r
+}
+
 /*
 uint32 account: Account number containing the keys controlling the output set to query.
 
@@ -388,6 +443,9 @@ func ExportAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__ListUnspent", listUnspent)
 	ui.Bind("walletrpc__NextAddress", getNextAddress)
 	ui.Bind("walletrpc__GetTransactions", getTransactions)
+	ui.Bind("walletrpc__ConstructTransaction", constructTransaction)
+	ui.Bind("walletrpc__SignTransaction", signTransaction)
+	ui.Bind("walletrpc__PublishTransaction", publishTransaction)
 }
 
 // TODO

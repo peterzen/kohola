@@ -37,7 +37,7 @@ func launchUI() {
 	if runtime.GOOS == "linux" {
 		args = append(args, "--class=Lorca")
 	}
-	ui, err := lorca.New("https://localhost:8081", "", 1024, 800, args...)
+	ui, err := lorca.New("https://localhost:8080", "", 1024, 800, args...)
 	if err != nil {
 		log.Fatal(err)
 	}
