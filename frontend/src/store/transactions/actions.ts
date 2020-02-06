@@ -20,7 +20,7 @@ import { CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED, CONSTRUCTTX_OUTPUT_SELECT_A
 import { IGetState, AppError } from '../types';
 import { loadTicketsAttempt, loadStakeInfoAttempt } from '../staking/actions';
 import { loadWalletBalance } from '../walletbalance/actions';
-import { ConstructTransactionRequest, SignTransactionRequest, PublishTransactionRequest } from '../../proto/api_pb';
+import { ConstructTransactionRequest, SignTransactionRequest, PublishTransactionRequest, TransactionNotificationsResponse } from '../../proto/api_pb';
 import { ConstructTxOutput } from '../../datasources/models';
 import { getChangeScriptCache } from './selectors';
 import { lookupAccount } from '../accounts/selectors';
@@ -48,16 +48,14 @@ export const loadTransactionsAttempt: ActionCreator<any> = () => {
 
 
 
-export const subscribeTransactionNotifications: ActionCreator<any> = () => {
+export const transactionNotification: ActionCreator<any> = (message: TransactionNotificationsResponse) => {
 	return (dispatch: Dispatch<TransactionNotificationsReceived>) => {
-		DcrwalletDatasource.txNotifications((message) => {
-			dispatch({ type: TRANSACTIONNOTIFICATIONS_RECEIVED, payload: message });
-			dispatch(loadBestBlockHeightAttempt());
-			dispatch(loadStakeInfoAttempt());
-			dispatch(loadTransactionsAttempt());
-			dispatch(loadTicketsAttempt());
-			dispatch(loadWalletBalance());
-		});
+		dispatch({ type: TRANSACTIONNOTIFICATIONS_RECEIVED, payload: message });
+		dispatch(loadBestBlockHeightAttempt());
+		dispatch(loadStakeInfoAttempt());
+		dispatch(loadTransactionsAttempt());
+		dispatch(loadTicketsAttempt());
+		dispatch(loadWalletBalance());
 	}
 }
 

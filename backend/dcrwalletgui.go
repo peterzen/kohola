@@ -54,6 +54,7 @@ func launchUI() {
 	})
 
 	ExportAPI(ui)
+	SetupNotifications(ui)
 
 	// Wait until the interrupt signal arrives or browser window is closed
 	sigc := make(chan os.Signal)

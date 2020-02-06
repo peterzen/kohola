@@ -16,6 +16,7 @@ import DcrwalletDatasource from '../../datasources/dcrwallet';
 import { IndexedWalletAccounts, WalletAccount } from '../../models';
 import { loadWalletBalance } from '../walletbalance/actions';
 import LorcaBackend from '../../datasources/lorca';
+import { AccountNotificationsResponse } from '../../proto/api_pb';
 
 
 const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
@@ -45,13 +46,11 @@ export const loadAccountsAttempt: ActionCreator<any> = () => {
 };
 
 
-export const subscribeAccountNotifications: ActionCreator<any> = () => {
+export const accountNotification: ActionCreator<any> = (message: AccountNotificationsResponse) => {
 	return (dispatch: Dispatch<AccountNotificationsReceived>) => {
-		DcrwalletDatasource.accountNotifications((message) => {
-			dispatch({ type: ACCOUNTSNOTIFICATIONS_RECEIVED, payload: message });
-			dispatch(loadAccountsAttempt());
-			dispatch(loadWalletBalance());
-		});
+		dispatch({ type: ACCOUNTSNOTIFICATIONS_RECEIVED, payload: message });
+		dispatch(loadAccountsAttempt());
+		dispatch(loadWalletBalance());
 	}
 }
 

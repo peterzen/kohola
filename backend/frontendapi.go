@@ -417,16 +417,84 @@ func InitFrontendGRPC(cfg *config) {
 	agendaServiceClient = newAgendasClient(gRPCConnection)
 }
 
-// func txNotification() {
-// 	request := &pb.TransactionNotificationsRequest{}
-// 	txNtfnClient, err := walletServiceClient.TransactionNotifications(context.Background(), request)
+type notificationSubscriptions struct {
+}
+
+func subscribeTxNotifications(ui lorca.UI) {
+	request := &pb.TransactionNotificationsRequest{}
+	ntfnStream, err := walletServiceClient.TransactionNotifications(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for {
+		ntfnResponse, err := ntfnStream.Recv()
+		if err != nil {
+			log.Fatalf("Failed to receive a TransactionNotificationsResponse: %#v", err)
+		}
+		b, err := proto.Marshal(ntfnResponse)
+		if err != nil {
+			return
+		}
+		encodedMsg := hex.EncodeToString(b)
+		js := fmt.Sprintf("window.lorcareceiver__OnTxNotification('%s')", encodedMsg)
+		ui.Eval(js)
+	}
+}
+
+// func subscribeConfirmNotifications(ui lorca.UI) {
+// 	request := &pb.ConfirmationNotificationsRequest{}
+// 	ntfnStream, err := walletServiceClient.ConfirmationNotifications(context.Background(), request)
 // 	if err != nil {
 // 		fmt.Println(err)
-// 		r.Err = err
-// 		return r
+// 		return
 // 	}
-// 	txNtfnClient.Recv()
+
+// 	for {
+// 		ntfnResponse, err := ntfnStream.Recv()
+// 		if err != nil {
+// 			log.Fatalf("Failed to receive a ConfirmationNotificationsResponse: %#v", err)
+// 		}
+// 		b, err := proto.Marshal(ntfnResponse)
+// 		if err != nil {
+// 			return
+// 		}
+// 		encodedMsg := hex.EncodeToString(b)
+// 		js := fmt.Sprintf("window.lorcareceiver__OnConfirmNotification('%s')", encodedMsg)
+// 		ui.Eval(js)
+// 	}
 // }
+
+func subscribeAccountNotifications(ui lorca.UI) {
+	request := &pb.AccountNotificationsRequest{}
+	ntfnStream, err := walletServiceClient.AccountNotifications(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for {
+		ntfnResponse, err := ntfnStream.Recv()
+		if err != nil {
+			log.Fatalf("Failed to receive a AccountNotificationsResponse: %#v", err)
+		}
+		b, err := proto.Marshal(ntfnResponse)
+		if err != nil {
+			return
+		}
+		encodedMsg := hex.EncodeToString(b)
+		js := fmt.Sprintf("window.lorcareceiver__OnAccountNotification('%s')", encodedMsg)
+		ui.Eval(js)
+	}
+}
+
+// SetupNotifications creates subscriptions
+func SetupNotifications(ui lorca.UI) {
+	go subscribeTxNotifications(ui)
+	go subscribeAccountNotifications(ui)
+	// go subscribeConfirmNotifications(ui)
+}
 
 // ExportAPI exports the RPC API functions to the UI
 func ExportAPI(ui lorca.UI) {
