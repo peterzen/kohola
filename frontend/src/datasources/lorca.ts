@@ -15,21 +15,14 @@ import {
 	PublishTransactionResponse
 } from '../proto/api_pb';
 import { Ticket, WalletAccount, NextAddress, WalletBalance, AccountBalance, Transaction } from '../models';
-import { AppError } from '../store/types';
+import { AppError, ILorcaMessage } from '../store/types';
 import { rawToHex } from '../helpers/byteActions';
 
-interface ILorcaMessage {
-	error: {
-		code: number
-		msg: string
-	}
-	payload: Uint8Array
-	apayload: Uint8Array[]
-}
+
 
 const w = (window as any)
 
-function endpointFactory<T>(methodName: string, req: T) {
+export function endpointFactory<T>(methodName: string, responseType: T) {
 
 	if (w[methodName] == undefined) {
 		throw {
@@ -38,14 +31,18 @@ function endpointFactory<T>(methodName: string, req: T) {
 		}
 	}
 
-	return async function () {
+	return async function<R> (request?: R) {
 		return new Promise<T>((resolve, reject) => {
+			let r = null
+			if (request != undefined) {
+				r = request.serializeBinary()
+			}
 			w[methodName]()
 				.then((r: ILorcaMessage) => {
 					if (r.error != undefined) {
 						return reject(r.error)
 					}
-					resolve(req.deserializeBinary(r.payload))
+					resolve(responseType.deserializeBinary(r.payload))
 				})
 
 		})

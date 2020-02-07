@@ -1,0 +1,1 @@
+./dcrwalletgui --simnet -s 127.0.0.1:9110 -u rpc -P 0264a4798cfc71ad569a23e2f5c949b4e512837d7d3846 -c ../../dcrwallet_alice.cert

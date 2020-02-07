@@ -2,11 +2,20 @@
 
 PROTO_DIR=./src/proto
 
+# protoc  \
+#     --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts \
+#     -I=$PROTO_DIR $PROTO_DIR/api.proto \
+#     --js_out=import_style=commonjs,binary:$PROTO_DIR \
+#     --ts_out=service=grpc-web:$PROTO_DIR 
+
 protoc  \
     --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts \
-    -I=$PROTO_DIR $PROTO_DIR/api.proto \
+    -I=$PROTO_DIR $PROTO_DIR/dcrwalletgui.proto \
     --js_out=import_style=commonjs,binary:$PROTO_DIR \
-    --ts_out=service=grpc-web:$PROTO_DIR 
+    --ts_out=service=grpc-web:$PROTO_DIR \
+	--go_out=../app/dcrwalletgui
+
+
 
 # protoc \
 #     --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts \

@@ -16,6 +16,7 @@ export default class NavbarComponent extends React.Component {
 					<Nav className="mr-auto">
 						<Nav.Link href="/#">Home</Nav.Link>
 						<Nav.Link href="/#staking">Staking</Nav.Link>
+						<Nav.Link href="/#settings">Settings</Nav.Link>
 					</Nav>
 				</Navbar.Collapse>
 				<BestBlockComponent />

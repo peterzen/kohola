@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package dcrwalletgui;
+
+service AppConfig {
+  rpc GetConfig(GetConfigRequest) returns (AppConfiguration);
+  rpc SetConfig(SetConfigRequest) returns (SetConfigResponse);
+}
+
+message GetConfigRequest { bytes passphrase = 1; }
+
+message SetConfigRequest {
+  AppConfiguration app_config = 1;
+  bytes passphrase = 2;
+}
+
+message SetConfigResponse {
+  enum UpdateStatus {
+    STATUS_SUCCESS = 0;
+    STATUS_ERROR = 1;
+  }
+  UpdateStatus update_status = 1;
+  int32 error_code = 2;
+  string error_description = 3;
+}
+
+message AppConfiguration {
+  enum Network {
+    MAINNET = 0;
+    TESTNET = 1;
+    SIMNET = 2;
+  }
+  message RPCEndpoint {
+    string hostname = 1;
+    uint32 port = 2;
+    string username = 3;
+    string password = 4;
+    string cert_file_name = 5;
+    string cert_blob = 6;
+    Network network = 7;
+  }
+  RPCEndpoint dcrd_host = 1;
+  repeated RPCEndpoint dcrwallet_hosts = 2;
+}
+/*
+message LorcaMessage {
+  message Error { string error = 1; }
+  bytes payload = 1;
+  repeated bytes apayload = 2;
+  Error err = 3;
+}
+*/

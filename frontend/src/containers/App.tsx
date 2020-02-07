@@ -5,9 +5,10 @@ import { ConnectedRouter } from "connected-react-router"
 
 import { Container } from 'react-bootstrap'
 
+import Navbar from "../components/Fixtures/Navbar"
 import Home from "./Home"
 import Staking from "./Staking"
-import Navbar from "../components/Fixtures/Navbar"
+import Settings from './Settings';
 import { NoRouteMatch } from '../components/Shared/shared';
 
 import { hot } from 'react-hot-loader/root'
@@ -24,6 +25,7 @@ const App = ({ history }: AppProps) => {
 				<Container fluid={true} className="mt-5">
 					<Switch>
 						<Route path="/staking" component={Staking} />
+						<Route path="/settings" component={Settings} />
 						<Route exact path="/" component={Home} />
 						<Route component={NoRouteMatch} />
 					</Switch>

@@ -4,6 +4,7 @@ import { grpc } from "@improbable-eng/grpc-web";
 import { PingState } from "./ping/types";
 import { IStakingState } from "./staking/types";
 import { IAccountsState } from "./accounts/types";
+import { AppConfiguration } from "../proto/dcrwalletgui_pb";
 import { INetworkInfoState } from "./networkinfo/types";
 import { ITransactionState } from "./transactions/types";
 import { IWalletBalanceState } from "./walletbalance/types";
@@ -22,6 +23,7 @@ export type IApplicationState = {
 	walletbalance: IWalletBalanceState,
 	votechoices: VoteChoicesState,
 	stopautobuyer: StopAutoBuyerState,
+	appconfiguration: AppConfiguration,
 	ticketbuyerconfig: TicketBuyerConfigState,
 	loadactivedatafilters: LoadActiveDataFiltersState,
 }
@@ -45,4 +47,14 @@ export class GenericError {
 
 export interface IGetState {
 	(): IApplicationState
+}
+
+
+export interface ILorcaMessage {
+	error: {
+		code: number
+		msg: string
+	}
+	payload: Uint8Array
+	apayload: Uint8Array[]
 }

@@ -8,7 +8,8 @@ import networkinfo from './networkinfo/reducers';
 import votechoices from './votechoices/reducers'
 import transactions from "./transactions/reducers";
 import walletbalance from "./walletbalance/reducers";
-import stopautobuyer from './stopautobuyer/reducers'
+import stopautobuyer from './stopautobuyer/reducers';
+import appconfiguration from './appconfiguration/reducers';
 import ticketbuyerconfig from './ticketbuyerconfig/reducers'
 import loadactivedatafilters from './loadactivedatafilters/reducers'
 import { History } from "history";
@@ -24,6 +25,7 @@ export default function createRootReducer(history: History<History.PoorMansUnkno
 		transactions,
 		walletbalance,
 		stopautobuyer,
+		appconfiguration,
 		ticketbuyerconfig,
 		loadactivedatafilters,
 	});
