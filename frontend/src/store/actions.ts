@@ -7,11 +7,13 @@ import { transactionNotification } from './transactions/actions';
 import { loadBestBlockHeightAttempt } from './networkinfo/actions';
 import { TransactionNotificationsResponse, AccountNotificationsResponse, ConfirmationNotificationsResponse } from '../proto/api_pb';
 import { hexToRaw } from '../helpers/byteActions';
+import { getConfiguration } from './appconfiguration/actions';
 
 const w = (window as any)
 
 export const initializeData: ActionCreator<any> = () => {
 	return (dispatch: Dispatch) => {
+		dispatch(getConfiguration());
 		dispatch(pingAttempt());
 
 		w.lorcareceiver__OnTxNotification = (serializedMsg: Uint8Array) => {

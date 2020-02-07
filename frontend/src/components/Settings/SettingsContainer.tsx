@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { IApplicationState } from '../../store/types';
 import { getConfiguration } from '../../store/appconfiguration/actions';
-import { Row, Col, Table, Form } from 'react-bootstrap';
+import { Row, Col, Table, Form, Button } from 'react-bootstrap';
 import { AppConfiguration } from '../../proto/dcrwalletgui_pb';
 
 
@@ -24,9 +24,9 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 		)
 	}
 	render() {
-		const c = this.props.configuration
+		const c = this.props.appConfig
 		const dcrd = c.getDcrdHost()
-		console.log("CCC", this.props.configuration)
+		console.log("CCC", this.props.appConfig)
 
 		return (
 			<div>
@@ -70,6 +70,12 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 							<Form.Group as={Row}>
 								<Form.Label column sm={2}>Certificate</Form.Label>
 								<Col sm={10}>
+									<Button variant="secondary-outline" size="sm" onClick={_.bind(this.browseFile, this)}>Browse...</Button>
+									<br />
+									<Form.Control
+										readOnly
+										value={dcrd.getCertFileName()} />
+
 									<Form.Control as="textarea" value={dcrd?.getCertBlob()} />
 								</Col>
 							</Form.Group>
@@ -83,15 +89,23 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 		)
 	}
 
-	componentDidMount() {
-		this.props.dispatch(getConfiguration());
+	browseFile() {
+		const w = (window as any)
+		const appConfig = this.props.appConfig;
+		const _this = this
+		w.walletgui_FileOpenDialog()
+			.then((file: string) => {
+				console.log("FILE", file)
+				appConfig.getDcrdHost().setCertFileName(file)
+				_this.render()
+			})
 	}
+
 }
 
 const mapStateToProps = (state: IApplicationState, ownProps: SettingsOwnProps) => {
 	return {
-		...state.staking,
-		configuration: state.appconfiguration.appConfig
+		...state.appconfiguration,
 	};
 }
 
@@ -99,7 +113,7 @@ export default connect(mapStateToProps)(SettingsContainer)
 
 export interface SettingsOwnProps {
 	// propFromParent: number
-	configuration: AppConfiguration
+	appConfig: AppConfiguration
 }
 
 interface DispatchProps {
