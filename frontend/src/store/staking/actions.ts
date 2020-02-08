@@ -11,18 +11,19 @@ import {
 	GETTICKETPRICE_ATTEMPT, GETTICKETPRICE_SUCCESS, GETTICKETPRICE_FAILED,
 	AGENDASATTEMPT, AGENDASSUCCESS, AGENDASFAILED, STAKEINFOATTEMPT, STAKEINFOSUCCESS, STAKEINFOFAILED
 } from './types';
-import  LorcaBackend from '../../datasources/lorca';
+import LorcaBackend from '../../datasources/lorca';
 
 
 export const loadTicketsAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState) => {
+
 		const {
 			getTicketsRequest,
 			startBlockHeight,
 			endBlockHeight,
 			targetTicketCount } = getState().staking
 		if (getTicketsRequest) {
-			return Promise.resolve();
+			return 
 		}
 		dispatch({ type: GETTICKETS_ATTEMPT });
 		try {
@@ -38,11 +39,14 @@ export const loadTicketsAttempt: ActionCreator<any> = () => {
 
 
 export const loadTicketPriceAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState): Promise<any> => {
+
+	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState) => {
+
 		const { getTicketPriceRequest } = getState().staking
 		if (getTicketPriceRequest) {
-			return Promise.resolve();
+			return
 		}
+
 		dispatch({ type: GETTICKETPRICE_ATTEMPT });
 		try {
 			const resp = await LorcaBackend.fetchTicketPrice()
@@ -58,12 +62,12 @@ export const loadTicketPriceAttempt: ActionCreator<any> = () => {
 
 
 export const loadAgendasAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState): Promise<any> => {
+
+	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState) => {
 
 		const { getAgendasRequest } = getState().staking;
-
 		if (getAgendasRequest) {
-			return Promise.resolve();
+			return
 		}
 
 		dispatch({ type: AGENDASATTEMPT });
@@ -80,12 +84,11 @@ export const loadAgendasAttempt: ActionCreator<any> = () => {
 
 
 export const loadStakeInfoAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState) => {
 
 		const { getStakeInfoRequest } = getState().staking;
-
 		if (getStakeInfoRequest) {
-			return Promise.resolve();
+			return
 		}
 
 		dispatch({ type: STAKEINFOATTEMPT });

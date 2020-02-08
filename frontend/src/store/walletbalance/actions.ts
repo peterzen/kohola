@@ -11,10 +11,10 @@ import { getAllAccountNumbers } from '../accounts/selectors';
 import LorcaBackend from '../../datasources/lorca';
 
 export const loadWalletBalance: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, GetBalanceActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, GetBalanceActionTypes>, getState: IGetState) => {
 		const { getBalanceRequest } = getState().walletbalance;
 		if (getBalanceRequest) {
-			return Promise.resolve();
+			return
 		}
 		dispatch({ type: GETBALANCE_ATTEMPT });
 		const accountNumbers = getAllAccountNumbers(getState());

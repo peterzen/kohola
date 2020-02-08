@@ -14,17 +14,13 @@ import {
 	PublishTransactionRequest,
 	PublishTransactionResponse
 } from '../proto/api_pb';
-import { Ticket, WalletAccount, NextAddress, WalletBalance, AccountBalance, Transaction } from '../models';
-import { AppError, ILorcaMessage } from '../store/types';
+import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from '../models';
 import { rawToHex } from '../helpers/byteActions';
-import { CheckConnectionResponse, GRPCEndpoint } from '../proto/dcrwalletgui_pb';
-
-
+import { GRPCEndpoint } from '../proto/dcrwalletgui_pb';
 
 const w = (window as any)
 
 export function endpointFactory<T>(methodName: string, responseType: T) {
-
 	if (w[methodName] == undefined) {
 		throw {
 			code: 99,
@@ -33,213 +29,170 @@ export function endpointFactory<T>(methodName: string, responseType: T) {
 	}
 
 	return async function <R>(request?: R) {
-		return new Promise<T>((resolve, reject) => {
-			let r = null
-			if (request != undefined) {
-				r = request.serializeBinary()
+		let r = null
+		if (request != undefined) {
+			r = request.serializeBinary()
+		}
+		try {
+			const r = await w[methodName]()
+			if (r.error != undefined) {
+				throw r.error
 			}
-			w[methodName]()
-				.then((r: ILorcaMessage) => {
-					if (r.error != undefined) {
-						return reject(r.error)
-					}
-					resolve(responseType.deserializeBinary(r.payload))
-				})
-
-		})
+			return responseType.deserializeBinary(r.payload)
+		}
+		catch (e) {
+			console.error(e)
+		}
 	}
 }
 
 const LorcaBackend = {
-	fetchTickets: async (
-		startBlockHeight: number,
-		endBlockHeight: number,
-		targetTicketCount: number) => {
-		return new Promise<Ticket[]>((resolve, reject) => {
-			w.walletrpc__GetTickets(startBlockHeight, endBlockHeight, targetTicketCount)
-				.then((r: ILorcaMessage) => {
-					if (r.error != undefined) {
-						return reject(r.error)
-					}
-					const tix: Ticket[] = []
-					_.each(r.apayload, (s: Uint8Array) => {
-						const td = GetTicketsResponse.deserializeBinary(s)
-						const ticket = td.getTicket()
-						if (ticket == undefined) {
-							return null
-						}
-						tix.push(new Ticket(ticket, td.getBlock()))
-					})
-					resolve(tix)
-				})
-
-		})
+	fetchTickets: async (startBlockHeight: number, endBlockHeight: number, targetTicketCount: number) => {
+		try {
+			const r = await w.walletrpc__GetTickets(startBlockHeight, endBlockHeight, targetTicketCount)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			const tix: Ticket[] = []
+			_.each(r.apayload, (s: Uint8Array) => {
+				const td = GetTicketsResponse.deserializeBinary(s)
+				const ticket = td.getTicket()
+				if (ticket == undefined) {
+					return null
+				}
+				tix.push(new Ticket(ticket, td.getBlock()))
+			})
+			return tix
+		}
+		catch (e) {
+			console.error(e)
+			return
+		}
 	},
 
-	fetchNextAddress: async function (
+	fetchNextAddress: async (
 		account: WalletAccount,
 		kind: NextAddressRequest.KindMap[keyof NextAddressRequest.KindMap],
 		gapPolicy: NextAddressRequest.GapPolicyMap[keyof NextAddressRequest.GapPolicyMap]
-	): Promise<NextAddress> {
-
-		return new Promise<NextAddress>((resolve, reject) => {
-			w.walletrpc__NextAddress(account.getAccountNumber(), kind, gapPolicy)
-				.then((r: ILorcaMessage) => {
-					if (r.error != undefined) {
-						return reject(r.error)
-					}
-					resolve(NextAddressResponse.deserializeBinary(r.payload))
-				})
-		});
+	) => {
+		try {
+			const r = await w.walletrpc__NextAddress(account.getAccountNumber(), kind, gapPolicy)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return NextAddressResponse.deserializeBinary(r.payload)
+		}
+		catch (e) {
+			console.error(e)
+			return
+		}
 	},
 
-	constructTransaction: async function (
-		request: ConstructTransactionRequest
-	): Promise<ConstructTransactionResponse> {
-
-		return new Promise<ConstructTransactionResponse>((resolve, reject) => {
-
+	constructTransaction: async (request: ConstructTransactionRequest) => {
+		try {
 			const ser = rawToHex(request.serializeBinary().buffer)
 			// XXX we shouldn't have to serialize to hex but the built-in 
 			// lorca JSON serializer fails on this object. 
-			w.walletrpc__ConstructTransaction(ser)
-				.then((r: ILorcaMessage) => {
-					if (r.error != undefined) {
-						return reject(r.error)
-					}
-					resolve(ConstructTransactionResponse.deserializeBinary(r.payload))
-				})
-				.catch((e) => {
-					console.error("Serialization error", e)
-				})
-		});
+			const r = await w.walletrpc__ConstructTransaction(ser)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return ConstructTransactionResponse.deserializeBinary(r.payload)
+
+		} catch (e) {
+			console.error("Serialization error", e)
+			return
+		}
 	},
 
-	signTransaction: async function (
-		request: SignTransactionRequest
-	): Promise<SignTransactionResponse> {
+	signTransaction: async (request: SignTransactionRequest) => {
+		try {
+			const ser = rawToHex(request.serializeBinary().buffer)
+			const r = await w.walletrpc__SignTransaction(ser)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return SignTransactionResponse.deserializeBinary(r.payload)
+		}
+		catch (e) {
+			console.error("Serialization error", e)
+			return
+		}
+	},
 
-		return new Promise<SignTransactionResponse>((resolve, reject) => {
-
+	publishTransaction: async (request: PublishTransactionRequest) => {
+		try {
 			const ser = rawToHex(request.serializeBinary().buffer)
 			// XXX we shouldn't have to serialize to hex but the built-in 
 			// lorca JSON serializer fails on this object. 
-			w.walletrpc__SignTransaction(ser)
-				.then((r: ILorcaMessage) => {
-					if (r.error != undefined) {
-						return reject(r.error)
-					}
-					resolve(SignTransactionResponse.deserializeBinary(r.payload))
-				})
-				.catch((e) => {
-					console.error("Serialization error", e)
-				})
-		});
-	},
-
-	publishTransaction: async function (
-		request: PublishTransactionRequest
-	): Promise<PublishTransactionResponse> {
-
-		return new Promise<PublishTransactionResponse>((resolve, reject) => {
-
-			const ser = rawToHex(request.serializeBinary().buffer)
-			// XXX we shouldn't have to serialize to hex but the built-in 
-			// lorca JSON serializer fails on this object. 
-			w.walletrpc__PublishTransaction(ser)
-				.then((r: ILorcaMessage) => {
-					if (r.error != undefined) {
-						return reject(r.error)
-					}
-					resolve(PublishTransactionResponse.deserializeBinary(r.payload))
-				})
-				.catch((e) => {
-					console.error("Serialization error", e)
-				})
-		});
+			const r = await w.walletrpc__PublishTransaction(ser)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return PublishTransactionResponse.deserializeBinary(r.payload)
+		} catch (e) {
+			console.error("Serialization error", e)
+			return
+		}
 	},
 
 	fetchAccountBalance: async (accountNumber: number, requiredConfirmations: number) => {
-		return new Promise<BalanceResponse>((resolve, reject) => {
-			w.walletrpc__GetBalance(accountNumber, requiredConfirmations)
-				.then((r: ILorcaMessage) => {
-					if (r.error != undefined) {
-						return reject(r.error)
-					}
-					resolve(BalanceResponse.deserializeBinary(r.payload))
-				})
-		})
+		try {
+			const r = await w.walletrpc__GetBalance(accountNumber, requiredConfirmations)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return BalanceResponse.deserializeBinary(r.payload)
+
+		} catch (e) {
+			console.error("Serialization error", e)
+			return
+		}
 	},
 
-	fetchWalletBalance: async function (accountNumbers: number[]): Promise<WalletBalance> {
-
-		const promises: Promise<AccountBalance>[] = [];
+	fetchWalletBalance: async (accountNumbers: number[]) => {
 		const walletBalance: WalletBalance = {};
-
-		accountNumbers.forEach((accountNumber) => {
-
-			const p = LorcaBackend.fetchAccountBalance(accountNumber, 1)
-				.then((balance: AccountBalance) => {
-					walletBalance[accountNumber] = balance;
-					return Promise.resolve(balance)
-
-				})
-			promises.push(p);
+		accountNumbers.forEach(async (accountNumber) => {
+			const balance = await LorcaBackend.fetchAccountBalance(accountNumber, 1)
+			walletBalance[accountNumber] = balance as AccountBalance;
 		});
-		return new Promise<WalletBalance>((resolve, reject) => {
-			Promise.all(promises)
-				.then(() => {
-					resolve(walletBalance);
-				})
-				.catch((err: AppError) => {
-					reject(err);
-				});
-		})
+		return walletBalance
 	},
 
-	fetchTransactions: async function (
-		startBlockHeight: number,
-		endBlockHeight: number,
-		txCount: number,
-	): Promise<Transaction[]> {
+	fetchTransactions: async (startBlockHeight: number, endBlockHeight: number, txCount: number) => {
 
-		return new Promise<Transaction[]>((resolve, reject) => {
+		const foundTx: Transaction[] = [];
+		const txResponses: GetTransactionsResponse[] = []
+		try {
+			const r = await w.walletrpc__GetTransactions(startBlockHeight, endBlockHeight, txCount)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			const tix: Ticket[] = []
+			_.each(r.apayload, (s: Uint8Array) => {
+				const tr = GetTransactionsResponse.deserializeBinary(s)
+				txResponses.push(tr)
+			})
+			_.each(txResponses, (resp) => {
+				let minedBlockDetails = resp.getMinedTransactions();
+				if (minedBlockDetails !== undefined) {
+					foundTx.push(...minedBlockDetails.getTransactionsList().map((tx) => new Transaction(tx, minedBlockDetails)));
+				}
 
-			const foundTx: Transaction[] = [];
-			const txResponses: GetTransactionsResponse[] = []
-
-			w.walletrpc__GetTransactions(startBlockHeight, endBlockHeight, txCount)
-				.then((r: ILorcaMessage) => {
-					if (r.error != undefined) {
-						return reject(r.error)
-					}
-					const tix: Ticket[] = []
-					_.each(r.apayload, (s: Uint8Array) => {
-						const tr = GetTransactionsResponse.deserializeBinary(s)
-						txResponses.push(tr)
-					})
-					return Promise.resolve()
-				})
-				.then(() => {
-					_.each(txResponses, (resp) => {
-						let minedBlockDetails = resp.getMinedTransactions();
-						if (minedBlockDetails !== undefined) {
-							foundTx.push(...minedBlockDetails.getTransactionsList().map((tx) => new Transaction(tx, minedBlockDetails)));
-						}
-
-						let unminedTxList = resp.getUnminedTransactionsList();
-						if (unminedTxList.length) {
-							foundTx.push(...unminedTxList.map((tx) => new Transaction(tx)));
-						}
-					})
-					resolve(foundTx)
-				})
-		})
+				let unminedTxList = resp.getUnminedTransactionsList();
+				if (unminedTxList.length) {
+					foundTx.push(...unminedTxList.map((tx) => new Transaction(tx)));
+				}
+			})
+			return foundTx
+		}
+		catch (e) {
+			console.error("Serialization error", e)
+			return
+		}
 	},
 
-	checkGRPCEndpointConnection: async function (
-		cfg: GRPCEndpoint
-	): Promise<CheckConnectionResponse> {
+	checkGRPCEndpointConnection: async (cfg: GRPCEndpoint) => {
 		const ser = rawToHex(cfg.serializeBinary().buffer)
 		return await w.walletgui_CheckGRPCConnection(ser)
 	},

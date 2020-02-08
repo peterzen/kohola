@@ -30,11 +30,13 @@ import LorcaBackend from '../../datasources/lorca';
 
 
 export const loadTransactionsAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
+
 		const { getTransactionsRequest, startBlockHeight, endBlockHeight, targetTxCount } = getState().transactions
 		if (getTransactionsRequest) {
-			return Promise.resolve();
+			return
 		}
+
 		dispatch({ type: GETTRANSACTION_ATTEMPT });
 		try {
 			const resp = await LorcaBackend.fetchTransactions(startBlockHeight, endBlockHeight, targetTxCount)
@@ -45,7 +47,6 @@ export const loadTransactionsAttempt: ActionCreator<any> = () => {
 		}
 	}
 };
-
 
 
 export const transactionNotification: ActionCreator<any> = (message: TransactionNotificationsResponse) => {
@@ -65,12 +66,11 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 	confirmations: number,
 	outputs: ConstructTxOutput[],
 	sendAllFlag: boolean) => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
 
 		const { constructTransactionAttempting } = getState().transactions;
-
 		if (constructTransactionAttempting) {
-			return Promise.resolve()
+			return
 		}
 
 		const request = new ConstructTransactionRequest();
@@ -188,7 +188,7 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 
 
 export const cancelSignTransaction: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>) => {
 		dispatch({
 			type: SIGNTRANSACTIONCANCEL,
 			currentStep: SendTransactionSteps.CONSTRUCT_DIALOG
@@ -202,13 +202,11 @@ export const cancelSignTransaction: ActionCreator<any> = () => {
 export const signTransactionAttempt: ActionCreator<any> = (
 	passphrase: string,
 ) => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
 
 		const { signTransactionAttempting, constructTransactionResponse } = getState().transactions;
-
-
 		if (signTransactionAttempting) {
-			return Promise.resolve();
+			return
 		}
 
 		if (constructTransactionResponse == null) {
@@ -240,12 +238,11 @@ export const signTransactionAttempt: ActionCreator<any> = (
 
 
 export const publishTransactionAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
 
 		const { publishTransactionAttempting, signTransactionResponse } = getState().transactions;
-
 		if (publishTransactionAttempting) {
-			return Promise.resolve();
+			return
 		}
 
 		if (signTransactionResponse == null) {
@@ -277,12 +274,11 @@ export const publishTransactionAttempt: ActionCreator<any> = () => {
 
 
 export const validateAddressAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
 
 		const { publishTransactionAttempting } = getState().transactions;
-
 		if (publishTransactionAttempting) {
-			return Promise.resolve();
+			return
 		}
 
 		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
@@ -295,12 +291,11 @@ export const validateAddressAttempt: ActionCreator<any> = () => {
 	}
 };
 export const committedTicketsAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
 
 		const { publishTransactionAttempting } = getState().transactions;
-
 		if (publishTransactionAttempting) {
-			return Promise.resolve();
+			return
 		}
 
 		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
