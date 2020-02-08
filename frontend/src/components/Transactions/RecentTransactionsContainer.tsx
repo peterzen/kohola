@@ -8,10 +8,9 @@ import { ITransactionState } from '../../store/transactions/types';
 import { getFilteredTransactions } from '../../store/transactions/selectors';
 import { loadTransactionsAttempt } from '../../store/transactions/actions';
 
-import { Spinner, Button } from 'react-bootstrap';
+import { Spinner, Button, Card } from 'react-bootstrap';
 import TransactionTable from './TransactionTable';
 import TransactionDetailsModal from './TransactionDetailsComponent';
-import SendDialogContainer from './SendTransaction/SendDialogContainer';
 import SendTransactionModal from './SendTransaction/SendTransactionModal';
 
 
@@ -34,12 +33,18 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 		}
 		const txList = this.props.txList;
 		return (
-			<div>
-				<h4>Recent transactions ({txList.length})</h4>
-				<Button
-					variant="primary"
-					onClick={_.bind(this.showSendTxModal, this)}>Send funds</Button>
+			<Card className="mt-3">
+				<Card.Body>
+					<Card.Title>Recent transactions <small className="text-muted">({txList.length})</small>
+					<Button
+							variant="primary"
+							className="float-right"
+							onClick={_.bind(this.showSendTxModal, this)}>Send funds</Button>
+					</Card.Title>
+				</Card.Body>
+
 				<TransactionTable items={txList} onItemClick={_.bind(this.itemClickHandler, this)} />
+
 				<TransactionDetailsModal
 					tx={this.state.selectedItem}
 					modalTitle="Transaction details"
@@ -48,7 +53,8 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 				<SendTransactionModal
 					show={this.state.showSendTxModal}
 					onHide={_.bind(this.hideSendTxModal, this)} />
-			</div>
+
+			</Card>
 		)
 	}
 	showSendTxModal() {

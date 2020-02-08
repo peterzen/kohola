@@ -12,7 +12,6 @@ class Home extends React.Component {
 		return (
 			<div>
 				<WalletBalanceContainer />
-				<hr/>
 				<RecentTransactions />
 			</div>
 		)

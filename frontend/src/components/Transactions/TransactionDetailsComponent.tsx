@@ -1,12 +1,16 @@
 import * as React from "react";
 
-import { Table } from 'react-bootstrap'
+import { Table, Accordion, Button } from 'react-bootstrap'
 
 import { Transaction } from "../../models";
 import { Timestamp, TransactionHash, Amount } from "../Shared/shared";
 import { TransactionMempoolStatusIcon } from "./TransactionTable";
 import GenericModalDialog from '../Shared/GenericModalDialog';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+	faCaretDown,
+} from '@fortawesome/free-solid-svg-icons'
 
 export const TransactionDetailsComponent = (props: { tx: Transaction }) => {
 	const tx = props.tx
@@ -65,7 +69,14 @@ export const TransactionDetailsComponent = (props: { tx: Transaction }) => {
 					</tr>
 				</tbody>
 			</Table>
-			<div><pre>{JSON.stringify(tx.toObject(), undefined, "  ")}</pre></div>
+			<Accordion >
+				<Accordion.Toggle as={Button} variant="link" size="sm" eventKey="0">
+					Raw JSON <FontAwesomeIcon icon={faCaretDown}/>
+      			</Accordion.Toggle>
+				<Accordion.Collapse eventKey="0">
+					<pre>{JSON.stringify(tx.toObject(), undefined, "  ")}</pre>
+				</Accordion.Collapse>
+			</Accordion>
 		</div>
 	)
 }

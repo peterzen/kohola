@@ -10,6 +10,7 @@ import { loadTicketsAttempt } from '../../store/staking/actions';
 
 import TicketsTable from './TicketsTable';
 import TicketDetailsModal from './TicketDetailsComponent';
+import { Card } from 'react-bootstrap';
 
 class TicketsOverviewContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -21,22 +22,24 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
 	}
 	render() {
 		return (
-			<div>
-				<h3>Tickets Overview</h3>
+			<Card>
+				<Card.Body>
+					<Card.Title>Tickets Overview</Card.Title>
+				</Card.Body>
 				<TicketsTable items={this.props.tickets} onItemClick={_.bind(this.itemClickHandler, this)} />
 				<TicketDetailsModal
 					ticket={this.state.selectedItem}
 					modalTitle="Ticket details"
 					show={this.state.showModal}
 					onHide={_.bind(this.hideModal, this)} />
-			</div>
+			</Card>
 		)
 	}
 	hideModal() {
 		this.setState({ showModal: false })
 	}
 	itemClickHandler(ticket: Ticket) {
-		console.log("ttt",ticket)
+		console.log("ttt", ticket)
 		this.setState({
 			showModal: true,
 			selectedItem: ticket

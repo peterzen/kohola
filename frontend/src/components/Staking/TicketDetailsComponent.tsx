@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Table } from 'react-bootstrap'
+import { Table, Accordion, Button } from 'react-bootstrap'
 import TimeAgo from 'react-timeago';
 
 import { Ticket } from "../../models";
@@ -8,7 +8,10 @@ import { TransactionHash, Amount } from "../Shared/shared";
 import GenericModalDialog from '../Shared/GenericModalDialog';
 import { TicketStatusIcon } from "./TicketStatusIcon";
 import { TransactionMempoolStatusIcon } from "../Transactions/TransactionTable";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+	faCaretDown
+} from '@fortawesome/free-solid-svg-icons'
 export const TicketDetailsComponent = (props: { ticket: Ticket }) => {
 	const ticket = props.ticket
 	const tx = ticket.getTx();
@@ -61,7 +64,14 @@ export const TicketDetailsComponent = (props: { ticket: Ticket }) => {
 					</tr>
 				</tbody>
 			</Table>
-			<div><pre>{JSON.stringify(tx.toObject(), undefined, "  ")}</pre></div>
+			<Accordion >
+				<Accordion.Toggle as={Button} variant="link" size="sm" eventKey="0">
+					Raw JSON <FontAwesomeIcon icon={faCaretDown} />
+				</Accordion.Toggle>
+				<Accordion.Collapse eventKey="0">
+					<pre>{JSON.stringify(tx.toObject(), undefined, "  ")}</pre>
+				</Accordion.Collapse>
+			</Accordion>
 		</div>
 	)
 }

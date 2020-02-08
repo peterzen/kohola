@@ -48,14 +48,13 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 								title="dcrwallet settings"
 								key={endPoint.getLabel()} />
 						))}
-						<div className="text-right" >
+						<div className="mt-3" >
 							<Button variant="outline-secondary" size="sm" onClick={_.bind(this.handleAddWallet, this)}>
 								<FontAwesomeIcon icon={faPlus} /> Add wallet host...
 							</Button>
 						</div>
 					</Col>
 				</Row>
-				<hr />
 			</div>
 		)
 	}

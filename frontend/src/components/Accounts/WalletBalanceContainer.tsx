@@ -15,6 +15,7 @@ import GetNewAddressDialog from "./GetNewAddressDialog"
 import { loadNextAddressAttempt } from "../../store/accounts/actions"
 import { MenuItems } from "./AccountToolsDropdown"
 import WalletTotalsComponent from "./WalletTotalsComponent"
+import { Card } from "react-bootstrap"
 
 
 class WalletBalanceContainer extends React.Component<Props, InternalState>{
@@ -29,14 +30,20 @@ class WalletBalanceContainer extends React.Component<Props, InternalState>{
 	render() {
 		return (
 			<div>
-				<WalletTotalsComponent totals={this.props.walletTotals} />
-				<div className="mt-5" />
-				<AccountBalanceTable
-					menuHandler={_.bind(this.menuHandler, this)}
-					accounts={this.props.accounts}
-					balances={this.props.balances}
-					walletTotals={this.props.walletTotals}
-				/>
+				<Card>
+					<Card.Body>
+						<WalletTotalsComponent totals={this.props.walletTotals} />
+					</Card.Body>
+				</Card>
+				<Card className="mt-3">
+						<AccountBalanceTable
+							menuHandler={_.bind(this.menuHandler, this)}
+							accounts={this.props.accounts}
+							balances={this.props.balances}
+							walletTotals={this.props.walletTotals}
+						/>
+				</Card>
+
 				<GetNewAddressDialog
 					modalTitle="New receive address"
 					show={this.state.showModal}

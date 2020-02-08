@@ -48,12 +48,26 @@ module.exports = {
 				}, {
 					loader: 'sass-loader' // compiles Sass to CSS
 				}]
+			},
+			{
+				test: /\.svg$/,
+				use: [
+					{
+						loader: "babel-loader"
+					},
+					{
+						loader: "react-svg-loader",
+						options: {
+							jsx: true // true outputs JSX tags
+						}
+					}
+				]
 			}
 		]
 	},
 	resolve: {
 		extensions: ['.js', '.jsx', ".ts", ".tsx", "*.scss", "*.css"],
-		alias: { 'react-dom': '@hot-loader/react-dom'  },
+		alias: { 'react-dom': '@hot-loader/react-dom' },
 	},
 	externals: {
 		// "react": "React",

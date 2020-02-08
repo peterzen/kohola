@@ -5,6 +5,7 @@ import { IApplicationState } from "../../store/types";
 import { Agenda } from "../../models";
 import { loadAgendasAttempt } from "../../store/staking/actions";
 import { IAgendasState } from "../../store/staking/types";
+import { Card } from "react-bootstrap";
 
 
 interface AgendasOwnProps {
@@ -32,12 +33,12 @@ class AgendasComponent extends React.Component<Props, InternalState> {
 	render() {
 		const agendaList = this.props.agendas.getAgendasList().map(renderAgenda);
 		return (
-			<div>
-				<h4>Agendas v{this.props.agendas.getVersion()}</h4>
-				<div>
+			<Card>
+				<Card.Body>
+					<Card.Title>Agendas <small className="text-muted">v{this.props.agendas.getVersion()}</small></Card.Title>
 					{agendaList}
-				</div>
-			</div>
+				</Card.Body>
+			</Card>
 		)
 	}
 

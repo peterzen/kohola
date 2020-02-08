@@ -16,8 +16,7 @@ class StakingContainer extends React.Component<{}, {}> {
 		return (
 			<div>
 				<StakeInfoComponent />
-				<hr />
-				<Row>
+				<Row className="mt-3">
 					<Col>
 						<TicketsOverviewContainer />
 					</Col>

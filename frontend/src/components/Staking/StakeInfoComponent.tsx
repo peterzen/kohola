@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col, Card } from 'react-bootstrap';
 
 import { IApplicationState } from "../../store/types";
 import { IStakeInfoState } from "../../store/staking/types";
@@ -14,44 +14,46 @@ class StakeInfoComponent extends React.Component<Props, InternalState> {
 	render() {
 		const s = this.props.stakeinfo;
 		return (
-			<Container>
-				<Row>
-					<Col>
-						<h2>{s.getLive()}</h2>
-						<h6><TicketStatusIcon status={TicketStatus.LIVE} /> Live</h6>
-					</Col>
-					<Col>
-						<h2>{s.getVoted()}</h2>
-						<h6><TicketStatusIcon status={TicketStatus.VOTED} /> Voted</h6>
-					</Col>
-					<Col>
-						<h2>{s.getOwnMempoolTix()}</h2>
-						<h6><TicketStatusIcon status={TicketStatus.UNMINED} /> Mempool</h6>
-					</Col>
-					<Col>
-						<h2><Amount amount={s.getTotalSubsidy()} showCurrency={true}/></h2>
-						<h6>Total subsidy</h6>
-					</Col>
-				</Row>
-				<Row>
-					<Col>
-						<h2>{s.getExpired()}</h2>
-						<h6><TicketStatusIcon status={TicketStatus.EXPIRED} /> Expired</h6>
-					</Col>
-					<Col>
-						<h2>{s.getMissed()}</h2>
-						<h6><TicketStatusIcon status={TicketStatus.MISSED} /> Missed</h6>
-					</Col>
-					<Col>
-						<h2>{s.getRevoked()}</h2>
-						<h6><TicketStatusIcon status={TicketStatus.REVOKED} /> Revoked</h6>
-					</Col>
-					<Col>
-						<h2>{s.getImmature()}</h2>
-						<h6><TicketStatusIcon status={TicketStatus.IMMATURE} /> Immature</h6>
-					</Col>
-				</Row>
-			</Container>
+			<Card>
+				<Card.Body>
+					<Row>
+						<Col>
+							<h2>{s.getLive()}</h2>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.LIVE} /> Live</h6>
+						</Col>
+						<Col>
+							<h2>{s.getVoted()}</h2>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.VOTED} /> Voted</h6>
+						</Col>
+						<Col>
+							<h2>{s.getOwnMempoolTix()}</h2>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.UNMINED} /> Mempool</h6>
+						</Col>
+						<Col>
+							<h2><Amount amount={s.getTotalSubsidy()} showCurrency={true} /></h2>
+							<h6 className="text-muted">Total subsidy</h6>
+						</Col>
+					</Row>
+					<Row>
+						<Col>
+							<h2>{s.getExpired()}</h2>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.EXPIRED} /> Expired</h6>
+						</Col>
+						<Col>
+							<h2>{s.getMissed()}</h2>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.MISSED} /> Missed</h6>
+						</Col>
+						<Col>
+							<h2>{s.getRevoked()}</h2>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.REVOKED} /> Revoked</h6>
+						</Col>
+						<Col>
+							<h2>{s.getImmature()}</h2>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.IMMATURE} /> Immature</h6>
+						</Col>
+					</Row>
+				</Card.Body>
+			</Card>
 		)
 	}
 

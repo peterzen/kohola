@@ -18,6 +18,7 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 				<td>{account.getAccountName()}</td>
 				<td><Amount amount={balance.getUnconfirmed()} /></td>
 				<td><Amount amount={balance.getImmatureStakeGeneration()} /></td>
+				<td><Amount amount={balance.getImmatureReward()} /></td>
 				<td><Amount amount={balance.getVotingAuthority()} /></td>
 				<td><Amount amount={balance.getLockedByTickets()} /></td>
 				<td><Amount amount={balance.getSpendable()} /></td>

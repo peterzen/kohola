@@ -221,7 +221,7 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 								<Button
 									disabled={!this.state.isDirty}
 									type="submit"
-									variant="primary">Save
+									variant="outline-primary">Save
 						</Button>
 							</Col>
 						</Row>

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { ITicketPriceState } from '../../store/staking/types';
 import { IApplicationState } from '../../store/types';
 import { loadTicketPriceAttempt } from '../../store/staking/actions';
+import { Card } from 'react-bootstrap';
 
 export interface TicketPriceOwnProps {
 	// propFromParent: number
@@ -23,9 +24,13 @@ interface InternalState {
 class TicketPriceComponent extends React.Component<Props, InternalState> {
 	render() {
 		return (
-			<div>
-				<h3>Ticket price in next block: {this.props.ticketPrice.getTicketPrice()}</h3>
-			</div>
+			<Card>
+				<Card.Body>
+					<Card.Title>
+					Ticket price in next block: {this.props.ticketPrice.getTicketPrice()}
+					</Card.Title>
+				</Card.Body>
+			</Card>
 		)
 	}
 	componentDidMount() {
@@ -37,7 +42,7 @@ const mapStateToProps = (state: IApplicationState, ownProps: TicketPriceOwnProps
 	return {
 		ticketPrice: state.staking.ticketPrice,
 		getTicketPriceRequest: state.staking.getTicketPriceRequest
-	};
+	}
 }
 
 export default connect(mapStateToProps)(TicketPriceComponent)
