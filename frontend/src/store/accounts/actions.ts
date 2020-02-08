@@ -11,12 +11,11 @@ import {
 	NEXTADDRESSFAILED,
 } from './types';
 
-import { IGetState } from '../types';
-import DcrwalletDatasource from '../../datasources/dcrwallet';
-import { IndexedWalletAccounts, WalletAccount } from '../../models';
-import { loadWalletBalance } from '../walletbalance/actions';
 import LorcaBackend from '../../datasources/lorca';
+import { IGetState } from '../types';
+import { loadWalletBalance } from '../walletbalance/actions';
 import { AccountNotificationsResponse } from '../../proto/api_pb';
+import { IndexedWalletAccounts, WalletAccount } from '../../models';
 
 
 const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
@@ -29,7 +28,7 @@ const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
 
 
 export const loadAccountsAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, GetAccountsActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, GetAccountsActionTypes>, getState: IGetState)=> {
 		const { getBestBlockHeightRequest } = getState().networkinfo;
 		if (getBestBlockHeightRequest) {
 			return Promise.resolve();
@@ -55,7 +54,7 @@ export const accountNotification: ActionCreator<any> = (message: AccountNotifica
 }
 
 export const loadNextAddressAttempt: ActionCreator<any> = (account: WalletAccount) => {
-	return async (dispatch: ThunkDispatch<{}, {}, GetAccountsActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, GetAccountsActionTypes>, getState: IGetState) => {
 
 		const { getNextAddressRequest } = getState().accounts;
 

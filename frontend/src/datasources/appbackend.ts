@@ -1,13 +1,9 @@
 import { AppConfiguration, SetConfigResponse, CanStartupResponse, SetConfigRequest } from "../proto/dcrwalletgui_pb"
 import { endpointFactory } from "./lorca"
 import { rawToHex } from "../helpers/byteActions";
-import { ILorcaMessage } from "../store/types";
-import { ConstructTransactionResponse } from "../proto/api_pb";
 
 
 const w = (window as any)
-
-
 
 const AppBackend = {
 	getAppConfig: endpointFactory("walletgui__GetConfig", AppConfiguration),
@@ -17,6 +13,8 @@ const AppBackend = {
 
 		const request = new SetConfigRequest()
 		request.setAppConfig(appConfig)
+
+		// TODO implement config file encryption with passphrase 
 		// request.setPassphrase(passphrase)
 
 		const ser = rawToHex(request.serializeBinary().buffer)

@@ -33,6 +33,9 @@ store.dispatch(checkBackend())
 		return store.dispatch(initializeData())
 		render()
 	})
+	.then(() => {
+		render()
+	})
 	.catch(() => {
 		history.replace('/settings')
 	})

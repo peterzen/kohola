@@ -1,17 +1,16 @@
 import { ThunkDispatch } from 'redux-thunk';
 
-import DcrwalletDatasource from '../../datasources/dcrwallet';
 
 import {
 	StopAutoBuyerActionTypes,
 	STOPAUTOBUYERATTEMPT, STOPAUTOBUYERSUCCESS, STOPAUTOBUYERFAILED
 } from './types';
-
-import { ActionCreator<any>, IGetState } from '../types';
-
+import { ActionCreator } from 'redux';
+import { IGetState } from '../types';
+import LorcaBackend from '../../datasources/lorca';
 
 export const loadStopAutoBuyerAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, StopAutoBuyerActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, StopAutoBuyerActionTypes>, getState: IGetState) => {
 
 		const { getStopAutoBuyerRequest } = getState().stopautobuyer;
 
@@ -21,7 +20,7 @@ export const loadStopAutoBuyerAttempt: ActionCreator<any> = () => {
 		
 		dispatch({ type: STOPAUTOBUYERATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.fetchStopAutoBuyer()
+			const resp = await LorcaBackend.fetchStopAutoBuyer()
 			dispatch({ type: STOPAUTOBUYERSUCCESS, payload: resp });
 		} catch (error) {
 			dispatch({ error, type: STOPAUTOBUYERFAILED });

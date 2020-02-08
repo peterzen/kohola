@@ -1,8 +1,6 @@
 import { Dispatch, ActionCreator } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
-import DcrwalletDatasource from '../../datasources/dcrwallet';
-
 import {
 	PingActionTypes,
 	GETPING_SUCCESS, GETPING_FAILED, GETPING_CANCELED
@@ -13,7 +11,7 @@ import LorcaBackend from '../../datasources/lorca';
 
 export const pingAttempt: ActionCreator<any> = () => {
 
-	return async (dispatch: ThunkDispatch<{}, {}, PingActionTypes>, getState: IGetState): Promise<any> => {
+	return async (dispatch: ThunkDispatch<{}, {}, PingActionTypes>, getState: IGetState) => {
 		const pingTimer = setTimeout(() => dispatch(pingAttempt()), 10000);
 		try {
 			const resp = await LorcaBackend.doPing();

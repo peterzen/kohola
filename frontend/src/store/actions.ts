@@ -1,14 +1,19 @@
 import { Dispatch, ActionCreator } from 'redux';
 
 
+import { IGetState } from './types';
 import { pingAttempt } from './ping/actions';
-import { loadAccountsAttempt, accountNotification } from './accounts/actions';
 import { transactionNotification } from './transactions/actions';
 import { loadBestBlockHeightAttempt } from './networkinfo/actions';
-import { TransactionNotificationsResponse, AccountNotificationsResponse, ConfirmationNotificationsResponse } from '../proto/api_pb';
-import { hexToRaw } from '../helpers/byteActions';
 import { getConfiguration, canStartup } from './appconfiguration/actions';
-import { IGetState } from './types';
+import { loadAccountsAttempt, accountNotification } from './accounts/actions';
+import {
+	TransactionNotificationsResponse,
+	AccountNotificationsResponse,
+	ConfirmationNotificationsResponse
+} from '../proto/api_pb';
+
+import { hexToRaw } from '../helpers/byteActions';
 
 const w = (window as any)
 

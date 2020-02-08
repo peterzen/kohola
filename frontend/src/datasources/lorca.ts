@@ -12,7 +12,8 @@ import {
 	SignTransactionRequest,
 	SignTransactionResponse,
 	PublishTransactionRequest,
-	PublishTransactionResponse
+	PublishTransactionResponse,
+	AgendasResponse
 } from '../proto/api_pb';
 import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from '../models';
 import { rawToHex } from '../helpers/byteActions';
@@ -198,11 +199,12 @@ const LorcaBackend = {
 	},
 
 	doPing: endpointFactory("walletrpc__Ping", PingResponse),
+	fetchAgendas: endpointFactory("walletrpc__GetAgendas", AgendasResponse),
+	fetchNetwork: endpointFactory("walletrpc__GetNetwork", NetworkResponse),
 	fetchAccounts: endpointFactory("walletrpc__GetAccounts", AccountsResponse),
+	fetchBestBlock: endpointFactory("walletrpc__GetBestBlock", BestBlockResponse),
 	fetchStakeInfo: endpointFactory("walletrpc__GetStakeInfo", StakeInfoResponse),
 	fetchTicketPrice: endpointFactory("walletrpc__GetTicketPrice", TicketPriceResponse),
-	fetchBestBlock: endpointFactory("walletrpc__GetBestBlock", BestBlockResponse),
-	fetchNetwork: endpointFactory("walletrpc__GetNetwork", NetworkResponse),
 	fetchVoteChoices: endpointFactory("walletrpc__GetVoteChoices", VoteChoicesResponse),
 }
 

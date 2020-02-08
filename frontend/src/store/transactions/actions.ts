@@ -3,8 +3,6 @@ import _ from 'lodash';
 import { Dispatch, ActionCreator } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
-import DcrwalletDatasource from '../../datasources/dcrwallet';
-
 import {
 	TransactionsActionTypes, TransactionNotificationsReceived, SendTransactionSteps, HumanreadableTxInfo,
 	GETTRANSACTION_ATTEMPT, GETTRANSACTION_SUCCESS, GETTRANSACTION_FAILED,
@@ -180,6 +178,7 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 				currentStep: SendTransactionSteps.SIGN_DIALOG,
 				type: CONSTRUCTTRANSACTIONFAILED
 			});
+			return
 		}
 	}
 };
@@ -199,9 +198,7 @@ export const cancelSignTransaction: ActionCreator<any> = () => {
 
 
 
-export const signTransactionAttempt: ActionCreator<any> = (
-	passphrase: string,
-) => {
+export const signTransactionAttempt: ActionCreator<any> = (passphrase: string) => {
 	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
 
 		const { signTransactionAttempting, constructTransactionResponse } = getState().transactions;
@@ -283,7 +280,7 @@ export const validateAddressAttempt: ActionCreator<any> = () => {
 
 		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.validateAddress()
+			const resp = await LorcaBackend.validateAddress()
 			dispatch({ type: PUBLISHTRANSACTIONSUCCESS, payload: resp });
 		} catch (error) {
 			dispatch({ error, type: PUBLISHTRANSACTIONFAILED });
@@ -300,7 +297,7 @@ export const committedTicketsAttempt: ActionCreator<any> = () => {
 
 		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.committedTickets()
+			const resp = await LorcaBackend.committedTickets()
 			dispatch({ type: PUBLISHTRANSACTIONSUCCESS, payload: resp });
 		} catch (error) {
 			dispatch({ error, type: PUBLISHTRANSACTIONFAILED });

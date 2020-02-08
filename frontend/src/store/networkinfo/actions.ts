@@ -1,8 +1,6 @@
 import { ActionCreator } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
-import DcrwalletDatasource from '../../datasources/dcrwallet';
-
 import {
 	NetworkInfoActionTypes,
 	GETBESTBLOCK_ATTEMPT, GETBESTBLOCK_SUCCESS, GETBESTBLOCK_FAILED,

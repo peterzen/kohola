@@ -2,16 +2,13 @@ import { ActionCreator } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
 import { IGetState } from '../types';
-import DcrwalletDatasource from '../../datasources/dcrwallet';
-
-
+import LorcaBackend from '../../datasources/lorca';
 import {
 	StakingActionTypes,
 	GETTICKETS_ATTEMPT, GETTICKETS_SUCCESS, GETTICKETS_FAILED,
 	GETTICKETPRICE_ATTEMPT, GETTICKETPRICE_SUCCESS, GETTICKETPRICE_FAILED,
 	AGENDASATTEMPT, AGENDASSUCCESS, AGENDASFAILED, STAKEINFOATTEMPT, STAKEINFOSUCCESS, STAKEINFOFAILED
 } from './types';
-import LorcaBackend from '../../datasources/lorca';
 
 
 export const loadTicketsAttempt: ActionCreator<any> = () => {
@@ -72,7 +69,8 @@ export const loadAgendasAttempt: ActionCreator<any> = () => {
 
 		dispatch({ type: AGENDASATTEMPT });
 		try {
-			const resp = await DcrwalletDatasource.fetchAgendas()
+			// TODO implement me
+			const resp = await LorcaBackend.fetchAgendas()
 			dispatch({ type: AGENDASSUCCESS, payload: resp });
 		} catch (error) {
 			dispatch({ error, type: AGENDASFAILED });

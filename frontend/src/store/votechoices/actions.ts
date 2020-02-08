@@ -1,7 +1,6 @@
 import { ActionCreator } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
-import DcrwalletDatasource from '../../datasources/dcrwallet';
 
 import {
 	VoteChoicesActionTypes,
@@ -11,24 +10,24 @@ import {
 import {  IGetState } from '../types';
 
 
-export const loadVoteChoicesAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, VoteChoicesActionTypes>, getState: IGetState): Promise<any> => {
+// export const loadVoteChoicesAttempt: ActionCreator<any> = () => {
+// 	return async (dispatch: ThunkDispatch<{}, {}, VoteChoicesActionTypes>, getState: IGetState): Promise<any> => {
 
-		const { getVoteChoicesRequest } = getState().votechoices;
+// 		const { getVoteChoicesRequest } = getState().votechoices;
 
-		if (getVoteChoicesRequest) {
-			return Promise.resolve();
-		}
+// 		if (getVoteChoicesRequest) {
+// 			return Promise.resolve();
+// 		}
 		
-		dispatch({ type: VOTECHOICESATTEMPT });
-		try {
-			const resp = await DcrwalletDatasource.fetchVoteChoices()
-			dispatch({ type: VOTECHOICESSUCCESS, payload: resp });
-		} catch (error) {
-			dispatch({ error, type: VOTECHOICESFAILED });
-		}
-	}
-};
+// 		dispatch({ type: VOTECHOICESATTEMPT });
+// 		try {
+// 			const resp = await DcrwalletDatasource.fetchVoteChoices()
+// 			dispatch({ type: VOTECHOICESSUCCESS, payload: resp });
+// 		} catch (error) {
+// 			dispatch({ error, type: VOTECHOICESFAILED });
+// 		}
+// 	}
+// };
 
 
 

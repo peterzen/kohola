@@ -134,6 +134,22 @@ func getTicketPrice() (r gui.LorcaMessage) {
 	return r
 }
 
+func getAgendas() (r gui.LorcaMessage) {
+	request := &pb.AgendasRequest{}
+	response, err := agendaServiceClient.Agendas(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	return r
+}
+
 func getBestBlock() (r gui.LorcaMessage) {
 	request := &pb.BestBlockRequest{}
 	response, err := walletServiceClient.BestBlock(context.Background(), request)
@@ -491,6 +507,7 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__GetNetwork", getNetwork)
 	ui.Bind("walletrpc__GetBestBlock", getBestBlock)
 	ui.Bind("walletrpc__GetVoteChoices", getVoteChoices)
+	ui.Bind("walletrpc__GetAgendas", getAgendas)
 	ui.Bind("walletrpc__GetBalance", getBalance)
 	ui.Bind("walletrpc__GetAccounts", getAccounts)
 	ui.Bind("walletrpc__GetStakeInfo", getStakeInfo)
