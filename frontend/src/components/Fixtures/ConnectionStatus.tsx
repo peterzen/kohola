@@ -10,25 +10,25 @@ import {
 
 class ConnectionStatusComponent extends React.Component<PingState, any> {
 
-    render() {
+	render() {
 		const connected = !!this.props.getPingResponse
-        return (
+		return (
 			<span className="ml-2">
 				{connected ? (
-					<FontAwesomeIcon icon={faCircle} className="text-success" />
+					<FontAwesomeIcon icon={faCircle} className="text-success" size="xs" />
 				) : (
-					<FontAwesomeIcon icon={faCircle} className="text-danger" />
-				)}
-            </span>
-        )
-    }
+						<FontAwesomeIcon icon={faCircle} className="text-danger" size="xs" />
+					)}
+			</span>
+		)
+	}
 }
 
 
 const mapStateToProps = function (state: IApplicationState, ownProps: any) {
-    return {
-        getPingResponse: state.ping.getPingResponse,
-    };
+	return {
+		getPingResponse: state.ping.getPingResponse,
+	};
 }
 
 export default connect(mapStateToProps)(ConnectionStatusComponent)

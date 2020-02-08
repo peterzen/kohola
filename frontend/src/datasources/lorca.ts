@@ -17,6 +17,7 @@ import {
 import { Ticket, WalletAccount, NextAddress, WalletBalance, AccountBalance, Transaction } from '../models';
 import { AppError, ILorcaMessage } from '../store/types';
 import { rawToHex } from '../helpers/byteActions';
+import { CheckConnectionResponse, GRPCEndpoint } from '../proto/dcrwalletgui_pb';
 
 
 
@@ -31,7 +32,7 @@ export function endpointFactory<T>(methodName: string, responseType: T) {
 		}
 	}
 
-	return async function<R> (request?: R) {
+	return async function <R>(request?: R) {
 		return new Promise<T>((resolve, reject) => {
 			let r = null
 			if (request != undefined) {
@@ -97,7 +98,7 @@ const LorcaBackend = {
 	): Promise<ConstructTransactionResponse> {
 
 		return new Promise<ConstructTransactionResponse>((resolve, reject) => {
-			
+
 			const ser = rawToHex(request.serializeBinary().buffer)
 			// XXX we shouldn't have to serialize to hex but the built-in 
 			// lorca JSON serializer fails on this object. 
@@ -119,7 +120,7 @@ const LorcaBackend = {
 	): Promise<SignTransactionResponse> {
 
 		return new Promise<SignTransactionResponse>((resolve, reject) => {
-			
+
 			const ser = rawToHex(request.serializeBinary().buffer)
 			// XXX we shouldn't have to serialize to hex but the built-in 
 			// lorca JSON serializer fails on this object. 
@@ -141,7 +142,7 @@ const LorcaBackend = {
 	): Promise<PublishTransactionResponse> {
 
 		return new Promise<PublishTransactionResponse>((resolve, reject) => {
-			
+
 			const ser = rawToHex(request.serializeBinary().buffer)
 			// XXX we shouldn't have to serialize to hex but the built-in 
 			// lorca JSON serializer fails on this object. 
@@ -234,6 +235,13 @@ const LorcaBackend = {
 					resolve(foundTx)
 				})
 		})
+	},
+
+	checkGRPCEndpointConnection: async function (
+		cfg: GRPCEndpoint
+	): Promise<CheckConnectionResponse> {
+		const ser = rawToHex(cfg.serializeBinary().buffer)
+		return await w.walletgui_CheckGRPCConnection(ser)
 	},
 
 	doPing: endpointFactory("walletrpc__Ping", PingResponse),

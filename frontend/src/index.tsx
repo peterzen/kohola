@@ -6,7 +6,7 @@ import { createBrowserHistory, createHashHistory } from 'history';
 
 import initialState from './store/initialState';
 import configureStore from './store/configureStore';
-import { initializeData } from './store/actions';
+import { initializeData, checkBackend } from './store/actions';
 
 import App from './containers/App';
 
@@ -28,8 +28,15 @@ const render = () => {
 		document.getElementById('app')
 	);
 }
-store.dispatch(initializeData())
+store.dispatch(checkBackend())
 	.then(() => {
-		render();
-	});
+		return store.dispatch(initializeData())
+		render()
+	})
+	.catch(() => {
+		history.replace('/settings')
+	})
+	.finally(() => {
+		render()
+	})
 

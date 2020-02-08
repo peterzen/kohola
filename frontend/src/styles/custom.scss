@@ -1,5 +1,6 @@
 body {
 	padding-top: 50px;
+	background-color: #e5e5e5 !important;
 }
 
 .footer {
@@ -20,4 +21,15 @@ body {
 
 .clickable {
 	cursor: pointer;
+}
+
+
+.pastebutton-overlaid {
+	position: relative;
+    margin-top: -2em;
+}
+
+.certificate-input textarea {
+	font-size: 75%;
+	font-family: 'Courier New', Courier, monospace;
 }

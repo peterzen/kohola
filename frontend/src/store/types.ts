@@ -4,13 +4,13 @@ import { grpc } from "@improbable-eng/grpc-web";
 import { PingState } from "./ping/types";
 import { IStakingState } from "./staking/types";
 import { IAccountsState } from "./accounts/types";
-import { AppConfiguration } from "../proto/dcrwalletgui_pb";
 import { INetworkInfoState } from "./networkinfo/types";
 import { ITransactionState } from "./transactions/types";
 import { IWalletBalanceState } from "./walletbalance/types";
 import { VoteChoicesState } from "./votechoices/types";
 import { StopAutoBuyerState } from "./stopautobuyer/types";
 import { TicketBuyerConfigState } from "./ticketbuyerconfig/types";
+import { IAppConfigurationState } from "./appconfiguration/types";
 import { LoadActiveDataFiltersState } from "./loadactivedatafilters/types";
 import { sprintf } from "sprintf-js";
 
@@ -23,7 +23,7 @@ export type IApplicationState = {
 	walletbalance: IWalletBalanceState,
 	votechoices: VoteChoicesState,
 	stopautobuyer: StopAutoBuyerState,
-	appconfiguration: AppConfiguration,
+	appconfiguration: IAppConfigurationState,
 	ticketbuyerconfig: TicketBuyerConfigState,
 	loadactivedatafilters: LoadActiveDataFiltersState,
 }

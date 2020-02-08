@@ -6,8 +6,16 @@ import _ from "lodash";
 import { sprintf } from "sprintf-js";
 
 
-import { Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+	faPaste,
+	faInfoCircle
+} from '@fortawesome/free-solid-svg-icons'
+
+
+import { Button, ButtonProps, Popover, OverlayTrigger } from 'react-bootstrap';
 import { rawHashToHex } from "../../helpers/byteActions";
+
 
 interface TimestampProps {
 	ts: Moment
@@ -85,43 +93,66 @@ export function NoRouteMatch() {
 
 
 
-
-
-
-function simulateNetworkRequest() {
-	return new Promise(resolve => setTimeout(resolve, 2000));
-}
-
-export function LoadingButton(props: {
-	label: string,
-	loadingLabel: string,
-	onClick: any
-}) {
-	const [isLoading, setLoading] = useState(false);
-
-	useEffect(() => {
-		if (isLoading) {
-			simulateNetworkRequest().then(() => {
-				setLoading(false);
-			});
-		}
-	}, [isLoading]);
-
-	function handleClick() {
-		setLoading(true);
-		return props.onClick(arguments);
-	}
+export const InfoTooltip = (props: { text: string }) => {
+	const popover = (
+		<Popover id="popover-basic">
+			{/* <Popover.Title as="h3">Popover right</Popover.Title> */}
+			<Popover.Content>{props.text}</Popover.Content>
+		</Popover>
+	);
 
 	return (
-		<Button
-			type="submit"
-			variant="primary"
-			disabled={isLoading}
-			onClick={!isLoading ? handleClick : null}
-		>
-			{isLoading ? props.loadingLabel : props.label}
-		</Button>
-	);
+		<OverlayTrigger trigger="hover" placement="top" overlay={popover}>
+			<FontAwesomeIcon icon={faInfoCircle} className="text-muted" />
+		</OverlayTrigger>
+	)
 }
+
+
+export const PasteButton = (args: ButtonProps) => {
+	return (
+		<Button
+			variant="outline-secondary" {...args}>
+			<FontAwesomeIcon icon={faPaste} />
+		</Button>
+	)
+}
+
+
+// function simulateNetworkRequest() {
+// 	return new Promise(resolve => setTimeout(resolve, 2000));
+// }
+
+// export function LoadingButton(props: {
+// 	label: string,
+// 	loadingLabel: string,
+// 	onClick: (React.FormEvent<HTMLButtonElement>)
+// }) {
+// 	const [isLoading, setLoading] = useState(false);
+
+// 	useEffect(() => {
+// 		if (isLoading) {
+// 			simulateNetworkRequest().then(() => {
+// 				setLoading(false);
+// 			});
+// 		}
+// 	}, [isLoading]);
+
+// 	function handleClick() {
+// 		setLoading(true);
+// 		return props.onClick(arguments);
+// 	}
+
+// 	return (
+// 		<Button
+// 			type="submit"
+// 			variant="primary"
+// 			disabled={isLoading}
+// 			onClick={!isLoading ? handleClick : null}
+// 		>
+// 			{isLoading ? props.loadingLabel : props.label}
+// 		</Button>
+// 	);
+// }
 
 

@@ -7,13 +7,28 @@ import { transactionNotification } from './transactions/actions';
 import { loadBestBlockHeightAttempt } from './networkinfo/actions';
 import { TransactionNotificationsResponse, AccountNotificationsResponse, ConfirmationNotificationsResponse } from '../proto/api_pb';
 import { hexToRaw } from '../helpers/byteActions';
-import { getConfiguration } from './appconfiguration/actions';
+import { getConfiguration, canStartup } from './appconfiguration/actions';
+import { IGetState } from './types';
 
 const w = (window as any)
 
+export const checkBackend: ActionCreator<any> = () => {
+	return async (dispatch: Dispatch, getState: IGetState) => {
+
+		await dispatch(getConfiguration())
+		await dispatch(canStartup());
+
+		if (getState().appconfiguration.needSetup) {
+			// need setup
+			throw {}
+		}
+	}
+}
+
+
 export const initializeData: ActionCreator<any> = () => {
-	return (dispatch: Dispatch) => {
-		dispatch(getConfiguration());
+	return async (dispatch: Dispatch) => {
+
 		dispatch(pingAttempt());
 
 		w.lorcareceiver__OnTxNotification = (serializedMsg: Uint8Array) => {
@@ -29,13 +44,7 @@ export const initializeData: ActionCreator<any> = () => {
 			dispatch(accountNotification(message))
 		}
 
-		return dispatch(loadBestBlockHeightAttempt())
-			.then(() => {
-				return Promise.all([
-					dispatch(loadAccountsAttempt()),
-					// dispatch(subscribeAccountNotifications()),
-				])
-			})
+		await dispatch(loadBestBlockHeightAttempt())
+		await dispatch(loadAccountsAttempt())
 	}
 }
-

@@ -22,10 +22,34 @@ type AppConfigSetConfig = {
   readonly responseType: typeof dcrwalletgui_pb.SetConfigResponse;
 };
 
+type AppConfigCanStartup = {
+  readonly methodName: string;
+  readonly service: typeof AppConfig;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof dcrwalletgui_pb.CanStartupRequest;
+  readonly responseType: typeof dcrwalletgui_pb.CanStartupResponse;
+};
+
 export class AppConfig {
   static readonly serviceName: string;
   static readonly GetConfig: AppConfigGetConfig;
   static readonly SetConfig: AppConfigSetConfig;
+  static readonly CanStartup: AppConfigCanStartup;
+}
+
+type NetworkServiceCheckConnection = {
+  readonly methodName: string;
+  readonly service: typeof NetworkService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof dcrwalletgui_pb.CheckConnectionRequest;
+  readonly responseType: typeof dcrwalletgui_pb.CheckConnectionResponse;
+};
+
+export class NetworkService {
+  static readonly serviceName: string;
+  static readonly CheckConnection: NetworkServiceCheckConnection;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -77,6 +101,30 @@ export class AppConfigClient {
   setConfig(
     requestMessage: dcrwalletgui_pb.SetConfigRequest,
     callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.SetConfigResponse|null) => void
+  ): UnaryResponse;
+  canStartup(
+    requestMessage: dcrwalletgui_pb.CanStartupRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.CanStartupResponse|null) => void
+  ): UnaryResponse;
+  canStartup(
+    requestMessage: dcrwalletgui_pb.CanStartupRequest,
+    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.CanStartupResponse|null) => void
+  ): UnaryResponse;
+}
+
+export class NetworkServiceClient {
+  readonly serviceHost: string;
+
+  constructor(serviceHost: string, options?: grpc.RpcOptions);
+  checkConnection(
+    requestMessage: dcrwalletgui_pb.CheckConnectionRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.CheckConnectionResponse|null) => void
+  ): UnaryResponse;
+  checkConnection(
+    requestMessage: dcrwalletgui_pb.CheckConnectionRequest,
+    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.CheckConnectionResponse|null) => void
   ): UnaryResponse;
 }
 

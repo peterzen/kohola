@@ -18,26 +18,31 @@ var (
 	cfg               = &AppConfiguration{}
 
 	defaultConfig = &AppConfiguration{
-		DcrdHost: &AppConfiguration_RPCEndpoint{
+		DcrdHost: &RPCEndpoint{
 			Hostname:     "localhost",
 			Port:         9109,
 			Username:     "gcUGfbMiULCnMm5OkmtDiS845GI=",
 			Password:     "azU+CHeww4WgmBTtRrmyoahL81U=",
-			Network:      AppConfiguration_SIMNET,
+			Network:      Network_SIMNET,
 			CertFileName: "../dcrd-simnet.cert",
+			Label:        "localhost:9109 (SIMNET)",
 		},
-		DcrwalletHosts: []*AppConfiguration_RPCEndpoint{
-			&AppConfiguration_RPCEndpoint{
+		DcrwalletHosts: []*GRPCEndpoint{
+			&GRPCEndpoint{
 				Hostname:     "localhost",
 				Port:         19558,
-				Username:     "rpc",
-				Password:     "0264a4798cfc71ad569a23e2f5c949b4e512837d7d3846",
 				CertFileName: "../../dcrwallet_alice.cert",
-				Network:      AppConfiguration_SIMNET,
+				Network:      Network_SIMNET,
+				Label:        "localhost:19558 (SIMNET)",
 			},
 		},
 	}
 )
+
+// HaveConfig checks whether there is at least one dcrwallet configuration
+func HaveConfig() bool {
+	return len(cfg.DcrwalletHosts) > 0
+}
 
 // GetConfig returns a copy of the active configuration
 func GetConfig() *AppConfiguration {

@@ -5,6 +5,7 @@ package dcrwalletgui;
 service AppConfig {
   rpc GetConfig(GetConfigRequest) returns (AppConfiguration);
   rpc SetConfig(SetConfigRequest) returns (SetConfigResponse);
+  rpc CanStartup(CanStartupRequest) returns (CanStartupResponse);
 }
 
 message GetConfigRequest { bytes passphrase = 1; }
@@ -13,6 +14,10 @@ message SetConfigRequest {
   AppConfiguration app_config = 1;
   bytes passphrase = 2;
 }
+
+message CanStartupRequest {}
+
+message CanStartupResponse { bool needs_setup = 1; }
 
 message SetConfigResponse {
   enum UpdateStatus {
@@ -23,25 +28,50 @@ message SetConfigResponse {
   int32 error_code = 2;
   string error_description = 3;
 }
+enum Network {
+  MAINNET = 0;
+  TESTNET = 1;
+  SIMNET = 2;
+}
+
+message RPCEndpoint {
+  string hostname = 1;
+  uint32 port = 2;
+  string username = 3;
+  string password = 4;
+  string cert_file_name = 5;
+  string cert_blob = 6;
+  Network network = 7;
+  string label = 8;
+}
+message GRPCEndpoint {
+  string hostname = 1;
+  uint32 port = 2;
+  string cert_file_name = 3;
+  string cert_blob = 4;
+  Network network = 5;
+  string label = 6;
+}
 
 message AppConfiguration {
-  enum Network {
-    MAINNET = 0;
-    TESTNET = 1;
-    SIMNET = 2;
-  }
-  message RPCEndpoint {
-    string hostname = 1;
-    uint32 port = 2;
-    string username = 3;
-    string password = 4;
-    string cert_file_name = 5;
-    string cert_blob = 6;
-    Network network = 7;
-  }
   RPCEndpoint dcrd_host = 1;
-  repeated RPCEndpoint dcrwallet_hosts = 2;
+  repeated GRPCEndpoint dcrwallet_hosts = 2;
 }
+
+service NetworkService {
+  rpc CheckConnection(CheckConnectionRequest) returns (CheckConnectionResponse);
+}
+
+message CheckConnectionRequest {
+  GRPCEndpoint grpc_endpoint = 1;
+  RPCEndpoint rpc_endpoint = 2;
+}
+
+message CheckConnectionResponse {
+  bool isSuccess = 1;
+  string error = 2;
+}
+
 /*
 message LorcaMessage {
   message Error { string error = 1; }

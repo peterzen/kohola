@@ -1,3 +1,5 @@
 node_modules/
 yarn-error.log
-app/__debug_bin
+
+frontend/dist
+frontend/yarn.lock

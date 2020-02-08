@@ -1,104 +1,72 @@
 import * as React from 'react';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { IApplicationState } from '../../store/types';
-import { getConfiguration } from '../../store/appconfiguration/actions';
-import { Row, Col, Table, Form, Button } from 'react-bootstrap';
+import { IApplicationState, AppError } from '../../store/types';
+import { getConfiguration, saveConfigurationAttempt } from '../../store/appconfiguration/actions';
+import { Row, Col, Button } from 'react-bootstrap';
 import { AppConfiguration } from '../../proto/dcrwalletgui_pb';
+import RPCEndpointConfigForm from './DcrdForm';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import {
+	faPlus
+} from '@fortawesome/free-solid-svg-icons'
 
 
 class SettingsContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
 		super(props)
 		this.state = {
+			appConfig: props.appConfig,
+			error: props.setConfigError,
 		}
 	}
-	networkSelectorOptions() {
-		return (
-			<>
-				<option value="0">MAINNET</option>
-				<option value="1">TESTNET</option>
-				<option value="2">SIMNET</option>
-			</>
-		)
-	}
+
 	render() {
-		const c = this.props.appConfig
+		const c = this.state.appConfig
 		const dcrd = c.getDcrdHost()
-		console.log("CCC", this.props.appConfig)
+		const dcrwallets = c.getDcrwalletHostsList()
 
 		return (
 			<div>
 				<h3>Settings</h3>
 				<Row>
 					<Col sm={6}>
-						<h4>dcrd settings</h4>
-						<Form>
-							<Form.Group as={Row}>
-								<Form.Label column sm={2}>Network</Form.Label>
-								<Col sm={6}>
-
-									<Form.Control
-										tabIndex={0}
-										as="select">
-										{this.networkSelectorOptions()}
-									</Form.Control>
-								</Col>
-							</Form.Group>
-							<Form.Group as={Row}>
-								<Form.Label column sm={2}>Host:port</Form.Label>
-								<Col sm={6}>
-									<Form.Control value={dcrd.getHostname()} />
-								</Col>
-								<Col sm={4}>
-									<Form.Control value={dcrd.getPort()} />
-								</Col>
-							</Form.Group>
-							<Form.Group as={Row}>
-								<Form.Label column sm={2}>RPC username</Form.Label>
-								<Col sm={10}>
-									<Form.Control value={dcrd.getUsername()} />
-								</Col>
-							</Form.Group>
-							<Form.Group as={Row}>
-								<Form.Label column sm={2}>RPC password</Form.Label>
-								<Col sm={10}>
-									<Form.Control value={dcrd?.getPassword()} />
-								</Col>
-							</Form.Group>
-							<Form.Group as={Row}>
-								<Form.Label column sm={2}>Certificate</Form.Label>
-								<Col sm={10}>
-									<Button variant="secondary-outline" size="sm" onClick={_.bind(this.browseFile, this)}>Browse...</Button>
-									<br />
-									<Form.Control
-										readOnly
-										value={dcrd.getCertFileName()} />
-
-									<Form.Control as="textarea" value={dcrd?.getCertBlob()} />
-								</Col>
-							</Form.Group>
-						</Form>
+						<RPCEndpointConfigForm
+							onFormComplete={_.bind(this.handleFormComplete, this)}
+							endPointConfig={dcrd}
+							title="dcrd settings"
+						/>
 					</Col>
 					<Col sm={6}>
-						<h4>dcrwallet</h4>
+						{dcrwallets.map((endPoint) => (
+							<RPCEndpointConfigForm
+								onFormComplete={_.bind(this.handleFormComplete, this)}
+								endPointConfig={endPoint}
+								title="dcrwallet settings"
+								key={endPoint.getLabel()} />
+						))}
+						<div className="text-right" >
+							<Button variant="outline-secondary" size="sm" onClick={_.bind(this.handleAddWallet, this)}>
+								<FontAwesomeIcon icon={faPlus} /> Add wallet host...
+							</Button>
+						</div>
 					</Col>
 				</Row>
+				<hr />
 			</div>
 		)
 	}
 
-	browseFile() {
-		const w = (window as any)
-		const appConfig = this.props.appConfig;
-		const _this = this
-		w.walletgui_FileOpenDialog()
-			.then((file: string) => {
-				console.log("FILE", file)
-				appConfig.getDcrdHost().setCertFileName(file)
-				_this.render()
-			})
+	handleFormComplete() {
+		this.props.saveConfigurationAttempt(this.props.appConfig)
+	}
+
+
+	handleAddWallet() {
+
 	}
 
 }
@@ -109,19 +77,26 @@ const mapStateToProps = (state: IApplicationState, ownProps: SettingsOwnProps) =
 	};
 }
 
-export default connect(mapStateToProps)(SettingsContainer)
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	saveConfigurationAttempt: saveConfigurationAttempt,
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsContainer)
 
 export interface SettingsOwnProps {
 	// propFromParent: number
 	appConfig: AppConfiguration
 }
 
+
 interface DispatchProps {
-	// onSomeEvent: () => void
+	saveConfigurationAttempt: (...arguments: any) => void
 }
 
 type Props = AppConfiguration & DispatchProps & SettingsOwnProps
 
 interface InternalState {
+	appConfig: AppConfiguration
+	error?: AppError
 }
 

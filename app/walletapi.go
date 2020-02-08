@@ -3,21 +3,22 @@ package main
 import (
 	"context"
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"io"
 	"log"
 
 	// walletjson "github.com/decred/dcrwallet/rpc/jsonrpc/types"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+
 	"github.com/decred/dcrd/dcrutil"
 	"github.com/decred/dcrd/rpcclient/v6"
 	pb "github.com/decred/dcrwallet/rpc/walletrpc"
 	walletrpc "github.com/decred/dcrwallet/rpc/walletrpc"
 	proto "github.com/golang/protobuf/proto"
 	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
+
 	"github.com/zserge/lorca"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
 )
 
 var (
@@ -29,41 +30,38 @@ var (
 	agendaServiceClient pb.AgendaServiceClient
 )
 
-// NewGRPCClient connects to the wallet gRPC server
-func newGRPCClient(cfg *gui.AppConfiguration) (*grpc.ClientConn, error) {
-	fmt.Printf("%#v", cfg)
+// InitFrontendGRPC creates a gRPC client connection
+func InitFrontendGRPC(endpointCfg *gui.GRPCEndpoint) error {
 
-	if len(cfg.DcrwalletHosts) < 1 {
-		return nil, errors.New("Missing dcrwallet entry in config file")
+	var err error = nil
+	gRPCConnection, err = newGRPCClient(endpointCfg)
+	if err != nil {
+		log.Println("rpc client error", err)
+		return err
 	}
-	dcrwCfg := cfg.DcrwalletHosts[0]
-	creds, err := credentials.NewClientTLSFromFile(dcrwCfg.CertFileName, "localhost")
+
+	walletServiceClient = walletrpc.NewWalletServiceClient(gRPCConnection)
+	votingServiceClient = walletrpc.NewVotingServiceClient(gRPCConnection)
+	agendaServiceClient = walletrpc.NewAgendaServiceClient(gRPCConnection)
+	return nil
+}
+
+// NewGRPCClient connects to the wallet gRPC server
+func newGRPCClient(endpointCfg *gui.GRPCEndpoint) (*grpc.ClientConn, error) {
+	// fmt.Printf("%#v", endpointCfg)
+
+	creds, err := credentials.NewClientTLSFromFile(endpointCfg.CertFileName, "localhost")
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
-	hostPort := fmt.Sprintf("%s:%d", dcrwCfg.Hostname, dcrwCfg.Port)
+	hostPort := fmt.Sprintf("%s:%d", endpointCfg.Hostname, endpointCfg.Port)
 	conn, err := grpc.Dial(hostPort, grpc.WithTransportCredentials(creds))
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
-	// defer conn.Close()
 	return conn, nil
-}
-
-func newWalletClient(conn *grpc.ClientConn) walletrpc.WalletServiceClient {
-	c := walletrpc.NewWalletServiceClient(conn)
-	return c
-}
-
-func newVotingClient(conn *grpc.ClientConn) walletrpc.VotingServiceClient {
-	c := walletrpc.NewVotingServiceClient(conn)
-	return c
-}
-func newAgendasClient(conn *grpc.ClientConn) walletrpc.AgendaServiceClient {
-	c := walletrpc.NewAgendaServiceClient(conn)
-	return c
 }
 
 func getBalance(accountNumber uint32, requiredConfirmations int32) (r gui.LorcaMessage) {
@@ -407,21 +405,6 @@ func listUnspent(
 
 // }
 
-// InitFrontendGRPC creates a gRPC client connection
-func InitFrontendGRPC(cfg *gui.AppConfiguration) error {
-	var err error = nil
-	gRPCConnection, err = newGRPCClient(cfg)
-	if err != nil {
-		log.Println("rpc client error", err)
-		return err
-	}
-
-	walletServiceClient = newWalletClient(gRPCConnection)
-	votingServiceClient = newVotingClient(gRPCConnection)
-	agendaServiceClient = newAgendasClient(gRPCConnection)
-	return nil
-}
-
 type notificationSubscriptions struct {
 }
 
@@ -519,6 +502,39 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__ConstructTransaction", constructTransaction)
 	ui.Bind("walletrpc__SignTransaction", signTransaction)
 	ui.Bind("walletrpc__PublishTransaction", publishTransaction)
+
+	ui.Bind("walletgui_CheckGRPCConnection", func(requestAsHex string) (r gui.CheckConnectionResponse) {
+		cfg := &gui.GRPCEndpoint{}
+		bytes, err := hex.DecodeString(requestAsHex)
+		err = proto.Unmarshal(bytes, cfg)
+
+		if err != nil {
+			r.Error = err.Error()
+		}
+		isOK, err := checkGRPCConnection(cfg)
+		if !isOK {
+			r.IsSuccess = false
+			r.Error = err.Error()
+			return r
+		}
+		r.IsSuccess = true
+		return r
+	})
+}
+
+func checkGRPCConnection(endpointCfg *gui.GRPCEndpoint) (bool, error) {
+	gRPCConnection, err := newGRPCClient(endpointCfg)
+	if err != nil {
+		return false, err
+	}
+	walletServiceClient := walletrpc.NewWalletServiceClient(gRPCConnection)
+
+	request := &pb.PingRequest{}
+	_, err = walletServiceClient.Ping(context.Background(), request)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 // TODO

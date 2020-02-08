@@ -4,7 +4,7 @@ import * as React from "react"
 import { IndexedWalletAccounts, WalletAccount } from "../../../models"
 
 import { Form, Button, InputGroup, FormControl, Row, Col } from 'react-bootstrap';
-import { LoadingButton } from "../../Shared/shared"
+import { LoadingButton, PasteButton } from "../../Shared/shared"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -64,10 +64,7 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 							onChange={_.bind(this.handleDestinationAddressChange, this)}
 							name="destinationAddress" />
 						<InputGroup.Append>
-							<Button variant="secondary"
-								tabIndex={-1}>
-								<FontAwesomeIcon icon={faPaste} />
-							</Button>
+							{/* <PasteButton tabIndex={-1} /> */}
 						</InputGroup.Append>
 					</InputGroup>
 					<Form.Control.Feedback type="invalid">

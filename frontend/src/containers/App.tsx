@@ -35,5 +35,4 @@ const App = ({ history }: AppProps) => {
 	)
 }
 
-
 export default hot(App)

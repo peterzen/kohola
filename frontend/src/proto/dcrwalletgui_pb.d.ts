@@ -53,6 +53,42 @@ export namespace SetConfigRequest {
   }
 }
 
+export class CanStartupRequest extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CanStartupRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CanStartupRequest): CanStartupRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CanStartupRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CanStartupRequest;
+  static deserializeBinaryFromReader(message: CanStartupRequest, reader: jspb.BinaryReader): CanStartupRequest;
+}
+
+export namespace CanStartupRequest {
+  export type AsObject = {
+  }
+}
+
+export class CanStartupResponse extends jspb.Message {
+  getNeedsSetup(): boolean;
+  setNeedsSetup(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CanStartupResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CanStartupResponse): CanStartupResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CanStartupResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CanStartupResponse;
+  static deserializeBinaryFromReader(message: CanStartupResponse, reader: jspb.BinaryReader): CanStartupResponse;
+}
+
+export namespace CanStartupResponse {
+  export type AsObject = {
+    needsSetup: boolean,
+  }
+}
+
 export class SetConfigResponse extends jspb.Message {
   getUpdateStatus(): SetConfigResponse.UpdateStatusMap[keyof SetConfigResponse.UpdateStatusMap];
   setUpdateStatus(value: SetConfigResponse.UpdateStatusMap[keyof SetConfigResponse.UpdateStatusMap]): void;
@@ -88,16 +124,104 @@ export namespace SetConfigResponse {
   export const UpdateStatus: UpdateStatusMap;
 }
 
+export class RPCEndpoint extends jspb.Message {
+  getHostname(): string;
+  setHostname(value: string): void;
+
+  getPort(): number;
+  setPort(value: number): void;
+
+  getUsername(): string;
+  setUsername(value: string): void;
+
+  getPassword(): string;
+  setPassword(value: string): void;
+
+  getCertFileName(): string;
+  setCertFileName(value: string): void;
+
+  getCertBlob(): string;
+  setCertBlob(value: string): void;
+
+  getNetwork(): NetworkMap[keyof NetworkMap];
+  setNetwork(value: NetworkMap[keyof NetworkMap]): void;
+
+  getLabel(): string;
+  setLabel(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RPCEndpoint.AsObject;
+  static toObject(includeInstance: boolean, msg: RPCEndpoint): RPCEndpoint.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RPCEndpoint, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RPCEndpoint;
+  static deserializeBinaryFromReader(message: RPCEndpoint, reader: jspb.BinaryReader): RPCEndpoint;
+}
+
+export namespace RPCEndpoint {
+  export type AsObject = {
+    hostname: string,
+    port: number,
+    username: string,
+    password: string,
+    certFileName: string,
+    certBlob: string,
+    network: NetworkMap[keyof NetworkMap],
+    label: string,
+  }
+}
+
+export class GRPCEndpoint extends jspb.Message {
+  getHostname(): string;
+  setHostname(value: string): void;
+
+  getPort(): number;
+  setPort(value: number): void;
+
+  getCertFileName(): string;
+  setCertFileName(value: string): void;
+
+  getCertBlob(): string;
+  setCertBlob(value: string): void;
+
+  getNetwork(): NetworkMap[keyof NetworkMap];
+  setNetwork(value: NetworkMap[keyof NetworkMap]): void;
+
+  getLabel(): string;
+  setLabel(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GRPCEndpoint.AsObject;
+  static toObject(includeInstance: boolean, msg: GRPCEndpoint): GRPCEndpoint.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GRPCEndpoint, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GRPCEndpoint;
+  static deserializeBinaryFromReader(message: GRPCEndpoint, reader: jspb.BinaryReader): GRPCEndpoint;
+}
+
+export namespace GRPCEndpoint {
+  export type AsObject = {
+    hostname: string,
+    port: number,
+    certFileName: string,
+    certBlob: string,
+    network: NetworkMap[keyof NetworkMap],
+    label: string,
+  }
+}
+
 export class AppConfiguration extends jspb.Message {
   hasDcrdHost(): boolean;
   clearDcrdHost(): void;
-  getDcrdHost(): AppConfiguration.RPCEndpoint | undefined;
-  setDcrdHost(value?: AppConfiguration.RPCEndpoint): void;
+  getDcrdHost(): RPCEndpoint | undefined;
+  setDcrdHost(value?: RPCEndpoint): void;
 
   clearDcrwalletHostsList(): void;
-  getDcrwalletHostsList(): Array<AppConfiguration.RPCEndpoint>;
-  setDcrwalletHostsList(value: Array<AppConfiguration.RPCEndpoint>): void;
-  addDcrwalletHosts(value?: AppConfiguration.RPCEndpoint, index?: number): AppConfiguration.RPCEndpoint;
+  getDcrwalletHostsList(): Array<GRPCEndpoint>;
+  setDcrwalletHostsList(value: Array<GRPCEndpoint>): void;
+  addDcrwalletHosts(value?: GRPCEndpoint, index?: number): GRPCEndpoint;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AppConfiguration.AsObject;
@@ -111,60 +235,68 @@ export class AppConfiguration extends jspb.Message {
 
 export namespace AppConfiguration {
   export type AsObject = {
-    dcrdHost?: AppConfiguration.RPCEndpoint.AsObject,
-    dcrwalletHostsList: Array<AppConfiguration.RPCEndpoint.AsObject>,
+    dcrdHost?: RPCEndpoint.AsObject,
+    dcrwalletHostsList: Array<GRPCEndpoint.AsObject>,
   }
-
-  export class RPCEndpoint extends jspb.Message {
-    getHostname(): string;
-    setHostname(value: string): void;
-
-    getPort(): number;
-    setPort(value: number): void;
-
-    getUsername(): string;
-    setUsername(value: string): void;
-
-    getPassword(): string;
-    setPassword(value: string): void;
-
-    getCertFileName(): string;
-    setCertFileName(value: string): void;
-
-    getCertBlob(): string;
-    setCertBlob(value: string): void;
-
-    getNetwork(): AppConfiguration.NetworkMap[keyof AppConfiguration.NetworkMap];
-    setNetwork(value: AppConfiguration.NetworkMap[keyof AppConfiguration.NetworkMap]): void;
-
-    serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): RPCEndpoint.AsObject;
-    static toObject(includeInstance: boolean, msg: RPCEndpoint): RPCEndpoint.AsObject;
-    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: RPCEndpoint, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): RPCEndpoint;
-    static deserializeBinaryFromReader(message: RPCEndpoint, reader: jspb.BinaryReader): RPCEndpoint;
-  }
-
-  export namespace RPCEndpoint {
-    export type AsObject = {
-      hostname: string,
-      port: number,
-      username: string,
-      password: string,
-      certFileName: string,
-      certBlob: string,
-      network: AppConfiguration.NetworkMap[keyof AppConfiguration.NetworkMap],
-    }
-  }
-
-  export interface NetworkMap {
-    MAINNET: 0;
-    TESTNET: 1;
-    SIMNET: 2;
-  }
-
-  export const Network: NetworkMap;
 }
+
+export class CheckConnectionRequest extends jspb.Message {
+  hasGrpcEndpoint(): boolean;
+  clearGrpcEndpoint(): void;
+  getGrpcEndpoint(): GRPCEndpoint | undefined;
+  setGrpcEndpoint(value?: GRPCEndpoint): void;
+
+  hasRpcEndpoint(): boolean;
+  clearRpcEndpoint(): void;
+  getRpcEndpoint(): RPCEndpoint | undefined;
+  setRpcEndpoint(value?: RPCEndpoint): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CheckConnectionRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CheckConnectionRequest): CheckConnectionRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CheckConnectionRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CheckConnectionRequest;
+  static deserializeBinaryFromReader(message: CheckConnectionRequest, reader: jspb.BinaryReader): CheckConnectionRequest;
+}
+
+export namespace CheckConnectionRequest {
+  export type AsObject = {
+    grpcEndpoint?: GRPCEndpoint.AsObject,
+    rpcEndpoint?: RPCEndpoint.AsObject,
+  }
+}
+
+export class CheckConnectionResponse extends jspb.Message {
+  getIssuccess(): boolean;
+  setIssuccess(value: boolean): void;
+
+  getError(): string;
+  setError(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CheckConnectionResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CheckConnectionResponse): CheckConnectionResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CheckConnectionResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CheckConnectionResponse;
+  static deserializeBinaryFromReader(message: CheckConnectionResponse, reader: jspb.BinaryReader): CheckConnectionResponse;
+}
+
+export namespace CheckConnectionResponse {
+  export type AsObject = {
+    issuccess: boolean,
+    error: string,
+  }
+}
+
+export interface NetworkMap {
+  MAINNET: 0;
+  TESTNET: 1;
+  SIMNET: 2;
+}
+
+export const Network: NetworkMap;
 
