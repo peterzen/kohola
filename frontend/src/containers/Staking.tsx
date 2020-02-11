@@ -25,8 +25,11 @@ class StakingContainer extends React.Component<{}, {}> {
 					</Col>
 					<Col>
 						<StakeStats/>
+						<div className="mt-3"/>
 						<AgendasComponent />
+						<div className="mt-3"/>
 						<TicketPriceComponent />
+						<div className="mt-3"/>
 						<PurchaseTicketForm />
 						<TicketBuyerComponent/>
 					</Col>
