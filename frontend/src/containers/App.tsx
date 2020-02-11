@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Switch, Route } from "react-router-dom"
 import { ConnectedRouter } from "connected-react-router"
 
-import { Container } from 'react-bootstrap'
+import { Container, Toast } from 'react-bootstrap'
 
 import Navbar from "../components/Fixtures/Navbar"
 import Home from "./Home"
@@ -12,6 +12,7 @@ import Settings from './Settings';
 import { NoRouteMatch } from '../components/Shared/shared';
 
 import { hot } from 'react-hot-loader/root'
+import ToastContainer from '../components/Fixtures/Toasts';
 
 interface AppProps {
 	history: any  // should be History<something>
@@ -31,6 +32,7 @@ const App = ({ history }: AppProps) => {
 					</Switch>
 				</Container>
 			</main>
+			<ToastContainer />
 		</ConnectedRouter>
 	)
 }

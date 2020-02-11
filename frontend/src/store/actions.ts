@@ -34,7 +34,8 @@ export const checkBackend: ActionCreator<any> = () => {
 export const initializeData: ActionCreator<any> = () => {
 	return async (dispatch: Dispatch) => {
 
-		dispatch(pingAttempt());
+		await dispatch(loadBestBlockHeightAttempt())
+		await dispatch(loadAccountsAttempt())
 
 		w.lorcareceiver__OnTxNotification = (serializedMsg: Uint8Array) => {
 			const message = TransactionNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
@@ -49,7 +50,9 @@ export const initializeData: ActionCreator<any> = () => {
 			dispatch(accountNotification(message))
 		}
 
-		await dispatch(loadBestBlockHeightAttempt())
-		await dispatch(loadAccountsAttempt())
+		setTimeout(() => {
+			dispatch(pingAttempt());
+
+		}, 5000)
 	}
 }

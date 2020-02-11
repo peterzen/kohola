@@ -18,40 +18,43 @@ class StakeInfoComponent extends React.Component<Props, InternalState> {
 				<Card.Body>
 					<Row>
 						<Col>
+							<h2>3</h2>
+							<h6 className="text-muted">Voted recently</h6>
+
+							{/* <h2><Amount amount={s.getTotalSubsidy()} showCurrency={true} /></h2> */}
+							{/* <h6 className="text-muted">Total subsidy</h6> */}
+						</Col>
+						<Col>
 							<h2>{s.getLive()}</h2>
 							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.LIVE} /> Live</h6>
-						</Col>
-						<Col>
-							<h2>{s.getVoted()}</h2>
-							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.VOTED} /> Voted</h6>
-						</Col>
-						<Col>
-							<h2>{s.getOwnMempoolTix()}</h2>
-							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.UNMINED} /> Mempool</h6>
-						</Col>
-						<Col>
-							<h2><Amount amount={s.getTotalSubsidy()} showCurrency={true} /></h2>
-							<h6 className="text-muted">Total subsidy</h6>
-						</Col>
-					</Row>
-					<Row>
-						<Col>
-							<h2>{s.getExpired()}</h2>
-							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.EXPIRED} /> Expired</h6>
-						</Col>
-						<Col>
-							<h2>{s.getMissed()}</h2>
-							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.MISSED} /> Missed</h6>
-						</Col>
-						<Col>
-							<h2>{s.getRevoked()}</h2>
-							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.REVOKED} /> Revoked</h6>
 						</Col>
 						<Col>
 							<h2>{s.getImmature()}</h2>
 							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.IMMATURE} /> Immature</h6>
 						</Col>
+						<Col>
+							<h2>{s.getOwnMempoolTix()}</h2>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.UNMINED} /> Mempool</h6>
+						</Col>
 					</Row>
+					{/* <Row>
+					<Col>
+							<h1>{s.getVoted()}</h1>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.VOTED} /> Voted</h6>
+						</Col>
+						<Col>
+							<h1>{s.getExpired()}</h1>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.EXPIRED} /> Expired</h6>
+						</Col>
+						<Col>
+							<h1>{s.getMissed()}</h1>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.MISSED} /> Missed</h6>
+						</Col>
+						<Col>
+							<h1>{s.getRevoked()}</h1>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.REVOKED} /> Revoked</h6>
+						</Col>
+					</Row> */}
 				</Card.Body>
 			</Card>
 		)

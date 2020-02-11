@@ -5,6 +5,7 @@ import { ITicketPriceState } from '../../store/staking/types';
 import { IApplicationState } from '../../store/types';
 import { loadTicketPriceAttempt } from '../../store/staking/actions';
 import { Card } from 'react-bootstrap';
+import { Amount } from '../Shared/shared';
 
 export interface TicketPriceOwnProps {
 	// propFromParent: number
@@ -26,9 +27,10 @@ class TicketPriceComponent extends React.Component<Props, InternalState> {
 		return (
 			<Card>
 				<Card.Body>
-					<Card.Title>
-					Ticket price in next block: {this.props.ticketPrice.getTicketPrice()}
-					</Card.Title>
+					<Card.Title></Card.Title>
+						<h1><Amount amount={this.props.ticketPrice.getTicketPrice()} showCurrency /></h1>
+						Ticket price in next block
+					
 				</Card.Body>
 			</Card>
 		)

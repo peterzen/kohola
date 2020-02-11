@@ -35,6 +35,9 @@ export const transactionsInitialState: ITransactionState = {
 	constructTransactionResponse: null,
 	constructTransactionAttempting: false,
 
+	// Tx notifications
+	latestTxNotification: null,
+
 	// SignTransaction
 	signTransactionAttempting: false,
 	signTransactionResponse: null,
@@ -96,7 +99,8 @@ export default function transactions(
 			};
 		case TRANSACTIONNOTIFICATIONS_RECEIVED:
 			return {
-				...state
+				...state,
+				latestTxNotification: action.payload
 			};
 
 		// ConstructTransaction

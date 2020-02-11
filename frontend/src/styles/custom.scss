@@ -1,6 +1,6 @@
 body {
-	padding-top: 50px;
-	background-color: #e5e5e5 !important;
+  padding-top: 50px;
+  background-color: #e5e5e5 !important;
 }
 
 .footer {
@@ -11,8 +11,14 @@ body {
   font-size: 90%;
 }
 
-.amount .fractions {
-  opacity: 0.4;
+.amount {
+  .currency {
+    font-size: 50%;
+    opacity: 67.5%;
+  }
+  .fractions {
+    opacity: 0.4;
+  }
 }
 
 .status-icon {
@@ -20,16 +26,24 @@ body {
 }
 
 .clickable {
-	cursor: pointer;
+  cursor: pointer;
 }
 
-
 .pastebutton-overlaid {
-	position: relative;
-    margin-top: -2em;
+  position: relative;
+  margin-top: -2em;
 }
 
 .certificate-input textarea {
-	font-size: 75%;
-	font-family: 'Courier New', Courier, monospace;
+  font-size: 75%;
+  font-family: "Courier New", Courier, monospace;
+}
+
+#toast-container {
+	position: 'relative';
+    min-height: '200px';
+//   position: absolute;
+//   top: 50px;
+//   right: 5px;
+//   z-index: 1500;
 }

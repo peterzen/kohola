@@ -1,11 +1,12 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IApplicationState } from "../../store/types";
-import { Agenda } from "../../models";
-import { loadAgendasAttempt } from "../../store/staking/actions";
-import { IAgendasState } from "../../store/staking/types";
 import { Card } from "react-bootstrap";
+import TimeAgo from 'react-timeago';
+import { Agenda } from "../../models";
+import { IAgendasState } from "../../store/staking/types";
+import { IApplicationState } from "../../store/types";
+import { loadAgendasAttempt } from "../../store/staking/actions";
 
 
 interface AgendasOwnProps {
@@ -25,7 +26,10 @@ interface InternalState {
 
 function renderAgenda(agenda: Agenda) {
 	return (
-		{ agenda }
+		<div>
+			<p><strong>{agenda.getId()}</strong> {agenda.getDescription()}</p>
+			<small><TimeAgo date={agenda.getExpireTime() * 1000} /></small>
+		</div>
 	)
 }
 

@@ -55,5 +55,5 @@ type Configuration = {
 }
 
 export const Configuration: Configuration = {
-	CurrentNetwork: Networks.SIMNET
+	CurrentNetwork: Networks.TESTNET
 }

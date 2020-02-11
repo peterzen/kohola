@@ -254,6 +254,10 @@ export interface GUISendTransaction {
 	sendTransactionCurrentStep: SendTransactionSteps
 }
 
+export interface TxNotificationState {
+	latestTxNotification?: TransactionNotificationsResponse
+}
+
 export type ITransactionState =
 	GetTransactionsState &
 	ConstructTransactionState &
@@ -262,7 +266,9 @@ export type ITransactionState =
 	CommittedTicketsState &
 	ValidateAddressState &
 	SweepAccountState &
-	GUISendTransaction
+	GUISendTransaction &
+	TxNotificationState
+
 
 export type TransactionsActionTypes =
 	GetTransactionAttemptAction |

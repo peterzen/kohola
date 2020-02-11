@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Modal, Button } from 'react-bootstrap';
-
+import ReactDOM from 'react-dom';
 
 export default class GenericModalDialog<P, S> extends React.Component<P & Props, InternalState & S> {
 	constructor(props: P & Props) {
