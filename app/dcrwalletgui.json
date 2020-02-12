@@ -1,0 +1,19 @@
+{
+  "dcrd_host": {},
+  "dcrwallet_hosts": [
+    {
+      "hostname": "localhost",
+      "port": 29109,
+      "cert_file_name": "/home/peter/Work/decred/cspp_fiddle/dcrwallet_data/rpc.cert",
+      "network": 1,
+      "label": "localhost:29109 (TESTNET)"
+    },
+    {
+      "hostname": "localhost",
+      "port": 19558,
+      "cert_file_name": "/home/peter/Work/decred/cspp_fiddle/dcrwalletgui/app/alice.cert",
+      "network": 2,
+      "label": "localhost:19558 (SIMNET)"
+    }
+  ]
+}

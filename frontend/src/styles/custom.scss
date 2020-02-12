@@ -13,11 +13,24 @@ body {
 
 .amount {
   .currency {
-    font-size: 50%;
-    opacity: 67.5%;
+    font-size: 67.5%;
+    opacity: 50%;
   }
   .fractions {
-    opacity: 0.4;
+    font-size: 67.5%;
+    opacity: 50%;
+  }
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  > .amount {
+    .currency {
+    //   font-size: 100%;
+    }
   }
 }
 
@@ -40,10 +53,14 @@ body {
 }
 
 #toast-container {
-	position: 'relative';
-    min-height: '200px';
-//   position: absolute;
-//   top: 50px;
-//   right: 5px;
-//   z-index: 1500;
+  position: "relative";
+  min-height: "200px";
+  //   position: absolute;
+  //   top: 50px;
+  //   right: 5px;
+  //   z-index: 1500;
+}
+
+.copy-to-clipboard {
+  cursor: pointer;
 }

@@ -9,12 +9,14 @@ import { sprintf } from "sprintf-js";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faPaste,
+	faClipboard,
 	faInfoCircle
 } from '@fortawesome/free-solid-svg-icons'
 
 
 import { Button, ButtonProps, Popover, OverlayTrigger } from 'react-bootstrap';
 import { rawHashToHex } from "../../helpers/byteActions";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 
 interface TimestampProps {
@@ -116,6 +118,63 @@ export const PasteButton = (args: ButtonProps) => {
 			<FontAwesomeIcon icon={faPaste} />
 		</Button>
 	)
+}
+
+interface ICopyToClipboardButtonProps {
+	value: string
+}
+
+export class CopyToClipboardButton extends React.Component<ICopyToClipboardButtonProps, { copied: boolean }> {
+	constructor(props: ICopyToClipboardButtonProps) {
+		super(props)
+		this.state = {
+			copied: false
+		}
+	}
+	render() {
+		return (
+			<span>
+				<CopyToClipboard text={this.props.value}
+					onCopy={() => this.setState({ copied: true })}>
+					<Button
+						variant="outline-secondary" >
+						<FontAwesomeIcon icon={faClipboard} />
+					</Button>
+				</CopyToClipboard>
+				{
+					this.state.copied ? (
+						<span className="text-info">Copied.</span>
+					) : null
+				}
+			</span>
+		)
+	}
+}
+
+export class CopyToClipboardText extends React.Component<ICopyToClipboardButtonProps, { copied: boolean }> {
+	constructor(props: ICopyToClipboardButtonProps) {
+		super(props)
+		this.state = {
+			copied: false
+		}
+	}
+	render() {
+		return (
+			<span className="copy-to-clipboard">
+				<CopyToClipboard
+					text={this.props.value}
+					onCopy={() => this.setState({ copied: true })}
+				>
+					<span className="copy-to-clipboard-inner">
+						{this.props.children} <FontAwesomeIcon icon={faClipboard} />
+					</span>
+				</CopyToClipboard>
+				{this.state.copied ? (
+					<span className="text-info">Copied</span>
+				) : null}
+			</span>
+		)
+	}
 }
 
 

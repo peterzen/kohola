@@ -1,28 +1,27 @@
 import * as React from 'react';
 import _ from 'lodash';
 
-import { AccountBalance, IndexedWalletAccounts, WalletAccount, WalletBalance } from '../../models';
+import { AccountBalance, IndexedWalletAccounts, WalletAccount, WalletBalance, WalletTotals } from '../../models';
 
 import { Amount } from '../Shared/shared';
 import AccountToolsDropdown from './AccountToolsDropdown';
 
 import { Table } from 'react-bootstrap';
-import { WalletTotals } from '../../store/walletbalance/selectors';
 
 export default class AccountBalanceTable extends React.Component<OwnProps, InternalState>{
 
 	renderBalanceRow(props: { account: WalletAccount, balance: AccountBalance }) {
 		const { account, balance } = props;
+		const immatureAmount = balance.getImmatureStakeGeneration() + balance.getImmatureReward()
 		return (
 			<tr key={account.getAccountNumber()}>
 				<td>{account.getAccountName()}</td>
-				<td><Amount amount={balance.getUnconfirmed()} /></td>
-				<td><Amount amount={balance.getImmatureStakeGeneration()} /></td>
-				<td><Amount amount={balance.getImmatureReward()} /></td>
-				<td><Amount amount={balance.getVotingAuthority()} /></td>
-				<td><Amount amount={balance.getLockedByTickets()} /></td>
 				<td><Amount amount={balance.getSpendable()} /></td>
 				<td><Amount amount={balance.getTotal()} /></td>
+				<td className="text-secondary"><Amount amount={balance.getUnconfirmed()} /></td>
+				<td className="text-secondary"><Amount amount={immatureAmount} /></td>
+				<td className="text-secondary"><Amount amount={balance.getVotingAuthority()} /></td>
+				<td className="text-secondary"><Amount amount={balance.getLockedByTickets()} /></td>
 				<td>
 					<AccountToolsDropdown
 						account={account}
@@ -47,13 +46,12 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 		return (
 			<tr key="totals">
 				<th>Total</th>
-				<th><Amount amount={totals.unconfirmed} /></th>
-				<th><Amount amount={totals.immature_stake} /></th>
-				<th><Amount amount={totals.immature_coinbase}/></th>
-				<th><Amount amount={totals.votingauth} /></th>
-				<th><Amount amount={totals.locked} /></th>
 				<th><Amount amount={totals.spendable} /></th>
 				<th><Amount amount={totals.total} /></th>
+				<th className="text-secondary"><Amount amount={totals.unconfirmed} /></th>
+				<th className="text-secondary"><Amount amount={totals.immature_coinbase + totals.immature_stake} /></th>
+				<th className="text-secondary"><Amount amount={totals.votingauth} /></th>
+				<th className="text-secondary"><Amount amount={totals.locked} /></th>
 				<th></th>
 			</tr>
 		)
@@ -65,13 +63,12 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 				<thead>
 					<tr>
 						<th></th>
-						<th>unconfirmed</th>
-						<th>immature stake</th>
-						<th>coinbase</th>
-						<th>votingauth</th>
-						<th>locked</th>
 						<th>spendable</th>
 						<th>total</th>
+						<th className="text-secondary">unconfirmed</th>
+						<th className="text-secondary">immature<br/><small>stake/reward</small></th>
+						<th className="text-secondary">voting<br/>authority</th>
+						<th className="text-secondary">locked</th>
 						<th></th>
 					</tr>
 				</thead>
