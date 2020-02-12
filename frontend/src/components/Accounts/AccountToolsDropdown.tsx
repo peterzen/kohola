@@ -22,7 +22,13 @@ const AccountToolsDropdown = (props: { account: WalletAccount, menuHandler: any 
 			>
 				<Dropdown.Header>{props.account.getAccountName()}</Dropdown.Header>
 				<Dropdown.Divider />
-				<Dropdown.Item eventKey={MenuItems[MenuItems.NEWADDRESS]}>Get new address</Dropdown.Item>
+				<Dropdown.Item eventKey={MenuItems[MenuItems.NEWADDRESS]}>Send</Dropdown.Item>
+				<Dropdown.Item eventKey={MenuItems[MenuItems.NEWADDRESS]}>Receive</Dropdown.Item>
+				<Dropdown.Divider />
+				<Dropdown.Item eventKey={""}>Account details</Dropdown.Item>
+				<Dropdown.Item eventKey={""}>Transfer...</Dropdown.Item>
+				<Dropdown.Item eventKey={""}>Sweep...</Dropdown.Item>
+				<Dropdown.Item eventKey={""}>Consolidate...</Dropdown.Item>
 			</Dropdown.Menu>
 		</Dropdown>
 	)
