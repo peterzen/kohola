@@ -53,7 +53,7 @@ export const transactionNotification: ActionCreator<any> = (message: Transaction
 		dispatch(loadWalletBalance());
 		dispatch(loadStakeInfoAttempt());
 		// dispatch(loadTicketsAttempt());
-		// dispatch(loadTransactionsAttempt());
+		dispatch(loadTransactionsAttempt());
 		dispatch({ type: TRANSACTIONNOTIFICATIONS_RECEIVED, payload: message });
 	}
 }

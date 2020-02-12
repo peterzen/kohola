@@ -33,7 +33,7 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 		}
 		const txList = this.props.txList;
 		return (
-			<Card className="mt-3">
+			<Card>
 				<Card.Body>
 					<Card.Title>Recent transactions <small className="text-muted">({txList.length})</small>
 					<Button
@@ -72,9 +72,9 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 			selectedItem: tx
 		})
 	}
-	componentDidMount() {
-		this.props.dispatch(loadTransactionsAttempt())
-	}
+	// componentDidMount() {
+	// 	this.props.dispatch(loadTransactionsAttempt())
+	// }
 }
 
 const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): Props => {

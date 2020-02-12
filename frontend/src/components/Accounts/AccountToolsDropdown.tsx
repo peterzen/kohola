@@ -25,10 +25,10 @@ const AccountToolsDropdown = (props: { account: WalletAccount, menuHandler: any 
 				<Dropdown.Item eventKey={MenuItems[MenuItems.NEWADDRESS]}>Send</Dropdown.Item>
 				<Dropdown.Item eventKey={MenuItems[MenuItems.NEWADDRESS]}>Receive</Dropdown.Item>
 				<Dropdown.Divider />
-				<Dropdown.Item eventKey={""}>Account details</Dropdown.Item>
-				<Dropdown.Item eventKey={""}>Transfer...</Dropdown.Item>
-				<Dropdown.Item eventKey={""}>Sweep...</Dropdown.Item>
-				<Dropdown.Item eventKey={""}>Consolidate...</Dropdown.Item>
+				<Dropdown.Item eventKey={""} disabled>Account details</Dropdown.Item>
+				<Dropdown.Item eventKey={""} disabled>Transfer...</Dropdown.Item>
+				<Dropdown.Item eventKey={""} disabled>Sweep...</Dropdown.Item>
+				<Dropdown.Item eventKey={""} disabled>Consolidate...</Dropdown.Item>
 			</Dropdown.Menu>
 		</Dropdown>
 	)

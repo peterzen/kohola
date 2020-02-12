@@ -65,7 +65,7 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 						<th></th>
 						<th>spendable</th>
 						<th>total</th>
-						<th className="text-secondary">unconfirmed</th>
+						<th className="text-secondary">unconf'd</th>
 						<th className="text-secondary">immature<br/><small>stake/reward</small></th>
 						<th className="text-secondary">voting<br/>authority</th>
 						<th className="text-secondary">locked</th>

@@ -3,7 +3,7 @@ import { Dispatch, ActionCreator } from 'redux';
 
 import { IGetState } from './types';
 import { pingAttempt } from './ping/actions';
-import { transactionNotification } from './transactions/actions';
+import { transactionNotification, loadTransactionsAttempt } from './transactions/actions';
 import { loadBestBlockHeightAttempt } from './networkinfo/actions';
 import { getConfiguration, canStartup } from './appconfiguration/actions';
 import { loadAccountsAttempt, accountNotification } from './accounts/actions';
@@ -14,6 +14,7 @@ import {
 } from '../proto/api_pb';
 
 import { hexToRaw } from '../helpers/byteActions';
+import { loadWalletBalance } from './walletbalance/actions';
 
 const w = (window as any)
 
@@ -36,6 +37,8 @@ export const initializeData: ActionCreator<any> = () => {
 
 		await dispatch(loadBestBlockHeightAttempt())
 		await dispatch(loadAccountsAttempt())
+		 dispatch(loadWalletBalance())
+		 dispatch(loadTransactionsAttempt())
 
 		w.lorcareceiver__OnTxNotification = (serializedMsg: Uint8Array) => {
 			const message = TransactionNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))

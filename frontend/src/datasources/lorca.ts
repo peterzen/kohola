@@ -13,7 +13,9 @@ import {
 	SignTransactionResponse,
 	PublishTransactionRequest,
 	PublishTransactionResponse,
-	AgendasResponse
+	AgendasResponse,
+	UnspentOutputResponse,
+	UnspentOutputsRequest
 } from '../proto/api_pb';
 import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from '../models';
 import { rawToHex } from '../helpers/byteActions';
@@ -193,6 +195,38 @@ const LorcaBackend = {
 		}
 	},
 
+	unspentOutputs: async (account: WalletAccount, targetAmount: number, requiredConfirmations: number, includeImmatureCoinbases: boolean) => {
+		/*
+		uint32 account: Account number containing the keys controlling the output set to query.
+
+int64 target_amount: If positive, the service may limit output results to those that sum to at least this amount (counted in Atoms). This may not be negative.
+
+int32 required_confirmations: The minimum number of block confirmations needed to consider including an output in the return set. This may not be negative.
+
+bool include_immature_coinbases:
+*/
+		try {
+			const r = await w.walletrpc__ListUnspent(
+				account.getAccountNumber(),
+				targetAmount,
+				requiredConfirmations,
+				includeImmatureCoinbases)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			const unspents: UnspentOutputResponse[] = []
+			_.each(r.apayload, (s: Uint8Array) => {
+				const tr = UnspentOutputResponse.deserializeBinary(s)
+				unspents.push(tr)
+			})
+			return unspents
+		}
+		catch (e) {
+			console.error("Serialization error", e)
+			return
+		}
+	},
+
 	checkGRPCEndpointConnection: async (cfg: GRPCEndpoint) => {
 		const ser = rawToHex(cfg.serializeBinary().buffer)
 		return await w.walletgui_CheckGRPCConnection(ser)
@@ -201,6 +235,7 @@ const LorcaBackend = {
 	doPing: endpointFactory("walletrpc__Ping", PingResponse),
 	fetchAgendas: endpointFactory("walletrpc__GetAgendas", AgendasResponse),
 	fetchNetwork: endpointFactory("walletrpc__GetNetwork", NetworkResponse),
+	fetchUnspent: endpointFactory("walletrpc__ListUnspent", UnspentOutputResponse),
 	fetchAccounts: endpointFactory("walletrpc__GetAccounts", AccountsResponse),
 	fetchBestBlock: endpointFactory("walletrpc__GetBestBlock", BestBlockResponse),
 	fetchStakeInfo: endpointFactory("walletrpc__GetStakeInfo", StakeInfoResponse),
