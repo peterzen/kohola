@@ -46,7 +46,7 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
 		})
 	}
 	componentDidMount() {
-		this.props.dispatch(loadTicketsAttempt());
+		// this.props.dispatch(loadTicketsAttempt());
 
 	}
 }

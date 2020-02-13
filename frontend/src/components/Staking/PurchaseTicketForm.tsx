@@ -2,7 +2,7 @@ import * as React from 'react';
 import _ from 'lodash';
 
 import { Row, Col, Form, Button, Card, InputGroup } from 'react-bootstrap';
-import { PasteButton, InfoTooltip } from '../Shared/shared';
+import { PasteButton, InfoTooltip, AccountSelector } from '../Shared/shared';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
@@ -11,13 +11,16 @@ import {
 	faCircleNotch,
 	faCheck
 } from '@fortawesome/free-solid-svg-icons'
-import { AppError } from '../../store/types';
+import { AppError, IApplicationState } from '../../store/types';
 import { sprintf } from 'sprintf-js';
 import LorcaBackend from '../../datasources/lorca';
-import { Ticket, WalletAccount } from '../../models';
+import { Ticket, WalletAccount, IndexedWalletAccounts } from '../../models';
 
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import RangeSlider from 'react-bootstrap-range-slider';
+import { getAccounts } from '../../store/accounts/selectors';
+import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
 
 
 
@@ -35,7 +38,7 @@ interface IPurchaseTicketFormState {
 	isDirty: boolean
 }
 
-export default class PurchaseTicketForm extends React.Component<IPurchaseTicketFormProps, IPurchaseTicketFormState> {
+class PurchaseTicketForm extends React.Component<Props, IPurchaseTicketFormState> {
 	constructor(props: IPurchaseTicketFormProps) {
 		super(props)
 		this.state = {
@@ -44,11 +47,7 @@ export default class PurchaseTicketForm extends React.Component<IPurchaseTicketF
 			formRef: React.createRef(),
 			formIsValidated: false,
 		}
-	}
-	accountSelectOptions() {
-		return _.map(this.props.accounts, (a, n) =>
-			<option key={n} value={a.getAccountNumber()}>{a.getAccountName()} ({a.getTotalBalance() / ATOMS_DIVISOR} DCR)</option>
-		)
+		console.log("###PROPZ", this.props)
 	}
 	render() {
 		const onChange = _.bind(this.handleChange, this)
@@ -77,22 +76,19 @@ export default class PurchaseTicketForm extends React.Component<IPurchaseTicketF
 								/> */}
 							</Col>
 							<Col sm={8}>
-								<Form.Control
-									tabIndex={0}
-									// value={this.state.sourceAccount.getAccountNumber().toString()}
+								<AccountSelector
+									value={1}
 									onChange={_.bind(this.handleChange, this)}
-									as="select">
-									<option>default (35xxxx DCR)</option>
-									<option>otheracc (35xxxx DCR)</option>
-									<option> pos(35xxxx DCR)</option>
-								</Form.Control>
+									accounts={this.props.accounts} />
 							</Col>
 						</Form.Group>
 						<Form.Group as={Row}>
-							<InputGroup as={Col} sm={4}>
-								# of tickets
-								</InputGroup>
-							<InputGroup as={Col} sm={8}>
+							<Col sm={4}>
+								<Form.Label sm={4}>
+									# of tickets
+								</Form.Label>
+							</Col>
+							<InputGroup as={Col} sm={6}>
 								<InputGroup.Prepend>
 									<Button variant="outline-secondary" >
 										<FontAwesomeIcon icon={faMinus} />
@@ -102,8 +98,9 @@ export default class PurchaseTicketForm extends React.Component<IPurchaseTicketF
 									required
 									name="tickets"
 									type="number"
+									className="ml-3 mr-3"
 									tabIndex={-1}
-									defaultValue="" />
+									defaultValue="1" />
 								<InputGroup.Append>
 									<Button variant="outline-secondary" >
 										<FontAwesomeIcon icon={faPlus} />
@@ -112,7 +109,7 @@ export default class PurchaseTicketForm extends React.Component<IPurchaseTicketF
 							</InputGroup>
 						</Form.Group>
 
-						<Form.Group className="p-2">
+						{/* <Form.Group className="p-2">
 							<RangeSlider
 								defaultValue={50}
 							// onChange={changeEvent => console.log(changeEvent.target.value)}
@@ -120,16 +117,16 @@ export default class PurchaseTicketForm extends React.Component<IPurchaseTicketF
 							<p
 								className="mt-5"
 							>Est balance:</p>
-						</Form.Group>
+						</Form.Group> */}
 					</Form>
-					
-					
+
+
 				</Card.Body>
 				<Card.Footer className="text-right">
-						<Button variant="outline-primary">
-							Purchase
+					<Button variant="outline-primary">
+						Purchase
 						</Button>
-					</Card.Footer>
+				</Card.Footer>
 			</Card >
 
 		)
@@ -196,3 +193,57 @@ const loadFormFields = (formRef: React.RefObject<any>, ep: Ticket) => {
 	// ep.setLabel(generateEndpointLabel(ep))
 }
 
+const mapStateToProps = (state: IApplicationState): OwnProps => {
+	return {
+		...state.staking,
+		// txInfo: state.transactions.txInfo,
+		// errorSignTransaction: state.transactions.errorSignTransaction,
+		// errorPublishTransaction: state.transactions.errorPublishTransaction,
+		// errorConstructTransaction: state.transactions.errorConstructTransaction,
+		// signTransactionResponse: state.transactions.signTransactionResponse,
+		// publishTransactionResponse: state.transactions.publishTransactionResponse,
+		// constructTransactionRequest: state.transactions.constructTransactionRequest,
+		// constructTransactionResponse: state.transactions.constructTransactionResponse,
+		// currentStep: state.transactions.sendTransactionCurrentStep,
+		accounts: getAccounts(state),
+	};
+}
+
+interface OwnProps {
+	// txInfo: HumanreadableTxInfo,
+	// constructTransactionRequest: ConstructTransactionRequest | null,
+	// constructTransactionResponse: ConstructTransactionResponse | null
+	// signTransactionResponse: SignTransactionResponse | null,
+	// publishTransactionResponse: PublishTransactionResponse | null,
+	// errorConstructTransaction: AppError | null
+	// errorSignTransaction: AppError | null,
+	// errorPublishTransaction: AppError | null,
+	// currentStep: SendTransactionSteps
+	accounts: IndexedWalletAccounts
+}
+
+
+
+interface DispatchProps {
+	// cancelSign(): any,
+	// constructTransactionAttempt(...arguments: any): Promise<any>
+	// signTransactionAttempt(...arguments: any): Promise<any>
+	// publishTransactionAttempt(...arguments: any): Promise<any>
+}
+
+type Props = DispatchProps & OwnProps
+
+
+
+interface InternalState {
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	// constructTransactionAttempt: constructTransactionAttempt,
+	// signTransactionAttempt: signTransactionAttempt,
+	// publishTransactionAttempt: publishTransactionAttempt,
+	// cancelSign: cancelSignTransaction,
+}, dispatch)
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(PurchaseTicketForm);

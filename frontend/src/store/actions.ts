@@ -15,6 +15,7 @@ import {
 
 import { hexToRaw } from '../helpers/byteActions';
 import { loadWalletBalance } from './walletbalance/actions';
+import { loadTicketsAttempt } from './staking/actions';
 
 const w = (window as any)
 
@@ -37,8 +38,9 @@ export const initializeData: ActionCreator<any> = () => {
 
 		await dispatch(loadBestBlockHeightAttempt())
 		await dispatch(loadAccountsAttempt())
-		 dispatch(loadTransactionsAttempt())
-		 dispatch(loadWalletBalance())
+		dispatch(loadTransactionsAttempt())
+		dispatch(loadWalletBalance())
+		dispatch(loadTicketsAttempt())
 
 		w.lorcareceiver__OnTxNotification = (serializedMsg: Uint8Array) => {
 			const message = TransactionNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))

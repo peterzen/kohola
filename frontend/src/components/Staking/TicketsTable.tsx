@@ -37,9 +37,11 @@ export default class TicketsTable extends React.Component<TicketsTableProps> {
 					</tr>
 				</thead>
 				<tbody>
-					<Fade fade cascade>
-						{list}
-					</Fade>
+					{this.props.items.length > 0 && (
+						<Fade fade cascade>
+							{list}
+						</Fade>
+					)}
 				</tbody>
 			</Table>
 		)
