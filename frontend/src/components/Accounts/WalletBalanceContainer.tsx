@@ -53,7 +53,7 @@ class WalletBalanceContainer extends React.Component<Props, InternalState>{
 	}
 
 	componentDidMount() {
-		this.props.loadWalletBalance();
+		// this.props.loadWalletBalance();
 	}
 	showModal() {
 		this.setState({ showModal: true })

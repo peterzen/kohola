@@ -51,12 +51,12 @@ export default function configureStore(initialState: IApplicationState, history:
 			applyMiddleware(thunk, router, logger),
 			// devTool,
 			// devToolCompose
-			// composeWithDevTools({
-			// 	persistState: true,
-			// 	realtime: true,
-			// 	hostname: "localhost",
-			// 	"port": 8888
-			// })
+			composeWithDevTools({
+				persistState: true,
+				realtime: true,
+				hostname: "localhost",
+				"port": 8888
+			})
 		)
 
 	);
