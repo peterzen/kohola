@@ -37,8 +37,8 @@ export const initializeData: ActionCreator<any> = () => {
 
 		await dispatch(loadBestBlockHeightAttempt())
 		await dispatch(loadAccountsAttempt())
-		await dispatch(loadWalletBalance())
-		await dispatch(loadTransactionsAttempt())
+		 dispatch(loadTransactionsAttempt())
+		 dispatch(loadWalletBalance())
 
 		w.lorcareceiver__OnTxNotification = (serializedMsg: Uint8Array) => {
 			const message = TransactionNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))

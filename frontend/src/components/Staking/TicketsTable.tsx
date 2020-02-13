@@ -9,6 +9,7 @@ import { Table } from 'react-bootstrap';
 import { TicketStatusIcon } from './TicketStatusIcon';
 import { TransactionMempoolStatusIcon } from '../Transactions/TransactionTable';
 
+import Fade from 'react-reveal/Fade';
 
 export default class TicketsTable extends React.Component<TicketsTableProps> {
 
@@ -36,7 +37,9 @@ export default class TicketsTable extends React.Component<TicketsTableProps> {
 					</tr>
 				</thead>
 				<tbody>
-					{list}
+					<Fade fade cascade>
+						{list}
+					</Fade>
 				</tbody>
 			</Table>
 		)

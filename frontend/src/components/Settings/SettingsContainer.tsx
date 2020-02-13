@@ -10,6 +10,10 @@ import { AppConfiguration } from '../../proto/dcrwalletgui_pb';
 import RPCEndpointConfigForm from './DcrdForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import Fade from 'react-reveal/Fade';
+import { Transition } from 'react-transition-group';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+
 import {
 	faPlus
 } from '@fortawesome/free-solid-svg-icons'
@@ -34,15 +38,19 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 				<h3>Settings</h3>
 				<Row>
 					<Col sm={6}>
-						{dcrwallets.map((endPoint) => (
-							<div className="mb-3">
-								<RPCEndpointConfigForm
-									onFormComplete={_.bind(this.handleFormComplete, this)}
-									endPointConfig={endPoint}
-									title="dcrwallet settings"
-									key={endPoint.getLabel()} />
-							</div>
-						))}
+						<TransitionGroup>
+							{dcrwallets.map((endPoint) => (
+								<Fade>
+									<div className="mb-3">
+										<RPCEndpointConfigForm
+											onFormComplete={_.bind(this.handleFormComplete, this)}
+											endPointConfig={endPoint}
+											title="dcrwallet settings"
+											key={endPoint.getLabel()} />
+									</div>
+								</Fade>
+							))}
+						</TransitionGroup>
 						<div className="mt-3" >
 							<Button variant="outline-secondary" size="sm" onClick={_.bind(this.handleAddWallet, this)}>
 								<FontAwesomeIcon icon={faPlus} /> Add wallet host...
@@ -50,11 +58,13 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 						</div>
 					</Col>
 					<Col sm={6}>
-						<RPCEndpointConfigForm
-							onFormComplete={_.bind(this.handleFormComplete, this)}
-							endPointConfig={dcrd}
-							title="dcrd settings"
-						/>
+						<Fade fade >
+							<RPCEndpointConfigForm
+								onFormComplete={_.bind(this.handleFormComplete, this)}
+								endPointConfig={dcrd}
+								title="dcrd settings"
+							/>
+						</Fade>
 					</Col>
 				</Row>
 			</div>

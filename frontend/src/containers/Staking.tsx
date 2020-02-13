@@ -13,27 +13,36 @@ import { Row, Col } from 'react-bootstrap';
 import PurchaseTicketForm from '../components/Staking/PurchaseTicketForm';
 import TicketBuyerComponent from '../components/Staking/TicketBuyerComponent';
 
+
+import Fade from 'react-reveal/Fade';
+import { TransitionGroup } from 'react-transition-group';
+
+
 class StakingContainer extends React.Component<{}, {}> {
 
 	render() {
 		return (
-			<div>
-				<StakeInfoComponent />
+				<Fade>
+					<StakeInfoComponent />
+					</Fade>
 				<Row className="mt-3">
 					<Col>
-						<TicketsOverviewContainer />
+						<Fade>
+							<TicketsOverviewContainer />
+							</Fade>
 					</Col>
 					<Col>
-						<StakeStats/>
+					<TransitionGroup>
+						<Fade><StakeStats/></Fade>
 						<div className="mt-3"/>
-						<TicketPriceComponent />
-						<PurchaseTicketForm />
-						<TicketBuyerComponent/>
+						<Fade><TicketPriceComponent /></Fade>
+						<Fade><PurchaseTicketForm /></Fade>
+						<Fade><TicketBuyerComponent/></Fade>
 						<div className="mt-3"/>
-						<AgendasComponent />
+						<Fade><AgendasComponent /></Fade>
+						</TransitionGroup>
 					</Col>
 				</Row>
-			</div>
 		)
 	}
 }

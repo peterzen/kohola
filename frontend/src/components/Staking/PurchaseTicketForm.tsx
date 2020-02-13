@@ -16,7 +16,6 @@ import { sprintf } from 'sprintf-js';
 import LorcaBackend from '../../datasources/lorca';
 import { Ticket, WalletAccount } from '../../models';
 
-import React, { useState } from 'react';
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import RangeSlider from 'react-bootstrap-range-slider';
 
@@ -81,7 +80,7 @@ export default class PurchaseTicketForm extends React.Component<IPurchaseTicketF
 								<Form.Control
 									tabIndex={0}
 									// value={this.state.sourceAccount.getAccountNumber().toString()}
-									// onChange={_.bind(this.handleSourceSelectChange, this)}
+									onChange={_.bind(this.handleChange, this)}
 									as="select">
 									<option>default (35xxxx DCR)</option>
 									<option>otheracc (35xxxx DCR)</option>
