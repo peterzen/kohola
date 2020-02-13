@@ -84,7 +84,7 @@ class PurchaseTicketForm extends React.Component<Props, IPurchaseTicketFormState
 						</Form.Group>
 						<Form.Group as={Row}>
 							<Col sm={4}>
-								<Form.Label sm={4}>
+								<Form.Label >
 									# of tickets
 								</Form.Label>
 							</Col>
@@ -109,15 +109,29 @@ class PurchaseTicketForm extends React.Component<Props, IPurchaseTicketFormState
 							</InputGroup>
 						</Form.Group>
 
-						{/* <Form.Group className="p-2">
-							<RangeSlider
-								defaultValue={50}
-							// onChange={changeEvent => console.log(changeEvent.target.value)}
-							/>
-							<p
-								className="mt-5"
-							>Est balance:</p>
-						</Form.Group> */}
+						<Form.Group as={Row} className="p-2">
+							<Col sm={4}>
+								<Form.Label>Fee</Form.Label>
+							</Col>
+							<InputGroup as={Col} sm={4}>
+								<RangeSlider
+									variant="secondary"
+									tooltip="off"
+									size="sm"
+									defaultValue={50}
+									className="pr-3"
+									title="b lah"
+								// onChange={changeEvent => console.log(changeEvent.target.value)}
+								/>
+								<InputGroup.Append>
+								</InputGroup.Append>
+							</InputGroup>
+							<Col sm={4}>
+							40 atoms/B
+
+							</Col>
+
+						</Form.Group>
 					</Form>
 
 

@@ -20,7 +20,7 @@ export const getMinedTransactions = (state: IApplicationState): Transaction[] =>
 }
 
 export const getFilteredTransactions = (state: IApplicationState): Transaction[] => {
-	console.log("getFilteredTransactions", state.transactions.activeTypeFilter)
+	// console.log("getFilteredTransactions", state.transactions.activeTypeFilter)
 	return _.chain(state.transactions.txList)
 		.filter((t) => t.getType() == state.transactions.activeTypeFilter)
 		.filter((t) => t.getDirection() == TransactionDirection.TRANSACTION_DIR_RECEIVED || t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT)

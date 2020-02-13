@@ -60,7 +60,7 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 					</InputGroup>
 					<Form.Control.Feedback type="invalid">
 						Invalid address
-							</Form.Control.Feedback>
+					</Form.Control.Feedback>
 				</Form.Group>
 				<Form.Group controlId="amountControl">
 					<Form.Label>Amount (DCR)</Form.Label>

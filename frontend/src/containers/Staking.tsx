@@ -31,10 +31,11 @@ class StakingContainer extends React.Component<{}, {}> {
 						<TicketsOverviewContainer />
 					</Col>
 					<Col>
+					<Fade><PurchaseTicketForm /></Fade>
+						<div className="mt-3" />
 						<Fade><StakeStats /></Fade>
 						<div className="mt-3" />
 						<Fade><TicketPriceComponent /></Fade>
-						<Fade><PurchaseTicketForm /></Fade>
 						<div className="mt-3" />
 						<Fade><TicketBuyerComponent /></Fade>
 						<div className="mt-3" />
