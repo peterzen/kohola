@@ -22,27 +22,26 @@ class StakingContainer extends React.Component<{}, {}> {
 
 	render() {
 		return (
+			<div>
 				<Fade>
 					<StakeInfoComponent />
-					</Fade>
+				</Fade>
 				<Row className="mt-3">
 					<Col>
-						<Fade>
-							<TicketsOverviewContainer />
-							</Fade>
+						<TicketsOverviewContainer />
 					</Col>
 					<Col>
-					<TransitionGroup>
-						<Fade><StakeStats/></Fade>
-						<div className="mt-3"/>
+						<Fade><StakeStats /></Fade>
+						<div className="mt-3" />
 						<Fade><TicketPriceComponent /></Fade>
 						<Fade><PurchaseTicketForm /></Fade>
-						<Fade><TicketBuyerComponent/></Fade>
-						<div className="mt-3"/>
+						<div className="mt-3" />
+						<Fade><TicketBuyerComponent /></Fade>
+						<div className="mt-3" />
 						<Fade><AgendasComponent /></Fade>
-						</TransitionGroup>
 					</Col>
 				</Row>
+			</div>
 		)
 	}
 }

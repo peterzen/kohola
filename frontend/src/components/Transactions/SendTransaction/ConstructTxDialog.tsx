@@ -4,7 +4,7 @@ import * as React from "react"
 import { IndexedWalletAccounts, WalletAccount } from "../../../models"
 
 import { Form, Button, InputGroup, FormControl, Row, Col } from 'react-bootstrap';
-import { LoadingButton, PasteButton } from "../../Shared/shared"
+import { LoadingButton, PasteButton, AccountSelector } from "../../Shared/shared"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -30,12 +30,6 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 		}
 	}
 
-	accountSelectOptions() {
-		return _.map(this.props.accounts, (a, n) =>
-			<option key={n} value={a.getAccountNumber()}>{a.getAccountName()} ({a.getTotalBalance() / ATOMS_DIVISOR} DCR)</option>
-		)
-	}
-
 	render() {
 		return (
 			<Form
@@ -44,13 +38,10 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 			>
 				<Form.Group controlId="sourceAccount">
 					<Form.Label>Select source account</Form.Label>
-					<Form.Control
-						tabIndex={0}
-						value={this.state.sourceAccount.getAccountNumber().toString()}
+					<AccountSelector
+						value={this.state.sourceAccount.getAccountNumber()}
 						onChange={_.bind(this.handleSourceSelectChange, this)}
-						as="select">
-						{this.accountSelectOptions()}
-					</Form.Control>
+						accounts={this.props.accounts} />
 				</Form.Group>
 				<Form.Group controlId="destinationAddressControl">
 					<Form.Label>Destination address</Form.Label>

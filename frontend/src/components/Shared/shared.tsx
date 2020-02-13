@@ -1,7 +1,7 @@
 import { Moment } from "moment";
 import { formatTimestamp, reverseHash } from "../../helpers";
 import React, { useState, useEffect } from "react";
-import { Transaction } from "../../models";
+import { Transaction, WalletAccount, IndexedWalletAccounts } from "../../models";
 import _ from "lodash";
 import { sprintf } from "sprintf-js";
 
@@ -14,9 +14,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 
-import { Button, ButtonProps, Popover, OverlayTrigger } from 'react-bootstrap';
+import { Button, ButtonProps, Popover, OverlayTrigger, Form } from 'react-bootstrap';
 import { rawHashToHex } from "../../helpers/byteActions";
 import CopyToClipboard from "react-copy-to-clipboard";
+import accounts from "../../store/accounts/reducers";
+import { ATOMS_DIVISOR } from "../../constants";
 
 
 interface TimestampProps {
@@ -177,6 +179,21 @@ export class CopyToClipboardText extends React.Component<ICopyToClipboardButtonP
 	}
 }
 
+
+export const AccountSelector = (props: { accounts: IndexedWalletAccounts, value: number, onChange: any }) => {
+	return (
+		<Form.Control
+			tabIndex={0}
+			value={props.value && props.value.toString()}
+			onChange={props.onChange}
+			as="select">
+			{_. map(props.accounts, (a, n) => (
+				<option key={n} value={a.getAccountNumber()}>{a.getAccountName()} ({a.getTotalBalance() / ATOMS_DIVISOR} DCR)</option>
+
+			))}
+		</Form.Control>
+	)
+}
 
 // function simulateNetworkRequest() {
 // 	return new Promise(resolve => setTimeout(resolve, 2000));

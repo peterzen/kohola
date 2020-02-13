@@ -14,7 +14,7 @@ const AccountToolsDropdown = (props: { account: WalletAccount, menuHandler: any 
 		<Dropdown
 			alignRight
 			onSelect={(evtKey: string) => props.menuHandler(evtKey, props.account)}>
-			<Dropdown.Toggle variant="light" id={"dropdown-" + props.account.getAccountNumber()}>
+			<Dropdown.Toggle variant="secondary" id={"dropdown-" + props.account.getAccountNumber()}>
 				<FontAwesomeIcon icon={faEllipsisH} />
 			</Dropdown.Toggle>
 
