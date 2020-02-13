@@ -4,6 +4,11 @@ import { routerMiddleware } from "react-router-redux";
 import { createLogger } from 'redux-logger'
 import createRootReducer from "./reducers";
 import { IApplicationState } from "./types";
+import DevTools from "../components/Fixtures/DevTools";
+import { persistState } from "redux-devtools";
+import composeWithDevTools from 'remote-redux-devtools';
+
+
 
 export default function configureStore(initialState: IApplicationState, history: any) {
 
@@ -15,16 +20,43 @@ export default function configureStore(initialState: IApplicationState, history:
 	const router = routerMiddleware(history);
 
 	const w = (window as any)
-	const devTool = (w.__REDUX_DEVTOOLS_EXTENSION__ && typeof w.__REDUX_DEVTOOLS_EXTENSION__ == 'function') ?
-		w.__REDUX_DEVTOOLS_EXTENSION__() :
-		function () { return {} }
+	// const devTool = (w.__REDUX_DEVTOOLS_EXTENSION__ && typeof w.__REDUX_DEVTOOLS_EXTENSION__ == 'function') ?
+	// 	w.__REDUX_DEVTOOLS_EXTENSION__() :
+	// 	function () { return {} }
 
+
+	// const composeEnhancers =
+	// 	typeof w === 'object' &&
+	// 		w.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+	// 		w.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+	// 			// Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+	// 		}) : compose;
+
+
+
+	const devToolCompose = compose(
+		DevTools.instrument(),
+		persistState(w.location.href.match(/[?&]debug_session=([^&#]+)\b/))
+	);
+
+
+
+	// const store = createStore(reducer, devToolsEnhancer());
+
+	// const composeEnhancers = w.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 	const store = createStore(
 		createRootReducer(history),
 		initialState,
 		compose(
 			applyMiddleware(thunk, router, logger),
-			// devTool
+			// devTool,
+			// devToolCompose
+			// composeWithDevTools({
+			// 	persistState: true,
+			// 	realtime: true,
+			// 	hostname: "localhost",
+			// 	"port": 8888
+			// })
 		)
 
 	);

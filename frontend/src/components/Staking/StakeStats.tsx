@@ -15,10 +15,8 @@ class StakeStats extends React.Component<Props, InternalState> {
 		const s = this.props.stakeinfo;
 		return (
 			<Card>
-				<Card.Title></Card.Title>
 				<Card.Body>
 					<Card.Title>Staking stats</Card.Title>
-					<Card.Text></Card.Text>
 					<Container>
 						<Row>
 							<Col xs={6}>

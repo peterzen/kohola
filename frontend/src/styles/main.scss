@@ -1,2 +1,28 @@
 @import "custom";
-@import "~bootstrap/scss/bootstrap";
+
+// @import '~bootstrap/dist/css/bootstrap-material-design.min.css';
+
+
+// @import "~bootstrap/scss/bootstrap";
+
+// // Custom.scss
+// // Option B: Include parts of Bootstrap
+
+// // Required
+// @import "~bootstrap/scss/functions";
+// @import "~bootstrap/scss/variables";
+// @import "~bootstrap/scss/mixins";
+
+// // Optional
+// @import "~bootstrap/scss/reboot";
+// @import "~bootstrap/scss/type";
+// @import "~bootstrap/scss/images";
+// @import "~bootstrap/scss/code";
+// @import "~bootstrap/scss/grid";
+
+
+// @import "~bootstrap-material-design/scss/bootstrap-material-design.scss"
+
+
+@import '~bootstrap-material-design/dist/css/bootstrap-material-design.min.css';
+

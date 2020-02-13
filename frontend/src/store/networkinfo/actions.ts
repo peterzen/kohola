@@ -15,16 +15,16 @@ export const loadBestBlockHeightAttempt: ActionCreator<any> = () => {
 	return async (dispatch: ThunkDispatch<{}, {}, NetworkInfoActionTypes>, getState: IGetState): Promise<any> => {
 
 		const { getBestBlockHeightRequest } = getState().networkinfo;
-		const timer = setTimeout(() => dispatch(loadBestBlockHeightAttempt()), 5 * 60 * 1000);
+		// const timer = setTimeout(() => dispatch(loadBestBlockHeightAttempt()), 5 * 60 * 1000);
 
 		if (getBestBlockHeightRequest) {
-			return Promise.resolve();
+			return
 		}
 
 		dispatch({ type: GETBESTBLOCK_ATTEMPT });
 		try {
 			const resp = await LorcaBackend.fetchBestBlock()
-			dispatch({ type: GETBESTBLOCK_SUCCESS, payload: resp, periodicTimer: timer });
+			dispatch({ type: GETBESTBLOCK_SUCCESS, payload: resp });
 		} catch (error) {
 			dispatch({ error, type: GETBESTBLOCK_FAILED });
 		}

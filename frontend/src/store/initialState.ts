@@ -8,6 +8,7 @@ import { votechoicesInitialState } from "./votechoices/reducers";
 import { transactionsInitialState } from "./transactions/reducers";
 import { walletbalanceInitialState } from "./walletbalance/reducers";
 import { stopautobuyerInitialState } from "./stopautobuyer/reducers";
+import { appConfigurationInitialState } from "./appconfiguration/reducers";
 import { ticketbuyerconfigInitialState } from "./ticketbuyerconfig/reducers";
 import { loadactivedatafiltersInitialState } from "./loadactivedatafilters/reducers";
 
@@ -21,6 +22,7 @@ const initialState: IApplicationState = {
 	transactions: transactionsInitialState,
 	walletbalance: walletbalanceInitialState,
 	stopautobuyer: stopautobuyerInitialState,
+	appconfiguration:appConfigurationInitialState,
 	ticketbuyerconfig: ticketbuyerconfigInitialState,
 	loadactivedatafilters: loadactivedatafiltersInitialState,
 }

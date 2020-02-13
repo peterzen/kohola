@@ -20,7 +20,7 @@ const DevTools = createDevTools(
     defaultIsVisible={true}
   >
     <LogMonitor theme="tomorrow" />
-    <SliderMonitor />
+    {/* <SliderMonitor /> */}
   </DockMonitor>
 );
 

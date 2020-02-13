@@ -48,12 +48,12 @@ export const loadTransactionsAttempt: ActionCreator<any> = () => {
 
 
 export const transactionNotification: ActionCreator<any> = (message: TransactionNotificationsResponse) => {
-	return (dispatch: Dispatch<TransactionNotificationsReceived>) => {
-		dispatch(loadBestBlockHeightAttempt());
-		dispatch(loadWalletBalance());
-		dispatch(loadStakeInfoAttempt());
+	return async (dispatch: Dispatch<TransactionNotificationsReceived>) => {
+		await dispatch(loadBestBlockHeightAttempt());
+		await dispatch(loadWalletBalance());
+		await dispatch(loadStakeInfoAttempt());
 		// dispatch(loadTicketsAttempt());
-		dispatch(loadTransactionsAttempt());
+		await dispatch(loadTransactionsAttempt());
 		dispatch({ type: TRANSACTIONNOTIFICATIONS_RECEIVED, payload: message });
 	}
 }

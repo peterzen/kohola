@@ -31,10 +31,6 @@ const render = () => {
 store.dispatch(checkBackend())
 	.then(() => {
 		return store.dispatch(initializeData())
-		render()
-	})
-	.then(() => {
-		render()
 	})
 	.catch(() => {
 		history.replace('/settings')

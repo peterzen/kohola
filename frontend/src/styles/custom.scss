@@ -13,11 +13,11 @@ body {
 
 .amount {
   .currency {
-    font-size: 67.5%;
+    font-size: 80%;
     opacity: 50%;
   }
   .fractions {
-    font-size: 67.5%;
+    font-size: 80%;
     opacity: 50%;
   }
 }
@@ -29,7 +29,7 @@ h5,
 h6 {
   > .amount {
     .currency {
-    //   font-size: 100%;
+      font-size: 67.5%;
     }
   }
 }

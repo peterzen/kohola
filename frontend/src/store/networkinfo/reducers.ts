@@ -9,7 +9,6 @@ export const networkInfoInitialState: INetworkInfoState = {
 	// BestBlock
 	currentBlock: new BestBlock(),
 	getBestBlockHeightRequest: false,
-	periodicTimer: null,
 
 	// Network
 	network: new Network(),
@@ -39,7 +38,6 @@ export default function bestblock(
 				...state,
 				getBestBlockHeightRequest: false,
 				currentBlock: action.payload,
-				periodicTimer: action.periodicTimer
 			};
 		// Network
 		case NETWORKATTEMPT:

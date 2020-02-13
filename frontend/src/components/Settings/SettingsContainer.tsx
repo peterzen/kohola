@@ -34,25 +34,27 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 				<h3>Settings</h3>
 				<Row>
 					<Col sm={6}>
-						<RPCEndpointConfigForm
-							onFormComplete={_.bind(this.handleFormComplete, this)}
-							endPointConfig={dcrd}
-							title="dcrd settings"
-						/>
-					</Col>
-					<Col sm={6}>
 						{dcrwallets.map((endPoint) => (
-							<RPCEndpointConfigForm
-								onFormComplete={_.bind(this.handleFormComplete, this)}
-								endPointConfig={endPoint}
-								title="dcrwallet settings"
-								key={endPoint.getLabel()} />
+							<div className="mb-3">
+								<RPCEndpointConfigForm
+									onFormComplete={_.bind(this.handleFormComplete, this)}
+									endPointConfig={endPoint}
+									title="dcrwallet settings"
+									key={endPoint.getLabel()} />
+							</div>
 						))}
 						<div className="mt-3" >
 							<Button variant="outline-secondary" size="sm" onClick={_.bind(this.handleAddWallet, this)}>
 								<FontAwesomeIcon icon={faPlus} /> Add wallet host...
 							</Button>
 						</div>
+					</Col>
+					<Col sm={6}>
+						<RPCEndpointConfigForm
+							onFormComplete={_.bind(this.handleFormComplete, this)}
+							endPointConfig={dcrd}
+							title="dcrd settings"
+						/>
 					</Col>
 				</Row>
 			</div>

@@ -5,7 +5,6 @@ import { ConnectedRouter } from "connected-react-router"
 
 import { Container, Toast } from 'react-bootstrap'
 
-import Navbar from "../components/Fixtures/Navbar"
 import Home from "./Home"
 import Staking from "./Staking"
 import Settings from './Settings';
@@ -13,6 +12,10 @@ import { NoRouteMatch } from '../components/Shared/shared';
 
 import { hot } from 'react-hot-loader/root'
 import ToastContainer from '../components/Fixtures/Toasts';
+import Navbar from "../components/Fixtures/Navbar"
+import DevTools from '../components/Fixtures/DevTools';
+
+// import Drawer from 'rc-drawer'
 
 interface AppProps {
 	history: any  // should be History<something>
@@ -22,6 +25,13 @@ const App = ({ history }: AppProps) => {
 	return (
 		<ConnectedRouter history={history}>
 			<main>
+				{/* <Drawer
+					placement='right'
+					width={400}
+					// height={this.state.height}
+				>
+					<DevTools />
+				</Drawer> */}
 				<Navbar />
 				<Container fluid={true} className="mt-5">
 					<Switch>
@@ -38,3 +48,4 @@ const App = ({ history }: AppProps) => {
 }
 
 export default hot(App)
+

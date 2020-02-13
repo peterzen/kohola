@@ -24,7 +24,7 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
 		return (
 			<Card>
 				<Card.Body>
-					<Card.Title>Tickets Overview</Card.Title>
+					<Card.Title>Recent activity</Card.Title>
 				</Card.Body>
 				<TicketsTable items={this.props.tickets} onItemClick={_.bind(this.itemClickHandler, this)} />
 				<TicketDetailsModal
