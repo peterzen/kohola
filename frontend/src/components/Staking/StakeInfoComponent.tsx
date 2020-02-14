@@ -18,11 +18,8 @@ class StakeInfoComponent extends React.Component<Props, InternalState> {
 				<Card.Body>
 					<Row>
 						<Col>
-							<h2>3</h2>
-							<h6 className="text-muted">Voted recently</h6>
-
-							{/* <h2><Amount amount={s.getTotalSubsidy()} showCurrency={true} /></h2> */}
-							{/* <h6 className="text-muted">Total subsidy</h6> */}
+							<h2>{s.getVoted()}</h2>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.VOTED} /> Voted recently</h6>
 						</Col>
 						<Col>
 							<h2>{s.getLive()}</h2>

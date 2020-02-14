@@ -21,6 +21,7 @@ import RangeSlider from 'react-bootstrap-range-slider';
 import { getAccounts } from '../../store/accounts/selectors';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
+import { PurchaseTicketsRequest } from '../../proto/api_pb';
 
 
 
@@ -36,6 +37,7 @@ interface IPurchaseTicketFormState {
 	error: AppError | null
 	formIsValidated: boolean
 	isDirty: boolean
+	purchaseTicketRequest: PurchaseTicketsRequest
 }
 
 class PurchaseTicketForm extends React.Component<Props, IPurchaseTicketFormState> {
@@ -46,6 +48,7 @@ class PurchaseTicketForm extends React.Component<Props, IPurchaseTicketFormState
 			isDirty: false,
 			formRef: React.createRef(),
 			formIsValidated: false,
+			purchaseTicketRequest: new PurchaseTicketsRequest(),
 		}
 		console.log("###PROPZ", this.props)
 	}
@@ -56,9 +59,9 @@ class PurchaseTicketForm extends React.Component<Props, IPurchaseTicketFormState
 				<Card.Body>
 					<Card.Title>Purchase tickets</Card.Title>
 					<Form
-						// ref={this.state.formRef}
-						// validated={this.state.formIsValidated && !this.props.error}
-						// onSubmit={_.bind(this.handleFormSubmit, this)}
+						ref={this.state.formRef}
+						validated={this.state.formIsValidated && !this.props.error}
+						onSubmit={_.bind(this.handleFormSubmit, this)}
 						className="m-0"
 					>
 						<Form.Group as={Row}>
@@ -96,7 +99,7 @@ class PurchaseTicketForm extends React.Component<Props, IPurchaseTicketFormState
 								</InputGroup.Prepend>
 								<Form.Control
 									required
-									name="tickets"
+									name="num_tickets"
 									type="number"
 									className="ml-3 mr-3"
 									tabIndex={-1}
@@ -127,59 +130,50 @@ class PurchaseTicketForm extends React.Component<Props, IPurchaseTicketFormState
 								</InputGroup.Append>
 							</InputGroup>
 							<Col sm={4}>
-							40 atoms/B
-
+								40 atoms/B
 							</Col>
-
 						</Form.Group>
 					</Form>
-
-
 				</Card.Body>
 				<Card.Footer className="text-right">
-					<Button variant="outline-primary">
+					<Button
+						type="submit"
+						onClick={_.bind(this.handleFormSubmit, this)}
+						variant="outline-primary">
 						Purchase
 						</Button>
 				</Card.Footer>
 			</Card >
-
 		)
-	}
-
-	browseFile() {
-		// const w = (window as any)
-		// w.walletgui_FileOpenDialog()
-		// 	.then((file: string) => {
-		// 		console.log("FILE", file)
-		// 		this.state.formRef.current.cert_file_name.value = file
-		// 		this.handleChange()
-		// 		// endPoint.setCertFileName(file)
-		// 	})
 	}
 
 	handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		e.stopPropagation();
-		// this.setState({
-		// 	formIsValidated: true,
-		// 	isDirty: false,
-		// })
-		// loadFormFields(this.state.formRef, this.props.endPointConfig)
-		// console.log("formSubmit", this.props.endPointConfig.toObject())
+		this.setState({
+			formIsValidated: true,
+			isDirty: false,
+		})
+		const request = new PurchaseTicketsRequest()
+		loadFormFields(this.state.formRef, request)
+		this.setState({
+			purchaseTicketRequest: request
+		})
+		console.log("formSubmit", request.toObject())
 		// this.props.onFormComplete()
 
 		return false;
 	}
 
 	handleChange() {
-		// console.log("handleChange")
-		// const ep = this.props.endPointConfig
+		console.log("handleChange")
+		// const ep = this.props.purchaseTicketRequest
 		// this.setState({
 		// 	isDirty: true
 		// })
-		// if (!this.state.formRef.current.checkValidity()) {
-		// 	return
-		// }
+		if (!this.state.formRef.current.checkValidity()) {
+			return
+		}
 		// this.setState({
 		// 	connectionCheckStatus: ConnectionCheckState.CHECKING
 		// })
@@ -194,8 +188,10 @@ class PurchaseTicketForm extends React.Component<Props, IPurchaseTicketFormState
 
 
 
-const loadFormFields = (formRef: React.RefObject<any>, ep: Ticket) => {
-	// const f = formRef.current
+const loadFormFields = (formRef: React.RefObject<any>, r: PurchaseTicketsRequest) => {
+	const f = formRef.current
+	r.setNumTickets(f.num_tickets.value)
+	r.setRequiredConfirmations(1)
 	// if (ep instanceof RPCEndpoint) {
 	// 	ep.setUsername(f.username.value)
 	// 	ep.setPassword(f.password.value)
@@ -240,8 +236,9 @@ interface OwnProps {
 
 interface DispatchProps {
 	// cancelSign(): any,
+	purchaseTicketAttempt(...arguments: any): Promise<any>
 	// constructTransactionAttempt(...arguments: any): Promise<any>
-	// signTransactionAttempt(...arguments: any): Promise<any>
+	// signTransactionAttempt(...arguments: any): Promise<any>purchaseTicketRequest
 	// publishTransactionAttempt(...arguments: any): Promise<any>
 }
 
@@ -253,6 +250,7 @@ interface InternalState {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	purchaseTicketAttempt: () => { },
 	// constructTransactionAttempt: constructTransactionAttempt,
 	// signTransactionAttempt: signTransactionAttempt,
 	// publishTransactionAttempt: publishTransactionAttempt,
