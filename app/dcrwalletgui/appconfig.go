@@ -14,7 +14,7 @@ import (
 
 var (
 	appDataDir        = dcrutil.AppDataDir("dcrwalletgui", false)
-	defaultConfigFile = filepath.Join(appDataDir, "dcrwalletgui.conf")
+	defaultConfigFile = filepath.Join("./", "dcrwalletgui.json")
 	cfg               = &AppConfiguration{}
 
 	defaultConfig = &AppConfiguration{

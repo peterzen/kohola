@@ -1,5 +1,13 @@
 {
-  "dcrd_host": {},
+  "dcrd_host": {
+    "hostname": "dcrd-testnet",
+    "port": 9109,
+    "username": "aaaa",
+    "password": "aaaaaa",
+    "cert_file_name": "/home/peter/Work/decred/cspp_fiddle/dcrwalletgui/dcrd-simnet.cert",
+    "network": 1,
+    "label": "dcrd-testnet:9109 (TESTNET)"
+  },
   "dcrwallet_hosts": [
     {
       "hostname": "localhost",

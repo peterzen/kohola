@@ -1,6 +1,7 @@
 import { AppError } from "../types";
 import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../models";
 import { ProtobufMessage } from "@improbable-eng/grpc-web/dist/typings/message";
+import { PurchaseTicketsResponse } from "../../proto/api_pb";
 
 
 export interface ITicketsState {
@@ -9,6 +10,7 @@ export interface ITicketsState {
 	readonly startBlockHeight: number,
 	readonly endBlockHeight: number,
 	readonly targetTicketCount: number,
+	readonly isPurchaseTicketAttempting: boolean
 }
 
 
@@ -107,7 +109,35 @@ export interface StakeInfoSuccessAction {
 	payload: ProtobufMessage,
 }
 
-export type IStakingState = IStakeInfoState & IAgendasState & ITicketPriceState & ITicketsState
+
+// PurchaseTickets
+export interface IPurchaseTicketsState {
+	readonly isPurchaseTicketAttempting: boolean,
+	readonly errorPurchaseTickets: AppError | null
+}
+
+export const PURCHASETICKETSATTEMPT = 'PURCHASETICKETSATTEMPT'
+export const PURCHASETICKETSFAILED = 'PURCHASETICKETSFAILED'
+export const PURCHASETICKETSSUCCESS = 'PURCHASETICKETSSUCCESS'
+
+
+export interface PurchaseTicketsAttemptAction {
+	type: typeof PURCHASETICKETSATTEMPT,
+}
+
+export interface PurchaseTicketsFailedAction {
+	type: typeof PURCHASETICKETSFAILED,
+	error: AppError
+}
+
+export interface PurchaseTicketsSuccessAction {
+	type: typeof PURCHASETICKETSSUCCESS,
+	payload: PurchaseTicketsResponse,
+}
+
+
+
+export type IStakingState = IStakeInfoState & IAgendasState & ITicketPriceState & ITicketsState & IPurchaseTicketsState
 
 export type StakingActionTypes =
 	GetTicketsAttemptAction |
@@ -121,5 +151,8 @@ export type StakingActionTypes =
 	AgendasSuccessAction |
 	StakeInfoAttemptAction |
 	StakeInfoFailedAction |
-	StakeInfoSuccessAction
+	StakeInfoSuccessAction |
+	PurchaseTicketsAttemptAction |
+	PurchaseTicketsSuccessAction |
+	PurchaseTicketsFailedAction
 

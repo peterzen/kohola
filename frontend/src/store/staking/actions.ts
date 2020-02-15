@@ -7,8 +7,9 @@ import {
 	StakingActionTypes,
 	GETTICKETS_ATTEMPT, GETTICKETS_SUCCESS, GETTICKETS_FAILED,
 	GETTICKETPRICE_ATTEMPT, GETTICKETPRICE_SUCCESS, GETTICKETPRICE_FAILED,
-	AGENDASATTEMPT, AGENDASSUCCESS, AGENDASFAILED, STAKEINFOATTEMPT, STAKEINFOSUCCESS, STAKEINFOFAILED
+	AGENDASATTEMPT, AGENDASSUCCESS, AGENDASFAILED, STAKEINFOATTEMPT, STAKEINFOSUCCESS, STAKEINFOFAILED, PURCHASETICKETSATTEMPT, PURCHASETICKETSSUCCESS, PURCHASETICKETSFAILED
 } from './types';
+import { PurchaseTicketsRequest } from '../../proto/api_pb';
 
 
 export const loadTicketsAttempt: ActionCreator<any> = () => {
@@ -20,7 +21,7 @@ export const loadTicketsAttempt: ActionCreator<any> = () => {
 			endBlockHeight,
 			targetTicketCount } = getState().staking
 		if (getTicketsRequest) {
-			return 
+			return
 		}
 		dispatch({ type: GETTICKETS_ATTEMPT });
 		try {
@@ -95,6 +96,24 @@ export const loadStakeInfoAttempt: ActionCreator<any> = () => {
 			dispatch({ type: STAKEINFOSUCCESS, payload: resp });
 		} catch (error) {
 			dispatch({ error, type: STAKEINFOFAILED });
+		}
+	}
+};
+
+export const purchaseTicketAttempt: ActionCreator<any> = (request: PurchaseTicketsRequest) => {
+	return async (dispatch: ThunkDispatch<{}, {}, StakingActionTypes>, getState: IGetState) => {
+
+		const { isPurchaseTicketAttempting } = getState().staking;
+		if (isPurchaseTicketAttempting) {
+			return
+		}
+
+		dispatch({ type: PURCHASETICKETSATTEMPT });
+		try {
+			const resp = await LorcaBackend.purchaseTickets(request)
+			dispatch({ type: PURCHASETICKETSSUCCESS, payload: resp });
+		} catch (error) {
+			dispatch({ error, type: PURCHASETICKETSFAILED });
 		}
 	}
 };

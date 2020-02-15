@@ -10,7 +10,7 @@ import SendTransaction from '../Transactions/SendTransaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
-	faCog,faTicketAlt
+	faCog, faTicketAlt
 } from '@fortawesome/free-solid-svg-icons'
 export default class NavbarComponent extends React.Component {
 
@@ -26,7 +26,7 @@ export default class NavbarComponent extends React.Component {
 					id="basic-navbar-nav">
 					<Nav className="mr-auto">
 						<Nav.Link href="/#">Home</Nav.Link>
-						<Nav.Link href="/#staking"><FontAwesomeIcon icon={faTicketAlt}/> Staking</Nav.Link>
+						<Nav.Link href="/#staking"><FontAwesomeIcon icon={faTicketAlt} /> Staking</Nav.Link>
 					</Nav>
 					<Nav className="mr-auto">
 						<Nav.Link eventKey={2}>

@@ -15,7 +15,9 @@ import {
 	PublishTransactionResponse,
 	AgendasResponse,
 	UnspentOutputResponse,
-	UnspentOutputsRequest
+	UnspentOutputsRequest,
+	PurchaseTicketsRequest,
+	PurchaseTicketsResponse
 } from '../proto/api_pb';
 import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from '../models';
 import { rawToHex } from '../helpers/byteActions';
@@ -139,6 +141,33 @@ const LorcaBackend = {
 		}
 	},
 
+	purchaseTickets: async (request: PurchaseTicketsRequest
+		// passphrase: Uint8Array,
+		// accountNumber: number,
+		// spendLimit: number,
+		// requiredConfirmations: number,
+		// votingAddress: string,
+		// numTickets: number,
+		// poolAddress: string,
+		// poolFees: number,
+		// expiry:number,
+		// txFee: number,
+		// ticketFee:number,
+	) => {
+		try {
+			const ser = rawToHex(request.serializeBinary().buffer)
+			const r = await w.walletrpc__PurchaseTickets(ser)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return PurchaseTicketsResponse.deserializeBinary(r.payload)
+
+		} catch (e) {
+			console.error("Serialization error", e)
+			return
+		}
+	},
+
 	fetchAccountBalance: async (accountNumber: number, requiredConfirmations: number) => {
 		try {
 			const r = await w.walletrpc__GetBalance(accountNumber, requiredConfirmations)
@@ -195,7 +224,12 @@ const LorcaBackend = {
 		}
 	},
 
-	unspentOutputs: async (account: WalletAccount, targetAmount: number, requiredConfirmations: number, includeImmatureCoinbases: boolean) => {
+	unspentOutputs: async (
+		account: WalletAccount,
+		targetAmount: number,
+		requiredConfirmations: number,
+		includeImmatureCoinbases: boolean) => {
+
 		/*
 		uint32 account: Account number containing the keys controlling the output set to query.
 

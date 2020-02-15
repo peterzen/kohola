@@ -105,7 +105,7 @@ func bindUIAPI(ui lorca.UI) {
 	})
 
 	ExportWalletAPI(ui)
-	// SetupNotifications(ui)
+	SetupNotifications(ui)
 }
 
 func launchUI(callbackFn func(lorca.UI)) {
@@ -120,6 +120,8 @@ func launchUI(callbackFn func(lorca.UI)) {
 	defer ui.Close()
 
 	callbackFn(ui)
+
+	// _ = ui.Load("https://localhost:8080")
 
 	// Wait until the interrupt signal arrives or browser window is closed
 	sigc := make(chan os.Signal)

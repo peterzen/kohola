@@ -27,6 +27,10 @@ export const ticketsInitialState: IStakingState = {
 	stakeinfo: new StakeInfo(),
 	getStakeInfoRequest: false,
 	errorStakeInfo: null,
+
+	// PurchaseTickets
+	isPurchaseTicketAttempting: false,
+	errorPurchaseTickets: null
 }
 
 

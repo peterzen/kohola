@@ -357,6 +357,24 @@ func publishTransaction(requestAsHex string) (r gui.LorcaMessage) {
 	return r
 }
 
+func purchaseTickets(requestAsHex string) (r gui.LorcaMessage) {
+	request := &pb.PurchaseTicketsRequest{}
+	bytes, err := hex.DecodeString(requestAsHex)
+	err = proto.Unmarshal(bytes, request)
+	response, err := walletServiceClient.PurchaseTickets(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	return r
+}
+
 /*
 uint32 account: Account number containing the keys controlling the output set to query.
 
@@ -519,6 +537,7 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__ConstructTransaction", constructTransaction)
 	ui.Bind("walletrpc__SignTransaction", signTransaction)
 	ui.Bind("walletrpc__PublishTransaction", publishTransaction)
+	ui.Bind("walletrpc__PurchaseTickets", purchaseTickets)
 
 	ui.Bind("walletgui_CheckGRPCConnection", func(requestAsHex string) (r gui.CheckConnectionResponse) {
 		cfg := &gui.GRPCEndpoint{}

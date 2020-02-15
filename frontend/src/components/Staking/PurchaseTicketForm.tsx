@@ -22,26 +22,14 @@ import { getAccounts } from '../../store/accounts/selectors';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
 import { PurchaseTicketsRequest } from '../../proto/api_pb';
+import { purchaseTicketAttempt } from '../../store/staking/actions';
+import PassphraseEntryDialog, { askPassphrase } from '../Shared/PassphraseEntryDialog';
 
 
 
-interface IPurchaseTicketFormProps {
-	title: string
-	error: AppError | null
-	accounts: WalletAccount[]
-	// onFormComplete: () => void
-}
 
-interface IPurchaseTicketFormState {
-	formRef: React.RefObject<any>
-	error: AppError | null
-	formIsValidated: boolean
-	isDirty: boolean
-	purchaseTicketRequest: PurchaseTicketsRequest
-}
-
-class PurchaseTicketForm extends React.Component<Props, IPurchaseTicketFormState> {
-	constructor(props: IPurchaseTicketFormProps) {
+class PurchaseTicketForm extends React.Component<Props, InternalState> {
+	constructor(props) {
 		super(props)
 		this.state = {
 			error: null,
@@ -134,6 +122,7 @@ class PurchaseTicketForm extends React.Component<Props, IPurchaseTicketFormState
 							</Col>
 						</Form.Group>
 					</Form>
+					<PassphraseEntryDialog show={false}/>
 				</Card.Body>
 				<Card.Footer className="text-right">
 					<Button
@@ -160,6 +149,20 @@ class PurchaseTicketForm extends React.Component<Props, IPurchaseTicketFormState
 			purchaseTicketRequest: request
 		})
 		console.log("formSubmit", request.toObject())
+		askPassphrase()
+			.then((passphrase) => {
+				return request.setPassphrase(new Uint8Array(Buffer.from(passphrase)))
+			})
+			.then((r) => {
+				// debugger
+				console.log("askPassphrase", request.toObject())
+				this.props.purchaseTicketAttempt(request)
+			})
+			.catch((err) => {
+				console.error(err)
+				console.log("askPassphrase", request.toObject())
+				// debugger
+			})
 		// this.props.onFormComplete()
 
 		return false;
@@ -242,15 +245,32 @@ interface DispatchProps {
 	// publishTransactionAttempt(...arguments: any): Promise<any>
 }
 
-type Props = DispatchProps & OwnProps
+type Props = DispatchProps & OwnProps & IPurchaseTicketFormProps
 
 
 
 interface InternalState {
 }
 
+interface IPurchaseTicketFormProps {
+	title: string
+	error: AppError | null
+	accounts: WalletAccount[]
+	// onFormComplete: () => void
+}
+
+interface InternalState {
+	formRef: React.RefObject<any>
+	error: AppError | null
+	formIsValidated: boolean
+	isDirty: boolean
+	purchaseTicketRequest: PurchaseTicketsRequest
+}
+
+
+
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-	purchaseTicketAttempt: () => { },
+	purchaseTicketAttempt: purchaseTicketAttempt,
 	// constructTransactionAttempt: constructTransactionAttempt,
 	// signTransactionAttempt: signTransactionAttempt,
 	// publishTransactionAttempt: publishTransactionAttempt,
