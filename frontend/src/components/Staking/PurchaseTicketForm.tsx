@@ -1,7 +1,7 @@
 import * as React from 'react';
 import _ from 'lodash';
 
-import { Row, Col, Form, Button, Card, InputGroup } from 'react-bootstrap';
+import { Row, Col, Form, Button, Card, InputGroup, Alert } from 'react-bootstrap';
 import { PasteButton, InfoTooltip, AccountSelector } from '../Shared/shared';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -24,6 +24,7 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { PurchaseTicketsRequest } from '../../proto/api_pb';
 import { purchaseTicketAttempt } from '../../store/staking/actions';
 import PassphraseEntryDialog, { askPassphrase } from '../Shared/PassphraseEntryDialog';
+import { accountHasEnoughFunds } from '../../store/accounts/actions';
 
 
 
@@ -69,7 +70,8 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 							<Col sm={8}>
 								<AccountSelector
 									value={1}
-									onChange={_.bind(this.handleChange, this)}
+									name="account_select"
+									onChange={_.bind(this.handleAccountChange, this)}
 									accounts={this.props.accounts} />
 							</Col>
 						</Form.Group>
@@ -122,9 +124,13 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 							</Col>
 						</Form.Group>
 					</Form>
-					<PassphraseEntryDialog show={false}/>
+					<PassphraseEntryDialog show={false} />
 				</Card.Body>
 				<Card.Footer className="text-right">
+					{this.props.error != null  && (
+						<Alert variant="danger">{this.props.error.message}</Alert>
+					)}
+
 					<Button
 						type="submit"
 						onClick={_.bind(this.handleFormSubmit, this)}
@@ -149,16 +155,26 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 			purchaseTicketRequest: request
 		})
 		console.log("formSubmit", request.toObject())
+		const cancelError = new Error()
 		askPassphrase()
 			.then((passphrase) => {
+				if (passphrase == "") {
+					throw cancelError
+				}
 				return request.setPassphrase(new Uint8Array(Buffer.from(passphrase)))
 			})
 			.then((r) => {
 				// debugger
 				console.log("askPassphrase", request.toObject())
-				this.props.purchaseTicketAttempt(request)
+				return this.props.purchaseTicketAttempt(request)
+				// debugger
+			})
+			.then((r) => {
+				// this.setState({ error: err })
+				console.log("response", r)
 			})
 			.catch((err) => {
+				this.setState({ error: err })
 				console.error(err)
 				console.log("askPassphrase", request.toObject())
 				// debugger
@@ -187,6 +203,26 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 		// 	})
 		// }, this))
 	}
+
+	handleAccountChange() {
+		console.log("handleChange")
+		// const ep = this.props.purchaseTicketRequest
+		// this.setState({
+		// 	isDirty: true
+		// })
+		if (!this.state.formRef.current.checkValidity()) {
+			return
+		}
+		// this.setState({
+		// 	connectionCheckStatus: ConnectionCheckState.CHECKING
+		// })
+		// checkEndpointFn(this.state.formRef, ep, _.bind((r) => {
+		// 	this.setState({
+		// 		connectionCheckStatus: r.error ? ConnectionCheckState.FAILED : ConnectionCheckState.SUCCESS,
+		// 		connectionCheckMessage: r.error
+		// 	})
+		// }, this))
+	}
 }
 
 
@@ -194,6 +230,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 const loadFormFields = (formRef: React.RefObject<any>, r: PurchaseTicketsRequest) => {
 	const f = formRef.current
 	r.setNumTickets(f.num_tickets.value)
+	r.setAccount(f.account_select.value)
 	r.setRequiredConfirmations(1)
 	// if (ep instanceof RPCEndpoint) {
 	// 	ep.setUsername(f.username.value)
@@ -209,6 +246,7 @@ const loadFormFields = (formRef: React.RefObject<any>, r: PurchaseTicketsRequest
 const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
 		...state.staking,
+		error: state.staking.errorPurchaseTickets,
 		// txInfo: state.transactions.txInfo,
 		// errorSignTransaction: state.transactions.errorSignTransaction,
 		// errorPublishTransaction: state.transactions.errorPublishTransaction,
@@ -230,7 +268,7 @@ interface OwnProps {
 	// publishTransactionResponse: PublishTransactionResponse | null,
 	// errorConstructTransaction: AppError | null
 	// errorSignTransaction: AppError | null,
-	// errorPublishTransaction: AppError | null,
+	error: AppError | null,
 	// currentStep: SendTransactionSteps
 	accounts: IndexedWalletAccounts
 }
@@ -256,6 +294,7 @@ interface IPurchaseTicketFormProps {
 	title: string
 	error: AppError | null
 	accounts: WalletAccount[]
+	hasEnoughFunds: (account: WalletAccount, amount: number) => boolean
 	// onFormComplete: () => void
 }
 
@@ -269,7 +308,9 @@ interface InternalState {
 
 
 
+
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	hasEnoughFunds: accountHasEnoughFunds,
 	purchaseTicketAttempt: purchaseTicketAttempt,
 	// constructTransactionAttempt: constructTransactionAttempt,
 	// signTransactionAttempt: signTransactionAttempt,

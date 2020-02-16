@@ -163,8 +163,9 @@ const LorcaBackend = {
 			return PurchaseTicketsResponse.deserializeBinary(r.payload)
 
 		} catch (e) {
-			console.error("Serialization error", e)
-			return
+			throw e
+			// console.error("Serialization error", e)
+			// return e
 		}
 	},
 

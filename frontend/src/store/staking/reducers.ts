@@ -4,7 +4,7 @@ import {
 	GETTICKETS_ATTEMPT, GETTICKETS_FAILED, GETTICKETS_SUCCESS,
 	GETTICKETPRICE_ATTEMPT, GETTICKETPRICE_FAILED, GETTICKETPRICE_SUCCESS,
 	AGENDASATTEMPT, AGENDASFAILED, AGENDASSUCCESS,
-	STAKEINFOATTEMPT, STAKEINFOFAILED, STAKEINFOSUCCESS
+	STAKEINFOATTEMPT, STAKEINFOFAILED, STAKEINFOSUCCESS, PURCHASETICKETSATTEMPT, PURCHASETICKETSFAILED, PURCHASETICKETSSUCCESS
 } from './types'
 
 import { TicketPrice, Agendas, StakeInfo } from '../../models';
@@ -113,6 +113,25 @@ export default function staking(
 				getStakeInfoRequest: false,
 				stakeinfo: action.payload,
 				errorStakeInfo: null
+			};
+		// PurchaseTicket
+		case PURCHASETICKETSATTEMPT:
+			return {
+				...state,
+				isPurchaseTicketAttempting: false,
+				errorPurchaseTickets: null,
+			};
+		case PURCHASETICKETSFAILED:
+			return {
+				...state,
+				isPurchaseTicketAttempting: false,
+				errorPurchaseTickets: action.error,
+			};
+		case PURCHASETICKETSSUCCESS:
+			return {
+				...state,
+				isPurchaseTicketAttempting: false,
+				errorPurchaseTickets: null
 			};
 		default:
 			neverReached(action);

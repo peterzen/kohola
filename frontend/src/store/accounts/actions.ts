@@ -16,6 +16,8 @@ import { IGetState } from '../types';
 import { loadWalletBalance } from '../walletbalance/actions';
 import { AccountNotificationsResponse } from '../../proto/api_pb';
 import { IndexedWalletAccounts, WalletAccount } from '../../models';
+import { getAccounts } from './selectors';
+import { getWalletBalances } from '../walletbalance/selectors';
 
 
 const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
@@ -28,7 +30,7 @@ const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
 
 
 export const loadAccountsAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, GetAccountsActionTypes>, getState: IGetState)=> {
+	return async (dispatch: ThunkDispatch<{}, {}, GetAccountsActionTypes>, getState: IGetState) => {
 		const { getBestBlockHeightRequest } = getState().networkinfo;
 		if (getBestBlockHeightRequest) {
 			return Promise.resolve();
@@ -71,3 +73,13 @@ export const loadNextAddressAttempt: ActionCreator<any> = (account: WalletAccoun
 		}
 	}
 };
+
+export const accountHasEnoughFunds: ActionCreator<any> = (account: WalletAccount, amount: number) => {
+	return (dispatch: Dispatch, getState: IGetState) => {
+		const acc = getWalletBalances(getState())[account.getAccountNumber()]
+		if (acc == undefined) {
+			throw new Error("non-existent account")
+		}
+		return acc.getSpendable() > amount
+	}
+}

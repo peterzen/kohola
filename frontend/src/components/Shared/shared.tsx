@@ -180,14 +180,15 @@ export class CopyToClipboardText extends React.Component<ICopyToClipboardButtonP
 }
 
 
-export const AccountSelector = (props: { accounts: IndexedWalletAccounts, value: number, onChange: any }) => {
+export const AccountSelector = (props: { name: string, accounts: IndexedWalletAccounts, value: number, onChange: any }) => {
 	return (
 		<Form.Control
 			tabIndex={0}
+			name={props.name}
 			value={props.value && props.value.toString()}
 			onChange={props.onChange}
 			as="select">
-			{_. map(props.accounts, (a, n) => (
+			{_.map(props.accounts, (a, n) => (
 				<option key={n} value={a.getAccountNumber()}>{a.getAccountName()} ({a.getTotalBalance() / ATOMS_DIVISOR} DCR)</option>
 
 			))}
