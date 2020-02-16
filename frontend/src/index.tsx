@@ -10,7 +10,7 @@ import { initializeData, checkBackend } from './store/actions';
 
 import App from './containers/App';
 
-import "bootstrap/dist/css/bootstrap.css";
+// import "bootstrap/dist/css/bootstrap.css";
 import "./styles/main.scss";
 
 const history = createHashHistory({

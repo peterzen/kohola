@@ -42,7 +42,6 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 		console.log("###PROPZ", this.props)
 	}
 	render() {
-		const onChange = _.bind(this.handleChange, this)
 		return (
 			<Card >
 				<Card.Body>
@@ -69,7 +68,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 							</Col>
 							<Col sm={8}>
 								<AccountSelector
-									value={1}
+									defaultValue={1}
 									name="account_select"
 									onChange={_.bind(this.handleAccountChange, this)}
 									accounts={this.props.accounts} />
