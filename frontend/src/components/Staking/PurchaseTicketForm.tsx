@@ -27,7 +27,32 @@ import PassphraseEntryDialog, { askPassphrase } from '../Shared/PassphraseEntryD
 import { accountHasEnoughFunds } from '../../store/accounts/actions';
 
 
-
+/*
+import React from 'react'
+import { connect } from 'react-redux'
+import { addTodo } from '../actions'
+const AddTodo = ({ dispatch }) => {
+  let input
+  return (
+    <div>
+      <form
+        onSubmit={e => {
+          e.preventDefault()
+          if (!input.value.trim()) {
+            return
+          }
+          dispatch(addTodo(input.value))
+          input.value = ''
+        }}
+      >
+        <input ref={node => (input = node)} />
+        <button type="submit">Add Todo</button>
+      </form>
+    </div>
+  )
+}
+export default connect()(AddTodo)
+*/
 
 class PurchaseTicketForm extends React.Component<Props, InternalState> {
 	constructor(props) {
@@ -55,16 +80,6 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 						<Form.Group as={Row}>
 							<Col sm={4}>
 								<Form.Label>From account</Form.Label>
-
-								{/* <Form.Control
-									autoComplete="off"
-									required
-									name="port"
-									type="text"
-									placeholder="Port"
-									onChange={onChange}
-								// defaultValue={endPoint.getPort().toString()}
-								/> */}
 							</Col>
 							<Col sm={8}>
 								<AccountSelector
@@ -290,9 +305,6 @@ interface OwnProps {
 interface DispatchProps {
 	// cancelSign(): any,
 	purchaseTicketAttempt(...arguments: any): Promise<any>
-	// constructTransactionAttempt(...arguments: any): Promise<any>
-	// signTransactionAttempt(...arguments: any): Promise<any>purchaseTicketRequest
-	// publishTransactionAttempt(...arguments: any): Promise<any>
 }
 
 type Props = DispatchProps & OwnProps & IPurchaseTicketFormProps
@@ -319,15 +331,9 @@ interface InternalState {
 }
 
 
-
-
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
 	hasEnoughFunds: accountHasEnoughFunds,
 	purchaseTicketAttempt: purchaseTicketAttempt,
-	// constructTransactionAttempt: constructTransactionAttempt,
-	// signTransactionAttempt: signTransactionAttempt,
-	// publishTransactionAttempt: publishTransactionAttempt,
-	// cancelSign: cancelSignTransaction,
 }, dispatch)
 
 

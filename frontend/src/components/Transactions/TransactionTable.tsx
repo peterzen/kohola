@@ -36,9 +36,9 @@ export default class TransactionTable extends React.Component<TransactionListPro
 		return (
 			<Table hover>
 				<tbody>
-					<Fade fade cascade>
+					{/* <Fade fade cascade> */}
 						{list}
-					</Fade>
+					{/* </Fade> */}
 				</tbody>
 			</Table>
 		)

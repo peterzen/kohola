@@ -14,9 +14,7 @@ import { hot } from 'react-hot-loader/root'
 import ToastContainer from '../components/Fixtures/Toasts';
 import Navbar from "../components/Fixtures/Navbar"
 import { createDevTools } from 'redux-devtools';
-import LogMonitor from 'redux-devtools-log-monitor';
 import DevTools from '../components/Fixtures/DevTools';
-// const DevTools = createDevTools(<LogMonitor theme="solarized" />);
 // import Drawer from 'rc-drawer'
 
 
@@ -24,7 +22,7 @@ interface AppProps {
 	history: any  // should be History<something>
 }
 
-const devMonitorEnabled = false
+const devMonitorEnabled = true
 
 const App = ({ history }: AppProps) => {
 	return (

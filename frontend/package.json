@@ -48,7 +48,6 @@
 		"redux": "^4.0.5",
 		"redux-devtools-extension": "^2.13.8",
 		"redux-devtools-log-monitor": "^1.4.0",
-		"redux-devtools-slider-monitor": "^1.0.0-beta-1",
 		"redux-logger": "^3.0.6",
 		"redux-slider-monitor": "^2.0.0-2",
 		"redux-thunk": "^2.3.0",

@@ -13,7 +13,6 @@ import {
 } from "../../proto/api_pb";
 import { DecodedrawTx, ConstructTxOutput } from "../../datasources/models";
 import { ProtobufMessage } from "@improbable-eng/grpc-web/dist/typings/message";
-import { HumanreadableTxInfo } from "./actions";
 
 export interface GetTransactionsState {
 	readonly txList: Transaction[]

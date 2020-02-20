@@ -41,21 +41,19 @@ export default function configureStore(initialState: IApplicationState, history:
 	);
 
 
-	// const composeEnhancers = composeWithDevTools({
-	// 	name: "main"
-	// });
+	const composeEnhancers = composeWithDevTools({
+		name: "main"
+	});
 
-	// const store = createStore(reducer, devToolsEnhancer());
-
-	const composeEnhancers = w.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+	// const composeEnhancers = w.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 	const store = createStore(
 		createRootReducer(history),
 		initialState,
 		composeEnhancers(
 			applyMiddleware(thunk, router, logger),
-			// DevTools.instrument()
+			DevTools.instrument(),
+			persistState(w.location.href.match(/[?&]debug_session=([^&#]+)\b/))
 
-			
 			// devTool,
 			// devToolCompose
 			// composeWithDevTools({
