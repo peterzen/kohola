@@ -19,7 +19,7 @@ import { Card } from "react-bootstrap"
 import Fade from 'react-reveal/Fade';
 
 
-class WalletBalanceContainer extends React.Component<Props, InternalState>{
+class WalletBalanceContainer extends React.PureComponent<Props, InternalState>{
 	constructor(props: Props) {
 		super(props)
 		this.state = {

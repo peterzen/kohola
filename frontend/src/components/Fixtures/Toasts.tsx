@@ -5,7 +5,6 @@ import { Toast } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { IApplicationState } from '../../store/types';
 import { TransactionNotificationsResponse } from '../../proto/api_pb';
-import { TxHash } from '../Shared/shared';
 
 
 class ToastContainer extends React.Component<Props> {
@@ -13,7 +12,6 @@ class ToastContainer extends React.Component<Props> {
 		if (this.props.txNotifications == undefined) {
 			return null
 		}
-
 		const txList = this.props.txNotifications.getUnminedTransactionsList()
 		return (
 			<div id="toast-container"

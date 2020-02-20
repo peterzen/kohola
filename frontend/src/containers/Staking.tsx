@@ -18,7 +18,7 @@ import Fade from 'react-reveal/Fade';
 import { TransitionGroup } from 'react-transition-group';
 
 
-class StakingContainer extends React.Component<{}, {}> {
+class StakingContainer extends React.PureComponent<{}, {}> {
 
 	render() {
 		return (

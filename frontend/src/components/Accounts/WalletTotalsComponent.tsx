@@ -25,7 +25,7 @@ const ValueCol = (props: { amount: number, total: number, label: string, variant
 		</Col>
 	)
 }
-export default class WalletTotalsComponent extends React.Component<IWalletTotals, {}> {
+export default class WalletTotalsComponent extends React.PureComponent<IWalletTotals, {}> {
 	render() {
 		const totals = this.props.totals
 		return (
