@@ -15,7 +15,6 @@
 		"@fortawesome/fontawesome-svg-core": "^1.2.26",
 		"@fortawesome/free-solid-svg-icons": "^5.12.0",
 		"@fortawesome/react-fontawesome": "^0.1.8",
-		"@improbable-eng/grpc-web": "^0.12.0",
 		"animate.css": "^3.7.2",
 		"blake-hash": "^1.1.0",
 		"bootstrap": "^4.4.1",
@@ -25,11 +24,12 @@
 		"ee-ts": "^1.0.1",
 		"events": "^3.1.0",
 		"google-protobuf": "^3.6.1",
-		"grpc-web": "^1.0.0",
 		"history": "^4.10.1",
 		"int64-buffer": "^0.99.1007",
 		"lodash": "^4.17.15",
 		"momentjs": "^2.0.0",
+		"overlayscrollbars": "^1.10.3",
+		"overlayscrollbars-react": "^0.2.1",
 		"rc-drawer": "^3.1.3",
 		"react": "^16.12.0",
 		"react-bootstrap": "^1.0.0-beta.16",
@@ -40,6 +40,7 @@
 		"react-reveal": "^1.2.2",
 		"react-router-dom": "^5.1.2",
 		"react-router-redux": "^4.0.8",
+		"react-scripts": "^3.4.0",
 		"react-svg-loader": "^3.0.3",
 		"react-timeago": "^4.4.0",
 		"react-transition-group": "^4.3.0",
@@ -49,6 +50,7 @@
 		"redux-devtools-log-monitor": "^1.4.0",
 		"redux-devtools-slider-monitor": "^1.0.0-beta-1",
 		"redux-logger": "^3.0.6",
+		"redux-slider-monitor": "^2.0.0-2",
 		"redux-thunk": "^2.3.0",
 		"sprintf-js": "^1.1.2",
 		"tslib": "^1.10.0"
@@ -65,6 +67,7 @@
 		"@types/lodash": "^4.14.149",
 		"@types/moment": "^2.13.0",
 		"@types/node": "^13.1.8",
+		"@types/overlayscrollbars": "^1.9.0",
 		"@types/react": "^16.9.19",
 		"@types/react-bootstrap": "^0.32.20",
 		"@types/react-copy-to-clipboard": "^4.3.0",
@@ -102,7 +105,7 @@
 		"typescript": "^3.7.5",
 		"webpack": "^4.16.5",
 		"webpack-cli": "^3.1.0",
-		"webpack-dev-server": "^3.1.7"
+		"webpack-dev-server": "^3.10.2"
 	},
 	"eslintConfig": {
 		"extends": "react-app"

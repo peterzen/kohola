@@ -6,8 +6,9 @@ import createRootReducer from "./reducers";
 import { IApplicationState } from "./types";
 import DevTools from "../components/Fixtures/DevTools";
 import { persistState } from "redux-devtools";
-import composeWithDevTools from 'remote-redux-devtools';
+// import composeWithDevTools from 'remote-redux-devtools';
 
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 
 export default function configureStore(initialState: IApplicationState, history: any) {
@@ -40,23 +41,29 @@ export default function configureStore(initialState: IApplicationState, history:
 	);
 
 
+	// const composeEnhancers = composeWithDevTools({
+	// 	name: "main"
+	// });
 
 	// const store = createStore(reducer, devToolsEnhancer());
 
-	// const composeEnhancers = w.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+	const composeEnhancers = w.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 	const store = createStore(
 		createRootReducer(history),
 		initialState,
-		compose(
+		composeEnhancers(
 			applyMiddleware(thunk, router, logger),
+			// DevTools.instrument()
+
+			
 			// devTool,
 			// devToolCompose
-			composeWithDevTools({
-				persistState: true,
-				realtime: true,
-				hostname: "localhost",
-				"port": 8888
-			})
+			// composeWithDevTools({
+			// 	persistState: true,
+			// 	realtime: true,
+			// 	hostname: "localhost",
+			// 	"port": 8888
+			// })
 		)
 
 	);
