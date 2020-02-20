@@ -82,7 +82,8 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 							</Col>
 							<InputGroup as={Col} sm={6}>
 								<InputGroup.Prepend>
-									<Button variant="outline-secondary" >
+									<Button variant="outline-secondary"
+										onClick={_.bind(this.handleNumTixDown, this)}>
 										<FontAwesomeIcon icon={faMinus} />
 									</Button>
 								</InputGroup.Prepend>
@@ -92,10 +93,13 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 									type="number"
 									className="ml-3 mr-3"
 									tabIndex={-1}
+									onChange={_.bind(this.handleChange, this)}
 									defaultValue="1" />
 								<InputGroup.Append>
-									<Button variant="outline-secondary" >
-										<FontAwesomeIcon icon={faPlus} />
+									<Button
+										variant="outline-secondary"
+										onClick={_.bind(this.handleNumTixUp, this)}
+									><FontAwesomeIcon icon={faPlus} />
 									</Button>
 								</InputGroup.Append>
 							</InputGroup>
@@ -112,7 +116,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 									size="sm"
 									defaultValue={50}
 									className="pr-3"
-									title="b lah"
+									title="fee rate"
 								// onChange={changeEvent => console.log(changeEvent.target.value)}
 								/>
 								<InputGroup.Append>
@@ -126,7 +130,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 					<PassphraseEntryDialog show={false} />
 				</Card.Body>
 				<Card.Footer className="text-right">
-					{this.props.error != null  && (
+					{this.props.error != null && (
 						<Alert variant="danger">{this.props.error.message}</Alert>
 					)}
 
@@ -139,6 +143,15 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 				</Card.Footer>
 			</Card >
 		)
+	}
+
+	handleNumTixDown() {
+		this.state.formRef.current.num_tickets.stepDown()
+		return true
+	}
+	handleNumTixUp() {
+		this.state.formRef.current.num_tickets.stepUp()
+		return true
 	}
 
 	handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
