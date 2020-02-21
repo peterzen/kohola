@@ -41,7 +41,11 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 					<AccountSelector
 						name="account"
 						value={this.state.sourceAccount.getAccountNumber()}
-						onChange={_.bind(this.handleSourceSelectChange, this)} />
+						onChange={() => {
+							this.setState({
+								sourceAccount: this.props.accounts[parseInt(e.currentTarget.value)]
+							})
+						}} />
 				</Form.Group>
 				<Form.Group controlId="destinationAddressControl">
 					<Form.Label>Destination address</Form.Label>
@@ -76,7 +80,9 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 							name="amount"
 							aria-describedby="amountControl1"
 							ref={this.state.amountRef}
-							onChange={_.bind(this.handleAmountInputChange, this)}
+							onChange={() => this.setState({
+								amount: this.state.amountRef.current.value
+							})}
 						/>
 						<InputGroup.Append>
 							<Button
@@ -112,12 +118,6 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 		)
 	}
 
-	handleSourceSelectChange(e: React.FormEvent<HTMLSelectElement>) {
-		this.setState({
-			sourceAccount: this.props.accounts[parseInt(e.currentTarget.value)]
-		})
-	}
-
 	handleSendAllToggle(e: React.ChangeEvent<HTMLInputElement>) {
 		const currentState = e.currentTarget.checked;
 		this.state.amountRef.current.disabled = currentState
@@ -126,12 +126,6 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 		}
 		this.setState({
 			sendAllToggle: currentState,
-			amount: this.state.amountRef.current.value
-		})
-	}
-
-	handleAmountInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-		this.setState({
 			amount: this.state.amountRef.current.value
 		})
 	}
