@@ -1,7 +1,7 @@
 import * as React from 'react';
 import _ from 'lodash';
 
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal, Form, Row, Col } from 'react-bootstrap';
 
 let setState: any | null = null
 let promise: Promise<string> | null = null
@@ -19,9 +19,6 @@ export const askPassphrase = () => {
 		return
 	}
 	dialogComponent.showModal()
-	// setState({
-	// 	showModal: true
-	// })
 	promise = new Promise<string>((resolve, reject) => {
 		dialogResolve = resolve
 		dialogReject = reject
@@ -30,58 +27,60 @@ export const askPassphrase = () => {
 	return promise
 }
 
-export const modalTest = () => {
-	setState({ showModal: true })
-}
-
 export default class PassphraseEntryDialog extends React.Component<Props, InternalState> {
 
 	constructor(props: Props) {
 		super(props)
 		this.state = {
 			showModal: false,
+			inputRef: React.createRef(),
 		}
 		dialogComponent = this
 	}
 
 	render() {
 		return (
-			<>
-				{/* <Button
-					variant="primary"
-					onClick={_.bind(this.showModal, this)}>Enter passphrase</Button> */}
-
-				<Modal
-					centered
-					onEntered={this.onEntered}
-					onExit={_.bind(this.onExit, this)}
-					show={this.state.showModal}
-					onHide={_.bind(this.hideModal, this)}>
+			<Modal
+				centered
+				onEntered={_.bind(this.onEntered, this)}
+				onExit={_.bind(this.onExit, this)}
+				show={this.state.showModal}
+			>
+				<Form>
 					<Modal.Header closeButton>
 						Unlock wallet
 					</Modal.Header>
 					<Modal.Body>
-						<Form>
-							<Form.Group>
-								<Form.Control
-									autoComplete="off"
-									// required
-									name="passphrase"
-									type="password"
-									placeholder="Wallet passphrase"
-									onChange={_.bind(this.onChange, this)}
-									defaultValue="" />
-							</Form.Group>
-							<Button
-								type="submit"
-								onClick={_.bind(this.handleFormSubmit, this)}
-								variant="outline-primary">
-								Unlock
-							</Button>
-						</Form>
+						<Form.Group>
+							<Form.Control
+								autoComplete="off"
+								name="passphrase"
+								type="password"
+								ref={this.state.inputRef}
+								placeholder="Wallet passphrase"
+								defaultValue="" />
+						</Form.Group>
 					</Modal.Body>
-				</Modal>
-			</>
+					<Modal.Footer>
+						<Row>
+							<Col>
+								<Button
+									variant="link"
+									onClick={() => this.setState({ showModal: false })}
+									>Cancel</Button>
+							</Col>
+							<Col className="text-right pr-4">
+								<Button
+									type="submit"
+									onClick={_.bind(this.handleFormSubmit, this)}
+									variant="outline-primary">
+									Unlock
+								</Button>
+							</Col>
+						</Row>
+					</Modal.Footer>
+				</Form>
+			</Modal>
 		)
 	}
 	showModal() {
@@ -93,11 +92,8 @@ export default class PassphraseEntryDialog extends React.Component<Props, Intern
 	componentDidMount() {
 		setState = this.setState
 	}
-	// componentDidUpdate() {
-	// 	console.log("####componentDidUpdate")
-	// }
 	onEntered() {
-		// console.log("GenericModalDialog onEntered")
+		this.state.inputRef.current.focus();
 	}
 	onExit() {
 		// console.log("onExit")
@@ -121,8 +117,6 @@ export default class PassphraseEntryDialog extends React.Component<Props, Intern
 
 interface OwnProps {
 	show: boolean
-	onHide: () => void
-	// propFromParent: number
 }
 
 interface DispatchProps {
@@ -133,5 +127,6 @@ type Props = DispatchProps & OwnProps
 
 interface InternalState {
 	showModal: boolean
+	inputRef: React.RefObject<any>
 }
 
