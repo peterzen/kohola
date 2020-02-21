@@ -10,7 +10,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faPaste,
 	faClipboard,
-	faInfoCircle
+	faInfoCircle,
+	faSlidersH
 } from '@fortawesome/free-solid-svg-icons'
 
 
@@ -139,6 +140,14 @@ export const InfoTooltip = (props: { text: string }) => {
 	)
 }
 
+export const WidgetOptionsButton = (args: ButtonProps) => {
+	return (
+		<Button
+			variant="outline-secondary" {...args}>
+			<FontAwesomeIcon icon={faSlidersH} />
+		</Button>
+	)
+}
 
 export const PasteButton = (args: ButtonProps) => {
 	return (
@@ -217,7 +226,7 @@ const _AccountSelector = (props: IAccountSelectProps & OwnProps) => {
 		<Form.Control
 			tabIndex={0}
 			name={props.name}
-			value={props.value && props.value.toString()}
+			defaultValue={props.value && props.value.toString()}
 			onChange={props.onChange}
 			as="select">
 			{_.map(props.accounts, (a, n) => (
