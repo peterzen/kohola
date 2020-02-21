@@ -3,17 +3,14 @@ import * as React from "react"
 
 import { IndexedWalletAccounts, WalletAccount } from "../../../models"
 
-import { Form, Button, InputGroup, FormControl, Row, Col } from 'react-bootstrap';
-import { LoadingButton, PasteButton, AccountSelector } from "../../Shared/shared"
+import {  AccountSelector } from "../../Shared/shared"
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faPaste,
-} from '@fortawesome/free-solid-svg-icons'
 import { isValidAddress } from "../../../helpers/validators"
 import { ATOMS_DIVISOR, DEFAULT_REQUIRED_CONFIRMATIONS } from "../../../constants"
 import { AppError } from "../../../store/types";
 import DialogAlert from "./DialogAlert";
+
+import { Form, Button, InputGroup, FormControl, Row, Col } from 'react-bootstrap';
 
 export default class SendDialogForm extends React.Component<OwnProps, ISendDialogFormData>{
 	constructor(props: OwnProps) {
@@ -41,7 +38,7 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 					<AccountSelector
 						name="account"
 						value={this.state.sourceAccount.getAccountNumber()}
-						onChange={() => {
+						onChange={(e: any) => {
 							this.setState({
 								sourceAccount: this.props.accounts[parseInt(e.currentTarget.value)]
 							})
