@@ -7,7 +7,7 @@ let setState: any | null = null
 let promise: Promise<string> | null = null
 
 let dialogComponent: PassphraseEntryDialog | null = null
-let dialogResolve, dialogReject;
+let dialogResolve: (passphrase: string) => void, dialogReject;
 
 export const askPassphrase = () => {
 	if (setState == null) {
@@ -67,7 +67,7 @@ export default class PassphraseEntryDialog extends React.Component<Props, Intern
 								<Button
 									variant="link"
 									onClick={() => this.setState({ showModal: false })}
-									>Cancel</Button>
+								>Cancel</Button>
 							</Col>
 							<Col className="text-right pr-4">
 								<Button
@@ -108,7 +108,6 @@ export default class PassphraseEntryDialog extends React.Component<Props, Intern
 		e.preventDefault()
 		const passphrase = e.currentTarget.form.elements.passphrase.value
 		if (promise != null && passphrase !== undefined && passphrase != "") {
-			// promise.resolve(passphrase)
 			dialogResolve(passphrase)
 		}
 		this.hideModal()
