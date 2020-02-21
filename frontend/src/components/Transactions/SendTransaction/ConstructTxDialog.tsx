@@ -39,9 +39,9 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 				<Form.Group controlId="sourceAccount">
 					<Form.Label>Select source account</Form.Label>
 					<AccountSelector
+						name="account"
 						value={this.state.sourceAccount.getAccountNumber()}
-						onChange={_.bind(this.handleSourceSelectChange, this)}
-						accounts={this.props.accounts} />
+						onChange={_.bind(this.handleSourceSelectChange, this)} />
 				</Form.Group>
 				<Form.Group controlId="destinationAddressControl">
 					<Form.Label>Destination address</Form.Label>

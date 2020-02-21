@@ -1,7 +1,7 @@
 import { Moment } from "moment";
 import { formatTimestamp, reverseHash } from "../../helpers";
 import React, { useState, useEffect } from "react";
-import { Transaction, WalletAccount, IndexedWalletAccounts } from "../../models";
+import { Transaction, WalletAccount, IndexedWalletAccounts, WalletBalance } from "../../models";
 import _ from "lodash";
 import { sprintf } from "sprintf-js";
 
@@ -19,6 +19,10 @@ import { rawHashToHex } from "../../helpers/byteActions";
 import CopyToClipboard from "react-copy-to-clipboard";
 import accounts from "../../store/accounts/reducers";
 import { ATOMS_DIVISOR } from "../../constants";
+import { IApplicationState } from "../../store/types";
+import { getAccounts } from "../../store/accounts/selectors";
+import { getWalletBalances } from "../../store/walletbalance/selectors";
+import { connect } from "react-redux";
 
 
 interface TimestampProps {
@@ -202,8 +206,13 @@ export class CopyToClipboardText extends React.Component<ICopyToClipboardButtonP
 	}
 }
 
+interface IAccountSelectProps {
+	name: string
+	value: number
+	onChange: any
+}
 
-export const AccountSelector = (props: { name: string, accounts: IndexedWalletAccounts, value: number, onChange: any }) => {
+const _AccountSelector = (props: IAccountSelectProps & OwnProps) => {
 	return (
 		<Form.Control
 			tabIndex={0}
@@ -212,12 +221,27 @@ export const AccountSelector = (props: { name: string, accounts: IndexedWalletAc
 			onChange={props.onChange}
 			as="select">
 			{_.map(props.accounts, (a, n) => (
-				<option key={n} value={a.getAccountNumber()}>{a.getAccountName()} ({a.getTotalBalance() / ATOMS_DIVISOR} DCR)</option>
+				<option key={n} value={a.getAccountNumber()}>{a.getAccountName()} ({props.balances[a.getAccountNumber()] && props.balances[a.getAccountNumber()].getSpendable() / ATOMS_DIVISOR} DCR)</option>
 
 			))}
 		</Form.Control>
 	)
 }
+
+interface OwnProps {
+	balances: WalletBalance
+	accounts: IndexedWalletAccounts
+}
+
+
+const mapStateToProps = (state: IApplicationState):  OwnProps => {
+	return {
+		accounts: getAccounts(state),
+		balances: getWalletBalances(state)
+	};
+}
+
+export const AccountSelector = connect(mapStateToProps)(_AccountSelector)
 
 // function simulateNetworkRequest() {
 // 	return new Promise(resolve => setTimeout(resolve, 2000));

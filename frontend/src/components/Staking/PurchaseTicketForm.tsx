@@ -14,7 +14,7 @@ import {
 import { AppError, IApplicationState } from '../../store/types';
 import { sprintf } from 'sprintf-js';
 import LorcaBackend from '../../datasources/lorca';
-import { Ticket, WalletAccount, IndexedWalletAccounts } from '../../models';
+import { Ticket, WalletAccount, IndexedWalletAccounts, WalletBalance } from '../../models';
 
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import RangeSlider from 'react-bootstrap-range-slider';
@@ -25,6 +25,7 @@ import { PurchaseTicketsRequest } from '../../proto/api_pb';
 import { purchaseTicketAttempt } from '../../store/staking/actions';
 import PassphraseEntryDialog, { askPassphrase } from '../Shared/PassphraseEntryDialog';
 import { accountHasEnoughFunds } from '../../store/accounts/actions';
+import { getWalletBalances } from '../../store/walletbalance/selectors';
 
 
 /*
@@ -86,7 +87,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 									defaultValue={1}
 									name="account_select"
 									onChange={_.bind(this.handleAccountChange, this)}
-									accounts={this.props.accounts} />
+									balances={this.props.balances} />
 							</Col>
 						</Form.Group>
 						<Form.Group as={Row}>
@@ -283,7 +284,7 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 		// constructTransactionRequest: state.transactions.constructTransactionRequest,
 		// constructTransactionResponse: state.transactions.constructTransactionResponse,
 		// currentStep: state.transactions.sendTransactionCurrentStep,
-		accounts: getAccounts(state),
+		balances: getWalletBalances(state)
 	};
 }
 
@@ -297,7 +298,7 @@ interface OwnProps {
 	// errorSignTransaction: AppError | null,
 	error: AppError | null,
 	// currentStep: SendTransactionSteps
-	accounts: IndexedWalletAccounts
+	balances: WalletBalance
 }
 
 
@@ -317,7 +318,6 @@ interface InternalState {
 interface IPurchaseTicketFormProps {
 	title: string
 	error: AppError | null
-	accounts: WalletAccount[]
 	hasEnoughFunds: (account: WalletAccount, amount: number) => boolean
 	// onFormComplete: () => void
 }
