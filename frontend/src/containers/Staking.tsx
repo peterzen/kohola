@@ -23,23 +23,25 @@ class StakingContainer extends React.PureComponent<{}, {}> {
 	render() {
 		return (
 			<div>
-				<Fade>
+				<Fade fade>
 					<StakeInfoComponent />
 				</Fade>
 				<Row className="mt-3">
 					<Col>
-						<TicketsOverviewContainer />
+						<Fade fade><TicketsOverviewContainer /></Fade>
 					</Col>
 					<Col>
-					<Fade><PurchaseTicketForm /></Fade>
-						<div className="mt-3" />
-						<Fade><StakeStats /></Fade>
-						<div className="mt-3" />
-						<Fade><TicketPriceComponent /></Fade>
-						<div className="mt-3" />
-						<Fade><TicketBuyerComponent /></Fade>
-						<div className="mt-3" />
-						<Fade><AgendasComponent /></Fade>
+						<Fade fade cascade>
+							<PurchaseTicketForm />
+							<div className="mt-3" />
+							<StakeStats />
+							<div className="mt-3" />
+							<TicketPriceComponent />
+							<div className="mt-3" />
+							<TicketBuyerComponent />
+							<div className="mt-3" />
+							<AgendasComponent />
+						</Fade >
 					</Col>
 				</Row>
 			</div>
