@@ -20,7 +20,7 @@ const ValueCol = (props: { amount: number, total: number, label: string, variant
 				<ProgressBar className={clazz} now={100 * props.amount / props.total} />
 			</div>
 			<p className=" text-muted">{props.label}</p>
-			<h4 className="text-right text-muted"><Amount amount={props.amount} showCurrency /></h4>
+			<h4 className="text-right text-muted"><Amount amount={props.amount} rounding={2} showCurrency /></h4>
 			<h4 className="text-right text-muted"><FiatAmount amount={props.amount} showCurrency currency="USD" /></h4>
 		</Col>
 	)
@@ -36,7 +36,7 @@ export default class WalletTotalsComponent extends React.PureComponent<IWalletTo
 						<ProgressBar className="spendable spendable-total" now={100} />
 					</div>
 					<p className="text-muted">Total DCR</p>
-					<h4 className="text-right text-muted"><Amount amount={totals.total} showCurrency /></h4>
+					<h4 className="text-right text-muted"><Amount amount={totals.total} rounding={2} showCurrency /></h4>
 					<h4 className="text-right text-muted"><FiatAmount amount={totals.total} showCurrency currency="USD" /></h4>
 				</Col>
 

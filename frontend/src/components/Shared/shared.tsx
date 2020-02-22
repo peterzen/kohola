@@ -72,7 +72,7 @@ export function Amount(props: AmountProps) {
 	return (
 		<span className="amount" title={dcrAmount.toString()}>
 			<span>{sprintf("%s%02.02f", negativeZero ? '-' : '', head)}</span>
-			<span className="fractions" >{tail}</span>&nbsp;
+			<span className="fractions" >{tail}</span>
 			{showCurrency ? <span className="currency"> DCR</span> : ""}
 		</span>
 	)
