@@ -10,7 +10,9 @@ import { loadTicketsAttempt } from '../../store/staking/actions';
 
 import TicketsTable from './TicketsTable';
 import TicketDetailsModal from './TicketDetailsComponent';
-import { Card } from 'react-bootstrap';
+import { Card, Dropdown } from 'react-bootstrap';
+import { WidgetOptionsButton } from '../Shared/shared';
+import { Range, getTrackBackground } from 'react-range'
 
 class TicketsOverviewContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -24,7 +26,10 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
 		return (
 			<Card>
 				<Card.Body>
-					<Card.Title>Recent activity</Card.Title>
+					<Card.Title>
+						<span className="float-right"><WidgetOptionsButton variant="secondary" /></span>
+						Recent activity
+					</Card.Title>
 				</Card.Body>
 				<TicketsTable items={this.props.tickets} onItemClick={_.bind(this.itemClickHandler, this)} />
 				<TicketDetailsModal
