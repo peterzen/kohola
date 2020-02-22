@@ -29,6 +29,7 @@ export const ticketsInitialState: IStakingState = {
 	errorStakeInfo: null,
 
 	// PurchaseTickets
+	purchaseTicketResponse: null,
 	isPurchaseTicketAttempting: false,
 	errorPurchaseTickets: null
 }
@@ -125,12 +126,14 @@ export default function staking(
 			return {
 				...state,
 				isPurchaseTicketAttempting: false,
+				purchaseTicketResponse: null,
 				errorPurchaseTickets: action.error,
 			};
 		case PURCHASETICKETSSUCCESS:
 			return {
 				...state,
 				isPurchaseTicketAttempting: false,
+				purchaseTicketResponse: action.payload,
 				errorPurchaseTickets: null
 			};
 		default:

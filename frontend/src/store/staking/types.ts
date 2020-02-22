@@ -112,7 +112,8 @@ export interface StakeInfoSuccessAction {
 
 // PurchaseTickets
 export interface IPurchaseTicketsState {
-	readonly isPurchaseTicketAttempting: boolean,
+	readonly isPurchaseTicketAttempting: boolean
+	readonly purchaseTicketResponse: PurchaseTicketsResponse | null
 	readonly errorPurchaseTickets: AppError | null
 }
 

@@ -1,22 +1,22 @@
 import * as React from 'react';
 import _ from 'lodash';
 
-import { AccountSelector } from '../Shared/shared';
+import { AccountSelector } from '../../Shared/shared';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
 	faPlus, faMinus,
 } from '@fortawesome/free-solid-svg-icons'
-import { AppError, IApplicationState } from '../../store/types';
-import { WalletBalance } from '../../models';
+import { AppError, IApplicationState } from '../../../store/types';
+import { WalletBalance } from '../../../models';
 
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
-import { PurchaseTicketsRequest } from '../../proto/api_pb';
-import { purchaseTicketAttempt } from '../../store/staking/actions';
-import PassphraseEntryDialog, { askPassphrase } from '../Shared/PassphraseEntryDialog';
-import { getWalletBalances } from '../../store/walletbalance/selectors';
+import { PurchaseTicketsRequest } from '../../../proto/api_pb';
+import { purchaseTicketAttempt } from '../../../store/staking/actions';
+import PassphraseEntryDialog, { askPassphrase } from '../../Shared/PassphraseEntryDialog';
+import { getWalletBalances } from '../../../store/walletbalance/selectors';
 
 import { Row, Col, Form, Button, Card, InputGroup, Alert } from 'react-bootstrap';
 

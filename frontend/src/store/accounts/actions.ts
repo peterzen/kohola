@@ -74,12 +74,3 @@ export const loadNextAddressAttempt: ActionCreator<any> = (account: WalletAccoun
 	}
 };
 
-export const accountHasEnoughFunds: ActionCreator<any> = (account: WalletAccount, amount: number) => {
-	return (dispatch: Dispatch, getState: IGetState) => {
-		const acc = getWalletBalances(getState())[account.getAccountNumber()]
-		if (acc == undefined) {
-			throw new Error("non-existent account")
-		}
-		return acc.getSpendable() > amount
-	}
-}

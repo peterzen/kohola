@@ -1,0 +1,317 @@
+import * as React from 'react';
+import _ from 'lodash';
+
+import { AccountSelector, Amount, TxConfirmationPanel } from '../../Shared/shared';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import {
+	faPlus, faMinus,
+} from '@fortawesome/free-solid-svg-icons'
+import { AppError, IApplicationState } from '../../../store/types';
+import { WalletBalance, TicketPrice } from '../../../models';
+
+import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
+import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
+import { PurchaseTicketsRequest, PurchaseTicketsResponse } from '../../../proto/api_pb';
+import { purchaseTicketAttempt } from '../../../store/staking/actions';
+import PassphraseEntryDialog, { askPassphrase } from '../../Shared/PassphraseEntryDialog';
+import { getWalletBalances } from '../../../store/walletbalance/selectors';
+
+import { Row, Col, Form, Button, Card, InputGroup, Alert, FormControl } from 'react-bootstrap';
+import { getTicketPrice } from '../../../store/staking/selectors';
+
+
+export const IntegerInputControl = (props: { name: string, max: number, onChange: () => void }) => {
+
+	let ref: FormControl<"input"> | null
+	const t = () => ref
+
+	const stepDown = (e: any) => {
+		t().value > 0 && t().stepDown();
+		props.onChange(e)
+	}
+	const stepUp = (e: any) => {
+		t().value < props.max && t().stepUp();
+		props.onChange(e)
+	}
+
+	return (
+		<>
+			<InputGroup {...props} >
+				<InputGroup.Prepend>
+					<Button variant="outline-secondary"
+						tabIndex={-1}
+						onClick={stepDown}>
+						<FontAwesomeIcon icon={faMinus} />
+					</Button>
+				</InputGroup.Prepend>
+				<Form.Control
+					name={props.name}
+					type="number"
+					size="lg"
+					ref={(rr: any) => { ref = rr }}
+					{...props}
+				/>
+				<InputGroup.Append>
+					<Button
+						tabIndex={-1}
+						variant="outline-secondary"
+						onClick={stepUp}
+					><FontAwesomeIcon icon={faPlus} />
+					</Button>
+				</InputGroup.Append>
+			</InputGroup>
+		</>
+	)
+}
+
+class PurchaseTicketForm extends React.Component<Props, InternalState> {
+	constructor(props) {
+		super(props)
+		this.state = {
+			error: null,
+			isDirty: false,
+			buyingPower: 0,
+			remainingBalance: -1,
+			formRef: React.createRef(),
+			formIsValidated: false,
+			purchaseTicketRequest: new PurchaseTicketsRequest(),
+		}
+	}
+
+	render() {
+
+		const showForm = this.props.purchaseTicketResponse == undefined
+		const showConfirmation = !showForm
+
+		return (
+			<Card >
+				<Card.Body>
+					<Card.Title>Purchase tickets</Card.Title>
+					{showForm &&
+						<Form
+							ref={this.state.formRef}
+							validated={this.state.formIsValidated && !this.props.error}
+							onSubmit={_.bind(this.handleFormSubmit, this)}
+							className="m-0"
+						>
+							<Row>
+								<Col>
+									<div className="text-right">
+										<h4><small>Current price:</small> <Amount amount={this.props.ticketPrice.getTicketPrice()} showCurrency /></h4>
+									</div>
+								</Col>
+							</Row>
+							<Form.Group >
+								<AccountSelector
+									value={-1}
+									name="account_select"
+									onChange={_.bind(this.handleChange, this)}
+								/>
+							</Form.Group>
+							<Form.Group as={Row}>
+								<Col sm={8}>
+									<IntegerInputControl
+										required
+										className="ml-3 mr-3"
+										placeholder="# of tix"
+										name="num_tickets"
+										max={this.state.buyingPower}
+										onChange={_.bind(this.handleChange, this)}
+									/>
+									<br />
+
+									Remaining balance: <Amount amount={this.state.remainingBalance} />
+
+								</Col>
+								<Col>
+									Buying power: {this.state.buyingPower}<br />
+								</Col>
+							</Form.Group>
+
+							<Row>
+								<Col sm={4}>
+								</Col>
+								<Col>
+								</Col>
+							</Row>
+
+							{/* <Form.Group as={Row} className="p-2">
+							<Col sm={4}>
+								<Form.Label>Fee</Form.Label>
+							</Col>
+							<InputGroup as={Col} sm={4}>
+								<RangeSlider
+									variant="secondary"
+									tooltip="off"
+									size="sm"
+									defaultValue={50}
+									className="pr-3"
+									title="fee rate"
+								// onChange={changeEvent => console.log(changeEvent.target.value)}
+								/>
+								<InputGroup.Append>
+								</InputGroup.Append>
+							</InputGroup>
+							<Col sm={4}>
+								40 atoms/B
+							</Col>
+						</Form.Group> */}
+						</Form>}
+					{showConfirmation &&
+						<TxConfirmationPanel hashes={this.props.purchaseTicketResponse.getTicketHashesList_asU8()} />
+					}
+					<PassphraseEntryDialog show={false} />
+				</Card.Body>
+				<Card.Footer className="text-right">
+					{this.props.error != null && (
+						<Alert variant="danger">{this.props.error.message}</Alert>
+					)}
+
+					{showForm &&
+						<Button
+							type="submit"
+							disabled={!this.state.formIsValidated}
+							onClick={_.bind(this.handleFormSubmit, this)}
+							variant="outline-primary">
+							Purchase
+						</Button>
+					}
+				</Card.Footer>
+			</Card >
+		)
+	}
+
+
+	handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		e.stopPropagation();
+		this.setState({
+			formIsValidated: true,
+			isDirty: false,
+		})
+		const request = new PurchaseTicketsRequest()
+		loadFormFields(this.state.formRef, request)
+		this.setState({
+			purchaseTicketRequest: request
+		})
+		console.log("formSubmit", request.toObject())
+		const cancelError = new Error()
+		askPassphrase()
+			.then((passphrase) => {
+				if (passphrase == "") {
+					throw cancelError
+				}
+				return request.setPassphrase(new Uint8Array(Buffer.from(passphrase)))
+			})
+			.then((r) => {
+				console.log("askPassphrase", request.toObject())
+				return this.props.purchaseTicketAttempt(request)
+			})
+			.then((r) => {
+				// this.setState({ error: err })
+				console.log("response", r)
+			})
+			.catch((err) => {
+				this.setState({ error: err })
+				console.error(err)
+				console.log("askPassphrase", request.toObject())
+				// debugger
+			})
+		return false;
+	}
+
+	handleChange(e: any) {
+		// debugger
+		// console.log("handleChange", e)
+		// if (!this.state.formRef.current.checkValidity()) {
+		// 	return
+		// }
+		const f = this.state.formRef.current
+		this.setState({
+			formIsValidated: !(f.num_tickets.value < 1 || f.account_select.value < 0)
+		})
+		loadFormFields(this.state.formRef, this.state.purchaseTicketRequest)
+		this.getEstimate()
+		console.log("loadfFormFields", this.state.purchaseTicketRequest.toObject())
+	}
+
+	getEstimate() {
+		const s = this.state
+		const f = this.state.formRef.current
+		const ticketPrice = this.props.ticketPrice.getTicketPrice()
+		const req = this.state.purchaseTicketRequest
+		const accountSpendableBalance = req.getAccount() > -1 ? this.props.balances[req.getAccount()].getSpendable() : 0
+		const buyingPower = req.getAccount() > -1 ? Math.floor(accountSpendableBalance / ticketPrice) : 0
+		this.setState({
+			buyingPower: buyingPower,
+			remainingBalance: accountSpendableBalance - (f.num_tickets.value * ticketPrice)  // what about fees?
+		})
+	}
+
+}
+
+
+export const Estimate = () => {
+
+}
+
+
+const loadFormFields = (formRef: React.RefObject<any>, r: PurchaseTicketsRequest) => {
+	const f = formRef.current
+	r.setNumTickets(parseInt(f.num_tickets.value))
+	r.setAccount(parseInt(f.account_select.value))
+	r.setRequiredConfirmations(1)
+}
+
+const mapStateToProps = (state: IApplicationState): OwnProps => {
+	return {
+		...state.staking,
+		error: state.staking.errorPurchaseTickets,
+		purchaseTicketResponse: state.staking.purchaseTicketResponse,
+		balances: getWalletBalances(state),
+		ticketPrice: getTicketPrice(state),
+	};
+}
+
+interface OwnProps {
+	error: AppError | null
+	balances: WalletBalance
+	ticketPrice: TicketPrice
+	purchaseTicketResponse: PurchaseTicketsResponse
+}
+
+
+interface DispatchProps {
+	purchaseTicketAttempt(...arguments: any): Promise<any>
+}
+
+type Props = DispatchProps & OwnProps & IPurchaseTicketFormProps
+
+
+
+interface InternalState {
+}
+
+interface IPurchaseTicketFormProps {
+	error: AppError | null
+}
+
+interface InternalState {
+	formRef: React.RefObject<any>
+	error: AppError | null
+	formIsValidated: boolean
+	buyingPower: number
+	remainingBalance: number
+	isDirty: boolean
+	purchaseTicketRequest: PurchaseTicketsRequest
+}
+
+
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	purchaseTicketAttempt: purchaseTicketAttempt,
+}, dispatch)
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(PurchaseTicketForm);

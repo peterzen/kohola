@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faPaste,
 	faClipboard,
+	faCheck,
 	faInfoCircle,
 	faSlidersH
 } from '@fortawesome/free-solid-svg-icons'
@@ -229,6 +230,7 @@ const _AccountSelector = (props: IAccountSelectProps & OwnProps) => {
 			defaultValue={props.value && props.value.toString()}
 			onChange={props.onChange}
 			as="select">
+			<option value={-1}>Choose account</option>
 			{_.map(props.accounts, (a, n) => (
 				<option key={n} value={a.getAccountNumber()}>{a.getAccountName()} ({props.balances[a.getAccountNumber()] && props.balances[a.getAccountNumber()].getSpendable() / ATOMS_DIVISOR} DCR)</option>
 
@@ -243,7 +245,7 @@ interface OwnProps {
 }
 
 
-const mapStateToProps = (state: IApplicationState):  OwnProps => {
+const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
 		accounts: getAccounts(state),
 		balances: getWalletBalances(state)
@@ -289,3 +291,14 @@ export const AccountSelector = connect(mapStateToProps)(_AccountSelector)
 // }
 
 
+export const TxConfirmationPanel = (props: { hashes: Uint8Array[] }) => {
+	return (
+		<div className="text-center">
+			<h1 className="text-success"><FontAwesomeIcon icon={faCheck} className="lg" /></h1>
+			<p>The transaction has been broadcast</p>
+			<p>
+				{props.hashes.map((h) => <TxHash hash={Buffer.from(h)} truncate={true} />)}
+			</p>
+		</div>
+	)
+}

@@ -10,7 +10,7 @@ import AgendasComponent from '../components/Staking/AgendasComponent';
 import { IStakingState } from '../store/staking/types';
 import TicketsOverviewContainer from '../components/Staking/TicketsOverviewContainer';
 import { Row, Col } from 'react-bootstrap';
-import PurchaseTicketForm from '../components/Staking/PurchaseTicketForm';
+import PurchaseTicketForm from '../components/Staking/PurchaseTicket/SimplePurchaseTicketForm';
 import TicketBuyerComponent from '../components/Staking/TicketBuyerComponent';
 
 
