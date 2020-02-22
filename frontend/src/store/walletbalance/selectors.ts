@@ -27,3 +27,12 @@ export const getWalletTotals = (state: IApplicationState): WalletTotals => {
 	});
 	return totals
 }
+
+
+export const getAccountBalance = (state: IApplicationState, accountNumber: number) => {
+	const acc = getWalletBalances(state)[accountNumber]
+	if (acc == undefined) {
+		throw new Error("non-existent account")
+	}
+	return acc
+}
