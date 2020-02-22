@@ -53,7 +53,7 @@ export interface NextAddressFailedAction {
 export interface NextAddressSuccessAction {
 	type: typeof NEXTADDRESSSUCCESS,
 	payload: NextAddress,
-	account:WalletAccount
+	account: WalletAccount
 }
 
 // AccountNotifications

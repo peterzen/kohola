@@ -1,19 +1,18 @@
 import * as React from 'react';
 import { connect } from "react-redux";
 import _ from 'lodash';
-import LorcaBackend from '../../datasources/lorca';
 import { UnspentOutputResponse } from '../../proto/api_pb';
 import { Table, Dropdown } from 'react-bootstrap';
-import WalletTotalsComponent from './WalletTotalsComponent';
-import { WalletAccount } from '../../models';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { IApplicationState } from '../../store/types';
+import { bindActionCreators, Dispatch } from 'redux';
 
-const CoinToolsDropdown = (props: { }) => {
+const CoinToolsDropdown = (props: {}) => {
 	return (
 		<Dropdown
 			alignRight
-			// onSelect={(evtKey: string) => props.menuHandler(evtKey, props.account)}
+		// onSelect={(evtKey: string) => props.menuHandler(evtKey, props.account)}
 		>
 			<Dropdown.Toggle variant="light" id="dropdown-coins">
 				<FontAwesomeIcon icon={faEllipsisH} />
@@ -31,11 +30,11 @@ const CoinToolsDropdown = (props: { }) => {
 }
 
 
-export default class ListUTXOs extends React.Component<{ }, { unspents: UnspentOutputResponse[] }> {
+class ListUTXOs extends React.Component<OwnProps, { unspents: UnspentOutputResponse[] }> {
 
 	unspent: []
 
-	constructor(props) {
+	constructor(props: any) {
 		super(props)
 		// this.unspent = [{
 		// 	"transactionHash": "JZJ2aFpIKlUUXLV0H7j1xTOurgnpz2laNIEv2BO2tQI=",
@@ -84,18 +83,26 @@ export default class ListUTXOs extends React.Component<{ }, { unspents: UnspentO
 	}
 
 	componentDidMount() {
-		// this.props.unspents = [
-		// new UnspentOutputResponse
-		// ]
-		const props = this.props
-		const setState = this.setState
 
-
-		// LorcaBackend.unspentOutputs(new WalletAccount(0), 1000, 1, true)
-		// 	.then((r) => {
-		// 		debugger
-		// 		setState({ u: r })
-		// 	})
 	}
 }
 
+
+interface OwnProps {
+
+}
+
+
+const mapStateToProps = (state: IApplicationState): OwnProps => {
+	return {
+		...state.accounts,
+	};
+}
+
+
+
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+}, dispatch)
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListUTXOs);

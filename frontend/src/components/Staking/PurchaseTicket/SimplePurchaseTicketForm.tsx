@@ -67,7 +67,7 @@ export const IntegerInputControl = (props: { name: string, max: number, onChange
 }
 
 class PurchaseTicketForm extends React.Component<Props, InternalState> {
-	constructor(props) {
+	constructor(props: Props) {
 		super(props)
 		this.state = {
 			error: null,
@@ -248,11 +248,6 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 }
 
 
-export const Estimate = () => {
-
-}
-
-
 const loadFormFields = (formRef: React.RefObject<any>, r: PurchaseTicketsRequest) => {
 	const f = formRef.current
 	r.setNumTickets(parseInt(f.num_tickets.value))
@@ -274,7 +269,7 @@ interface OwnProps {
 	error: AppError | null
 	balances: WalletBalance
 	ticketPrice: TicketPrice
-	purchaseTicketResponse: PurchaseTicketsResponse|null
+	purchaseTicketResponse: PurchaseTicketsResponse | null
 }
 
 
@@ -284,10 +279,6 @@ interface DispatchProps {
 
 type Props = DispatchProps & OwnProps & IPurchaseTicketFormProps
 
-
-
-interface InternalState {
-}
 
 interface IPurchaseTicketFormProps {
 	error: AppError | null
@@ -302,7 +293,6 @@ interface InternalState {
 	isDirty: boolean
 	purchaseTicketRequest: PurchaseTicketsRequest
 }
-
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
 	purchaseTicketAttempt: purchaseTicketAttempt,
