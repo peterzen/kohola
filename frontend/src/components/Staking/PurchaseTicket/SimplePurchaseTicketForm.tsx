@@ -159,14 +159,14 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 							</Col>
 						</Form.Group> */}
 						</Form>}
-					{showConfirmation &&
+					{showConfirmation && this.props.purchaseTicketResponse != null &&
 						<TxConfirmationPanel hashes={this.props.purchaseTicketResponse.getTicketHashesList_asU8()} />
 					}
 					<PassphraseEntryDialog show={false} />
 				</Card.Body>
 				<Card.Footer className="text-right">
 					{this.props.error != null && (
-						<Alert variant="danger">{this.props.error.message}</Alert>
+						<Alert variant="danger">{this.props.error}</Alert>
 					)}
 
 					{showForm &&
@@ -223,11 +223,6 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 	}
 
 	handleChange(e: any) {
-		// debugger
-		// console.log("handleChange", e)
-		// if (!this.state.formRef.current.checkValidity()) {
-		// 	return
-		// }
 		const f = this.state.formRef.current
 		this.setState({
 			formIsValidated: !(f.num_tickets.value < 1 || f.account_select.value < 0)
@@ -279,7 +274,7 @@ interface OwnProps {
 	error: AppError | null
 	balances: WalletBalance
 	ticketPrice: TicketPrice
-	purchaseTicketResponse: PurchaseTicketsResponse
+	purchaseTicketResponse: PurchaseTicketsResponse|null
 }
 
 
