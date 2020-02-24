@@ -3,7 +3,7 @@ import { connectRouter } from 'connected-react-router'
 
 import ping from '../features/networkinfo/pingSlice'
 import staking from "./staking/reducers"
-import accounts from './accounts/reducers'
+import accounts from '../features/accounts/accountSlice'
 import networkinfo from '../features/networkinfo/networkInfoSlice'
 import transactions from "./transactions/reducers";
 import walletbalance from '../features/walletbalance/walletBalanceSlice'

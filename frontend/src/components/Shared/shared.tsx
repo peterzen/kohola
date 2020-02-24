@@ -1,7 +1,7 @@
 import { Moment } from "moment";
-import { formatTimestamp, reverseHash } from "../../helpers";
-import React, { useState, useEffect } from "react";
-import { Transaction, WalletAccount, IndexedWalletAccounts, WalletBalance } from "../../models";
+import { formatTimestamp } from "../../helpers";
+import React from "react";
+import { Transaction, IndexedWalletAccounts, WalletBalance } from "../../models";
 import _ from "lodash";
 import { sprintf } from "sprintf-js";
 
@@ -19,12 +19,11 @@ import {
 import { Button, ButtonProps, Popover, OverlayTrigger, Form } from 'react-bootstrap';
 import { rawHashToHex } from "../../helpers/byteActions";
 import CopyToClipboard from "react-copy-to-clipboard";
-import accounts from "../../store/accounts/reducers";
 import { ATOMS_DIVISOR } from "../../constants";
-import { IApplicationState } from "../../store/types";
-import { getAccounts } from "../../store/accounts/selectors";
 import { getWalletBalances } from "../../features/walletbalance/selectors";
 import { connect } from "react-redux";
+import { IApplicationState } from "../../store/store";
+import { getAccounts } from "../../features/accounts/accountSlice";
 
 
 interface TimestampProps {

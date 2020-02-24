@@ -1,7 +1,7 @@
 
 import { initialState as pingInitialState } from '../features/networkinfo/pingSlice',
 import { ticketsInitialState } from "./staking/reducers";
-import { accountsInitialState } from "./accounts/reducers";
+import { initialState as accountsInitialState } from '../features/accounts/accountSlice'
 import { initialState as networkInfoInitialState } from "../features/networkinfo/networkInfoSlice"
 import { transactionsInitialState } from "./transactions/reducers";
 import { initialState as walletbalanceInitialState } from "../features/walletbalance/walletBalanceSlice";

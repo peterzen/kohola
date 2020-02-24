@@ -2,10 +2,10 @@ import _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { IApplicationState } from "../../store";
-import { WalletAccountsState } from '../../store/accounts/types';
 import { WalletAccount } from '../../models';
-import { Amount } from '../Shared/shared';
+import { Amount } from '../../components/Shared/shared';
+import { WalletAccountsState } from './accountSlice';
+import { IApplicationState } from '../../store/store';
 
 
 class AccountsOverviewComponent extends React.Component<WalletAccountsState, WalletAccountsState> {

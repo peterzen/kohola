@@ -3,11 +3,7 @@ import * as React from "react"
 import { connect } from "react-redux"
 import { Dispatch, bindActionCreators } from "redux"
 
-import { getAccounts } from "../../../store/accounts/selectors"
-import { IApplicationState, AppError } from "../../../store/types"
 import { IndexedWalletAccounts } from "../../../models"
-
-import { Row, Col, Button } from 'react-bootstrap';
 
 import { ATOMS_DIVISOR, } from "../../../constants"
 import { constructTransactionAttempt, signTransactionAttempt, cancelSignTransaction, publishTransactionAttempt } from "../../../store/transactions/actions"
@@ -18,6 +14,9 @@ import { SendTransactionSteps, HumanreadableTxInfo } from "../../../store/transa
 import SignDialog, { ISignDialogFormData } from "./SignDialog"
 import PublishDialog from "./PublishDialog"
 import PublishConfirmDialog from "./PublishConfirmDialog"
+import { IApplicationState } from "../../../store/store"
+import { getAccounts } from "../../../features/accounts/accountSlice"
+import { AppError } from "../../../store/types"
 
 
 

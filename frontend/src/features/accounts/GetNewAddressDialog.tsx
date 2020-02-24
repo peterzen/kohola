@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { IApplicationState } from "../../store";
-import { NextAddressState } from '../../store/accounts/types';
-import GenericModalDialog from '../Shared/GenericModalDialog';
+import GenericModalDialog from '../../components/Shared/GenericModalDialog';
 import { Spinner } from 'react-bootstrap';
-import { CopyToClipboardButton, CopyToClipboardText } from '../Shared/shared';
+import { CopyToClipboardText } from '../../components/Shared/shared';
+import { IApplicationState } from '../../store/store';
+import { NextAddressState } from './accountSlice';
 
 class GetNewAddressDialog extends GenericModalDialog<Props, InternalState> {
 	DialogContent() {
@@ -13,7 +13,7 @@ class GetNewAddressDialog extends GenericModalDialog<Props, InternalState> {
 		return (
 			<div>
 				{
-					this.props.getNextAddressRequest && (
+					this.props.getNextAddressAttempting && (
 						<Spinner animation="grow" />
 					)
 				}
@@ -45,9 +45,9 @@ type Props = NextAddressState & OwnProps
 
 const mapStateToProps = (state: IApplicationState) => {
 	return {
+		...state.accounts,
 		nextAddressAccount: state.accounts.nextAddressAccount,
 		nextAddressResponse: state.accounts.nextAddressResponse,
-		getNextAddressRequest: state.accounts.getNextAddressRequest,
 		errorNextAddress: state.accounts.errorNextAddress,
 	}
 }

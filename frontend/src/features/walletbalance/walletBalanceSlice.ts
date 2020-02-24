@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { WalletBalance } from "../../models";
 import { AppError } from '../../store/types';
-import { getAllAccountNumbers } from '../../store/accounts/selectors';
 import LorcaBackend from '../../datasources/lorca';
 import { AppThunk } from '../../store/store';
+import { getAllAccountNumbers } from '../accounts/accountSlice';
 
 
 export interface IWalletBalanceState {
@@ -12,7 +12,7 @@ export interface IWalletBalanceState {
 	readonly error: AppError | null,
 }
 
-export let initialState: IWalletBalanceState = {
+export const initialState: IWalletBalanceState = {
 	balances: {},
 	getBalanceAttempting: false,
 	error: null

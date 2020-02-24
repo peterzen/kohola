@@ -20,11 +20,11 @@ import { loadTicketsAttempt, loadStakeInfoAttempt } from '../staking/actions';
 import { ConstructTransactionRequest, SignTransactionRequest, PublishTransactionRequest, TransactionNotificationsResponse } from '../../proto/api_pb';
 import { ConstructTxOutput } from '../../datasources/models';
 import { getChangeScriptCache } from './selectors';
-import { lookupAccount } from '../accounts/selectors';
 import { decodeRawTransaction } from '../../helpers/tx';
 import LorcaBackend from '../../datasources/lorca';
 import { loadWalletBalance } from '../../features/walletbalance/walletBalanceSlice';
 import { loadBestBlockHeight } from '../../features/networkinfo/networkInfoSlice';
+import { lookupAccount } from '../../features/accounts/accountSlice';
 
 
 export const loadTransactionsAttempt: ActionCreator<any> = () => {
