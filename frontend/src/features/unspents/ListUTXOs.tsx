@@ -5,7 +5,7 @@ import { UnspentOutputResponse } from '../../proto/api_pb';
 import { Table, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import { IApplicationState } from '../../store/types';
+import { IApplicationState } from "../../store";
 import { bindActionCreators, Dispatch } from 'redux';
 
 const CoinToolsDropdown = (props: {}) => {

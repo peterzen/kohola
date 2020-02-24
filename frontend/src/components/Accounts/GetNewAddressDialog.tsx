@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { IApplicationState } from '../../store/types';
+import { IApplicationState } from "../../store";
 import { NextAddressState } from '../../store/accounts/types';
 import GenericModalDialog from '../Shared/GenericModalDialog';
 import { Spinner } from 'react-bootstrap';

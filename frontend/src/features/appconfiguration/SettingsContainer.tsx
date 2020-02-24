@@ -3,7 +3,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { IApplicationState, AppError } from '../../store/types';
+import { AppError } from '../../store/types';
 import { getConfiguration, saveConfigurationAttempt } from '../../store/appconfiguration/actions';
 import { Row, Col, Button } from 'react-bootstrap';
 import { AppConfiguration } from '../../proto/dcrwalletgui_pb';
@@ -17,6 +17,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import {
 	faPlus
 } from '@fortawesome/free-solid-svg-icons'
+import { IApplicationState } from '../../store/store';
 
 
 class SettingsContainer extends React.Component<Props, InternalState> {
@@ -30,6 +31,10 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 
 	render() {
 		const c = this.state.appConfig
+
+		if (c == null) {
+			return null
+		}
 		const dcrd = c.getDcrdHost()
 		const dcrwallets = c.getDcrwalletHostsList()
 
@@ -85,6 +90,7 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 const mapStateToProps = (state: IApplicationState, ownProps: SettingsOwnProps) => {
 	return {
 		...state.appconfiguration,
+		error: state.appconfiguration.setConfigError
 	};
 }
 

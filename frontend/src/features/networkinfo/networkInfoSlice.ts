@@ -1,9 +1,9 @@
 import { BestBlock, Network } from "../../models";
-import { AppError, IGetState, IApplicationState } from "../../store/types";
+import { AppError } from "../../store/types";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 import LorcaBackend from "../../datasources/lorca";
 import { NetworkResponse, BestBlockResponse } from "../../proto/api_pb";
-import { AppThunk } from "../../store/store";
+import { AppThunk, IApplicationState } from "../../store/store";
 
 
 export interface IBestBlockState {

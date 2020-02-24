@@ -2,7 +2,7 @@ import _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { IApplicationState } from '../../store/types';
+import { IApplicationState } from "../../store";
 import { WalletAccountsState } from '../../store/accounts/types';
 import { WalletAccount } from '../../models';
 import { Amount } from '../Shared/shared';

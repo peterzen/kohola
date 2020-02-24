@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 import { Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
-import { PasteButton, InfoTooltip } from '../Shared/shared';
+import { PasteButton, InfoTooltip } from '../../components/Shared/shared';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {

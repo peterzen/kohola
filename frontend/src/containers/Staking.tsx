@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
-import { IApplicationState } from '../store/types';
+import { IApplicationState } from "../store";
 import StakeStats from '../components/Staking/StakeStats';
 import TicketPriceComponent from '../components/Staking/TicketPriceComponent';
 import StakeInfoComponent from '../components/Staking/StakeInfoComponent';

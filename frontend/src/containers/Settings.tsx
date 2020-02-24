@@ -2,9 +2,9 @@ import * as React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
-import { IApplicationState } from '../store/types';
+import { IApplicationState } from "../store";
 import { Row, Col } from 'react-bootstrap';
-import SettingsContainer from '../components/Settings/SettingsContainer';
+import SettingsContainer from '../features/appconfiguration/SettingsContainer';
 import { IAppConfigurationState } from '../store/appconfiguration/types';
 
 class StakingContainer extends React.Component<{}, {}> {

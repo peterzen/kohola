@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { ITicketPriceState } from '../../store/staking/types';
-import { IApplicationState } from '../../store/types';
+import { IApplicationState } from "../../store";
 import { loadTicketPriceAttempt } from '../../store/staking/actions';
 import { Card } from 'react-bootstrap';
 import { Amount } from '../Shared/shared';

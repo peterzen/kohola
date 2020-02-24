@@ -4,7 +4,6 @@ import { batch } from 'react-redux'
 import { IGetState } from './types';
 import { pingAttempt } from './ping/actions';
 import { transactionNotification, loadTransactionsAttempt } from './transactions/actions';
-import { getConfiguration, canStartup } from './appconfiguration/actions';
 import { loadAccountsAttempt, accountNotification } from './accounts/actions';
 import {
 	TransactionNotificationsResponse,
@@ -17,13 +16,14 @@ import { loadWalletBalance } from '../features/walletbalance/walletBalanceSlice'
 import { loadTicketsAttempt } from './staking/actions';
 import { loadBestBlockHeight } from '../features/networkinfo/networkInfoSlice';
 import { AppDispatch } from './store';
+import { getConfiguration, canStartup } from '../features/appconfiguration/settingsSlice';
 
 const w = (window as any)
 
 export const checkBackend: ActionCreator<any> = () => {
 	return async (dispatch: Dispatch, getState: IGetState) => {
 
-		await dispatch(getConfiguration())
+		const conf = await dispatch(getConfiguration())
 		await dispatch(canStartup());
 
 		if (getState().appconfiguration.needSetup) {

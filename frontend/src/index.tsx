@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
 import { AppContainer } from 'react-hot-loader'
 
-import store, {history, RootState} from './store/store';
+import store, { history } from './store/store';
 import { initializeData, checkBackend } from './store/actions';
 
 import App from './containers/App';

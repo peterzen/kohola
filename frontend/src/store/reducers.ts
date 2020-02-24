@@ -7,7 +7,7 @@ import accounts from './accounts/reducers'
 import networkinfo from '../features/networkinfo/networkInfoSlice'
 import transactions from "./transactions/reducers";
 import walletbalance from '../features/walletbalance/walletBalanceSlice'
-import appconfiguration from '../features/settings/settingsSlice'
+import appconfiguration from '../features/appconfiguration/settingsSlice'
 import { History } from "history";
 
 export default function createRootReducer(history: History<History.PoorMansUnknown>) {

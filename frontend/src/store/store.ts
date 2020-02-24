@@ -47,8 +47,8 @@ if (module.hot) {
 
 export type AppDispatch = typeof store.dispatch
 
-export type RootState = ReturnType<typeof rootReducer>
+export type IApplicationState = ReturnType<typeof rootReducer>
 
-export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>
+export type AppThunk = ThunkAction<void, IApplicationState, unknown, Action<string>>
 
 export default store
