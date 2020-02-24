@@ -27,7 +27,11 @@ const rootReducer = createRootReducer(history)
 
 const store = configureStore({
 	reducer: rootReducer,
-	middleware: [thunk, router, logger],
+	middleware: [
+		thunk,
+		router,
+		logger
+	],
 	devTools: true,
 	enhancers: [
 		DevTools.instrument(),

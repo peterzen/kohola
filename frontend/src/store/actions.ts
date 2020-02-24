@@ -16,6 +16,7 @@ import { hexToRaw } from '../helpers/byteActions';
 import { loadWalletBalance } from '../features/walletbalance/walletBalanceSlice'
 import { loadTicketsAttempt } from './staking/actions';
 import { loadBestBlockHeight } from '../features/networkinfo/networkInfoSlice';
+import { AppDispatch } from './store';
 
 const w = (window as any)
 
@@ -34,7 +35,7 @@ export const checkBackend: ActionCreator<any> = () => {
 
 
 export const initializeData: ActionCreator<any> = () => {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: AppDispatch) => {
 
 		await dispatch(loadBestBlockHeight())
 		await dispatch(loadAccountsAttempt())
