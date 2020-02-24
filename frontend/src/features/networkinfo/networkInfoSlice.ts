@@ -118,10 +118,13 @@ export const loadNetworkAttempt: ActionCreator<any> = (): AppThunk => {
 
 // selectors
 
-export const getBestBlock = (state: IApplicationState): BestBlockResponse => {
+export const getBestBlock = (state: IApplicationState) => {
 	return state.networkinfo.currentBlock
 }
 
-export const getBestBlockHeight = (state: IApplicationState): number => {
+export const getBestBlockHeight = (state: IApplicationState) => {
+	if (state.networkinfo.currentBlock == null) {
+		return 0
+	}
 	return state.networkinfo.currentBlock.getHeight();
 }
