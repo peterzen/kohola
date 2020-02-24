@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { AppError } from '../../store/types';
-import { getConfiguration, saveConfigurationAttempt } from '../../store/appconfiguration/actions';
 import { Row, Col, Button } from 'react-bootstrap';
 import { AppConfiguration } from '../../proto/dcrwalletgui_pb';
 import RPCEndpointConfigForm from './DcrdForm';
@@ -18,6 +17,7 @@ import {
 	faPlus
 } from '@fortawesome/free-solid-svg-icons'
 import { IApplicationState } from '../../store/store';
+import { saveConfigurationAttempt } from './settingsSlice';
 
 
 class SettingsContainer extends React.Component<Props, InternalState> {

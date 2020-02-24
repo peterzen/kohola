@@ -2,7 +2,7 @@ import { Dispatch, ActionCreator } from 'redux';
 import { batch } from 'react-redux'
 
 import { IGetState } from './types';
-import { pingAttempt } from './ping/actions';
+import { pingAttempt } from '../features/networkinfo/pingSlice'
 import { transactionNotification, loadTransactionsAttempt } from './transactions/actions';
 import { loadAccountsAttempt, accountNotification } from './accounts/actions';
 import {
@@ -45,6 +45,8 @@ export const initializeData: ActionCreator<any> = () => {
 			dispatch(loadWalletBalance())
 			dispatch(loadTicketsAttempt())
 		})
+
+		// dispatch(pingAttempt())
 
 		w.lorcareceiver__OnTxNotification = (serializedMsg: Uint8Array) => {
 			const message = TransactionNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))

@@ -1,5 +1,5 @@
 
-import { pingInitialState } from "./ping/reducers";
+import { initialState as pingInitialState } from '../features/networkinfo/pingSlice',
 import { ticketsInitialState } from "./staking/reducers";
 import { accountsInitialState } from "./accounts/reducers";
 import { initialState as networkInfoInitialState } from "../features/networkinfo/networkInfoSlice"
