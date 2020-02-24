@@ -3,10 +3,10 @@ import { IApplicationState } from "./types";
 import { pingInitialState } from "./ping/reducers";
 import { ticketsInitialState } from "./staking/reducers";
 import { accountsInitialState } from "./accounts/reducers";
-import { networkInfoInitialState } from "./networkinfo/reducers";
+import { initialState as networkInfoInitialState } from "../features/networkinfo/networkInfoSlice"
 import { votechoicesInitialState } from "./votechoices/reducers";
 import { transactionsInitialState } from "./transactions/reducers";
-import { walletbalanceInitialState } from "./walletbalance/reducers";
+import { initialState as walletbalanceInitialState } from "../features/walletbalance/walletBalanceSlice";
 import { stopautobuyerInitialState } from "./stopautobuyer/reducers";
 import { appConfigurationInitialState } from "./appconfiguration/reducers";
 import { ticketbuyerconfigInitialState } from "./ticketbuyerconfig/reducers";
@@ -22,7 +22,7 @@ const initialState: IApplicationState = {
 	transactions: transactionsInitialState,
 	walletbalance: walletbalanceInitialState,
 	stopautobuyer: stopautobuyerInitialState,
-	appconfiguration:appConfigurationInitialState,
+	appconfiguration: appConfigurationInitialState,
 	ticketbuyerconfig: ticketbuyerconfigInitialState,
 	loadactivedatafilters: loadactivedatafiltersInitialState,
 }

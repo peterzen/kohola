@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 import { Navbar, Nav } from 'react-bootstrap';
-import BestBlockComponent from './BestBlockComponent';
+import BestBlockComponent from '../../features/networkinfo/BestBlockComponent';
 import ConnectionStatus from './ConnectionStatus';
 
 import Logo from '../../images/logo.svg'

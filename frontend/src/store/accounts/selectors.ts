@@ -1,12 +1,13 @@
 import _ from "lodash"
 import { IApplicationState } from "../types"
 import { IndexedWalletAccounts, WalletAccount } from "../../models"
+import { RootState } from "../store"
 
 export const getAccounts = (state: IApplicationState): IndexedWalletAccounts => {
 	return _.filter(state.accounts.accounts, (r)=>r.getAccountName()!="imported")
 }
 
-export const getAllAccountNumbers = (state: IApplicationState): number[] => {
+export const getAllAccountNumbers = (state: RootState): number[] => {
 	return _.chain(state.accounts.accounts)
 		.filter((r)=>r.getAccountName()!="imported")
 		.keys()

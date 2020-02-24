@@ -23,7 +23,7 @@ import accounts from "../../store/accounts/reducers";
 import { ATOMS_DIVISOR } from "../../constants";
 import { IApplicationState } from "../../store/types";
 import { getAccounts } from "../../store/accounts/selectors";
-import { getWalletBalances } from "../../store/walletbalance/selectors";
+import { getWalletBalances } from "../../features/walletbalance/selectors";
 import { connect } from "react-redux";
 
 

@@ -16,13 +16,13 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { PurchaseTicketsRequest } from '../../../proto/api_pb';
 import { purchaseTicketAttempt } from '../../../store/staking/actions';
 import PassphraseEntryDialog, { askPassphrase } from '../../Shared/PassphraseEntryDialog';
-import { getWalletBalances } from '../../../store/walletbalance/selectors';
+import { getWalletBalances } from '../../../features/walletbalance/selectors'
 
 import { Row, Col, Form, Button, Card, InputGroup, Alert } from 'react-bootstrap';
 
 
 class PurchaseTicketForm extends React.Component<Props, InternalState> {
-	constructor(props) {
+	constructor(props: Props) {
 		super(props)
 		this.state = {
 			error: null,

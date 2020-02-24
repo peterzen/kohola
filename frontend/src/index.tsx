@@ -2,10 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
 import { AppContainer } from 'react-hot-loader'
-import { createBrowserHistory, createHashHistory } from 'history';
 
-import initialState from './store/initialState';
-import configureStore from './store/configureStore';
+import store, {history, RootState} from './store/store';
 import { initializeData, checkBackend } from './store/actions';
 
 import App from './containers/App';
@@ -13,10 +11,6 @@ import App from './containers/App';
 // import "bootstrap/dist/css/bootstrap.css";
 import "./styles/main.scss";
 
-const history = createHashHistory({
-	hashType: 'slash',
-});
-const store = configureStore(initialState, history);
 
 const render = () => {
 	ReactDOM.render(

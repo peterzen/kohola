@@ -17,14 +17,14 @@ import { CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED, CONSTRUCTTX_OUTPUT_SELECT_A
 
 import { IGetState, AppError } from '../types';
 import { loadTicketsAttempt, loadStakeInfoAttempt } from '../staking/actions';
-import { loadWalletBalance } from '../walletbalance/actions';
 import { ConstructTransactionRequest, SignTransactionRequest, PublishTransactionRequest, TransactionNotificationsResponse } from '../../proto/api_pb';
 import { ConstructTxOutput } from '../../datasources/models';
 import { getChangeScriptCache } from './selectors';
 import { lookupAccount } from '../accounts/selectors';
-import { loadBestBlockHeightAttempt } from '../networkinfo/actions';
 import { decodeRawTransaction } from '../../helpers/tx';
 import LorcaBackend from '../../datasources/lorca';
+import { loadWalletBalance } from '../../features/walletbalance/walletBalanceSlice';
+import { loadBestBlockHeight } from '../../features/networkinfo/networkInfoSlice';
 
 
 export const loadTransactionsAttempt: ActionCreator<any> = () => {
@@ -49,11 +49,11 @@ export const loadTransactionsAttempt: ActionCreator<any> = () => {
 
 export const transactionNotification: ActionCreator<any> = (message: TransactionNotificationsResponse) => {
 	return async (dispatch: Dispatch<TransactionNotificationsReceived>) => {
-		 dispatch(loadBestBlockHeightAttempt());
-		 dispatch(loadStakeInfoAttempt());
+		dispatch(loadBestBlockHeight());
+		dispatch(loadStakeInfoAttempt());
 		// dispatch(loadTicketsAttempt());
-		 dispatch(loadTransactionsAttempt());
-		 dispatch(loadWalletBalance());
+		dispatch(loadTransactionsAttempt());
+		dispatch(loadWalletBalance());
 		dispatch({ type: TRANSACTIONNOTIFICATIONS_RECEIVED, payload: message });
 	}
 }

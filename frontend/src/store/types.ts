@@ -6,13 +6,14 @@ import { IStakingState } from "./staking/types";
 import { IAccountsState } from "./accounts/types";
 import { INetworkInfoState } from "./networkinfo/types";
 import { ITransactionState } from "./transactions/types";
-import { IWalletBalanceState } from "./walletbalance/types";
 import { VoteChoicesState } from "./votechoices/types";
 import { StopAutoBuyerState } from "./stopautobuyer/types";
 import { TicketBuyerConfigState } from "./ticketbuyerconfig/types";
 import { IAppConfigurationState } from "./appconfiguration/types";
 import { LoadActiveDataFiltersState } from "./loadactivedatafilters/types";
 import { sprintf } from "sprintf-js";
+import { ThunkAction, Action } from "@reduxjs/toolkit";
+import { IWalletBalanceState } from "../features/walletbalance/walletBalanceSlice";
 
 export type IApplicationState = {
 	ping: PingState,

@@ -3,8 +3,8 @@ import _ from 'lodash';
 
 import { AccountBalance, IndexedWalletAccounts, WalletAccount, WalletBalance, WalletTotals } from '../../models';
 
-import { Amount } from '../Shared/shared';
-import AccountToolsDropdown from './AccountToolsDropdown';
+import { Amount } from '../../components/Shared/shared';
+import AccountToolsDropdown from '../../components/Accounts/AccountToolsDropdown';
 
 import { Table } from 'react-bootstrap';
 

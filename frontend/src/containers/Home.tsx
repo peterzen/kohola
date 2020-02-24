@@ -7,8 +7,8 @@ import Fade from 'react-reveal/Fade';
 
 import RecentTransactions from '../components/Transactions/RecentTransactionsContainer';
 import { IApplicationState } from "../store/types";
-import WalletBalanceContainer from "../components/Accounts/WalletBalanceContainer";
-import ListUTXOs from "../components/Accounts/ListUTXOs";
+import WalletBalanceContainer from "../features/walletbalance/WalletBalanceContainer";
+import ListUTXOs from "../features/unspents/ListUTXOs";
 
 class Home extends React.PureComponent {
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Container, Row, Col, ProgressBar } from 'react-bootstrap';
 
-import { Amount, FiatAmount } from "../Shared/shared";
+import { Amount, FiatAmount } from "../../components/Shared/shared";
 import { WalletTotals } from "../../models";
 import AccountBalancePieChart from "./AccountBalancePieChart";
 import { sprintf } from "sprintf-js";

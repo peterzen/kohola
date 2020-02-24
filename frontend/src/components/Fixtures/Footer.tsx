@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import ConnectionStatus from './ConnectionStatus';
-import BestBlockComponent from './BestBlockComponent';
+import BestBlockComponent from '../../features/networkinfo/BestBlockComponent';
 
 import { Container, Row, Col } from 'react-bootstrap'
 

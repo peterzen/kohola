@@ -4,16 +4,15 @@ import { Dispatch, bindActionCreators } from "redux"
 import _ from "lodash"
 
 import { getAccounts } from "../../store/accounts/selectors"
-import { loadWalletBalance } from "../../store/walletbalance/actions"
 import { IApplicationState } from "../../store/types"
-import { getWalletBalances, getWalletTotals } from "../../store/walletbalance/selectors"
-import { IWalletBalanceState } from "../../store/walletbalance/types"
+import { getWalletBalances, getWalletTotals } from "./selectors"
+import { IWalletBalanceState } from "./walletBalanceSlice"
 import { IndexedWalletAccounts, WalletAccount, WalletTotals } from "../../models"
 
 import AccountBalanceTable from "./AccountBalanceTable"
-import GetNewAddressDialog from "./GetNewAddressDialog"
+import GetNewAddressDialog from "../../components/Accounts/GetNewAddressDialog"
 import { loadNextAddressAttempt } from "../../store/accounts/actions"
-import { MenuItems } from "./AccountToolsDropdown"
+import { MenuItems } from "../../components/Accounts/AccountToolsDropdown"
 import WalletTotalsComponent from "./WalletTotalsComponent"
 import { Card } from "react-bootstrap"
 import Fade from 'react-reveal/Fade';
@@ -53,10 +52,6 @@ class WalletBalanceContainer extends React.PureComponent<Props, InternalState>{
 			</div>
 		)
 	}
-
-	componentDidMount() {
-		// this.props.loadWalletBalance();
-	}
 	showModal() {
 		this.setState({ showModal: true })
 	}
@@ -94,7 +89,6 @@ interface OwnProps {
 
 interface DispatchProps {
 	loadNextAddressAttempt: (account: WalletAccount) => void
-	loadWalletBalance: () => void
 }
 
 type Props = IWalletBalanceState & DispatchProps & OwnProps
@@ -106,7 +100,6 @@ interface InternalState {
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
 	loadNextAddressAttempt: loadNextAddressAttempt,
-	loadWalletBalance: loadWalletBalance
 }, dispatch)
 
 

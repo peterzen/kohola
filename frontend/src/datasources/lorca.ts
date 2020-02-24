@@ -184,12 +184,20 @@ const LorcaBackend = {
 	},
 
 	fetchWalletBalance: async (accountNumbers: number[]) => {
-		const walletBalance: WalletBalance = {};
-		accountNumbers.forEach(async (accountNumber) => {
-			const balance = await LorcaBackend.fetchAccountBalance(accountNumber, 1)
-			walletBalance[accountNumber] = balance as AccountBalance;
-		});
-		return walletBalance
+		return new Promise(resolve => {
+			const promises: any = []
+			const walletBalance: WalletBalance = {};
+			accountNumbers.forEach(accountNumber => {
+				const p = LorcaBackend.fetchAccountBalance(accountNumber, 1)
+				promises.push(p)
+				p.then((r: AccountBalance) => {
+					walletBalance[accountNumber] = r
+				})
+			});
+			Promise.all(promises).then(() => {
+				resolve(walletBalance)
+			})
+		})
 	},
 
 	fetchTransactions: async (startBlockHeight: number, endBlockHeight: number, txCount: number) => {
@@ -233,11 +241,11 @@ const LorcaBackend = {
 
 		/*
 		uint32 account: Account number containing the keys controlling the output set to query.
-
+	
 int64 target_amount: If positive, the service may limit output results to those that sum to at least this amount (counted in Atoms). This may not be negative.
-
+	
 int32 required_confirmations: The minimum number of block confirmations needed to consider including an output in the return set. This may not be negative.
-
+	
 bool include_immature_coinbases:
 */
 		try {

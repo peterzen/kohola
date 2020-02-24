@@ -1,6 +1,6 @@
-import { IApplicationState } from "../types";
 import { WalletBalance, WalletTotals } from "../../models";
 import _ from "lodash";
+import { IApplicationState } from "../../store/types";
 
 export const getWalletBalances = (state: IApplicationState): WalletBalance => {
 	return state.walletbalance.balances

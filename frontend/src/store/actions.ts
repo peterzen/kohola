@@ -4,7 +4,6 @@ import { batch } from 'react-redux'
 import { IGetState } from './types';
 import { pingAttempt } from './ping/actions';
 import { transactionNotification, loadTransactionsAttempt } from './transactions/actions';
-import { loadBestBlockHeightAttempt } from './networkinfo/actions';
 import { getConfiguration, canStartup } from './appconfiguration/actions';
 import { loadAccountsAttempt, accountNotification } from './accounts/actions';
 import {
@@ -14,8 +13,9 @@ import {
 } from '../proto/api_pb';
 
 import { hexToRaw } from '../helpers/byteActions';
-import { loadWalletBalance } from './walletbalance/actions';
+import { loadWalletBalance } from '../features/walletbalance/walletBalanceSlice'
 import { loadTicketsAttempt } from './staking/actions';
+import { loadBestBlockHeight } from '../features/networkinfo/networkInfoSlice';
 
 const w = (window as any)
 
@@ -36,7 +36,7 @@ export const checkBackend: ActionCreator<any> = () => {
 export const initializeData: ActionCreator<any> = () => {
 	return async (dispatch: Dispatch) => {
 
-		await dispatch(loadBestBlockHeightAttempt())
+		await dispatch(loadBestBlockHeight())
 		await dispatch(loadAccountsAttempt())
 
 		batch(() => {

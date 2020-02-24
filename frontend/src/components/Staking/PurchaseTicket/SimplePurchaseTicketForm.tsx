@@ -16,7 +16,7 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { PurchaseTicketsRequest, PurchaseTicketsResponse } from '../../../proto/api_pb';
 import { purchaseTicketAttempt } from '../../../store/staking/actions';
 import PassphraseEntryDialog, { askPassphrase } from '../../Shared/PassphraseEntryDialog';
-import { getWalletBalances } from '../../../store/walletbalance/selectors';
+import { getWalletBalances } from '../../../features/walletbalance/selectors';
 
 import { Row, Col, Form, Button, Card, InputGroup, Alert, FormControl } from 'react-bootstrap';
 import { getTicketPrice } from '../../../store/staking/selectors';

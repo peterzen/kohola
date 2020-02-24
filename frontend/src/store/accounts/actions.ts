@@ -13,11 +13,10 @@ import {
 
 import LorcaBackend from '../../datasources/lorca';
 import { IGetState } from '../types';
-import { loadWalletBalance } from '../walletbalance/actions';
 import { AccountNotificationsResponse } from '../../proto/api_pb';
 import { IndexedWalletAccounts, WalletAccount } from '../../models';
 import { getAccounts } from './selectors';
-import { getWalletBalances } from '../walletbalance/selectors';
+import { loadWalletBalance } from '../../features/walletbalance/walletBalanceSlice';
 
 
 const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {

@@ -1,16 +1,19 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { BestBlockState } from "../../store/networkinfo/types";
 import { IApplicationState } from "../../store/types";
 
 import { formatHash } from "../../helpers";
+import { IBestBlockState, getBestBlock } from "./networkInfoSlice";
 
-class BestBlockComponent extends React.Component<BestBlockState, BestBlockState> {
+class BestBlockComponent extends React.Component<IBestBlockState, IBestBlockState> {
 	render() {
+		if (this.props.currentBlock == null) {
+			return null
+		}
 		return (
 			<small title={formatHash(this.props.currentBlock.getHash_asB64())}
-			className="text-muted">
+				className="text-muted">
 				Block height: <strong>{this.props.currentBlock.getHeight()}</strong>
 			</small>
 		)
@@ -20,7 +23,7 @@ class BestBlockComponent extends React.Component<BestBlockState, BestBlockState>
 
 const mapStateToProps = function (state: IApplicationState, ownProps: any) {
 	return {
-		currentBlock: state.networkinfo.currentBlock
+		currentBlock: getBestBlock(state)
 	};
 }
 export default connect(mapStateToProps)(BestBlockComponent)
