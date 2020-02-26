@@ -5,6 +5,7 @@ import { IndexedWalletAccounts, WalletAccount, NextAddress } from "../../models"
 import { AppError } from '../../store/types';
 import LorcaBackend from '../../datasources/lorca';
 import { AppThunk, IApplicationState } from '../../store/store';
+import { AccountNotificationsResponse } from '../../proto/api_pb';
 
 
 export interface WalletAccountsState {
@@ -64,6 +65,12 @@ const accountSlice = createSlice({
 			state.nextAddressResponse = action.payload.response
 			state.nextAddressAccount = action.payload.account
 			state.errorNextAddress = null
+		},
+
+		// AccountNotifications
+		accountNotificationsReceive(state, action: PayloadAction<AccountNotificationsResponse>) {
+		},
+		accountNotificationsSubscribe(state) {
 		}
 	}
 })
@@ -75,7 +82,11 @@ export const {
 
 	nextAddressAttempt,
 	nextAddressFailed,
-	nextAddressSuccess
+	nextAddressSuccess,
+
+	accountNotificationsReceive,
+	accountNotificationsSubscribe,
+
 } = accountSlice.actions
 
 export default accountSlice.reducer
@@ -93,7 +104,7 @@ const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
 
 export const loadAccountsAttempt = (): AppThunk => {
 	return async (dispatch, getState) => {
-		if (getState().networkinfo.getBestBlockHeightRequest) {
+		if (getState().accounts.getAccountsAttempting) {
 			return
 		}
 		dispatch(getAccountsAttempt())
@@ -108,13 +119,13 @@ export const loadAccountsAttempt = (): AppThunk => {
 };
 
 
-// export const accountNotification: ActionCreator<any> = (message: AccountNotificationsResponse) => {
-// 	return (dispatch: Dispatch<AccountNotificationsReceived>) => {
-// 		dispatch({ type: ACCOUNTSNOTIFICATIONS_RECEIVED, payload: message });
-// 		dispatch(loadAccountsAttempt());
-// 		dispatch(loadWalletBalance());
-// 	}
-// }
+export const accountNotification = (message: AccountNotificationsResponse): AppThunk => {
+	return (dispatch) => {
+		dispatch(accountNotificationsReceive(message))
+		dispatch(loadAccountsAttempt());
+		dispatch(loadWalletBalance());
+	}
+}
 
 export const loadNextAddressAttempt = (account: WalletAccount): AppThunk => {
 	return async (dispatch, getState) => {
