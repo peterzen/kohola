@@ -57,7 +57,7 @@ class StakeInfoComponent extends React.Component<Props, InternalState> {
 		)
 	}
 
-	componentDidMount() {
+	componentWillMount() {
 		this.props.dispatch(loadStakeInfoAttempt())
 	}
 

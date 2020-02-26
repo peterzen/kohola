@@ -35,7 +35,7 @@ class TicketPriceComponent extends React.Component<Props, InternalState> {
 			</Card>
 		)
 	}
-	componentDidMount() {
+	componentWillMount() {
 		this.props.dispatch(loadTicketPriceAttempt())
 	}
 }

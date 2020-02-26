@@ -45,7 +45,6 @@ export const initializeData: ActionCreator<any> = () => {
 			dispatch(loadTransactionsAttempt())
 			dispatch(loadWalletBalance())
 			dispatch(loadTicketsAttempt())
-			dispatch(fetchUnspentsAttempt(0))
 		})
 
 		// dispatch(pingAttempt())
