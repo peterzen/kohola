@@ -8,29 +8,42 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { bindActionCreators, Dispatch } from 'redux';
 import { IUnspentOutputsByAccount, fetchUnspentsAttempt } from './unspentsSlice';
 import { WalletAccount } from '../../models';
-import { TxHash, Amount, Timestamp } from '../../components/Shared/shared';
+import { TxHash, Amount } from '../../components/Shared/shared';
 import moment from 'moment';
 import { IApplicationState } from '../../store/store';
+import TimeAgo from 'react-timeago';
 
-const CoinToolsDropdown = (props: {}) => {
+interface ICoinToolsDropdown {
+	account: WalletAccount
+	menuHandler: (eventKey: string, account: WalletAccount) => void
+}
+
+const CoinToolsDropdown = (props: ICoinToolsDropdown) => {
 	return (
 		<Dropdown
 			alignRight
-		// onSelect={(evtKey: string) => props.menuHandler(evtKey, props.account)}
+			onSelect={(evtKey: string) => props.menuHandler(evtKey, props.account)}
 		>
 			<Dropdown.Toggle variant="secondary" id="dropdown-utxo">
 				<FontAwesomeIcon icon={faEllipsisH} />
 			</Dropdown.Toggle>
 
 			<Dropdown.Menu>
-				<Dropdown.Item eventKey={""}>Spend coin</Dropdown.Item>
+				<Dropdown.Item eventKey={UTXOMenuItems[UTXOMenuItems.SPEND_COIN]}>Spend coin</Dropdown.Item>
 				<Dropdown.Divider />
-				<Dropdown.Item eventKey={""} disabled>Details</Dropdown.Item>
-				<Dropdown.Item eventKey={""} disabled>Lock</Dropdown.Item>
-				<Dropdown.Item eventKey={""} disabled>Copy address</Dropdown.Item>
+				<Dropdown.Item eventKey={UTXOMenuItems[UTXOMenuItems.UTXO_DETAILS]} disabled>Details</Dropdown.Item>
+				<Dropdown.Item eventKey={UTXOMenuItems[UTXOMenuItems.LOCK_UTXO]} disabled>Lock</Dropdown.Item>
+				<Dropdown.Item eventKey={UTXOMenuItems[UTXOMenuItems.COPY_ADDRESS]} disabled>Copy address</Dropdown.Item>
 			</Dropdown.Menu>
 		</Dropdown>
 	)
+}
+
+export enum UTXOMenuItems {
+	SPEND_COIN,
+	UTXO_DETAILS,
+	LOCK_UTXO,
+	COPY_ADDRESS
 }
 
 
@@ -61,9 +74,12 @@ class ListUTXOs extends React.Component<OwnProps & Props, { unspents: UnspentOut
 								<td><Amount amount={utxo.getAmount()} /></td>
 								<td>{utxo.getOutputIndex()}</td>
 								<td>{utxo.getTree() == 1 ? 'stake' : 'regular'}</td>
-								<td><Timestamp ts={moment(utxo.getReceiveTime())} /></td>
+								<td><TimeAgo date={moment.unix(utxo.getReceiveTime()).toDate()} /></td>
 								<td>
-									<CoinToolsDropdown />
+									<CoinToolsDropdown
+										account={this.props.account}
+										menuHandler={_.bind(this.menuHandler, this)}
+									/>
 								</td>
 							</tr>
 						)}
@@ -71,6 +87,10 @@ class ListUTXOs extends React.Component<OwnProps & Props, { unspents: UnspentOut
 				</Table>
 			</div>
 		)
+	}
+
+	menuHandler() {
+		
 	}
 
 	componentWillMount() {

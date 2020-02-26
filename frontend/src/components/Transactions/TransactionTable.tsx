@@ -9,7 +9,6 @@ import { Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 import Fade from 'react-reveal/Fade';
-import { Transition } from 'react-transition-group';
 
 export const TransactionMempoolStatusIcon: any = (props: { isMined: boolean }) => {
 	return (
