@@ -2,12 +2,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { Tabs, Tab, Card } from "react-bootstrap";
 import Fade from 'react-reveal/Fade';
 
 import RecentTransactions from '../components/Transactions/RecentTransactionsContainer';
 import WalletBalanceContainer from "../features/walletbalance/WalletBalanceContainer";
-import ListUTXOs from "../features/unspents/ListUTXOs";
 import { IApplicationState } from "../store/store";
 
 class Home extends React.PureComponent {
@@ -17,28 +15,14 @@ class Home extends React.PureComponent {
 			<div >
 				<Fade><WalletBalanceContainer /></Fade>
 				<div className="mt-3" />
-				<Tabs defaultActiveKey="transactions" id="uncontrolled-tab">
-					<Tab eventKey="transactions" title="Transactions">
-						<RecentTransactions />
-					</Tab>
-					<Tab eventKey="coins" title="Coins">
-						<Fade fade>
-							<Card>
-								<Card.Body>
-									<Card.Title>UTXOs</Card.Title>
-								</Card.Body>
-								<ListUTXOs account={0}/>
-							</Card>
-						</Fade>
-					</Tab>
-				</Tabs>
+				<RecentTransactions />
 			</div>
 		)
 	}
 }
 
 
-const mapStateToProps = function (state: IApplicationState, ownProps: any) {
+const mapStateToProps = function (state: IApplicationState) {
 
 	return state
 }

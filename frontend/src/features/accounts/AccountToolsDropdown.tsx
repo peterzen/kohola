@@ -35,7 +35,8 @@ const AccountToolsDropdown = (props: { account: WalletAccount, menuHandler: any 
 }
 
 export enum MenuItems {
-	NEWADDRESS 
+	NEWADDRESS,
+	DETAILSVIEW
 }
 
 export default AccountToolsDropdown

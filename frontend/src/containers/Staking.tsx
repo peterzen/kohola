@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
-import { IApplicationState } from "../store";
 import StakeStats from '../components/Staking/StakeStats';
 import TicketPriceComponent from '../components/Staking/TicketPriceComponent';
 import StakeInfoComponent from '../components/Staking/StakeInfoComponent';
@@ -16,6 +15,7 @@ import TicketBuyerComponent from '../components/Staking/TicketBuyerComponent';
 
 import Fade from 'react-reveal/Fade';
 import { TransitionGroup } from 'react-transition-group';
+import { IApplicationState } from '../store/store';
 
 
 class StakingContainer extends React.PureComponent<{}, {}> {

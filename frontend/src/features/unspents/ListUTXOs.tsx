@@ -6,7 +6,7 @@ import { Table, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { bindActionCreators, Dispatch } from 'redux';
-import { IUnspentOutputsByAccount } from './unspentsSlice';
+import { IUnspentOutputsByAccount, fetchUnspentsAttempt } from './unspentsSlice';
 import { WalletAccount } from '../../models';
 import { TxHash, Amount, Timestamp } from '../../components/Shared/shared';
 import moment from 'moment';
@@ -37,7 +37,7 @@ const CoinToolsDropdown = (props: {}) => {
 class ListUTXOs extends React.Component<OwnProps & Props, { unspents: UnspentOutputResponse[] }> {
 
 	render() {
-		const utxos = this.props.unspentOutputsByAccount[this.props.account]
+		const utxos = this.props.unspentOutputsByAccount[this.props.account.getAccountNumber()]
 		if (utxos == undefined) {
 			return null
 		}
@@ -73,13 +73,13 @@ class ListUTXOs extends React.Component<OwnProps & Props, { unspents: UnspentOut
 		)
 	}
 
-	componentDidMount() {
-
+	componentWillMount() {
+		// this.props.dispatch(fetchUnspentsAttempt(this.props.account.getAccountNumber()))
 	}
 }
 
 interface Props {
-	account: number
+	account: WalletAccount
 }
 
 interface OwnProps {

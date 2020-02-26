@@ -8,12 +8,12 @@ import { Container } from 'react-bootstrap'
 import Home from "./Home"
 import Staking from "./Staking"
 import Settings from './Settings';
+import AccountDetailsContainer from './AccountDetailsContainer'
 import { NoRouteMatch } from '../components/Shared/shared';
 
 import { hot } from 'react-hot-loader/root'
 import ToastContainer from '../components/Fixtures/Toasts';
 import Navbar from "../components/Fixtures/Navbar"
-import { createDevTools } from 'redux-devtools';
 import DevTools from '../components/Fixtures/DevTools';
 // import Drawer from 'rc-drawer'
 
@@ -41,6 +41,7 @@ const App = ({ history }: AppProps) => {
 					<Switch>
 						<Route path="/staking" component={Staking} />
 						<Route path="/settings" component={Settings} />
+						<Route path="/account/:accountNumber" component={AccountDetailsContainer}/>
 						<Route exact path="/" component={Home} />
 						<Route component={NoRouteMatch} />
 					</Switch>

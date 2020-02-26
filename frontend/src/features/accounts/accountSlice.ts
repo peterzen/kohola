@@ -6,7 +6,7 @@ import { AppError } from '../../store/types';
 import LorcaBackend from '../../datasources/lorca';
 import { AppThunk, IApplicationState } from '../../store/store';
 import { AccountNotificationsResponse } from '../../proto/api_pb';
-
+import { loadWalletBalance } from '../walletbalance/walletBalanceSlice';
 
 export interface WalletAccountsState {
 	readonly accounts: IndexedWalletAccounts,

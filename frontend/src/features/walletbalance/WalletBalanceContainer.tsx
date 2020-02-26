@@ -17,6 +17,8 @@ import { loadNextAddressAttempt, getAccounts } from "../accounts/accountSlice"
 import { IApplicationState } from "../../store/store"
 
 
+import { history } from '../../store/store'
+
 class WalletBalanceContainer extends React.PureComponent<Props, InternalState>{
 	constructor(props: Props) {
 		super(props)
@@ -29,7 +31,7 @@ class WalletBalanceContainer extends React.PureComponent<Props, InternalState>{
 	render() {
 		return (
 			<div>
-				<Fade  cascade>
+				<Fade cascade>
 					<Card>
 						<Card.Body>
 							<WalletTotalsComponent totals={this.props.walletTotals} />
@@ -57,12 +59,15 @@ class WalletBalanceContainer extends React.PureComponent<Props, InternalState>{
 	hideModal() {
 		this.setState({ showModal: false })
 	}
-	menuHandler(evtKey: string, selectedAccount: WalletAccount) {
+	menuHandler(evtKey: keyof MenuItems, selectedAccount: WalletAccount) {
 		this.setState({ selectedAccount: selectedAccount });
 		switch (evtKey) {
 			case MenuItems[MenuItems.NEWADDRESS]:
 				this.props.loadNextAddressAttempt(selectedAccount)
 				this.showModal();
+				break;
+			case MenuItems[MenuItems.DETAILSVIEW]:
+				history.push("/account/" + selectedAccount.getAccountNumber())
 				break;
 		}
 	}
@@ -82,7 +87,6 @@ const mapStateToProps = (state: IApplicationState): IWalletBalanceState & OwnPro
 interface OwnProps {
 	accounts: IndexedWalletAccounts
 	walletTotals: WalletTotals
-	// propFromParent: number
 }
 
 
