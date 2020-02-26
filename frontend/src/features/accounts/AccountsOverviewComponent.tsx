@@ -2,22 +2,12 @@ import _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { WalletAccount } from '../../models';
 import { Amount } from '../../components/Shared/shared';
 import { WalletAccountsState } from './accountSlice';
 import { IApplicationState } from '../../store/store';
 
 
 class AccountsOverviewComponent extends React.Component<WalletAccountsState, WalletAccountsState> {
-
-	renderAccountItem(account: WalletAccount) {
-		return (
-			<tr key={account.getAccountNumber()}>
-				<td>{account.getAccountName()}</td>
-				<td><Amount amount={account.getTotalBalance()} /></td>
-			</tr>
-		)
-	}
 
 	render() {
 		const accounts = _.values(this.props.accounts);
@@ -32,7 +22,12 @@ class AccountsOverviewComponent extends React.Component<WalletAccountsState, Wal
 						</tr>
 					</thead>
 					<tbody>
-						{accounts.map(this.renderAccountItem)}
+						{accounts.map(account => {
+							<tr key={account.getAccountNumber()}>
+								<td>{account.getAccountName()}</td>
+								<td><Amount amount={account.getTotalBalance()} /></td>
+							</tr>
+						})}
 					</tbody>
 				</table>
 			</div>
