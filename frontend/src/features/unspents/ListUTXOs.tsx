@@ -5,8 +5,12 @@ import { UnspentOutputResponse } from '../../proto/api_pb';
 import { Table, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import { IApplicationState } from "../../store";
 import { bindActionCreators, Dispatch } from 'redux';
+import { IUnspentOutputsByAccount } from './unspentsSlice';
+import { WalletAccount } from '../../models';
+import { TxHash, Amount, Timestamp } from '../../components/Shared/shared';
+import moment from 'moment';
+import { IApplicationState } from '../../store/store';
 
 const CoinToolsDropdown = (props: {}) => {
 	return (
@@ -14,7 +18,7 @@ const CoinToolsDropdown = (props: {}) => {
 			alignRight
 		// onSelect={(evtKey: string) => props.menuHandler(evtKey, props.account)}
 		>
-			<Dropdown.Toggle variant="light" id="dropdown-coins">
+			<Dropdown.Toggle variant="secondary" id="dropdown-utxo">
 				<FontAwesomeIcon icon={faEllipsisH} />
 			</Dropdown.Toggle>
 
@@ -30,28 +34,13 @@ const CoinToolsDropdown = (props: {}) => {
 }
 
 
-class ListUTXOs extends React.Component<OwnProps, { unspents: UnspentOutputResponse[] }> {
-
-	unspent: []
-
-	constructor(props: any) {
-		super(props)
-		// this.unspent = [{
-		// 	"transactionHash": "JZJ2aFpIKlUUXLV0H7j1xTOurgnpz2laNIEv2BO2tQI=",
-		// 	"outputIndex": 0,
-		// 	"amount": 3880416280,
-		// 	"pkScript": "dqkUYjG27mKZXv/OX0mtu+mmaRRNj06IrA==",
-		// 	"receiveTime": 1581411554,
-		// 	"fromCoinbase": false,
-		// 	"tree": 0,
-		// 	"amountSum": 3880416280
-		// }]
-		// this.state = {
-		// 	unspents: [u, u, u]
-		// }
-	}
+class ListUTXOs extends React.Component<OwnProps & Props, { unspents: UnspentOutputResponse[] }> {
 
 	render() {
+		const utxos = this.props.unspentOutputsByAccount[this.props.account]
+		if (utxos == undefined) {
+			return null
+		}
 		return (
 			<div>
 				<Table>
@@ -60,22 +49,24 @@ class ListUTXOs extends React.Component<OwnProps, { unspents: UnspentOutputRespo
 							<th>Hash</th>
 							<th>Amount</th>
 							<th>OutIndex</th>
+							<th>Tree</th>
 							<th>Timestamp</th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							{/* {this.state.unspents.map((r: UnspentOutputResponse) => ( */}
-
-							<td>JZJ2aFpIKlUUXLV0H7j1xTOurgnpz2laNIEv2BO2tQI</td>
-							<td>0.3880416280</td>
-							<td>0</td>
-							<td>4 days ago</td>
-							<td>
-								<CoinToolsDropdown />
-							</td>
-						</tr>
+						{utxos.map((utxo) =>
+							<tr key={utxo.getTransactionHash_asB64() + utxo.getOutputIndex()}>
+								<td><TxHash hash={Buffer.from(utxo.getTransactionHash_asU8())} /></td>
+								<td><Amount amount={utxo.getAmount()} /></td>
+								<td>{utxo.getOutputIndex()}</td>
+								<td>{utxo.getTree() == 1 ? 'stake' : 'regular'}</td>
+								<td><Timestamp ts={moment(utxo.getReceiveTime())} /></td>
+								<td>
+									<CoinToolsDropdown />
+								</td>
+							</tr>
+						)}
 					</tbody>
 				</Table>
 			</div>
@@ -87,15 +78,18 @@ class ListUTXOs extends React.Component<OwnProps, { unspents: UnspentOutputRespo
 	}
 }
 
+interface Props {
+	account: number
+}
 
 interface OwnProps {
-
+	unspentOutputsByAccount: IUnspentOutputsByAccount
 }
 
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
-		...state.accounts,
+		...state.unspentoutputs,
 	};
 }
 

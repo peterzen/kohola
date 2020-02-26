@@ -1,18 +1,86 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppThunk } from '../../store/store'
+import LorcaBackend from '../../datasources/lorca'
+import { AppError } from '../../store/types'
+import { UnspentOutputResponse } from '../../proto/api_pb'
 
-interface IUnspentStats {
-	fetchUnspentsAttempting: false
-	unspentOutputsByAccount:{}
+export interface IUnspentOutputsByAccount {
+	[accountNumbe: number]: UnspentOutputResponse[]
 }
 
+export interface IUnspentState {
+	fetchUnspentsAttempting: boolean
+	fetchUnspentsError: AppError | null
+	unspentOutputsByAccount: IUnspentOutputsByAccount
+}
+
+export const initialState: IUnspentState = {
+	fetchUnspentsAttempting: false,
+	unspentOutputsByAccount: {},
+	fetchUnspentsError: null
+}
+
+interface IUnspentOutputsSuccessPayload {
+	accountNumber: number
+	unspentOutputs: UnspentOutputResponse[]
+}
 
 const unspentsDisplaySlice = createSlice({
 	name: "unspentsDisplay",
-	initialState: [],
+	initialState,
 	reducers: {
-		getUnspentOutputs(state, action) {
-			const { accountNumber, targetAmount, requiredConfirmations, includeImmature } = action.payload
-
+		getUnspentOutputsAttempt(state) {
+			state.fetchUnspentsAttempting = true
+			state.fetchUnspentsError = null
+		},
+		getUnspentOutputsFailed(state, action: PayloadAction<AppError>) {
+			state.fetchUnspentsError = action.payload
+			state.fetchUnspentsAttempting = false
+		},
+		getUnspentOutputsSuccess(state, action: PayloadAction<IUnspentOutputsSuccessPayload>) {
+			state.fetchUnspentsError = null
+			state.fetchUnspentsAttempting = false
+			state.unspentOutputsByAccount[action.payload.accountNumber] = action.payload.unspentOutputs
 		}
 	}
 })
+
+export const {
+	getUnspentOutputsAttempt,
+	getUnspentOutputsFailed,
+	getUnspentOutputsSuccess
+
+} = unspentsDisplaySlice.actions
+
+export default unspentsDisplaySlice.reducer
+
+
+export const fetchUnspentsAttempt = (
+	accountNumber: number,
+	targetAmount: number = 0,
+	requiredConfirmations: number = 1,
+	includeImmature: boolean = false
+): AppThunk => {
+	return async (dispatch, getState) => {
+		if (getState().unspentoutputs.fetchUnspentsAttempting) {
+			return
+		}
+
+		dispatch(getUnspentOutputsAttempt())
+		try {
+			const resp = await LorcaBackend.unspentOutputs(
+				accountNumber,
+				targetAmount,
+				requiredConfirmations,
+				includeImmature
+			)
+			dispatch(getUnspentOutputsSuccess({
+				accountNumber: accountNumber,
+				unspentOutputs: resp
+			}))
+		}
+		catch (error) {
+			dispatch(getUnspentOutputsFailed(error))
+		}
+	}
+}

@@ -6,6 +6,7 @@ import { initialState as networkInfoInitialState } from "../features/networkinfo
 import { transactionsInitialState } from "./transactions/reducers";
 import { initialState as walletbalanceInitialState } from "../features/walletbalance/walletBalanceSlice";
 import { initialState as appConfigurationInitialState } from "../features/appconfiguration/settingsSlice"
+import { initialState as unspentoutputsInitialState } from '../features/unspents/unspentsSlice'
 import { IApplicationState } from "./store";
 
 
@@ -16,6 +17,7 @@ const initialState: IApplicationState = {
 	networkinfo: networkInfoInitialState,
 	transactions: transactionsInitialState,
 	walletbalance: walletbalanceInitialState,
+	unspentoutputs: unspentoutputsInitialState,
 	appconfiguration: appConfigurationInitialState,
 }
 

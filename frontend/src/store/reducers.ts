@@ -7,6 +7,7 @@ import accounts from '../features/accounts/accountSlice'
 import networkinfo from '../features/networkinfo/networkInfoSlice'
 import transactions from "./transactions/reducers";
 import walletbalance from '../features/walletbalance/walletBalanceSlice'
+import unspentoutputs from '../features/unspents/unspentsSlice'
 import appconfiguration from '../features/appconfiguration/settingsSlice'
 import { History } from "history";
 
@@ -19,6 +20,7 @@ export default function createRootReducer(history: History<History.PoorMansUnkno
 		networkinfo,
 		transactions,
 		walletbalance,
+		unspentoutputs,
 		appconfiguration,
 	});
 }

@@ -15,7 +15,6 @@ import {
 	PublishTransactionResponse,
 	AgendasResponse,
 	UnspentOutputResponse,
-	UnspentOutputsRequest,
 	PurchaseTicketsRequest,
 	PurchaseTicketsResponse
 } from '../proto/api_pb';
@@ -234,40 +233,27 @@ const LorcaBackend = {
 	},
 
 	unspentOutputs: async (
-		account: WalletAccount,
+		accountNumber: number,
 		targetAmount: number,
 		requiredConfirmations: number,
-		includeImmatureCoinbases: boolean) => {
+		includeImmature: boolean) => {
 
-		/*
-		uint32 account: Account number containing the keys controlling the output set to query.
-	
-int64 target_amount: If positive, the service may limit output results to those that sum to at least this amount (counted in Atoms). This may not be negative.
-	
-int32 required_confirmations: The minimum number of block confirmations needed to consider including an output in the return set. This may not be negative.
-	
-bool include_immature_coinbases:
-*/
-		try {
-			const r = await w.walletrpc__ListUnspent(
-				account.getAccountNumber(),
-				targetAmount,
-				requiredConfirmations,
-				includeImmatureCoinbases)
-			if (r.error != undefined) {
-				throw r.error
-			}
-			const unspents: UnspentOutputResponse[] = []
-			_.each(r.apayload, (s: Uint8Array) => {
-				const tr = UnspentOutputResponse.deserializeBinary(s)
-				unspents.push(tr)
-			})
-			return unspents
+		const unspents: UnspentOutputResponse[] = []
+
+		const r = await w.walletrpc__ListUnspent(
+			accountNumber,
+			targetAmount,
+			requiredConfirmations,
+			includeImmature)
+
+		if (r.error != undefined) {
+			throw r.error
 		}
-		catch (e) {
-			console.error("Serialization error", e)
-			return
-		}
+		_.each(r.apayload, (s: Uint8Array) => {
+			const tr = UnspentOutputResponse.deserializeBinary(s)
+			unspents.push(tr)
+		})
+		return unspents
 	},
 
 	checkGRPCEndpointConnection: async (cfg: GRPCEndpoint) => {

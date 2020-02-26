@@ -17,6 +17,7 @@ import { loadBestBlockHeight } from '../features/networkinfo/networkInfoSlice';
 import { AppDispatch } from './store';
 import { getConfiguration, canStartup } from '../features/appconfiguration/settingsSlice';
 import { loadAccountsAttempt } from '../features/accounts/accountSlice';
+import { getUnspentOutputsAttempt, fetchUnspentsAttempt } from '../features/unspents/unspentsSlice';
 
 const w = (window as any)
 
@@ -44,6 +45,7 @@ export const initializeData: ActionCreator<any> = () => {
 			dispatch(loadTransactionsAttempt())
 			dispatch(loadWalletBalance())
 			dispatch(loadTicketsAttempt())
+			dispatch(fetchUnspentsAttempt(0))
 		})
 
 		// dispatch(pingAttempt())

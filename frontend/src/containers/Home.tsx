@@ -6,9 +6,9 @@ import { Tabs, Tab, Card } from "react-bootstrap";
 import Fade from 'react-reveal/Fade';
 
 import RecentTransactions from '../components/Transactions/RecentTransactionsContainer';
-import { IApplicationState } from "../store/types";
 import WalletBalanceContainer from "../features/walletbalance/WalletBalanceContainer";
 import ListUTXOs from "../features/unspents/ListUTXOs";
+import { IApplicationState } from "../store/store";
 
 class Home extends React.PureComponent {
 
@@ -27,7 +27,7 @@ class Home extends React.PureComponent {
 								<Card.Body>
 									<Card.Title>UTXOs</Card.Title>
 								</Card.Body>
-								<ListUTXOs />
+								<ListUTXOs account={0}/>
 							</Card>
 						</Fade>
 					</Tab>
