@@ -18,35 +18,24 @@ export const TransactionMempoolStatusIcon: any = (props: { isMined: boolean }) =
 
 export default class TransactionTable extends React.Component<TransactionListProps> {
 
-	renderItem(tx: Transaction) {
-		return (
-			<tr className="clickable" key={tx.getHash()} onClick={this.clickHandler(tx)}>
-				<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
-				<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
-				<td><Amount amount={tx.getAmount()} /></td>
-				<td>{tx.getTypeAsString()}</td>
-				<td><TransactionHash tx={tx} /></td>
-			</tr>
-		);
-	}
-
 	render() {
-		const list = this.props.items.map((tx: Transaction) => this.renderItem(tx))
 		return (
 			<Table hover>
 				<tbody>
-					{/* <Fade fade cascade> */}
-						{list}
-					{/* </Fade> */}
+					<Fade fade cascade>
+						{this.props.items.map((tx: Transaction) =>
+							<tr className="clickable" key={tx.getHash()} onClick={() => this.props.onItemClick(tx)}>
+								<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
+								<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
+								<td><Amount amount={tx.getAmount()} /></td>
+								<td>{tx.getTypeAsString()}</td>
+								<td><TransactionHash tx={tx} /></td>
+							</tr>
+						)}
+					</Fade>
 				</tbody>
 			</Table>
 		)
-	}
-
-	clickHandler(tx: Transaction) {
-		return _.bind((evt: React.MouseEvent) => {
-			this.props.onItemClick(tx)
-		}, this)
 	}
 }
 

@@ -1,5 +1,6 @@
 
 import * as React from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import {
@@ -7,12 +8,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Tabs, Tab, Card } from 'react-bootstrap';
+import Fade from 'react-reveal/Fade';
 
 import { WalletAccount } from '../../models';
 import ListUTXOs from '../unspents/ListUTXOs';
-import Fade from 'react-reveal/Fade';
-import RecentTransactions from '../../components/Transactions/RecentTransactionsContainer';
-import { connect } from 'react-redux';
 import { IApplicationState } from '../../store/store';
 import { fetchUnspentsAttempt } from '../unspents/unspentsSlice';
 
@@ -24,23 +23,14 @@ class AccountDetails extends React.Component<Props, {}> {
 		const account = this.props.account
 		return (
 			<div>
-				<Tabs defaultActiveKey="transactions" id="uncontrolled-tab">
-					<Tab eventKey="transactions" title="Transactions">
-						<Fade fade>
-							<RecentTransactions account={account}/>
-						</Fade>
-					</Tab>
-					<Tab eventKey="coins" title="Coins">
-						<Fade fade>
-							<Card>
-								<Card.Body>
-									<Card.Title>UTXOs</Card.Title>
-								</Card.Body>
-								<ListUTXOs account={account} />
-							</Card>
-						</Fade>
-					</Tab>
-				</Tabs>
+				<Fade fade>
+					<Card>
+						<Card.Body>
+							<Card.Title>UTXOs</Card.Title>
+						</Card.Body>
+						<ListUTXOs account={account} />
+					</Card>
+				</Fade>
 			</div>
 		)
 	}

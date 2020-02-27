@@ -13,19 +13,7 @@ import Fade from 'react-reveal/Fade';
 
 export default class TicketsTable extends React.Component<TicketsTableProps> {
 
-	renderItem(ticket: Ticket) {
-		const tx = ticket.getTx();
-		return (
-			<tr className="clickable" key={tx.getHash()} onClick={this.clickHandler(ticket)}>
-				<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
-				<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
-				<td><TicketStatusIcon status={ticket.getStatus()} /></td>
-				<td><TransactionHash tx={tx} /></td>
-			</tr>
-		)
-	}
 	render() {
-		const list = this.props.items.map((ticket) => this.renderItem(ticket))
 		return (
 			<Table hover>
 				<thead>
@@ -39,18 +27,22 @@ export default class TicketsTable extends React.Component<TicketsTableProps> {
 				<tbody>
 					{this.props.items.length > 0 && (
 						<Fade fade cascade>
-							{list}
+							{this.props.items.map((ticket) => {
+								const tx = ticket.getTx()
+								return (
+									<tr className="clickable" key={tx.getHash()} onClick={() => this.props.onItemClick(ticket)}>
+										<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
+										<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
+										<td><TicketStatusIcon status={ticket.getStatus()} /></td>
+										<td><TransactionHash tx={tx} /></td>
+									</tr>
+								)
+							})}
 						</Fade>
 					)}
 				</tbody>
 			</Table>
 		)
-	}
-
-	clickHandler(ticket: Ticket) {
-		return _.bind((evt: React.MouseEvent) => {
-			this.props.onItemClick(ticket)
-		}, this)
 	}
 }
 
