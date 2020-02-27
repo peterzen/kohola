@@ -1,30 +1,8 @@
 
 import { grpc } from "@improbable-eng/grpc-web";
-
-import { PingState } from "./ping/types";
-import { IStakingState } from "./staking/types";
-import { IAccountsState } from "./accounts/types";
-import { INetworkInfoState } from "./networkinfo/types";
-import { ITransactionState } from "./transactions/types";
-import { IAppConfigurationState } from "./appconfiguration/types";
 import { sprintf } from "sprintf-js";
-import { ThunkAction, Action } from "@reduxjs/toolkit";
-import { IWalletBalanceState } from "../features/walletbalance/walletBalanceSlice";
-import { IApplicationState } from "./store";
 
-// export type IApplicationState = {
-// 	ping: PingState,
-// 	staking: IStakingState,
-// 	networkinfo: INetworkInfoState,
-// 	accounts: IAccountsState,
-// 	transactions: ITransactionState,
-// 	walletbalance: IWalletBalanceState,
-// 	votechoices: VoteChoicesState,
-// 	stopautobuyer: StopAutoBuyerState,
-// 	appconfiguration: IAppConfigurationState,
-// 	ticketbuyerconfig: TicketBuyerConfigState,
-// 	loadactivedatafilters: LoadActiveDataFiltersState,
-// }
+import { IApplicationState } from "./store";
 
 export type AppError = {
 	status: number | typeof grpc.Code,

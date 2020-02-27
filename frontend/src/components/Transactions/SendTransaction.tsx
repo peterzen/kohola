@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from "react-redux";
 import _ from 'lodash';
 
-import { IApplicationState } from "../../store";
+import { IApplicationState } from "../../store/store";
 import { ITransactionState } from '../../store/transactions/types';
 
 import { Button } from 'react-bootstrap';

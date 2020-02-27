@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import _ from 'lodash';
 
 import { Transaction } from "../../models";
-import { IApplicationState } from "../../store";
+import { IApplicationState } from "../../store/store";
 import { ITransactionState } from '../../store/transactions/types';
 import { getFilteredTransactions } from '../../store/transactions/selectors';
 

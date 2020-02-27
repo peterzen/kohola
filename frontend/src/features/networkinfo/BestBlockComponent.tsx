@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IApplicationState } from "../../store/types";
+import { IApplicationState } from "../../store/store";
 
 import { formatHash } from "../../helpers";
 import { IBestBlockState, getBestBlock } from "./networkInfoSlice";

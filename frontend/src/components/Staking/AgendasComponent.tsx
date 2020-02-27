@@ -5,7 +5,7 @@ import { Card, ListGroup } from "react-bootstrap";
 import TimeAgo from 'react-timeago';
 import { Agenda } from "../../models";
 import { IAgendasState } from "../../store/staking/types";
-import { IApplicationState } from "../../store/types";
+import { IApplicationState } from "../../store/store";
 import { loadAgendasAttempt } from "../../store/staking/actions";
 
 

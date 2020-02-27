@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faPlus, faMinus,
 } from '@fortawesome/free-solid-svg-icons'
-import { AppError, IApplicationState } from '../../../store/types';
+import { AppError, IApplicationState } from '../../../store/store';
 import { WalletBalance } from '../../../models';
 
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';

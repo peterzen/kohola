@@ -1,5 +1,7 @@
 import * as React from 'react';
 import _ from 'lodash';
+import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
 
 import { AccountSelector, Amount, TxConfirmationPanel } from '../../Shared/shared';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,19 +9,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faPlus, faMinus,
 } from '@fortawesome/free-solid-svg-icons'
-import { AppError, IApplicationState } from '../../../store/types';
+import { IApplicationState } from '../../../store/store';
 import { WalletBalance, TicketPrice } from '../../../models';
 
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
-import { connect } from 'react-redux';
-import { Dispatch, bindActionCreators } from 'redux';
 import { PurchaseTicketsRequest, PurchaseTicketsResponse } from '../../../proto/api_pb';
 import { purchaseTicketAttempt } from '../../../store/staking/actions';
 import PassphraseEntryDialog, { askPassphrase } from '../../Shared/PassphraseEntryDialog';
 import { getWalletBalances } from '../../../features/walletbalance/selectors';
 
+
 import { Row, Col, Form, Button, Card, InputGroup, Alert, FormControl } from 'react-bootstrap';
 import { getTicketPrice } from '../../../store/staking/selectors';
+import { AppError } from '../../../store/types';
 
 
 export const IntegerInputControl = (props: { name: string, max: number, onChange: () => void }) => {

@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Row, Col, Card } from 'react-bootstrap';
 
-import { IApplicationState } from "../../store/types";
+import { IApplicationState } from "../../store/store";
 import { IStakeInfoState } from "../../store/staking/types";
 import { loadStakeInfoAttempt } from "../../store/staking/actions";
 import { TicketStatusIcon } from "./TicketStatusIcon";

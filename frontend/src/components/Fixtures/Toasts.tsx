@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { Toast } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { IApplicationState } from "../../store";
+import { IApplicationState } from "../../store/store";
 import { TransactionNotificationsResponse } from '../../proto/api_pb';
 
 
