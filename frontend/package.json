@@ -5,6 +5,7 @@
 	"main": "index.tsx",
 	"scripts": {
 		"start": "webpack-dev-server --colors  --https --cert=certs/localhost.pem --key=certs/localhost.key --config ./webpack.config.js",
+		"build": "webpack --colors  --config ./webpack.config.js",
 		"proto": "./protogen.sh",
 		"remotedev": "remotedev --hostname=localhost --port=8888",
 		"test": "echo \"Error: no test specified\" && exit 1"
