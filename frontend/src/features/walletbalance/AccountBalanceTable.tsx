@@ -20,10 +20,10 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 		const { account, balance } = props;
 		const immatureAmount = balance.getImmatureStakeGeneration() + balance.getImmatureReward()
 		return (
-			<tr key={account.getAccountNumber()} className="clickable p-4" onClick={() => {
+			<tr key={account.getAccountNumber()} className="clickable p-4 text-right" onClick={() => {
 				this.props.menuHandler(MenuItems[MenuItems.DETAILSVIEW], account)
 			}}>
-				<td>{account.getAccountName()}</td>
+				<td className="text-left">{account.getAccountName()}</td>
 				<td><Amount amount={balance.getSpendable()} /></td>
 				<td><Amount amount={balance.getTotal()} /></td>
 				<td className="text-secondary"><Amount amount={balance.getUnconfirmed()} /></td>
@@ -57,8 +57,8 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 	renderTotals() {
 		const totals = this.props.walletTotals
 		return (
-			<tr key="totals">
-				<th>Total</th>
+			<tr key="totals" className="text-right">
+				<th className="text-left">Total</th>
 				<th><Amount amount={totals.spendable} /></th>
 				<th><Amount amount={totals.total} /></th>
 				<th className="text-secondary"><Amount amount={totals.unconfirmed} /></th>
@@ -74,7 +74,7 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 		return (
 			<Table hover>
 				<thead>
-					<tr>
+					<tr className="text-right">
 						<th></th>
 						<th>spendable</th>
 						<th>total</th>
