@@ -26,7 +26,9 @@ class AccountDetails extends React.Component<Props, {}> {
 			<div>
 				<Tabs defaultActiveKey="transactions" id="uncontrolled-tab">
 					<Tab eventKey="transactions" title="Transactions">
-						<RecentTransactions />
+						<Fade fade>
+							<RecentTransactions account={account}/>
+						</Fade>
 					</Tab>
 					<Tab eventKey="coins" title="Coins">
 						<Fade fade>
