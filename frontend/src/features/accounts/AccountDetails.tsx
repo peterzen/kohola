@@ -8,6 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Tabs, Tab, Card } from 'react-bootstrap';
+// @ts-ignore
 import Fade from 'react-reveal/Fade';
 
 import { WalletAccount } from '../../models';
@@ -17,6 +18,7 @@ import { fetchUnspentsAttempt } from '../unspents/unspentsSlice';
 
 class AccountDetails extends React.Component<Props, {}> {
 	componentWillMount() {
+		// @ts-ignore
 		this.props.dispatch(fetchUnspentsAttempt(this.props.account.getAccountNumber()))
 	}
 	render() {

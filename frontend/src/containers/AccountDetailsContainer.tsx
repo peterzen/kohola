@@ -2,17 +2,16 @@
 import * as React from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { withRouter, RouteProps } from 'react-router-dom';
+import { withRouter, RouteChildrenProps } from 'react-router-dom';
 
 import {
-	faAngleLeft,
+	faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Row, Col, Tabs, Tab, Card } from 'react-bootstrap';
-import Fade from 'react-reveal/Fade';
+import { Button, Row, Col, Tabs, Tab, Card, Alert } from 'react-bootstrap';
 
-import { history, IApplicationState } from '../store/store'
-import { WalletAccounts, IndexedWalletAccounts, WalletAccount } from '../models';
+import { IApplicationState } from '../store/store'
+import { IndexedWalletAccounts, WalletAccount } from '../models';
 import AccountDetails from '../features/accounts/AccountDetails';
 
 class AccountDetailsContainer extends React.Component<Props, InternalState> {
@@ -23,32 +22,39 @@ class AccountDetailsContainer extends React.Component<Props, InternalState> {
 		}
 	}
 	componentDidMount() {
-		console.log("%%%%%%", this.props)
+		if (this.props.match == null) {
+			return
+		}
 		const accountNumber = this.props.match.params.accountNumber
+		if (accountNumber == undefined || parseInt(accountNumber) == undefined) {
+			return
+		}
 		this.setState({
-			account: this.props.accounts[accountNumber]
+			account: this.props.accounts[parseInt(accountNumber)]
 		})
 	}
 	render() {
-		console.log("####", this.props)
-		if (this.state.account == null) {
-			return null
-		}
 		return (
 			<div>
-				<h2>
-					<Button variant="link" size="lg" onClick={this.handleBack} className="text-muted">
-						<FontAwesomeIcon icon={faAngleLeft} />
-					</Button>&nbsp;
-					Account details: {this.state.account.getAccountName()}</h2>
-
-				<AccountDetails account={this.state.account} />
+				{this.state.account == null && (
+					<Alert variant="danger">Account not found</Alert>
+				)}
+				{this.state.account != null && (
+					<div>
+						<h2>
+							<Button variant="link" size="lg" onClick={_.bind(this.handleBack, this)} className="text-muted">
+								<FontAwesomeIcon icon={faChevronLeft} />
+							</Button>&nbsp;
+							Account details: {this.state.account.getAccountName()}</h2>
+						<AccountDetails account={this.state.account} />
+					</div>
+				)}
 			</div>
 		)
 	}
 
 	handleBack() {
-		history.goBack()
+		this.props.history.goBack()
 	}
 }
 
@@ -61,7 +67,7 @@ interface InternalState {
 	account: WalletAccount | null
 }
 
-type Props = OwnProps & RouteProps
+type Props = OwnProps & RouteChildrenProps<{ accountNumber: string }>
 
 const mapStateToProps = (state: IApplicationState) => {
 	return {
