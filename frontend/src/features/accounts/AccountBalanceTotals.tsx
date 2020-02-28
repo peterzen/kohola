@@ -8,6 +8,7 @@ import { Amount, FiatAmount } from "../../components/Shared/shared";
 import { WalletAccount, WalletBalance } from "../../models";
 import { getWalletBalances } from "../walletbalance/selectors";
 import { IApplicationState } from "../../store/store";
+import AccountBalancePieChart from "./AccountBalancePieChart";
 
 
 interface IValueCol {
@@ -22,28 +23,28 @@ const ValueCol = (props: IValueCol) => {
 	const pct = sprintf("%.1f%%", 100 * props.amount / props.total)
 	return (
 		<Col>
-			<h1>{pct}</h1>
+			<h3>{pct}</h3>
 			<div>
 				<ProgressBar className={clazz} now={100 * props.amount / props.total} />
 			</div>
 			<p className=" text-muted">{props.label}</p>
 			<h4 className="text-right text-muted"><Amount amount={props.amount} rounding={2} showCurrency /></h4>
-			<h4 className="text-right text-muted"><FiatAmount amount={props.amount} showCurrency currency="USD" /></h4>
+			{/* <h4 className="text-right text-muted"><FiatAmount amount={props.amount} showCurrency currency="USD" /></h4> */}
 		</Col>
 	)
 }
 class AccountTotals extends React.PureComponent<Props, {}> {
 	render() {
 		const balance = this.props.balances[this.props.account.getAccountNumber()]
+		if (balance == null) {
+			return null
+		}
 		return (
 			<Row>
 				<Col>
+					{/* <AccountBalancePieChart /> */}
 					<h1><Amount amount={balance.getTotal()} /></h1>
-					<div>
-						<ProgressBar className="spendable spendable-total" now={100} />
-					</div>
-					<p className="text-muted">Total DCR</p>
-					<h4 className="text-right text-muted"><Amount amount={balance.getTotal()} rounding={2} showCurrency /></h4>
+					<p className="text-muted text-right">Total DCR</p>
 					<h4 className="text-right text-muted"><FiatAmount amount={balance.getTotal()} showCurrency currency="USD" /></h4>
 				</Col>
 
@@ -64,7 +65,7 @@ class AccountTotals extends React.PureComponent<Props, {}> {
 					amount={balance.getVotingAuthority()}
 					total={balance.getTotal()}
 					variant="voting"></ValueCol>
-				
+
 				<ValueCol
 					label="Locked"
 					amount={balance.getLockedByTickets()}

@@ -3,7 +3,7 @@ import { Container, Row, Col, ProgressBar } from 'react-bootstrap';
 
 import { Amount, FiatAmount } from "../../components/Shared/shared";
 import { WalletTotals } from "../../models";
-import AccountBalancePieChart from "./AccountBalancePieChart";
+import AccountBalancePieChart from "../accounts/AccountBalancePieChart";
 import { sprintf } from "sprintf-js";
 
 interface IWalletTotals {
@@ -15,13 +15,13 @@ const ValueCol = (props: { amount: number, total: number, label: string, variant
 	const pct = sprintf("%.1f%%", 100 * props.amount / props.total)
 	return (
 		<Col>
-			<h1>{pct}</h1>
+			<h3>{pct}</h3>
 			<div>
 				<ProgressBar className={clazz} now={100 * props.amount / props.total} />
 			</div>
 			<p className=" text-muted">{props.label}</p>
 			<h4 className="text-right text-muted"><Amount amount={props.amount} rounding={2} showCurrency /></h4>
-			<h4 className="text-right text-muted"><FiatAmount amount={props.amount} showCurrency currency="USD" /></h4>
+			{/* <h4 className="text-right text-muted"><FiatAmount amount={props.amount} showCurrency currency="USD" /></h4> */}
 		</Col>
 	)
 }
@@ -32,11 +32,7 @@ export default class WalletTotalsComponent extends React.PureComponent<IWalletTo
 			<Row>
 				<Col>
 					<h1><Amount amount={totals.total} /></h1>
-					<div>
-						<ProgressBar className="spendable spendable-total" now={100} />
-					</div>
-					<p className="text-muted">Total DCR</p>
-					<h4 className="text-right text-muted"><Amount amount={totals.total} rounding={2} showCurrency /></h4>
+					<p className="text-muted text-right">Total DCR</p>
 					<h4 className="text-right text-muted"><FiatAmount amount={totals.total} showCurrency currency="USD" /></h4>
 				</Col>
 

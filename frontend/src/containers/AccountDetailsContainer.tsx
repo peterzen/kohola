@@ -8,12 +8,16 @@ import {
 	faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Row, Col, Tabs, Tab, Card, Alert } from 'react-bootstrap';
+import { Button, Card, Alert, Col, Row } from 'react-bootstrap';
 
 import { IApplicationState } from '../store/store'
-import { IndexedWalletAccounts, WalletAccount, WalletBalance } from '../models';
+import { IndexedWalletAccounts, WalletAccount } from '../models';
 import AccountDetails from '../features/accounts/AccountDetails';
-import AccountTotals from '../features/accounts/AccountTotals';
+import AccountBalanceTotals from '../features/accounts/AccountBalanceTotals';
+import SendTransaction from '../components/Transactions/SendTransaction';
+import GetNewAddressDialog from '../features/accounts/GetNewAddressDialog';
+import { bindActionCreators, Dispatch } from 'redux';
+import { loadNextAddressAttempt } from '../features/accounts/accountSlice';
 
 class AccountDetailsContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -37,25 +41,39 @@ class AccountDetailsContainer extends React.Component<Props, InternalState> {
 	render() {
 		return (
 			<div>
-				{this.state.account == null && (
-					<Alert variant="danger">Account not found</Alert>
-				)}
 				{this.state.account != null && (
 					<div>
-						<h2>
-							<Button variant="link" size="lg" onClick={_.bind(this.handleBack, this)} className="text-muted">
-								<FontAwesomeIcon icon={faChevronLeft} />
-							</Button>&nbsp;
-							Account details: {this.state.account.getAccountName()}</h2>
+						<Row>
+							<Col xs={8}>
+								<h2>
+									<Button variant="link" size="lg" onClick={_.bind(this.handleBack, this)} className="text-muted">
+										<FontAwesomeIcon icon={faChevronLeft} />
+									</Button>&nbsp;
+							Account: {this.state.account.getAccountName()}</h2>
+
+							</Col>
+							<Col xs={4} className="text-right">
+								<SendTransaction defaultAccount={this.state.account} />&nbsp;
+								<Button variant="outline-primary" onClick={()=>this.showReceiveDialog()}>Receive</Button>
+							</Col>
+						</Row>
+
 						<Card>
 							<Card.Body>
-								<AccountTotals account={this.state.account} />
+								<AccountBalanceTotals account={this.state.account} />
 							</Card.Body>
 						</Card>
 						<div className="mt-3">
 							<AccountDetails account={this.state.account} />
 						</div>
+						<GetNewAddressDialog
+							modalTitle="New receive address"
+							show={this.state.showModal}
+							onHide={_.bind(this.hideModal, this)} />
 					</div>
+				)}
+				{this.state.account == null && (
+					<Alert variant="danger">Account not found</Alert>
 				)}
 			</div>
 		)
@@ -63,6 +81,20 @@ class AccountDetailsContainer extends React.Component<Props, InternalState> {
 
 	handleBack() {
 		this.props.history.goBack()
+	}
+
+	showModal() {
+		this.setState({ showModal: true })
+	}
+	hideModal() {
+		this.setState({ showModal: false })
+	}
+	showReceiveDialog() {
+		if (this.state.account == null) {
+			return
+		}
+		this.props.loadNextAddressAttempt(this.state.account)
+		this.showModal();
 	}
 }
 
@@ -72,10 +104,15 @@ interface OwnProps {
 }
 
 interface InternalState {
+	showModal: boolean
 	account: WalletAccount | null
 }
 
-type Props = OwnProps & RouteChildrenProps<{ accountNumber: string }>
+interface DispatchProps {
+	loadNextAddressAttempt: (account: WalletAccount) => void
+}
+
+type Props = OwnProps & DispatchProps & RouteChildrenProps<{ accountNumber: string }>
 
 const mapStateToProps = (state: IApplicationState) => {
 	return {
@@ -83,7 +120,11 @@ const mapStateToProps = (state: IApplicationState) => {
 	};
 }
 
-export default withRouter(connect(mapStateToProps)(AccountDetailsContainer))
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	loadNextAddressAttempt: loadNextAddressAttempt,
+}, dispatch)
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountDetailsContainer))
 
 
 

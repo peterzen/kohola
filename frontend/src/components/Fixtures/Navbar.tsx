@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Button } from 'react-bootstrap';
 import BestBlockComponent from '../../features/networkinfo/BestBlockComponent';
 import ConnectionStatus from '../../features/networkinfo/ConnectionStatus';
 
@@ -33,11 +33,6 @@ export default class NavbarComponent extends React.Component {
 						<Nav.Link href="/#staking">
 							<FontAwesomeIcon icon={faTicketAlt} className="text-secondary" /> Staking
 						</Nav.Link>
-					</Nav>
-					<Nav className="mr-auto">
-						<Nav.Link eventKey={2}>
-						</Nav.Link>
-						<SendTransaction />
 					</Nav>
 					<Nav>
 						<Nav.Link href="/#settings">

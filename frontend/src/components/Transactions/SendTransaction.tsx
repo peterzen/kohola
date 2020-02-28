@@ -7,6 +7,7 @@ import { ITransactionState } from '../../store/transactions/types';
 
 import { Button } from 'react-bootstrap';
 import SendTransactionModal from './SendTransaction/SendTransactionModal';
+import { WalletAccount } from '../../models';
 
 
 class SendTransaction extends React.Component<Props, InternalState> {
@@ -22,9 +23,9 @@ class SendTransaction extends React.Component<Props, InternalState> {
 		return (
 			<>
 				<Button
-					variant="primary"
+					variant="outline-primary"
 					className=""
-					onClick={_.bind(this.showSendTxModal, this)}>Send funds</Button>
+					onClick={_.bind(this.showSendTxModal, this)}>Send</Button>
 
 				<SendTransactionModal
 					show={this.state.showSendTxModal}
@@ -54,7 +55,7 @@ const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): Props =>
 export default connect(mapStateToProps)(SendTransaction);
 
 interface OwnProps {
-	// propFromParent: number
+	defaultAccount?: WalletAccount
 }
 
 interface DispatchProps {
