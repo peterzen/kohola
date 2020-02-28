@@ -11,8 +11,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Row, Col, Tabs, Tab, Card, Alert } from 'react-bootstrap';
 
 import { IApplicationState } from '../store/store'
-import { IndexedWalletAccounts, WalletAccount } from '../models';
+import { IndexedWalletAccounts, WalletAccount, WalletBalance } from '../models';
 import AccountDetails from '../features/accounts/AccountDetails';
+import AccountTotals from '../features/accounts/AccountTotals';
 
 class AccountDetailsContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -46,7 +47,14 @@ class AccountDetailsContainer extends React.Component<Props, InternalState> {
 								<FontAwesomeIcon icon={faChevronLeft} />
 							</Button>&nbsp;
 							Account details: {this.state.account.getAccountName()}</h2>
-						<AccountDetails account={this.state.account} />
+						<Card>
+							<Card.Body>
+								<AccountTotals account={this.state.account} />
+							</Card.Body>
+						</Card>
+						<div className="mt-3">
+							<AccountDetails account={this.state.account} />
+						</div>
 					</div>
 				)}
 			</div>
