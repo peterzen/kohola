@@ -1,11 +1,5 @@
 {
 	"compilerOptions": {
-		"baseUrl": "./src",
-		"paths": {
-			"@/*": [
-				"./src/*"
-			]
-		},
 		"moduleResolution": "node",
 		"alwaysStrict": true,
 		"sourceMap": true,
