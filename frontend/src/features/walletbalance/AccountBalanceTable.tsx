@@ -18,7 +18,6 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 
 	renderBalanceRow(props: { account: WalletAccount, balance: AccountBalance }) {
 		const { account, balance } = props;
-		const immatureAmount = balance.getImmatureStakeGeneration() + balance.getImmatureReward()
 		return (
 			<tr key={account.getAccountNumber()} className="clickable p-4 text-right" onClick={() => {
 				this.props.menuHandler(MenuItems[MenuItems.DETAILSVIEW], account)
@@ -27,7 +26,7 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 				<td><Amount amount={balance.getSpendable()} /></td>
 				<td><Amount amount={balance.getTotal()} /></td>
 				<td className="text-secondary"><Amount amount={balance.getUnconfirmed()} /></td>
-				<td className="text-secondary"><Amount amount={immatureAmount} /></td>
+				<td className="text-secondary"><Amount amount={balance.getImmatureStakeGeneration() + balance.getImmatureReward()} /></td>
 				<td className="text-secondary"><Amount amount={balance.getVotingAuthority()} /></td>
 				<td className="text-secondary"><Amount amount={balance.getLockedByTickets()} /></td>
 				<td>

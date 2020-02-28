@@ -1,12 +1,13 @@
 import * as React from "react";
+import { connect } from "react-redux";
+import { sprintf } from "sprintf-js";
+
 import { Row, Col, ProgressBar } from 'react-bootstrap';
 
 import { Amount, FiatAmount } from "../../components/Shared/shared";
 import { WalletAccount, WalletBalance } from "../../models";
-import { sprintf } from "sprintf-js";
-import { IApplicationState } from "store/store";
-import { connect } from "react-redux";
 import { getWalletBalances } from "../walletbalance/selectors";
+import { IApplicationState } from "../../store/store";
 
 
 interface IValueCol {
