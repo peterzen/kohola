@@ -5,13 +5,12 @@ import _ from 'lodash';
 import { Ticket } from '../../models';
 import { ITicketsState } from '../../store/staking/types';
 import { getTickets } from '../../store/staking/selectors';
-import { loadTicketsAttempt } from '../../store/staking/actions';
 
 import TicketsTable from './TicketsTable';
 import TicketDetailsModal from './TicketDetailsComponent';
 import { Card, Dropdown } from 'react-bootstrap';
 import { WidgetOptionsButton } from '../Shared/shared';
-import { Range, getTrackBackground } from 'react-range'
+// import { Range, getTrackBackground } from 'react-range'
 import { IApplicationState } from '../../store/store';
 
 class TicketsOverviewContainer extends React.Component<Props, InternalState> {

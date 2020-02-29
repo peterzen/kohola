@@ -111,21 +111,21 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 }
 
 interface OwnProps {
-	txInfo: HumanreadableTxInfo,
-	constructTransactionRequest: ConstructTransactionRequest | null,
+	txInfo: HumanreadableTxInfo | null,
+	constructTransactionRequest: ConstructTransactionRequest | null
 	constructTransactionResponse: ConstructTransactionResponse | null
-	signTransactionResponse: SignTransactionResponse | null,
-	publishTransactionResponse: PublishTransactionResponse | null,
+	signTransactionResponse: SignTransactionResponse | null
+	publishTransactionResponse: PublishTransactionResponse | null
 	errorConstructTransaction: AppError | null
-	errorSignTransaction: AppError | null,
-	errorPublishTransaction: AppError | null,
+	errorSignTransaction: AppError | null
+	errorPublishTransaction: AppError | null
 	currentStep: SendTransactionSteps
 	accounts: IndexedWalletAccounts
 }
 
 
 interface DispatchProps {
-	cancelSign(): any,
+	cancelSign(): () => void
 	constructTransactionAttempt(...arguments: any): Promise<any>
 	signTransactionAttempt(...arguments: any): Promise<any>
 	publishTransactionAttempt(...arguments: any): Promise<any>

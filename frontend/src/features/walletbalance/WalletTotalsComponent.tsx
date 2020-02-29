@@ -10,7 +10,14 @@ interface IWalletTotals {
 	totals: WalletTotals
 }
 
-const ValueCol = (props: { amount: number, total: number, label: string, variant: string }) => {
+interface IValueColProps {
+	amount: number
+	total: number
+	label: string
+	variant: string
+}
+
+const ValueCol = (props: IValueColProps) => {
 	const clazz = "spendable spendable-" + props.variant
 	const pct = sprintf("%.1f%%", 100 * props.amount / props.total)
 	return (

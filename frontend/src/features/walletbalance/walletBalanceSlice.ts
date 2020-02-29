@@ -7,7 +7,7 @@ import { getAllAccountNumbers } from '../accounts/accountSlice';
 
 
 export interface IWalletBalanceState {
-	readonly balances: WalletBalance | null,
+	readonly balances: WalletBalance,
 	readonly getBalanceAttempting: boolean,
 	readonly error: AppError | null,
 }

@@ -1,12 +1,12 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IApplicationState } from "../../store/types";
-import { PingState } from "../../store/ping/types";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faCircle
 } from '@fortawesome/free-solid-svg-icons'
+import { PingState } from "./pingSlice";
+import { IApplicationState } from "../../store/store";
 
 class ConnectionStatusComponent extends React.Component<PingState, any> {
 
@@ -17,7 +17,7 @@ class ConnectionStatusComponent extends React.Component<PingState, any> {
 				{connected ? (
 					<FontAwesomeIcon icon={faCircle} className="text-success" size="xs" />
 				) : (
-						<FontAwesomeIcon icon={faCircle} className="text-danger" size="xs" />
+					<FontAwesomeIcon icon={faCircle} className="text-danger" size="xs" />
 					)}
 			</span>
 		)

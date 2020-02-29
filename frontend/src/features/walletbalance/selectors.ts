@@ -2,8 +2,16 @@ import { WalletBalance, WalletTotals } from "../../models";
 import _ from "lodash";
 import { IApplicationState } from "../../store/store";
 
-export const getWalletBalances = (state: IApplicationState): WalletBalance | null => {
+export const getWalletBalances = (state: IApplicationState): WalletBalance => {
 	return state.walletbalance.balances
+}
+
+export const getAccountBalance = (state: IApplicationState, accountNumber: number) => {
+	const acc = getWalletBalances(state)[accountNumber]
+	if (acc == undefined) {
+		throw new Error("non-existent account")
+	}
+	return acc
 }
 
 export const getWalletTotals = (state: IApplicationState): WalletTotals => {
@@ -29,10 +37,3 @@ export const getWalletTotals = (state: IApplicationState): WalletTotals => {
 }
 
 
-export const getAccountBalance = (state: IApplicationState, accountNumber: number) => {
-	const acc = getWalletBalances(state)[accountNumber]
-	if (acc == undefined) {
-		throw new Error("non-existent account")
-	}
-	return acc
-}

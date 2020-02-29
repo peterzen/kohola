@@ -8,6 +8,7 @@ import TimeAgo from 'react-timeago';
 import { Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
+// @ts-ignore
 import Fade from 'react-reveal/Fade';
 
 export const TransactionMempoolStatusIcon: any = (props: { isMined: boolean }) => {

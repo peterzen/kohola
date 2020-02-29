@@ -1,7 +1,9 @@
 
-
+// @ts-ignore
 import createBlakeHash from 'blake-hash/js';
+// @ts-ignore
 import bs58checkBase from 'bs58check/base'
+
 import { Configuration, Networks } from '../constants';
 import { GenericError } from '../store/types';
 

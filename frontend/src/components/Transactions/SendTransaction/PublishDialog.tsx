@@ -1,7 +1,6 @@
 import _ from "lodash"
 import * as React from "react"
 
-
 import { Form, Button, Row, Col } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

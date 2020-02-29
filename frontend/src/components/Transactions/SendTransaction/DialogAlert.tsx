@@ -1,10 +1,7 @@
 import * as React from "react"
 
-
 import { Alert } from 'react-bootstrap';
 import { AppError } from "../../../store/types";
-
-import { LoadingButton, Amount, TxHash } from "../../Shared/shared"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {

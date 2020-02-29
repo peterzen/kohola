@@ -2,6 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+// @ts-ignore
 import Fade from 'react-reveal/Fade';
 
 import RecentTransactions from '../components/Transactions/RecentTransactionsContainer';
@@ -12,8 +13,8 @@ class Home extends React.PureComponent {
 
 	render() {
 		return (
-			<div >
-				<Fade><WalletBalanceContainer /></Fade>
+			<div>
+				<Fade fade><WalletBalanceContainer /></Fade>
 				<div className="mt-3" />
 				<RecentTransactions />
 			</div>

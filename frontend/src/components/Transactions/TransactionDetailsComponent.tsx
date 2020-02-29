@@ -12,8 +12,11 @@ import {
 	faCaretDown,
 } from '@fortawesome/free-solid-svg-icons'
 
-export const TransactionDetailsComponent = (props: { tx: Transaction }) => {
+export const TransactionDetailsComponent = (props: OwnProps) => {
 	const tx = props.tx
+	if (tx == null) {
+		return null
+	}
 	return (
 		<div>
 			<Table borderless>
@@ -71,8 +74,8 @@ export const TransactionDetailsComponent = (props: { tx: Transaction }) => {
 			</Table>
 			<Accordion >
 				<Accordion.Toggle as={Button} variant="link" size="sm" eventKey="0">
-					Raw JSON <FontAwesomeIcon icon={faCaretDown}/>
-      			</Accordion.Toggle>
+					Raw JSON <FontAwesomeIcon icon={faCaretDown} />
+				</Accordion.Toggle>
 				<Accordion.Collapse eventKey="0">
 					<pre>{JSON.stringify(tx.toObject(), undefined, "  ")}</pre>
 				</Accordion.Collapse>

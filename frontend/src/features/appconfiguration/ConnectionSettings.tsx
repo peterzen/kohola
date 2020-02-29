@@ -9,15 +9,16 @@ import { AppConfiguration } from '../../proto/dcrwalletgui_pb';
 import RPCEndpointConfigForm from './DcrdForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import Fade from 'react-reveal/Fade';
-import { Transition } from 'react-transition-group';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
-
 import {
 	faPlus
 } from '@fortawesome/free-solid-svg-icons'
 import { IApplicationState } from '../../store/store';
 import { saveConfigurationAttempt } from './settingsSlice';
+
+// @ts-ignore
+import Fade from 'react-reveal/Fade';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+
 
 
 class SettingsContainer extends React.Component<Props, InternalState> {
@@ -50,6 +51,7 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 										<RPCEndpointConfigForm
 											onFormComplete={_.bind(this.handleFormComplete, this)}
 											endPointConfig={endPoint}
+											error={this.props.setConfigError}
 											title="dcrwallet settings"
 											key={endPoint.getLabel()} />
 									</div>
@@ -101,8 +103,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsContainer)
 
 export interface SettingsOwnProps {
-	// propFromParent: number
 	appConfig: AppConfiguration
+	setConfigError: AppError | null
 }
 
 
@@ -114,6 +116,6 @@ type Props = AppConfiguration & DispatchProps & SettingsOwnProps
 
 interface InternalState {
 	appConfig: AppConfiguration
-	error?: AppError
+	error: AppError | null
 }
 

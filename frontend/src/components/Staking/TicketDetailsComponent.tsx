@@ -12,7 +12,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faCaretDown
 } from '@fortawesome/free-solid-svg-icons'
-export const TicketDetailsComponent = (props: { ticket: Ticket }) => {
+
+
+export const TicketDetailsComponent = (props: OwnProps) => {
+	if (props.ticket == null) {
+		return null
+	}
 	const ticket = props.ticket
 	const tx = ticket.getTx();
 	return (
@@ -85,7 +90,7 @@ export default class TicketDetailsModal extends GenericModalDialog<OwnProps, {}>
 }
 
 interface OwnProps {
-	ticket: Ticket
+	ticket: Ticket | null
 }
 
 
