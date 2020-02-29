@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { bindActionCreators, Dispatch } from 'redux';
-import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { AppError } from '../../store/types';
@@ -12,27 +10,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faPlus
 } from '@fortawesome/free-solid-svg-icons'
-import { IApplicationState } from '../../store/store';
-import { saveConfigurationAttempt } from './settingsSlice';
 
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 
-
-class SettingsContainer extends React.Component<Props, InternalState> {
-	constructor(props: Props) {
-		super(props)
-		this.state = {
-			appConfig: props.appConfig,
-			error: props.setConfigError,
-		}
-	}
-
+export default class SettingsContainer extends React.Component<OwnProps> {
 	render() {
-		const c = this.state.appConfig
-
+		const c = this.props.appConfig
 		if (c == null) {
 			return null
 		}
@@ -49,7 +35,7 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 								<Fade>
 									<div className="mb-3">
 										<RPCEndpointConfigForm
-											onFormComplete={_.bind(this.handleFormComplete, this)}
+											onFormComplete={this.props.onFormComplete}
 											endPointConfig={endPoint}
 											error={this.props.setConfigError}
 											title="dcrwallet settings"
@@ -67,7 +53,8 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 					<Col sm={6}>
 						<Fade fade >
 							<RPCEndpointConfigForm
-								onFormComplete={_.bind(this.handleFormComplete, this)}
+								onFormComplete={this.props.onFormComplete}
+								error={this.props.setConfigError}
 								endPointConfig={dcrd}
 								title="dcrd settings"
 							/>
@@ -78,44 +65,18 @@ class SettingsContainer extends React.Component<Props, InternalState> {
 		)
 	}
 
-	handleFormComplete() {
-		this.props.saveConfigurationAttempt(this.props.appConfig)
-	}
-
-
 	handleAddWallet() {
 
 	}
-
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: SettingsOwnProps) => {
-	return {
-		...state.appconfiguration,
-		error: state.appconfiguration.setConfigError
-	};
-}
-
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-	saveConfigurationAttempt: saveConfigurationAttempt,
-}, dispatch)
-
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsContainer)
-
-export interface SettingsOwnProps {
+interface OwnProps {
 	appConfig: AppConfiguration
 	setConfigError: AppError | null
+	onFormComplete: () => void
 }
-
-
-interface DispatchProps {
-	saveConfigurationAttempt: (...arguments: any) => void
-}
-
-type Props = AppConfiguration & DispatchProps & SettingsOwnProps
 
 interface InternalState {
 	appConfig: AppConfiguration
-	error: AppError | null
 }
 

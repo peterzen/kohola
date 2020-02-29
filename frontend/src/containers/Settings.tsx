@@ -1,26 +1,58 @@
+import _ from 'lodash';
 import * as React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
+import { Dispatch, bindActionCreators } from 'redux';
 
-import ConnectionSettings from '../features/appconfiguration/ConnectionSettings';
+import { AppError } from '../store/types';
 import { IApplicationState } from '../store/store';
-import { IAppConfigurationState } from '../features/appconfiguration/settingsSlice';
+import { AppConfiguration } from '../proto/dcrwalletgui_pb';
+import { Alert } from 'react-bootstrap';
+import { saveConfigurationAttempt } from '../features/appconfiguration/settingsSlice';
+import ConnectionSettings from '../features/appconfiguration/ConnectionSettings';
 
-class SettingsContainer extends React.Component<{}, {}> {
+class SettingsContainer extends React.Component<Props> {
 
 	render() {
 		return (
 			<div>
-				<ConnectionSettings />
+				{this.props.setConfigError != null && (
+					<Alert variant="danger">{this.props.setConfigError}</Alert>
+				)}
+				<ConnectionSettings
+					appConfig={this.props.appConfig}
+					setConfigError={this.props.setConfigError}
+					onFormComplete={_.bind(this.handleFormComplete, this)}
+				/>
 			</div>
 		)
 	}
+
+	handleFormComplete() {
+		this.props.saveConfigurationAttempt(this.props.appConfig)
+	}
+
 }
 
-const mapStateToProps = (state: IApplicationState): IAppConfigurationState => {
+interface DispatchProps {
+	saveConfigurationAttempt: (...arguments: any) => void
+}
+
+interface OwnProps {
+	appConfig: AppConfiguration
+	setConfigError: AppError | null
+}
+
+type Props = OwnProps & DispatchProps
+
+const mapStateToProps = (state: IApplicationState) => {
 	return {
 		...state.appconfiguration
 	};
 }
 
-export default withRouter(connect(mapStateToProps)(SettingsContainer));
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	saveConfigurationAttempt: saveConfigurationAttempt,
+}, dispatch)
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SettingsContainer));
