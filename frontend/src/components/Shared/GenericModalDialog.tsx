@@ -31,6 +31,7 @@ export default class GenericModalDialog<P, S> extends React.Component<P & Props,
 		// console.log("GenericModalDialog render")
 		return (
 			<Modal
+				size="lg"
 				centered
 				onEntered={this.onEntered}
 				onExit={this.onExit}

@@ -10,16 +10,17 @@ export default class SendTransactionModal extends React.Component<Props, Interna
 		// console.log("GenericModalDialog render")
 		return (
 			<Modal
-				centered	
-				onEntered={this.onEntered}
-				onExit={_.bind(this.onExit,this)}
+				centered
+				onEntered={() => this.onEntered()}
+				onExit={() => this.onExit()}
 				show={this.props.show}
-				onHide={this.props.onHide}>
+				onHide={() => this.props.onHide()}
+				size="lg">
 				<Modal.Header closeButton>
 					Send funds
 				</Modal.Header>
 				<Modal.Body>
-					<SendDialogContainer/>
+					<SendDialogContainer />
 				</Modal.Body>
 			</Modal>
 		)

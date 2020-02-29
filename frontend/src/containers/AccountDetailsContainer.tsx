@@ -18,11 +18,15 @@ import SendTransaction from '../components/Transactions/SendTransaction';
 import GetNewAddressDialog from '../features/accounts/GetNewAddressDialog';
 import { bindActionCreators, Dispatch } from 'redux';
 import { loadNextAddressAttempt } from '../features/accounts/accountSlice';
+import UTXOContainer from '../features/unspents/UTXOContainer';
+// @ts-ignore
+import Fade from 'react-reveal/Fade';
 
 class AccountDetailsContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
 		super(props)
 		this.state = {
+			showModal: false,
 			account: null
 		}
 	}
@@ -49,12 +53,12 @@ class AccountDetailsContainer extends React.Component<Props, InternalState> {
 									<Button variant="link" size="lg" onClick={_.bind(this.handleBack, this)} className="text-muted">
 										<FontAwesomeIcon icon={faChevronLeft} />
 									</Button>&nbsp;
-							Account: {this.state.account.getAccountName()}</h2>
-
+									Account: {this.state.account.getAccountName()}
+								</h2>
 							</Col>
 							<Col xs={4} className="text-right">
 								<SendTransaction defaultAccount={this.state.account} />&nbsp;
-								<Button variant="outline-primary" onClick={()=>this.showReceiveDialog()}>Receive</Button>
+								<Button variant="outline-primary" onClick={() => this.showReceiveDialog()}>Receive</Button>
 							</Col>
 						</Row>
 
@@ -64,7 +68,15 @@ class AccountDetailsContainer extends React.Component<Props, InternalState> {
 							</Card.Body>
 						</Card>
 						<div className="mt-3">
-							<AccountDetails account={this.state.account} />
+							<Fade fade>
+								<Card>
+									<Card.Body>
+										<Card.Title>UTXOs</Card.Title>
+									</Card.Body>
+									<UTXOContainer account={this.state.account} />
+								</Card>
+							</Fade>
+
 						</div>
 						<GetNewAddressDialog
 							modalTitle="New receive address"
