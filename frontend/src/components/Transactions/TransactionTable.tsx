@@ -5,7 +5,7 @@ import { Transaction } from "../../models";
 import { TransactionHash, Amount } from '../Shared/shared';
 
 import TimeAgo from 'react-timeago';
-import { Table } from 'react-bootstrap';
+import { Table, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 // @ts-ignore
@@ -21,21 +21,29 @@ export default class TransactionTable extends React.Component<TransactionListPro
 
 	render() {
 		return (
-			<Table hover>
-				<tbody>
-					<Fade fade cascade>
-						{this.props.items.map((tx: Transaction) =>
-							<tr className="clickable" key={tx.getHash()} onClick={() => this.props.onItemClick(tx)}>
-								<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
-								<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
-								<td><Amount amount={tx.getAmount()} /></td>
-								<td>{tx.getTypeAsString()}</td>
-								<td><TransactionHash tx={tx} /></td>
-							</tr>
-						)}
-					</Fade>
-				</tbody>
-			</Table>
+			<div>
+				{this.props.items.length > 0 && (
+					<Table hover>
+						<tbody>
+							<Fade fade cascade>
+								{this.props.items.map((tx: Transaction) =>
+									<tr className="clickable" key={tx.getHash()} onClick={() => this.props.onItemClick(tx)}>
+										<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
+										<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
+										<td><Amount amount={tx.getAmount()} /></td>
+										<td>{tx.getTypeAsString()}</td>
+										<td><TransactionHash tx={tx} /></td>
+									</tr>
+								)}
+							</Fade>
+						</tbody>
+					</Table>
+
+				)}
+				{this.props.items.length < 1 && (
+					<Alert variant="info">No transaction yet.</Alert>
+				)}
+			</div>
 		)
 	}
 }
