@@ -17,7 +17,7 @@ import { IApplicationState } from '../../store/store';
 import { fetchUnspentsAttempt } from '../unspents/unspentsSlice';
 
 class AccountDetails extends React.Component<Props, {}> {
-	componentWillMount() {
+	componentDidMount() {
 		// @ts-ignore
 		this.props.dispatch(fetchUnspentsAttempt(this.props.account.getAccountNumber()))
 	}

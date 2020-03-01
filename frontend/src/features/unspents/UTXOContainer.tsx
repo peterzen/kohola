@@ -17,7 +17,7 @@ class UTXOContainer extends React.Component<Props, InternalState> {
 			selectedItem: null
 		}
 	}
-	componentWillMount() {
+	componentDidMount() {
 		// @ts-ignore
 		this.props.dispatch(fetchUnspentsAttempt(this.props.account.getAccountNumber()))
 	}
