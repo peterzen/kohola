@@ -7,9 +7,10 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { AppError } from '../store/types';
 import { IApplicationState } from '../store/store';
 import { AppConfiguration } from '../proto/dcrwalletgui_pb';
-import { Alert } from 'react-bootstrap';
+import { Alert, Tabs, Tab } from 'react-bootstrap';
 import { saveConfigurationAttempt } from '../features/appconfiguration/settingsSlice';
 import ConnectionSettings from '../features/appconfiguration/ConnectionSettings';
+import AccountsSetup from '../features/accounts/AccountsSetup';
 
 class SettingsContainer extends React.Component<Props> {
 
@@ -19,11 +20,20 @@ class SettingsContainer extends React.Component<Props> {
 				{this.props.setConfigError != null && (
 					<Alert variant="danger">{this.props.setConfigError}</Alert>
 				)}
-				<ConnectionSettings
-					appConfig={this.props.appConfig}
-					setConfigError={this.props.setConfigError}
-					onFormComplete={_.bind(this.handleFormComplete, this)}
-				/>
+				<Tabs defaultActiveKey="connections" id="appconfiguration-tabs">
+					<Tab eventKey="connections" title="Connections">
+						<Tab.Content>
+							<ConnectionSettings
+								appConfig={this.props.appConfig}
+								setConfigError={this.props.setConfigError}
+								onFormComplete={_.bind(this.handleFormComplete, this)}
+							/>
+						</Tab.Content>
+					</Tab>
+					<Tab eventKey="accounts" title="Accounts">
+						<AccountsSetup/>
+					</Tab>
+				</Tabs>
 			</div>
 		)
 	}

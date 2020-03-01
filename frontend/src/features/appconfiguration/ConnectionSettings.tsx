@@ -13,7 +13,6 @@ import {
 
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 
 export default class SettingsContainer extends React.Component<OwnProps> {
@@ -27,12 +26,10 @@ export default class SettingsContainer extends React.Component<OwnProps> {
 
 		return (
 			<div>
-				<h3>Settings</h3>
 				<Row>
 					<Col sm={6}>
-						<TransitionGroup>
+						<Fade fade cascade>
 							{dcrwallets.map((endPoint) => (
-								<Fade>
 									<div className="mb-3">
 										<RPCEndpointConfigForm
 											onFormComplete={this.props.onFormComplete}
@@ -41,9 +38,8 @@ export default class SettingsContainer extends React.Component<OwnProps> {
 											title="dcrwallet settings"
 											key={endPoint.getLabel()} />
 									</div>
-								</Fade>
 							))}
-						</TransitionGroup>
+						</Fade>
 						<div className="mt-3" >
 							<Button variant="outline-secondary" size="sm" onClick={_.bind(this.handleAddWallet, this)}>
 								<FontAwesomeIcon icon={faPlus} /> Add wallet host...
