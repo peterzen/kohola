@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faPaste,
 	faClipboard,
-	faCheck,
 	faInfoCircle,
 	faSlidersH
 } from '@fortawesome/free-solid-svg-icons'
@@ -253,51 +252,4 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 
 export const AccountSelector = connect(mapStateToProps)(_AccountSelector)
 
-// function simulateNetworkRequest() {
-// 	return new Promise(resolve => setTimeout(resolve, 2000));
-// }
 
-// export function LoadingButton(props: {
-// 	label: string,
-// 	loadingLabel: string,
-// 	onClick: (React.FormEvent<HTMLButtonElement>)
-// }) {
-// 	const [isLoading, setLoading] = useState(false);
-
-// 	useEffect(() => {
-// 		if (isLoading) {
-// 			simulateNetworkRequest().then(() => {
-// 				setLoading(false);
-// 			});
-// 		}
-// 	}, [isLoading]);
-
-// 	function handleClick() {
-// 		setLoading(true);
-// 		return props.onClick(arguments);
-// 	}
-
-// 	return (
-// 		<Button
-// 			type="submit"
-// 			variant="primary"
-// 			disabled={isLoading}
-// 			onClick={!isLoading ? handleClick : null}
-// 		>
-// 			{isLoading ? props.loadingLabel : props.label}
-// 		</Button>
-// 	);
-// }
-
-
-export const TxConfirmationPanel = (props: { hashes: Uint8Array[] }) => {
-	return (
-		<div className="text-center">
-			<h1 className="text-success"><FontAwesomeIcon icon={faCheck} className="lg" /></h1>
-			<p>The transaction has been broadcast</p>
-			<p>
-				{props.hashes.map((h) => <TxHash hash={Buffer.from(h)} truncate={true} />)}
-			</p>
-		</div>
-	)
-}

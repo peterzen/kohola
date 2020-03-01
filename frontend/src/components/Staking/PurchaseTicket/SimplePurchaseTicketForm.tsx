@@ -3,7 +3,8 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
 
-import { AccountSelector, Amount, TxConfirmationPanel } from '../../Shared/shared';
+import { AccountSelector, Amount } from '../../Shared/shared';
+import { TxConfirmationPanel } from "../../Shared/TxConfirmationPanel";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
