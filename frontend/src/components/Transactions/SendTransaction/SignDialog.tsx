@@ -109,7 +109,9 @@ export default class SignDialog extends React.Component<OwnProps, InternalState>
 		return (
 			<div>
 				<h4>Review and confirm transaction</h4>
-				<ReviewTx txInfo={this.props.txInfo} constructTxResp={this.props.constructTransactionResponse} />
+				{this.props.txInfo != null && (
+					<ReviewTx txInfo={this.props.txInfo} constructTxResp={this.props.constructTransactionResponse} />
+				)}
 				<Form
 					validated={this.state.formIsValidated && !this.props.error}
 					onSubmit={_.bind(this.handleFormSubmit, this)}
@@ -179,7 +181,7 @@ export default class SignDialog extends React.Component<OwnProps, InternalState>
 
 interface OwnProps {
 	error: AppError | null
-	txInfo: HumanreadableTxInfo,
+	txInfo: HumanreadableTxInfo | null,
 	constructTransactionResponse: ConstructTransactionResponse,
 	onFormComplete: (formData: ISignDialogFormData) => void
 	onCancel: () => void

@@ -3,7 +3,7 @@ import * as React from "react"
 
 import { IndexedWalletAccounts, WalletAccount } from "../../../models"
 
-import {  AccountSelector } from "../../Shared/shared"
+import { AccountSelector } from "../../Shared/shared"
 
 import { isValidAddress } from "../../../helpers/validators"
 import { ATOMS_DIVISOR, DEFAULT_REQUIRED_CONFIRMATIONS } from "../../../constants"
@@ -12,7 +12,7 @@ import DialogAlert from "./DialogAlert";
 
 import { Form, Button, InputGroup, FormControl, Row, Col } from 'react-bootstrap';
 
-export default class SendDialogForm extends React.Component<OwnProps, ISendDialogFormData>{
+export default class ConstructTxDialog extends React.Component<OwnProps, ISendDialogFormData>{
 	constructor(props: OwnProps) {
 		super(props)
 		this.state = {
@@ -30,6 +30,7 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 	render() {
 		return (
 			<Form
+				className="mb-0"
 				validated={this.state.formIsValidated && !this.props.error}
 				onSubmit={_.bind(this.handleFormSubmit, this)}
 			>
@@ -84,7 +85,7 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 						<InputGroup.Append>
 							<Button
 								tabIndex={-1}
-								variant="outline-secondary">
+								variant="link">
 								<Form.Group
 									controlId="sendAllControl"
 									className="m-0">
@@ -103,11 +104,18 @@ export default class SendDialogForm extends React.Component<OwnProps, ISendDialo
 					</Form.Control.Feedback>
 				</Form.Group>
 				<DialogAlert error={this.props.error} />
-				<Row>
+				<Row className="mt-5">
+					<Col>
+						<Button
+							onClick={() => this.props.onCancel()}
+							tabIndex={-1}
+							variant="link"
+						>Cancel</Button>
+					</Col>
 					<Col className="text-right">
 						<Button
 							tabIndex={4}
-							variant="primary"
+							variant="outline-primary"
 							type="submit">Create tx</Button>
 					</Col>
 				</Row>
@@ -159,6 +167,8 @@ interface OwnProps {
 	error: AppError | null
 	accounts: IndexedWalletAccounts
 	onFormComplete: (formData: ISendDialogFormData) => void
+	onCancel: () => void
+
 }
 
 

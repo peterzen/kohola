@@ -7,7 +7,6 @@ import SendDialogContainer from './SendDialogContainer';
 
 export default class SendTransactionModal extends React.Component<Props, InternalState> {
 	render() {
-		// console.log("GenericModalDialog render")
 		return (
 			<Modal
 				centered
@@ -15,15 +14,19 @@ export default class SendTransactionModal extends React.Component<Props, Interna
 				onExit={() => this.onExit()}
 				show={this.props.show}
 				onHide={() => this.props.onHide()}
+				animation={true}
 				size="lg">
 				<Modal.Header closeButton>
-					Send funds
+					<Modal.Title>Send DCR</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<SendDialogContainer />
+					<SendDialogContainer cancel={() => this.onCancel()} />
 				</Modal.Body>
 			</Modal>
 		)
+	}
+	onCancel() {
+		this.props.onHide()
 	}
 	onEntered() {
 		// console.log("GenericModalDialog onEntered")

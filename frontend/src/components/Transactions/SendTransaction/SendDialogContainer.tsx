@@ -8,7 +8,7 @@ import { IndexedWalletAccounts } from "../../../models"
 import { ATOMS_DIVISOR, } from "../../../constants"
 import { constructTransactionAttempt, signTransactionAttempt, cancelSignTransaction, publishTransactionAttempt } from "../../../store/transactions/actions"
 import { ConstructTxOutput } from "../../../datasources/models"
-import SendDialogForm, { ISendDialogFormData } from "./ConstructTxDialog"
+import ConstructTxDialog, { ISendDialogFormData } from "./ConstructTxDialog"
 import { ConstructTransactionResponse, ConstructTransactionRequest, SignTransactionResponse, PublishTransactionResponse } from "../../../proto/api_pb"
 import { SendTransactionSteps, HumanreadableTxInfo } from "../../../store/transactions/types"
 import SignDialog, { ISignDialogFormData } from "./SignDialog"
@@ -26,10 +26,11 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 		return (
 			<div>
 				{currentStep == SendTransactionSteps.CONSTRUCT_DIALOG && (
-					<SendDialogForm
+					<ConstructTxDialog
 						error={this.props.errorConstructTransaction}
 						accounts={this.props.accounts}
 						onFormComplete={_.bind(this.onConstructAttempt, this)}
+						onCancel={_.bind(this.onConstructCancel, this)}
 					/>
 				)}
 				{currentStep == SendTransactionSteps.SIGN_DIALOG &&
@@ -60,6 +61,10 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 					)}
 			</div>
 		)
+	}
+
+	onConstructCancel() {
+		this.props.cancel()
 	}
 
 	onConstructAttempt(formData: ISendDialogFormData) {
@@ -125,6 +130,7 @@ interface OwnProps {
 
 
 interface DispatchProps {
+	cancel: () => void
 	cancelSign(): () => void
 	constructTransactionAttempt(...arguments: any): Promise<any>
 	signTransactionAttempt(...arguments: any): Promise<any>
