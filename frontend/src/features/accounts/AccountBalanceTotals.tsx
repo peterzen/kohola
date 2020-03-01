@@ -20,7 +20,7 @@ interface IValueCol {
 
 const ValueCol = (props: IValueCol) => {
 	const clazz = "spendable spendable-" + props.variant
-	const pct = sprintf("%.1f%%", 100 * props.amount / props.total)
+	const pct = props.amount > 0 ? sprintf("%.1f%%", 100 * props.amount / props.total) : "0%"
 	return (
 		<Col>
 			<h3>{pct}</h3>

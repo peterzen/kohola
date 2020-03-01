@@ -19,7 +19,7 @@ interface IValueColProps {
 
 const ValueCol = (props: IValueColProps) => {
 	const clazz = "spendable spendable-" + props.variant
-	const pct = sprintf("%.1f%%", 100 * props.amount / props.total)
+	const pct = props.amount > 0 ? sprintf("%.1f%%", 100 * props.amount / props.total) : "0%"
 	return (
 		<Col>
 			<h3>{pct}</h3>
@@ -56,8 +56,14 @@ export default class WalletTotalsComponent extends React.PureComponent<IWalletTo
 					variant="immature"></ValueCol>
 
 				<ValueCol
-					label="Locked"
+					label="Voting auth"
 					amount={totals.votingauth}
+					total={totals.total}
+					variant="votingauth"></ValueCol>
+				
+				<ValueCol
+					label="Locked"
+					amount={totals.locked}
 					total={totals.total}
 					variant="locked"></ValueCol>
 			</Row>
