@@ -3,8 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { IApplicationState } from '../../store/store';
-import { Table, Button, Form, Row, Col, InputGroup } from 'react-bootstrap';
-
+import { Table, Button, Form, Row, Col, InputGroup, Alert } from 'react-bootstrap';
 
 import {
 	faPencilAlt,
@@ -12,17 +11,17 @@ import {
 	faCheck
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { WalletAccount } from '../../models';
+import { WalletAccount, IndexedWalletAccounts } from '../../models';
 import { Dispatch, bindActionCreators } from '@reduxjs/toolkit';
-import { loadNextAccountAttempt } from './accountSlice';
+import { loadNextAccountAttempt, doRenameAccountAttempt } from './accountSlice';
 import PassphraseEntryDialog, { askPassphrase } from '../../components/Shared/PassphraseEntryDialog';
+import { AppError } from '../../store/types';
 
-function enterHandler(e, callback) {
+function enterHandler(e: React.KeyboardEvent<HTMLInputElement>, callback: () => void) {
 	if (e.key == "Enter") {
 		callback()
 	}
 }
-
 
 
 class AccountsSetup extends React.Component<Props, InternalState> {
@@ -30,7 +29,7 @@ class AccountsSetup extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
 		super(props)
 		this.state = {
-			editable: {}
+			editable: undefined
 		}
 	}
 
@@ -45,16 +44,14 @@ class AccountsSetup extends React.Component<Props, InternalState> {
 				{accounts.map(account => (
 					<Row key={account.getAccountNumber()}>
 						<Col xs={8}>
-							{!this.state.editable[account.getAccountNumber()] && (
+							{this.state.editable != account.getAccountNumber() && (
 								<span>
 									{account.getAccountName()}
 									<Button
 										variant="link"
 										onClick={() => {
-											const s: any = {}
-											s[account.getAccountNumber()] = true
 											this.setState({
-												editable: s
+												editable: account.getAccountNumber()
 											})
 										}}
 									>
@@ -62,11 +59,11 @@ class AccountsSetup extends React.Component<Props, InternalState> {
 									</Button>
 								</span>
 							)}
-							{this.state.editable[account.getAccountNumber()] && (
+							{this.state.editable == account.getAccountNumber() && (
 								<InputGroup>
 									<Form.Control
 										type="text"
-										onKeyPress={(e: KeyboardEvent<HTMLInputElement>) => {
+										onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
 											enterHandler(e, () => {
 												this.renameAccount(account, e.currentTarget.value)
 											})
@@ -94,6 +91,9 @@ class AccountsSetup extends React.Component<Props, InternalState> {
 						</Col>
 					</Row>
 				))}
+				{this.props.error && (
+					<Alert variant="danger">{this.props.error.message}</Alert>
+				)}
 				<div className="mt-2"></div>
 				<Button variant="outline-secondary" size="sm">
 					<FontAwesomeIcon icon={faPlus} /> Add account...
@@ -112,47 +112,57 @@ class AccountsSetup extends React.Component<Props, InternalState> {
 		askPassphrase()
 			.then((passphrase) => {
 				if (passphrase == "") {
-					throw cancelError
+					throw "empty passphrase"
 				}
-				this.props.loadNextAccountAttempt(accountName, passphrase)
+				return this.props.loadNextAccountAttempt(accountName, passphrase)
 			})
-		
+			.then(() => {
+				this.setState({
+					editable: undefined
+				})
+			})
 	}
 
 	renameAccount(account: WalletAccount, accountName: string) {
-		askPassphrase()
-			.then((passphrase) => {
-				if (passphrase == "") {
-					throw cancelError
-				}
-				this.props.renameAccountAttempt(account, accountName, passphrase)
+		this.props.renameAccountAttempt(account, accountName)
+			.then(() => {
+				this.setState({
+					editable: undefined
+				})
 			})
 	}
 }
 
 const mapStateToProps = function (state: IApplicationState, ownProps: any) {
 	return {
-		accounts: state.accounts.accounts
+		accounts: state.accounts.accounts,
+		error: state.accounts.errorNextAccount || state.accounts.errorRenameAccount
 	};
 }
 
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	renameAccountAttempt: doRenameAccountAttempt,
 	loadNextAccountAttempt: loadNextAccountAttempt,
 }, dispatch)
 
 
 interface OwnProps {
-
+	accounts: IndexedWalletAccounts
+	error: AppError | null
 }
 
-type Props = OwnProps
+interface DispatchProps {
+	loadNextAccountAttempt: (accountName: string, passphrase: string) => any
+	renameAccountAttempt: (account: WalletAccount, accountName: string) => any
+}
+
+type Props = OwnProps & DispatchProps
 
 interface InternalState {
-	editable: {
-		[accountNumber: number]: boolean
-	}
+	editable?: number
 }
+
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountsSetup);

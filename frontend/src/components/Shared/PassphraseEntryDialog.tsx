@@ -12,18 +12,17 @@ let dialogResolve: (passphrase: string) => void, dialogReject;
 export const askPassphrase = () => {
 	if (setState == null) {
 		console.warn("setState==null")
-		// return Promise.reject()
+		return Promise.reject("setState==null")
 	}
 	if (dialogComponent == null) {
 		console.warn("dialogComponent null")
-		return
+		return Promise.reject("dialogComponent null")
 	}
 	dialogComponent.showModal()
 	promise = new Promise<string>((resolve, reject) => {
 		dialogResolve = resolve
 		dialogReject = reject
 	})
-
 	return promise
 }
 

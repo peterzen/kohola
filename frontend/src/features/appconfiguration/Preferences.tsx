@@ -17,7 +17,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 class AccountsSetup extends React.Component<WalletAccountsState, WalletAccountsState> {
 
 	render() {
-		const accounts = _.values(this.props.accounts);
 		return (
 			<Form>
 				<Form.Group as={Row}>

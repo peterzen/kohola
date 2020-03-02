@@ -5,7 +5,7 @@ import { IndexedWalletAccounts, WalletAccount, NextAddress } from "../../models"
 import { AppError } from '../../store/types';
 import LorcaBackend from '../../datasources/lorca';
 import { AppThunk, IApplicationState } from '../../store/store';
-import { AccountNotificationsResponse, NextAccountResponse } from '../../proto/api_pb';
+import { AccountNotificationsResponse, NextAccountResponse, RenameAccountResponse } from '../../proto/api_pb';
 import { loadWalletBalance } from '../walletbalance/walletBalanceSlice';
 
 export interface WalletAccountsState {
@@ -13,7 +13,6 @@ export interface WalletAccountsState {
 	readonly getAccountsAttempting: boolean,
 	readonly getAccountsError: AppError | null
 }
-
 
 // NextAddress
 export interface NextAddressState {
@@ -23,7 +22,6 @@ export interface NextAddressState {
 	readonly errorNextAddress: AppError | null
 }
 
-
 // NextAccount
 export interface NextAccountState {
 	readonly getNextAccountAttempting: boolean
@@ -32,7 +30,16 @@ export interface NextAccountState {
 	readonly errorNextAccount: AppError | null
 }
 
-export const initialState: WalletAccountsState & NextAddressState & NextAccountState = {
+// RenameAccount
+export interface RenameAccountState {
+	readonly renameAccountAttempting: Boolean
+	readonly renameAccountResponse: RenameAccountResponse | null
+	readonly renameAccountName: string
+	readonly errorRenameAccount: AppError | null
+}
+
+
+export const initialState: WalletAccountsState & NextAddressState & NextAccountState & RenameAccountState = {
 	accounts: {},
 	getAccountsAttempting: false,
 	getAccountsError: null,
@@ -47,7 +54,13 @@ export const initialState: WalletAccountsState & NextAddressState & NextAccountS
 	getNextAccountAttempting: false,
 	nextAccountName: "",
 	nextAccountResponse: null,
-	errorNextAccount: null
+	errorNextAccount: null,
+
+	// RenameAccount
+	renameAccountAttempting: false,
+	renameAccountName: "",
+	renameAccountResponse: null,
+	errorRenameAccount: null,
 }
 
 const accountSlice = createSlice({
@@ -91,11 +104,25 @@ const accountSlice = createSlice({
 			state.getNextAccountAttempting = false
 			state.errorNextAccount = action.payload
 		},
-		nextAccountSuccess(state, action) {
+		nextAccountSuccess(state, action: PayloadAction<NextAccountResponse>) {
 			state.getNextAccountAttempting = false
-			state.nextAccountResponse = action.payload.response
-			state.nextAccountName = action.payload.accountName
+			state.nextAccountResponse = action.payload
 			state.errorNextAccount = null
+		},
+
+		// RenameAccount
+		renameAccountAttempt(state) {
+			state.renameAccountAttempting = true
+			state.errorRenameAccount = null
+		},
+		renameAccountFailed(state, action: PayloadAction<AppError>) {
+			state.renameAccountAttempting = false
+			state.errorRenameAccount = action.payload
+		},
+		renameAccountSuccess(state, action: PayloadAction<RenameAccountResponse>) {
+			state.renameAccountAttempting = false
+			state.renameAccountResponse = action.payload
+			state.errorRenameAccount = null
 		},
 
 		// AccountNotifications
@@ -114,6 +141,14 @@ export const {
 	nextAddressAttempt,
 	nextAddressFailed,
 	nextAddressSuccess,
+
+	nextAccountAttempt,
+	nextAccountFailed,
+	nextAccountSuccess,
+
+	renameAccountAttempt,
+	renameAccountFailed,
+	renameAccountSuccess,
 
 	accountNotificationsReceive,
 	accountNotificationsSubscribe,
@@ -187,9 +222,25 @@ export const loadNextAccountAttempt = (accountName: string, passphrase: string):
 		dispatch(nextAddressAttempt())
 		try {
 			const resp = await LorcaBackend.fetchNextAccount(accountName, passphrase)
-			dispatch(nextAddressSuccess(resp))
+			dispatch(nextAccountSuccess(resp))
 		} catch (error) {
-			dispatch(nextAddressFailed(error))
+			dispatch(nextAccountFailed(error))
+		}
+	}
+};
+
+export const doRenameAccountAttempt = (account: WalletAccount, newName: string): AppThunk => {
+	return async (dispatch, getState) => {
+		if (getState().accounts.renameAccountAttempting) {
+			return
+		}
+
+		dispatch(renameAccountAttempt())
+		try {
+			const resp = await LorcaBackend.renameAccount(account.getAccountNumber(), newName)
+			dispatch(renameAccountSuccess(resp))
+		} catch (error) {
+			dispatch(renameAccountFailed(error))
 		}
 	}
 };

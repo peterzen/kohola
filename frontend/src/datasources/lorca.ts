@@ -17,7 +17,8 @@ import {
 	UnspentOutputResponse,
 	PurchaseTicketsRequest,
 	PurchaseTicketsResponse,
-	NextAccountResponse
+	NextAccountResponse,
+	RenameAccountResponse
 } from '../proto/api_pb';
 import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from '../models';
 import { rawToHex } from '../helpers/byteActions';
@@ -106,7 +107,24 @@ const LorcaBackend = {
 		}
 		catch (e) {
 			console.error(e)
-			return
+			throw e
+		}
+	},
+
+	renameAccount: async (
+		accountNumber: number,
+		newName: string,
+	) => {
+		try {
+			const r = await w.walletrpc__RenameAccount(accountNumber, newName)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return RenameAccountResponse.deserializeBinary(r.payload)
+		}
+		catch (e) {
+			console.error(e)
+			throw e
 		}
 	},
 

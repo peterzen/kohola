@@ -16,7 +16,7 @@ import { loadTicketsAttempt } from './staking/actions';
 import { loadBestBlockHeight } from '../features/networkinfo/networkInfoSlice';
 import { AppDispatch } from './store';
 import { getConfiguration, canStartup } from '../features/appconfiguration/settingsSlice';
-import { loadAccountsAttempt } from '../features/accounts/accountSlice';
+import { loadAccountsAttempt, accountNotification } from '../features/accounts/accountSlice';
 import { getUnspentOutputsAttempt, fetchUnspentsAttempt } from '../features/unspents/unspentsSlice';
 
 const w = (window as any)
