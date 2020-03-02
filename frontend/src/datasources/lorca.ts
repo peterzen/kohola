@@ -16,7 +16,8 @@ import {
 	AgendasResponse,
 	UnspentOutputResponse,
 	PurchaseTicketsRequest,
-	PurchaseTicketsResponse
+	PurchaseTicketsResponse,
+	NextAccountResponse
 } from '../proto/api_pb';
 import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from '../models';
 import { rawToHex } from '../helpers/byteActions';
@@ -85,6 +86,23 @@ const LorcaBackend = {
 				throw r.error
 			}
 			return NextAddressResponse.deserializeBinary(r.payload)
+		}
+		catch (e) {
+			console.error(e)
+			return
+		}
+	},
+
+	fetchNextAccount: async (
+		accountName: string,
+		passphrase: string
+	) => {
+		try {
+			const r = await w.walletrpc__NextAccount(accountName, passphrase)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return NextAccountResponse.deserializeBinary(r.payload)
 		}
 		catch (e) {
 			console.error(e)

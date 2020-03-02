@@ -7,10 +7,11 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { AppError } from '../store/types';
 import { IApplicationState } from '../store/store';
 import { AppConfiguration } from '../proto/dcrwalletgui_pb';
-import { Alert, Tabs, Tab } from 'react-bootstrap';
+import { Alert, Tabs, Tab, Card } from 'react-bootstrap';
 import { saveConfigurationAttempt } from '../features/appconfiguration/settingsSlice';
 import ConnectionSettings from '../features/appconfiguration/ConnectionSettings';
 import AccountsSetup from '../features/accounts/AccountsSetup';
+import Preferences from '../features/appconfiguration/Preferences';
 
 class SettingsContainer extends React.Component<Props> {
 
@@ -31,7 +32,18 @@ class SettingsContainer extends React.Component<Props> {
 						</Tab.Content>
 					</Tab>
 					<Tab eventKey="accounts" title="Accounts">
-						<AccountsSetup/>
+						<Card>
+							<Card.Body>
+								<AccountsSetup />
+							</Card.Body>
+						</Card>
+					</Tab>
+					<Tab eventKey="preferences" title="Preferences">
+						<Card>
+							<Card.Body>
+								<Preferences />
+							</Card.Body>
+						</Card>
 					</Tab>
 				</Tabs>
 			</div>

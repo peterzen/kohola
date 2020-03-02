@@ -25,6 +25,7 @@ require (
 	github.com/jessevdk/go-flags v1.4.0
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/sqweek/dialog v0.0.0-20190728103509-6254ed5b0d3c
+	github.com/superoo7/go-gecko v1.0.0
 	github.com/zserge/lorca v0.1.8
 	golang.org/x/crypto v0.0.0-20200204104054-c9f3fb736b72 // indirect
 	google.golang.org/grpc v1.27.0
@@ -34,5 +35,6 @@ require (
 replace (
 	github.com/decred/dcrd/rpc/jsonrpc/types/v2 => /home/peter/go/src/github.com/decred/dcrd/rpc/jsonrpc/types/
 	github.com/peterzen/dcrwalletgui/dcrwalletgui => ./dcrwalletgui
+	github.com/peterzen/dcrwalletgui/feeds => ./feeds
 	github.com/zserge/lorca => ../lorca
 )

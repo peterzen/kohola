@@ -5,7 +5,7 @@ import { IndexedWalletAccounts, WalletAccount, NextAddress } from "../../models"
 import { AppError } from '../../store/types';
 import LorcaBackend from '../../datasources/lorca';
 import { AppThunk, IApplicationState } from '../../store/store';
-import { AccountNotificationsResponse } from '../../proto/api_pb';
+import { AccountNotificationsResponse, NextAccountResponse } from '../../proto/api_pb';
 import { loadWalletBalance } from '../walletbalance/walletBalanceSlice';
 
 export interface WalletAccountsState {
@@ -23,7 +23,16 @@ export interface NextAddressState {
 	readonly errorNextAddress: AppError | null
 }
 
-export const initialState: WalletAccountsState & NextAddressState = {
+
+// NextAccount
+export interface NextAccountState {
+	readonly getNextAccountAttempting: boolean
+	readonly nextAccountName: string
+	readonly nextAccountResponse: NextAccountResponse | null
+	readonly errorNextAccount: AppError | null
+}
+
+export const initialState: WalletAccountsState & NextAddressState & NextAccountState = {
 	accounts: {},
 	getAccountsAttempting: false,
 	getAccountsError: null,
@@ -33,6 +42,12 @@ export const initialState: WalletAccountsState & NextAddressState = {
 	nextAddressResponse: null,
 	getNextAddressAttempting: false,
 	errorNextAddress: null,
+
+	// NextAccount
+	getNextAccountAttempting: false,
+	nextAccountName: "",
+	nextAccountResponse: null,
+	errorNextAccount: null
 }
 
 const accountSlice = createSlice({
@@ -65,6 +80,22 @@ const accountSlice = createSlice({
 			state.nextAddressResponse = action.payload.response
 			state.nextAddressAccount = action.payload.account
 			state.errorNextAddress = null
+		},
+
+		// NextAccount
+		nextAccountAttempt(state) {
+			state.getNextAccountAttempting = true
+			state.errorNextAccount = null
+		},
+		nextAccountFailed(state, action: PayloadAction<AppError>) {
+			state.getNextAccountAttempting = false
+			state.errorNextAccount = action.payload
+		},
+		nextAccountSuccess(state, action) {
+			state.getNextAccountAttempting = false
+			state.nextAccountResponse = action.payload.response
+			state.nextAccountName = action.payload.accountName
+			state.errorNextAccount = null
 		},
 
 		// AccountNotifications
@@ -140,6 +171,23 @@ export const loadNextAddressAttempt = (account: WalletAccount): AppThunk => {
 				response: resp,
 				account: account
 			}))
+		} catch (error) {
+			dispatch(nextAddressFailed(error))
+		}
+	}
+};
+
+
+export const loadNextAccountAttempt = (accountName: string, passphrase: string): AppThunk => {
+	return async (dispatch, getState) => {
+		if (getState().accounts.getNextAccountAttempting) {
+			return
+		}
+
+		dispatch(nextAddressAttempt())
+		try {
+			const resp = await LorcaBackend.fetchNextAccount(accountName, passphrase)
+			dispatch(nextAddressSuccess(resp))
 		} catch (error) {
 			dispatch(nextAddressFailed(error))
 		}

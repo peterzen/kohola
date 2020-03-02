@@ -303,6 +303,29 @@ func getNextAddress(
 	return r
 }
 
+func getNextAccount(
+	accountName string,
+	passphrase string) (r gui.LorcaMessage) {
+	pp := []byte(passphrase)
+
+	request := &pb.NextAccountRequest{
+		AccountName: accountName,
+		Passphrase:  pp,
+	}
+	response, err := walletServiceClient.NextAccount(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	return r
+}
+
 func constructTransaction(requestAsHex string) (r gui.LorcaMessage) {
 	request := &pb.ConstructTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
@@ -533,6 +556,7 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__GetTickets", getTickets)
 	ui.Bind("walletrpc__ListUnspent", listUnspent)
 	ui.Bind("walletrpc__NextAddress", getNextAddress)
+	ui.Bind("walletrpc__NextAccount", getNextAccount)
 	ui.Bind("walletrpc__GetTransactions", getTransactions)
 	ui.Bind("walletrpc__ConstructTransaction", constructTransaction)
 	ui.Bind("walletrpc__SignTransaction", signTransaction)
