@@ -51,7 +51,7 @@ export const transactionNotification: ActionCreator<any> = (message: Transaction
 	return async (dispatch: Dispatch<TransactionNotificationsReceived>) => {
 		dispatch(loadBestBlockHeight());
 		dispatch(loadStakeInfoAttempt());
-		// dispatch(loadTicketsAttempt());
+		dispatch(loadTicketsAttempt());
 		dispatch(loadTransactionsAttempt());
 		dispatch(loadWalletBalance());
 		dispatch({ type: TRANSACTIONNOTIFICATIONS_RECEIVED, payload: message });
