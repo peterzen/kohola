@@ -64,7 +64,7 @@ const LorcaBackend = {
 				const td = GetTicketsResponse.deserializeBinary(s)
 				const ticket = td.getTicket()
 				if (ticket == undefined) {
-					return null
+					return 
 				}
 				tix.push(new Ticket(ticket, td.getBlock()))
 			})
