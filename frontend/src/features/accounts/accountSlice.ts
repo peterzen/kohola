@@ -86,6 +86,7 @@ const accountSlice = createSlice({
 		},
 		nextAddressFailed(state, action: PayloadAction<AppError>) {
 			state.getNextAddressAttempting = false
+			state.nextAddressResponse = null
 			state.errorNextAddress = action.payload
 		},
 		nextAddressSuccess(state, action) {
@@ -102,6 +103,7 @@ const accountSlice = createSlice({
 		},
 		nextAccountFailed(state, action: PayloadAction<AppError>) {
 			state.getNextAccountAttempting = false
+			state.nextAccountResponse = null
 			state.errorNextAccount = action.payload
 		},
 		nextAccountSuccess(state, action: PayloadAction<NextAccountResponse>) {

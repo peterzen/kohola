@@ -212,6 +212,34 @@ export namespace GRPCEndpoint {
   }
 }
 
+export class AccountPreference extends jspb.Message {
+  getAccountnumber(): number;
+  setAccountnumber(value: number): void;
+
+  getVisible(): boolean;
+  setVisible(value: boolean): void;
+
+  getDisplayorder(): number;
+  setDisplayorder(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): AccountPreference.AsObject;
+  static toObject(includeInstance: boolean, msg: AccountPreference): AccountPreference.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: AccountPreference, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): AccountPreference;
+  static deserializeBinaryFromReader(message: AccountPreference, reader: jspb.BinaryReader): AccountPreference;
+}
+
+export namespace AccountPreference {
+  export type AsObject = {
+    accountnumber: number,
+    visible: boolean,
+    displayorder: number,
+  }
+}
+
 export class AppConfiguration extends jspb.Message {
   hasDcrdHost(): boolean;
   clearDcrdHost(): void;
@@ -222,6 +250,11 @@ export class AppConfiguration extends jspb.Message {
   getDcrwalletHostsList(): Array<GRPCEndpoint>;
   setDcrwalletHostsList(value: Array<GRPCEndpoint>): void;
   addDcrwalletHosts(value?: GRPCEndpoint, index?: number): GRPCEndpoint;
+
+  clearAccountprefsList(): void;
+  getAccountprefsList(): Array<AccountPreference>;
+  setAccountprefsList(value: Array<AccountPreference>): void;
+  addAccountprefs(value?: AccountPreference, index?: number): AccountPreference;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AppConfiguration.AsObject;
@@ -237,6 +270,7 @@ export namespace AppConfiguration {
   export type AsObject = {
     dcrdHost?: RPCEndpoint.AsObject,
     dcrwalletHostsList: Array<GRPCEndpoint.AsObject>,
+    accountprefsList: Array<AccountPreference.AsObject>,
   }
 }
 

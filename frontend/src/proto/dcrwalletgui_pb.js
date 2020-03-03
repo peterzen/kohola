@@ -9,6 +9,7 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
+goog.exportSymbol('proto.dcrwalletgui.AccountPreference', null, global);
 goog.exportSymbol('proto.dcrwalletgui.AppConfiguration', null, global);
 goog.exportSymbol('proto.dcrwalletgui.CanStartupRequest', null, global);
 goog.exportSymbol('proto.dcrwalletgui.CanStartupResponse', null, global);
@@ -1466,6 +1467,202 @@ proto.dcrwalletgui.GRPCEndpoint.prototype.setLabel = function(value) {
  * @extends {jspb.Message}
  * @constructor
  */
+proto.dcrwalletgui.AccountPreference = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dcrwalletgui.AccountPreference, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  proto.dcrwalletgui.AccountPreference.displayName = 'proto.dcrwalletgui.AccountPreference';
+}
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto suitable for use in Soy templates.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+ * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+ *     for transitional soy proto support: http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dcrwalletgui.AccountPreference.prototype.toObject = function(opt_includeInstance) {
+  return proto.dcrwalletgui.AccountPreference.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Whether to include the JSPB
+ *     instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dcrwalletgui.AccountPreference} msg The msg instance to transform.
+ * @return {!Object}
+ */
+proto.dcrwalletgui.AccountPreference.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    accountnumber: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    visible: jspb.Message.getFieldWithDefault(msg, 2, false),
+    displayorder: jspb.Message.getFieldWithDefault(msg, 3, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dcrwalletgui.AccountPreference}
+ */
+proto.dcrwalletgui.AccountPreference.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dcrwalletgui.AccountPreference;
+  return proto.dcrwalletgui.AccountPreference.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dcrwalletgui.AccountPreference} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dcrwalletgui.AccountPreference}
+ */
+proto.dcrwalletgui.AccountPreference.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setAccountnumber(value);
+      break;
+    case 2:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setVisible(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setDisplayorder(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dcrwalletgui.AccountPreference.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dcrwalletgui.AccountPreference.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dcrwalletgui.AccountPreference} message
+ * @param {!jspb.BinaryWriter} writer
+ */
+proto.dcrwalletgui.AccountPreference.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getAccountnumber();
+  if (f !== 0) {
+    writer.writeUint32(
+      1,
+      f
+    );
+  }
+  f = message.getVisible();
+  if (f) {
+    writer.writeBool(
+      2,
+      f
+    );
+  }
+  f = message.getDisplayorder();
+  if (f !== 0) {
+    writer.writeUint32(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional uint32 accountNumber = 1;
+ * @return {number}
+ */
+proto.dcrwalletgui.AccountPreference.prototype.getAccountnumber = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/** @param {number} value */
+proto.dcrwalletgui.AccountPreference.prototype.setAccountnumber = function(value) {
+  jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * optional bool visible = 2;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.dcrwalletgui.AccountPreference.prototype.getVisible = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 2, false));
+};
+
+
+/** @param {boolean} value */
+proto.dcrwalletgui.AccountPreference.prototype.setVisible = function(value) {
+  jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * optional uint32 displayOrder = 3;
+ * @return {number}
+ */
+proto.dcrwalletgui.AccountPreference.prototype.getDisplayorder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/** @param {number} value */
+proto.dcrwalletgui.AccountPreference.prototype.setDisplayorder = function(value) {
+  jspb.Message.setField(this, 3, value);
+};
+
+
+
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
 proto.dcrwalletgui.AppConfiguration = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, proto.dcrwalletgui.AppConfiguration.repeatedFields_, null);
 };
@@ -1478,7 +1675,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.dcrwalletgui.AppConfiguration.repeatedFields_ = [2];
+proto.dcrwalletgui.AppConfiguration.repeatedFields_ = [2,3];
 
 
 
@@ -1510,7 +1707,9 @@ proto.dcrwalletgui.AppConfiguration.toObject = function(includeInstance, msg) {
   var f, obj = {
     dcrdHost: (f = msg.getDcrdHost()) && proto.dcrwalletgui.RPCEndpoint.toObject(includeInstance, f),
     dcrwalletHostsList: jspb.Message.toObjectList(msg.getDcrwalletHostsList(),
-    proto.dcrwalletgui.GRPCEndpoint.toObject, includeInstance)
+    proto.dcrwalletgui.GRPCEndpoint.toObject, includeInstance),
+    accountprefsList: jspb.Message.toObjectList(msg.getAccountprefsList(),
+    proto.dcrwalletgui.AccountPreference.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -1557,6 +1756,11 @@ proto.dcrwalletgui.AppConfiguration.deserializeBinaryFromReader = function(msg, 
       reader.readMessage(value,proto.dcrwalletgui.GRPCEndpoint.deserializeBinaryFromReader);
       msg.addDcrwalletHosts(value);
       break;
+    case 3:
+      var value = new proto.dcrwalletgui.AccountPreference;
+      reader.readMessage(value,proto.dcrwalletgui.AccountPreference.deserializeBinaryFromReader);
+      msg.addAccountprefs(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1599,6 +1803,14 @@ proto.dcrwalletgui.AppConfiguration.serializeBinaryToWriter = function(message, 
       2,
       f,
       proto.dcrwalletgui.GRPCEndpoint.serializeBinaryToWriter
+    );
+  }
+  f = message.getAccountprefsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      3,
+      f,
+      proto.dcrwalletgui.AccountPreference.serializeBinaryToWriter
     );
   }
 };
@@ -1664,6 +1876,39 @@ proto.dcrwalletgui.AppConfiguration.prototype.addDcrwalletHosts = function(opt_v
 
 proto.dcrwalletgui.AppConfiguration.prototype.clearDcrwalletHostsList = function() {
   this.setDcrwalletHostsList([]);
+};
+
+
+/**
+ * repeated AccountPreference accountPrefs = 3;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<!proto.dcrwalletgui.AccountPreference>}
+ */
+proto.dcrwalletgui.AppConfiguration.prototype.getAccountprefsList = function() {
+  return /** @type{!Array.<!proto.dcrwalletgui.AccountPreference>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.dcrwalletgui.AccountPreference, 3));
+};
+
+
+/** @param {!Array.<!proto.dcrwalletgui.AccountPreference>} value */
+proto.dcrwalletgui.AppConfiguration.prototype.setAccountprefsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 3, value);
+};
+
+
+/**
+ * @param {!proto.dcrwalletgui.AccountPreference=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.dcrwalletgui.AccountPreference}
+ */
+proto.dcrwalletgui.AppConfiguration.prototype.addAccountprefs = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.dcrwalletgui.AccountPreference, opt_index);
+};
+
+
+proto.dcrwalletgui.AppConfiguration.prototype.clearAccountprefsList = function() {
+  this.setAccountprefsList([]);
 };
 
 

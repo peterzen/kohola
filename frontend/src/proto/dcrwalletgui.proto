@@ -28,6 +28,7 @@ message SetConfigResponse {
   int32 error_code = 2;
   string error_description = 3;
 }
+
 enum Network {
   MAINNET = 0;
   TESTNET = 1;
@@ -44,6 +45,7 @@ message RPCEndpoint {
   Network network = 7;
   string label = 8;
 }
+
 message GRPCEndpoint {
   string hostname = 1;
   uint32 port = 2;
@@ -53,9 +55,16 @@ message GRPCEndpoint {
   string label = 6;
 }
 
+message AccountPreference {
+  uint32 accountNumber = 1;
+  bool visible = 2;
+  uint32 displayOrder = 3;
+}
+
 message AppConfiguration {
   RPCEndpoint dcrd_host = 1;
   repeated GRPCEndpoint dcrwallet_hosts = 2;
+  repeated AccountPreference accountPrefs = 3;
 }
 
 service NetworkService {
