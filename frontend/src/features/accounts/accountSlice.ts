@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
 import { IndexedWalletAccounts, WalletAccount, NextAddress } from "../../models";
 import { AppError } from '../../store/types';
 import LorcaBackend from '../../datasources/lorca';
@@ -170,7 +170,7 @@ const mapAccounts = (accounts: WalletAccount[]): IndexedWalletAccounts => {
 }
 
 
-export const loadAccountsAttempt = (): AppThunk => {
+export const loadAccountsAttempt: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch, getState) => {
 		if (getState().accounts.getAccountsAttempting) {
 			return
@@ -187,7 +187,7 @@ export const loadAccountsAttempt = (): AppThunk => {
 };
 
 
-export const accountNotification = (message: AccountNotificationsResponse): AppThunk => {
+export const accountNotification: ActionCreator<any> = (message: AccountNotificationsResponse): AppThunk => {
 	return (dispatch) => {
 		dispatch(accountNotificationsReceive(message))
 		dispatch(loadAccountsAttempt());
