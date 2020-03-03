@@ -2,7 +2,7 @@ import _ from "lodash";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 
 import { AppError } from "../../store/types";
-import { PurchaseTicketsResponse, PurchaseTicketsRequest } from "../../proto/api_pb";
+import { PurchaseTicketsResponse, PurchaseTicketsRequest, CommittedTicketsResponse } from "../../proto/api_pb";
 import { AppThunk, IApplicationState } from "../../store/store";
 import LorcaBackend from "../../datasources/lorca";
 import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../models";
@@ -46,8 +46,20 @@ export interface IPurchaseTicketsState {
 	readonly isPurchaseTicketAttempting: boolean
 }
 
+// CommittedTickets
+export interface ICommittedTicketsState {
+	readonly committedTicketsAttempting: boolean,
+	readonly committedTicketsResponse: CommittedTicketsResponse | null
+	readonly errorCommittedTickets: AppError | null
+}
 
-export const initialState: ITicketsState & ITicketPriceState & IAgendasState & IStakeInfoState & IPurchaseTicketsState = {
+export const initialState: ITicketsState &
+	ITicketPriceState &
+	IAgendasState &
+	IStakeInfoState &
+	IPurchaseTicketsState &
+	ICommittedTicketsState = {
+
 	// GetTickets
 	tickets: [],
 	endBlockHeight: 1,
@@ -74,7 +86,12 @@ export const initialState: ITicketsState & ITicketPriceState & IAgendasState & I
 	// PurchaseTickets
 	purchaseTicketResponse: null,
 	isPurchaseTicketAttempting: false,
-	errorPurchaseTickets: null
+	errorPurchaseTickets: null,
+
+	// CommittedTickets
+	committedTicketsAttempting: false,
+	committedTicketsResponse: null,
+	errorCommittedTickets: null,
 }
 
 const stakingSlice = createSlice({
@@ -156,6 +173,23 @@ const stakingSlice = createSlice({
 			state.purchaseTicketResponse = action.payload
 			state.isPurchaseTicketAttempting = false
 		},
+
+		// CommittedTickets
+		getCommittedTicketsAttempt(state) {
+			state.errorCommittedTickets = null
+			state.committedTicketsResponse = null
+			state.committedTicketsAttempting = true
+		},
+		getCommittedTicketsFailed(state, action: PayloadAction<AppError>) {
+			state.errorCommittedTickets = action.payload
+			state.committedTicketsResponse = null
+			state.committedTicketsAttempting = false
+		},
+		getCommittedTicketsSuccess(state, action: PayloadAction<CommittedTicketsResponse>) {
+			state.errorCommittedTickets = null
+			state.committedTicketsResponse = action.payload
+			state.committedTicketsAttempting = false
+		},
 	}
 })
 
@@ -185,6 +219,11 @@ export const {
 	purchaseTicketAttempt,
 	purchaseTicketFailed,
 	purchaseTicketSuccess,
+
+	// CommittedTickets
+	getCommittedTicketsAttempt,
+	getCommittedTicketsFailed,
+	getCommittedTicketsSuccess,
 
 } = stakingSlice.actions
 
