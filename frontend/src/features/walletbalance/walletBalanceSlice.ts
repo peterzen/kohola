@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
 import { WalletBalance } from "../../models";
 import { AppError } from '../../store/types';
 import LorcaBackend from '../../datasources/lorca';
@@ -47,7 +47,7 @@ export const {
 export default walletBalanceSlice.reducer
 
 
-export const loadWalletBalance = (): AppThunk => {
+export const loadWalletBalance: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch, getState) => {
 		if (getState().walletbalance.getBalanceAttempting) {
 			return

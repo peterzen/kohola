@@ -80,7 +80,7 @@ export const {
 
 export default networkinfoSlice.reducer
 
-export const loadBestBlockHeight = (): AppThunk => {
+export const loadBestBlockHeight: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch, getState) => {
 
 		if (getState().networkinfo.getBestBlockHeightAttempting) {
