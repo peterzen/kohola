@@ -1503,7 +1503,7 @@ proto.dcrwalletgui.AccountPreference.prototype.toObject = function(opt_includeIn
 proto.dcrwalletgui.AccountPreference.toObject = function(includeInstance, msg) {
   var f, obj = {
     accountnumber: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    visible: jspb.Message.getFieldWithDefault(msg, 2, false),
+    isHidden: jspb.Message.getFieldWithDefault(msg, 2, false),
     displayorder: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
@@ -1547,7 +1547,7 @@ proto.dcrwalletgui.AccountPreference.deserializeBinaryFromReader = function(msg,
       break;
     case 2:
       var value = /** @type {boolean} */ (reader.readBool());
-      msg.setVisible(value);
+      msg.setIsHidden(value);
       break;
     case 3:
       var value = /** @type {number} */ (reader.readUint32());
@@ -1588,7 +1588,7 @@ proto.dcrwalletgui.AccountPreference.serializeBinaryToWriter = function(message,
       f
     );
   }
-  f = message.getVisible();
+  f = message.getIsHidden();
   if (f) {
     writer.writeBool(
       2,
@@ -1621,18 +1621,18 @@ proto.dcrwalletgui.AccountPreference.prototype.setAccountnumber = function(value
 
 
 /**
- * optional bool visible = 2;
+ * optional bool is_hidden = 2;
  * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
  * You should avoid comparisons like {@code val === true/false} in those cases.
  * @return {boolean}
  */
-proto.dcrwalletgui.AccountPreference.prototype.getVisible = function() {
+proto.dcrwalletgui.AccountPreference.prototype.getIsHidden = function() {
   return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 2, false));
 };
 
 
 /** @param {boolean} value */
-proto.dcrwalletgui.AccountPreference.prototype.setVisible = function(value) {
+proto.dcrwalletgui.AccountPreference.prototype.setIsHidden = function(value) {
   jspb.Message.setField(this, 2, value);
 };
 

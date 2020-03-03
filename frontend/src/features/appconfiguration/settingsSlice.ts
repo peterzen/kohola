@@ -1,21 +1,22 @@
-
+import _ from 'lodash';
 
 import { createSlice, PayloadAction, ActionCreator, Dispatch } from '@reduxjs/toolkit'
 import { AppError, IGetState } from '../../store/types';
-import { AppConfiguration, RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
+import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference } from '../../proto/dcrwalletgui_pb';
 import AppBackend from '../../datasources/appbackend';
 import { initializeData } from '../../store/actions';
+import { IApplicationState } from '../../store/store';
 
 
 export interface IAppConfigurationState {
-	appConfig: AppConfiguration | null
+	appConfig: AppConfiguration
 	needSetup: boolean
 	setConfigError: AppError | null
 	setConfigAttempting: boolean
 }
 
 export const initialState: IAppConfigurationState = {
-	appConfig: null,
+	appConfig: new AppConfiguration(),
 	needSetup: false,
 	setConfigError: null,
 	setConfigAttempting: false,
@@ -44,11 +45,19 @@ const settingsSlice = createSlice({
 
 		},
 		getConfigNeedsSetup(state) {
-			const appConfig = state.appConfig || new AppConfiguration()
-			if (!appConfig.hasDcrdHost()) appConfig.setDcrdHost(new RPCEndpoint())
-			if (!appConfig.getDcrwalletHostsList().length) appConfig.addDcrwalletHosts(new GRPCEndpoint())
+			const cfg = state.appConfig
+			if (!cfg.hasDcrdHost()) cfg.setDcrdHost(new RPCEndpoint())
+			if (!cfg.getDcrwalletHostsList().length) cfg.addDcrwalletHosts(new GRPCEndpoint())
 			state.needSetup = true
-			state.appConfig = appConfig
+			state.appConfig = cfg
+		},
+		setAccountPreference(state, action: PayloadAction<AccountPreference>) {
+			const cfg = state.appConfig
+			const newPref = action.payload
+			const prefs = cfg.getAccountprefsList()
+			const updatedPrefs = _.filter(prefs, (p) => p.getAccountnumber() != newPref.getAccountnumber())
+			updatedPrefs.push(newPref)
+			cfg.setAccountprefsList(updatedPrefs)
 		}
 	}
 })
@@ -59,19 +68,18 @@ export const {
 	setConfigSuccess,
 	getConfigSuccess,
 	getConfigFailed,
-	getConfigNeedsSetup
+	getConfigNeedsSetup,
+	setAccountPreference
 } = settingsSlice.actions
 
 export default settingsSlice.reducer
-
-
 
 export const getConfiguration: ActionCreator<any> = () => {
 
 	return async (dispatch: Dispatch) => {
 		try {
-			const appConfig = await AppBackend.getAppConfig()
-			dispatch(getConfigSuccess(appConfig))
+			const cfg = await AppBackend.getAppConfig()
+			dispatch(getConfigSuccess(cfg))
 		}
 		catch (error) {
 			dispatch(getConfigFailed(error))
@@ -79,19 +87,19 @@ export const getConfiguration: ActionCreator<any> = () => {
 	}
 }
 
-
-export const saveConfigurationAttempt: ActionCreator<any> = (appConfig: AppConfiguration) => {
+export const saveConfigurationAttempt: ActionCreator<any> = () => {
 
 	return async (dispatch: Dispatch, getState: IGetState) => {
 
 		const { setConfigAttempting } = getState().appconfiguration
-
 		if (setConfigAttempting == true) {
 			return
 		}
+
 		dispatch(setConfigAttempt())
 		try {
-			const response = await AppBackend.setAppConfig(appConfig)
+			const cfg = getState().appconfiguration.appConfig
+			const response = await AppBackend.setAppConfig(cfg)
 			dispatch(setConfigSuccess(response))
 			await dispatch(getConfiguration())
 			await dispatch(initializeData())
@@ -115,4 +123,25 @@ export const canStartup: ActionCreator<any> = () => {
 			dispatch(getConfigFailed(error))
 		}
 	}
+}
+
+export const updateAccountPreference: ActionCreator<any> = (accountNumber: number, isHidden: boolean) => {
+	return async (dispatch: Dispatch) => {
+		const pref = new AccountPreference()
+		pref.setAccountnumber(accountNumber)
+		pref.setIsHidden(isHidden)
+		dispatch(setAccountPreference(pref))
+		dispatch(saveConfigurationAttempt())
+	}
+}
+
+// selectors
+export interface IIndexedAccountPrefs {
+	[accountNumber: number]: AccountPreference
+}
+
+export const getAccountPrefs = (state: IApplicationState): IIndexedAccountPrefs => {
+	const indexedAccountPrefs: IIndexedAccountPrefs = {}
+	_.each(state.appconfiguration.appConfig.getAccountprefsList(), (p) => indexedAccountPrefs[p.getAccountnumber()] = p)
+	return indexedAccountPrefs
 }

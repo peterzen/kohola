@@ -51,9 +51,8 @@ class SettingsContainer extends React.Component<Props> {
 	}
 
 	handleFormComplete() {
-		this.props.saveConfigurationAttempt(this.props.appConfig)
+		this.props.saveConfigurationAttempt()
 	}
-
 }
 
 interface DispatchProps {

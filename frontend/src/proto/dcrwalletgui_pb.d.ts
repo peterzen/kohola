@@ -216,8 +216,8 @@ export class AccountPreference extends jspb.Message {
   getAccountnumber(): number;
   setAccountnumber(value: number): void;
 
-  getVisible(): boolean;
-  setVisible(value: boolean): void;
+  getIsHidden(): boolean;
+  setIsHidden(value: boolean): void;
 
   getDisplayorder(): number;
   setDisplayorder(value: number): void;
@@ -235,7 +235,7 @@ export class AccountPreference extends jspb.Message {
 export namespace AccountPreference {
   export type AsObject = {
     accountnumber: number,
-    visible: boolean,
+    isHidden: boolean,
     displayorder: number,
   }
 }

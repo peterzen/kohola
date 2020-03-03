@@ -1,7 +1,7 @@
 import { Moment } from "moment";
 import { formatTimestamp } from "../../helpers";
 import React from "react";
-import { Transaction, IndexedWalletAccounts, WalletBalance } from "../../models";
+import { Transaction, IndexedWalletAccounts, WalletBalance, WalletAccount } from "../../models";
 import _ from "lodash";
 import { sprintf } from "sprintf-js";
 
@@ -23,6 +23,7 @@ import { getWalletBalances } from "../../features/walletbalance/selectors";
 import { connect } from "react-redux";
 import { IApplicationState } from "../../store/store";
 import { getAccounts } from "../../features/accounts/accountSlice";
+import { IIndexedAccountPrefs, getAccountPrefs } from "../../features/appconfiguration/settingsSlice";
 
 
 interface TimestampProps {
@@ -221,6 +222,13 @@ interface IAccountSelectProps {
 }
 
 const _AccountSelector = (props: IAccountSelectProps & OwnProps) => {
+
+	const isHidden = (account: WalletAccount): boolean => {
+		const accountPref = props.accountPrefs[account.getAccountNumber()]
+		if (accountPref == undefined) return false
+		return accountPref.getIsHidden()
+	}
+
 	return (
 		<Form.Control
 			tabIndex={0}
@@ -229,10 +237,12 @@ const _AccountSelector = (props: IAccountSelectProps & OwnProps) => {
 			onChange={props.onChange}
 			as="select">
 			<option value={-1}>Choose account</option>
-			{_.map(props.accounts, (a, n) => (
-				<option key={n} value={a.getAccountNumber()}>{a.getAccountName()} ({props.balances[a.getAccountNumber()] && props.balances[a.getAccountNumber()].getSpendable() / ATOMS_DIVISOR} DCR)</option>
-
-			))}
+			{_.map(props.accounts, (a, n) => {
+				if (isHidden(a) == true) return null
+				return (
+					<option key={n} value={a.getAccountNumber()}>{a.getAccountName()} ({props.balances[a.getAccountNumber()] && props.balances[a.getAccountNumber()].getSpendable() / ATOMS_DIVISOR} DCR)</option>
+				)
+			})}
 		</Form.Control>
 	)
 }
@@ -240,13 +250,15 @@ const _AccountSelector = (props: IAccountSelectProps & OwnProps) => {
 interface OwnProps {
 	balances: WalletBalance
 	accounts: IndexedWalletAccounts
+	accountPrefs: IIndexedAccountPrefs
 }
 
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
 		accounts: getAccounts(state),
-		balances: getWalletBalances(state)
+		balances: getWalletBalances(state),
+		accountPrefs: getAccountPrefs(state)
 	};
 }
 

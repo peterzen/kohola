@@ -12,6 +12,7 @@ import GetNewAddressDialog from "../accounts/GetNewAddressDialog"
 import { MenuItems } from "../accounts/AccountToolsDropdown"
 import WalletTotalsComponent from "./WalletTotalsComponent"
 import { Card } from "react-bootstrap"
+// @ts-ignore
 import Fade from 'react-reveal/Fade';
 import { loadNextAddressAttempt, getAccounts } from "../accounts/accountSlice"
 import { IApplicationState } from "../../store/store"
