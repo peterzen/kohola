@@ -1,9 +1,12 @@
-import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../models";
+import _ from "lodash";
+import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
+
 import { AppError } from "../../store/types";
 import { PurchaseTicketsResponse, PurchaseTicketsRequest } from "../../proto/api_pb";
-import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 import { AppThunk, IApplicationState } from "../../store/store";
 import LorcaBackend from "../../datasources/lorca";
+import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../models";
+
 
 // GetTickets
 export interface ITicketsState {
