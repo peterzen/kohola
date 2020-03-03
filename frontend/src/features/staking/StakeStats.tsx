@@ -1,13 +1,13 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { Row, Col, Card, ListGroup, ListGroupItem, Container } from 'react-bootstrap';
+import { Row, Col, Card, Container } from 'react-bootstrap';
 
 import { IApplicationState } from "../../store/store";
-import { IStakeInfoState } from "../../store/staking/types";
-import { loadStakeInfoAttempt } from "../../store/staking/actions";
 import { TicketStatusIcon } from "./TicketStatusIcon";
 import { TicketStatus } from "../../constants";
-import { Amount } from "../Shared/shared";
+import { Amount } from "../../components/Shared/shared";
+import { loadStakeInfoAttempt, IStakeInfoState } from "./stakingSlice";
+import { bindActionCreators, Dispatch } from "redux";
 
 
 class StakeStats extends React.Component<Props, InternalState> {
@@ -74,33 +74,33 @@ class StakeStats extends React.Component<Props, InternalState> {
 		)
 	}
 
-	componentWillMount() {
-		this.props.dispatch(loadStakeInfoAttempt())
+	componentDidMount() {
+		this.props.loadStakeInfoAttempt()
 	}
-
 }
 
 
-const mapStateToProps = (state: IApplicationState, ownProps: StakeInfoOwnProps): IStakeInfoState => {
-	return {
-		...state.staking,
-		stakeinfo: state.staking.stakeinfo,
-	};
-}
-
-
-export interface StakeInfoOwnProps {
-	// propFromParent: number
+interface OwnProps {
 }
 
 interface DispatchProps {
-	// onSomeEvent: () => void
+	loadStakeInfoAttempt: () => void
 }
 
-type Props = IStakeInfoState & DispatchProps & StakeInfoOwnProps
+type Props = DispatchProps & OwnProps
 
 interface InternalState {
-	// internalComponentStateField: string
 }
 
-export default connect(mapStateToProps)(StakeStats)
+const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
+	return {
+		...state.staking,
+		stakeinfo: state.staking.stakeinfo,
+	}
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	loadStakeInfoAttempt: loadStakeInfoAttempt
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(StakeStats)

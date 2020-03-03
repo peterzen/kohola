@@ -1,4 +1,4 @@
-import { Dispatch, ActionCreator } from 'redux';
+import {  ActionCreator, Dispatch } from 'redux';
 import { batch } from 'react-redux'
 
 import { IGetState } from './types';
@@ -10,11 +10,12 @@ import {
 	ConfirmationNotificationsResponse
 } from '../proto/api_pb';
 
+import { AppDispatch } from './store';
+
 import { hexToRaw } from '../helpers/byteActions';
 import { loadWalletBalance } from '../features/walletbalance/walletBalanceSlice'
-import { loadTicketsAttempt } from './staking/actions';
+import { loadTicketsAttempt } from '../features/staking/stakingSlice';
 import { loadBestBlockHeight } from '../features/networkinfo/networkInfoSlice';
-import { AppDispatch } from './store';
 import { getConfiguration, canStartup } from '../features/appconfiguration/settingsSlice';
 import { loadAccountsAttempt, accountNotification } from '../features/accounts/accountSlice';
 import { getUnspentOutputsAttempt, fetchUnspentsAttempt } from '../features/unspents/unspentsSlice';

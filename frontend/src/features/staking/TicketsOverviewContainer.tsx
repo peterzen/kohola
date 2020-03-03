@@ -3,15 +3,14 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { Ticket } from '../../models';
-import { ITicketsState } from '../../store/staking/types';
-import { getTickets } from '../../store/staking/selectors';
 
 import TicketsTable from './TicketsTable';
 import TicketDetailsModal from './TicketDetailsComponent';
 import { Card, Dropdown } from 'react-bootstrap';
-import { WidgetOptionsButton } from '../Shared/shared';
+import { WidgetOptionsButton } from '../../components/Shared/shared';
 // import { Range, getTrackBackground } from 'react-range'
 import { IApplicationState } from '../../store/store';
+import { getTickets } from './stakingSlice';
 
 class TicketsOverviewContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -51,11 +50,10 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
 	}
 	componentDidMount() {
 		// this.props.dispatch(loadTicketsAttempt());
-
 	}
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: TicketsOverviewOwnProps) => {
+const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
 	return {
 		...state.staking,
 		tickets: getTickets(state),
@@ -64,15 +62,14 @@ const mapStateToProps = (state: IApplicationState, ownProps: TicketsOverviewOwnP
 
 export default connect(mapStateToProps)(TicketsOverviewContainer)
 
-export interface TicketsOverviewOwnProps {
-	// propFromParent: number
+interface OwnProps {
+	tickets: Ticket[]
 }
 
 interface DispatchProps {
-	// onSomeEvent: () => void
 }
 
-type Props = ITicketsState & DispatchProps & TicketsOverviewOwnProps
+type Props = OwnProps & DispatchProps
 
 interface InternalState {
 	showModal: boolean

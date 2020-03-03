@@ -2,20 +2,18 @@ import * as React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
-import StakeStats from '../components/Staking/StakeStats';
-import TicketPriceComponent from '../components/Staking/TicketPriceComponent';
-import StakeInfoComponent from '../components/Staking/StakeInfoComponent';
-import AgendasComponent from '../components/Staking/AgendasComponent';
-import { IStakingState } from '../store/staking/types';
-import TicketsOverviewContainer from '../components/Staking/TicketsOverviewContainer';
+import StakeStats from '../features/staking/StakeStats';
+import TicketPriceComponent from '../features/staking/TicketPriceComponent';
+import StakeInfoComponent from '../features/staking/StakeInfoComponent';
+import AgendasComponent from '../features/staking/AgendasComponent';
+import TicketsOverviewContainer from '../features/staking/TicketsOverviewContainer';
 import { Row, Col } from 'react-bootstrap';
-import PurchaseTicketForm from '../components/Staking/PurchaseTicket/SimplePurchaseTicketForm';
-import TicketBuyerComponent from '../components/Staking/TicketBuyerComponent';
-
-
-import Fade from 'react-reveal/Fade';
-import { TransitionGroup } from 'react-transition-group';
+import PurchaseTicketForm from '../features/staking/PurchaseTicket/SimplePurchaseTicketForm';
+import TicketBuyerComponent from '../features/staking/TicketBuyerComponent';
 import { IApplicationState } from '../store/store';
+
+// @ts-ignore
+import Fade from 'react-reveal/Fade';
 
 
 class StakingContainer extends React.PureComponent<{}, {}> {

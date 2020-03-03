@@ -2,12 +2,12 @@ import * as React from 'react';
 import _ from 'lodash';
 
 import { Ticket } from '../../models';
-import { TransactionHash } from '../Shared/shared';
+import { TransactionHash } from '../../components/Shared/shared';
 
 import TimeAgo from 'react-timeago';
 import { Table } from 'react-bootstrap';
 import { TicketStatusIcon } from './TicketStatusIcon';
-import { TransactionMempoolStatusIcon } from '../Transactions/TransactionTable';
+import { TransactionMempoolStatusIcon } from '../../components/Transactions/TransactionTable';
 
 // @ts-ignore
 import Fade from 'react-reveal/Fade';

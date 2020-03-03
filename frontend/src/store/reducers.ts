@@ -2,7 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit'
 import { connectRouter } from 'connected-react-router'
 
 import ping from '../features/networkinfo/pingSlice'
-import staking from "./staking/reducers"
+import staking from '../features/staking/stakingSlice'
 import accounts from '../features/accounts/accountSlice'
 import networkinfo from '../features/networkinfo/networkInfoSlice'
 import transactions from "./transactions/reducers";

@@ -16,7 +16,6 @@ import {
 import { CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED, CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL, DEFAULT_FEE } from '../../constants';
 
 import { IGetState, AppError } from '../types';
-import { loadTicketsAttempt, loadStakeInfoAttempt } from '../staking/actions';
 import { ConstructTransactionRequest, SignTransactionRequest, PublishTransactionRequest, TransactionNotificationsResponse } from '../../proto/api_pb';
 import { ConstructTxOutput } from '../../datasources/models';
 import { getChangeScriptCache } from './selectors';
@@ -25,6 +24,7 @@ import LorcaBackend from '../../datasources/lorca';
 import { loadWalletBalance } from '../../features/walletbalance/walletBalanceSlice';
 import { loadBestBlockHeight } from '../../features/networkinfo/networkInfoSlice';
 import { lookupAccount } from '../../features/accounts/accountSlice';
+import { loadStakeInfoAttempt, loadTicketsAttempt } from '../../features/staking/stakingSlice';
 
 
 export const loadTransactionsAttempt: ActionCreator<any> = () => {

@@ -3,8 +3,8 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
 
-import { AccountSelector, Amount } from '../../Shared/shared';
-import { TxConfirmationPanel } from "../../Shared/TxConfirmationPanel";
+import { AccountSelector, Amount } from '../../../components/Shared/shared';
+import { TxConfirmationPanel } from "../../../components/Shared/TxConfirmationPanel";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
@@ -15,28 +15,31 @@ import { WalletBalance, TicketPrice } from '../../../models';
 
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import { PurchaseTicketsRequest, PurchaseTicketsResponse } from '../../../proto/api_pb';
-import { purchaseTicketAttempt } from '../../../store/staking/actions';
-import PassphraseEntryDialog, { askPassphrase } from '../../Shared/PassphraseEntryDialog';
-import { getWalletBalances } from '../../../features/walletbalance/selectors';
+import PassphraseEntryDialog, { askPassphrase } from '../../../components/Shared/PassphraseEntryDialog';
+import { getWalletBalances } from '../../walletbalance/selectors';
 
-
-import { Row, Col, Form, Button, Card, InputGroup, Alert, FormControl } from 'react-bootstrap';
-import { getTicketPrice } from '../../../store/staking/selectors';
 import { AppError } from '../../../store/types';
+import { purchaseTicket, getTicketPrice } from '../stakingSlice';
+import { Row, Col, Form, Button, Card, InputGroup, Alert, FormControl } from 'react-bootstrap';
 
+interface IIntegerInputControlProps {
+	name: string,
+	max: number,
+	onChange: () => void
+}
 
-export const IntegerInputControl = (props: { name: string, max: number, onChange: () => void }) => {
+export const IntegerInputControl = (props: IIntegerInputControlProps) => {
 
 	let ref: FormControl<"input"> | null
 	const t = () => ref
 
 	const stepDown = (e: any) => {
 		t().value > 0 && t().stepDown();
-		props.onChange(e)
+		props.onChange()
 	}
 	const stepUp = (e: any) => {
 		t().value < props.max && t().stepUp();
-		props.onChange(e)
+		props.onChange()
 	}
 
 	return (
@@ -102,7 +105,9 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 							<Row>
 								<Col>
 									<div className="text-right">
-										<h4><small>Current price:</small> <Amount amount={this.props.ticketPrice.getTicketPrice()} showCurrency /></h4>
+										<h4>
+											<small>Current price:</small> <Amount amount={this.props.ticketPrice.getTicketPrice()} showCurrency />
+										</h4>
 									</div>
 								</Col>
 							</Row>
@@ -116,7 +121,6 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 							<Form.Group as={Row}>
 								<Col sm={8}>
 									<IntegerInputControl
-										required
 										className="ml-3 mr-3"
 										placeholder="# of tix"
 										name="num_tickets"
@@ -210,7 +214,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 			})
 			.then((r) => {
 				console.log("askPassphrase", request.toObject())
-				return this.props.purchaseTicketAttempt(request)
+				return this.props.purchaseTicket(request)
 			})
 			.then((r) => {
 				// this.setState({ error: err })
@@ -277,7 +281,7 @@ interface OwnProps {
 
 
 interface DispatchProps {
-	purchaseTicketAttempt(...arguments: any): Promise<any>
+	purchaseTicket(...arguments: any): void
 }
 
 type Props = DispatchProps & OwnProps & IPurchaseTicketFormProps
@@ -298,7 +302,7 @@ interface InternalState {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-	purchaseTicketAttempt: purchaseTicketAttempt,
+	purchaseTicket: purchaseTicket,
 }, dispatch)
 
 

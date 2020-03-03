@@ -72,7 +72,7 @@ const LorcaBackend = {
 		}
 		catch (e) {
 			console.error(e)
-			return
+			return e
 		}
 	},
 

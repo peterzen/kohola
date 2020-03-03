@@ -3,11 +3,10 @@ import { connect } from "react-redux";
 import { Row, Col, Card } from 'react-bootstrap';
 
 import { IApplicationState } from "../../store/store";
-import { IStakeInfoState } from "../../store/staking/types";
-import { loadStakeInfoAttempt } from "../../store/staking/actions";
 import { TicketStatusIcon } from "./TicketStatusIcon";
 import { TicketStatus } from "../../constants";
-import { Amount } from "../Shared/shared";
+import { loadStakeInfoAttempt, IStakeInfoState } from "./stakingSlice";
+import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 
 
 class StakeInfoComponent extends React.Component<Props, InternalState> {
@@ -56,34 +55,33 @@ class StakeInfoComponent extends React.Component<Props, InternalState> {
 			</Card>
 		)
 	}
-
-	componentWillMount() {
-		this.props.dispatch(loadStakeInfoAttempt())
+	componentDidMount() {
+		this.props.loadStakeInfoAttempt()
 	}
-
 }
 
 
-const mapStateToProps = (state: IApplicationState, ownProps: StakeInfoOwnProps): IStakeInfoState => {
+interface OwnProps {
+}
+
+interface DispatchProps {
+	loadStakeInfoAttempt: () => void
+}
+
+type Props = IStakeInfoState & DispatchProps & OwnProps
+
+interface InternalState {
+}
+
+const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): IStakeInfoState => {
 	return {
 		...state.staking,
 		stakeinfo: state.staking.stakeinfo,
 	};
 }
 
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	loadStakeInfoAttempt: loadStakeInfoAttempt
+}, dispatch)
 
-export interface StakeInfoOwnProps {
-	// propFromParent: number
-}
-
-interface DispatchProps {
-	// onSomeEvent: () => void
-}
-
-type Props = IStakeInfoState & DispatchProps & StakeInfoOwnProps
-
-interface InternalState {
-	// internalComponentStateField: string
-}
-
-export default connect(mapStateToProps)(StakeInfoComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(StakeInfoComponent)

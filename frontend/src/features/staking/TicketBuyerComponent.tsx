@@ -2,7 +2,7 @@ import * as React from 'react';
 import _ from 'lodash';
 
 import { Row, Col, Form, Button, Card } from 'react-bootstrap';
-import { PasteButton, InfoTooltip, Amount } from '../Shared/shared';
+import { PasteButton, InfoTooltip, Amount } from '../../components/Shared/shared';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
@@ -13,7 +13,6 @@ import { AppError } from '../../store/types';
 import { sprintf } from 'sprintf-js';
 import LorcaBackend from '../../datasources/lorca';
 import { Ticket } from '../../models';
-
 
 
 

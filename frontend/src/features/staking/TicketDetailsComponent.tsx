@@ -4,10 +4,10 @@ import { Table, Accordion, Button } from 'react-bootstrap'
 import TimeAgo from 'react-timeago';
 
 import { Ticket } from "../../models";
-import { TransactionHash, Amount } from "../Shared/shared";
-import GenericModalDialog from '../Shared/GenericModalDialog';
+import { TransactionHash, Amount } from "../../components/Shared/shared";
+import GenericModalDialog from '../../components/Shared/GenericModalDialog';
 import { TicketStatusIcon } from "./TicketStatusIcon";
-import { TransactionMempoolStatusIcon } from "../Transactions/TransactionTable";
+import { TransactionMempoolStatusIcon } from "../../components/Transactions/TransactionTable";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faCaretDown
