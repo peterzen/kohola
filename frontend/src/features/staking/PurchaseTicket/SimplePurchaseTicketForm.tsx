@@ -3,16 +3,12 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Row, Col, Form, Button, Card, InputGroup, Alert, FormControl } from 'react-bootstrap';
+import { Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 // import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
 import { AccountSelector, Amount } from '../../../components/Shared/shared';
 import { TxConfirmationPanel } from "../../../components/Shared/TxConfirmationPanel";
 
-import {
-	faPlus, faMinus,
-} from '@fortawesome/free-solid-svg-icons'
 import { IApplicationState } from '../../../store/store';
 import { WalletBalance, TicketPrice } from '../../../models';
 
@@ -22,56 +18,7 @@ import PassphraseEntryDialog, { askPassphrase } from '../../../components/Shared
 import { AppError } from '../../../store/types';
 import { purchaseTicket, getTicketPrice } from '../stakingSlice';
 import { getWalletBalances } from '../../balances/walletBalanceSlice';
-
-interface IIntegerInputControlProps {
-	name: string,
-	max: number,
-	onChange: () => void
-}
-
-export const IntegerInputControl = (props: IIntegerInputControlProps) => {
-
-	let ref: FormControl<"input"> | null
-	const t = () => ref
-
-	const stepDown = (e: any) => {
-		t().value > 0 && t().stepDown();
-		props.onChange()
-	}
-	const stepUp = (e: any) => {
-		t().value < props.max && t().stepUp();
-		props.onChange()
-	}
-
-	return (
-		<>
-			<InputGroup {...props} >
-				<InputGroup.Prepend>
-					<Button variant="outline-secondary"
-						tabIndex={-1}
-						onClick={stepDown}>
-						<FontAwesomeIcon icon={faMinus} />
-					</Button>
-				</InputGroup.Prepend>
-				<Form.Control
-					name={props.name}
-					type="number"
-					size="lg"
-					ref={(rr: any) => { ref = rr }}
-					{...props}
-				/>
-				<InputGroup.Append>
-					<Button
-						tabIndex={-1}
-						variant="outline-secondary"
-						onClick={stepUp}
-					><FontAwesomeIcon icon={faPlus} />
-					</Button>
-				</InputGroup.Append>
-			</InputGroup>
-		</>
-	)
-}
+import { SteppableNumberInput } from '../../../components/Shared/SteppableNumberInput';
 
 class PurchaseTicketForm extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -121,7 +68,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 							</Form.Group>
 							<Form.Group as={Row}>
 								<Col sm={8}>
-									<IntegerInputControl
+									<SteppableNumberInput
 										className="ml-3 mr-3"
 										placeholder="# of tix"
 										name="num_tickets"
@@ -289,7 +236,7 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 }
 
 interface DispatchProps {
-	purchaseTicket:typeof purchaseTicket
+	purchaseTicket: typeof purchaseTicket
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
