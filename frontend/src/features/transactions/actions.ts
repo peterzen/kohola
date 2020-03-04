@@ -36,6 +36,7 @@ import { loadWalletBalance } from '../balances/walletBalanceSlice';
 import { loadBestBlockHeight } from '../../features/networkinfo/networkInfoSlice';
 import { lookupAccount } from '../balances/accountSlice';
 import { loadStakeInfoAttempt, loadTicketsAttempt } from '../../features/staking/stakingSlice';
+import { batch } from 'react-redux';
 
 export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch, getState) => {
@@ -58,12 +59,14 @@ export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {
 
 export const transactionNotification: ActionCreator<any> = (message: TransactionNotificationsResponse): AppThunk => {
 	return async (dispatch) => {
-		dispatch(loadBestBlockHeight());
-		dispatch(loadStakeInfoAttempt());
-		dispatch(loadTicketsAttempt());
-		dispatch(loadTransactionsAttempt());
-		dispatch(loadWalletBalance());
-		dispatch(transactionNotificationReceived(message))
+		batch(() => {
+			dispatch(loadBestBlockHeight());
+			dispatch(loadStakeInfoAttempt());
+			dispatch(loadTicketsAttempt());
+			dispatch(loadTransactionsAttempt());
+			dispatch(loadWalletBalance());
+			dispatch(transactionNotificationReceived(message))
+		})
 	}
 }
 
@@ -74,7 +77,7 @@ export const constructTransaction: ActionCreator<any> = (
 	outputs: ConstructTxOutput[],
 	sendAllFlag: boolean): AppThunk => {
 
-	return async (dispatch, getState) => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
 		const { constructTransactionAttempting } = getState().transactions;
 		if (constructTransactionAttempting) {
 			return
@@ -168,7 +171,7 @@ export const constructTransaction: ActionCreator<any> = (
 			return constructTxResponse;
 		}
 		catch (error) {
-			dispatch(constructTransactionFailed(error))
+			return dispatch(constructTransactionFailed(error))
 		}
 	}
 }
