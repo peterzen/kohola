@@ -8,7 +8,7 @@ import { AppError } from '../store/types';
 import { IApplicationState } from '../store/store';
 import { AppConfiguration } from '../proto/dcrwalletgui_pb';
 import { Alert, Tabs, Tab, Card } from 'react-bootstrap';
-import { saveConfigurationAttempt } from '../features/appconfiguration/settingsSlice';
+import { saveConfigurationAttempt, IAppConfigurationState } from '../features/appconfiguration/settingsSlice';
 import ConnectionSettings from '../features/appconfiguration/ConnectionSettings';
 import AccountsSetup from '../features/balances/AccountsSetup';
 import Preferences from '../features/appconfiguration/Preferences';
@@ -27,7 +27,7 @@ class SettingsContainer extends React.Component<Props> {
 							<ConnectionSettings
 								appConfig={this.props.appConfig}
 								setConfigError={this.props.setConfigError}
-								onFormComplete={_.bind(this.handleFormComplete, this)}
+								onFormComplete={() => this.props.saveConfigurationAttempt()}
 							/>
 						</Tab.Content>
 					</Tab>
@@ -49,14 +49,6 @@ class SettingsContainer extends React.Component<Props> {
 			</div>
 		)
 	}
-
-	handleFormComplete() {
-		this.props.saveConfigurationAttempt()
-	}
-}
-
-interface DispatchProps {
-	saveConfigurationAttempt: (...arguments: any) => void
 }
 
 interface OwnProps {
@@ -66,14 +58,18 @@ interface OwnProps {
 
 type Props = OwnProps & DispatchProps
 
-const mapStateToProps = (state: IApplicationState) => {
+const mapStateToProps = (state: IApplicationState): IAppConfigurationState => {
 	return {
 		...state.appconfiguration
 	};
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-	saveConfigurationAttempt: saveConfigurationAttempt,
-}, dispatch)
+interface DispatchProps {
+	saveConfigurationAttempt: typeof saveConfigurationAttempt
+}
+
+const mapDispatchToProps = {
+	saveConfigurationAttempt,
+}
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SettingsContainer));
