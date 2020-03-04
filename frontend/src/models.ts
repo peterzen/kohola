@@ -14,7 +14,6 @@ import {
 	StopAutoBuyerResponse,
 	TicketBuyerConfigResponse,
 	LoadActiveDataFiltersResponse,
-	BlockDetails,
 } from './proto/api_pb';
 import { TransactionDirection, TicketStatus, TicketStatusLabels } from './constants';
 import { reverseHash } from './helpers';
@@ -204,7 +203,6 @@ export class Ticket {
 	private tx: Transaction;
 	private status: TicketStatus;
 	private statusLabel: string;
-	private block: IBlockTemplate;
 
 	constructor(td: GetTicketsResponse.TicketDetails, block?: IBlockTemplate) {
 		this.tx = new Transaction(td.getTicket(), block);
