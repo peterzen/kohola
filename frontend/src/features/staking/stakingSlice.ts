@@ -62,9 +62,9 @@ export const initialState: ITicketsState &
 
 	// GetTickets
 	tickets: [],
-	endBlockHeight: 1,
-	startBlockHeight: -4,
-	targetTicketCount: 50,
+	endBlockHeight: 0,
+	startBlockHeight: 1,
+	targetTicketCount: 0,
 	getTicketsRequest: false,
 	errorGetTickets: null,
 

@@ -25,29 +25,27 @@ export default class TicketsTable extends React.Component<TicketsTableProps> {
 						<th>hash</th>
 					</tr>
 				</thead>
-				<tbody>
-					{this.props.items.length > 0 && (
-						<Fade fade cascade>
-							{this.props.items.map((ticket) => {
-								const tx = ticket.getTx()
-								return (
-									<tr className="clickable" key={tx.getHash()} onClick={() => this.props.onItemClick(ticket)}>
-										<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
-										<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
-										<td><TicketStatusIcon status={ticket.getStatus()} /></td>
-										<td><TransactionHash tx={tx} /></td>
-									</tr>
-								)
-							})}
-						</Fade>
-					)}
-				</tbody>
+				{this.props.items.length > 0 && (
+					<tbody>
+						{this.props.items.map((ticket) => {
+							const tx = ticket.getTx()
+							return (
+								<tr className="clickable" key={tx.getHash()} onClick={() => this.props.onItemClick(ticket)}>
+									<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
+									<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
+									<td><TicketStatusIcon status={ticket.getStatus()} /></td>
+									<td><TransactionHash tx={tx} /></td>
+								</tr>
+							)
+						})}
+					</tbody>
+				)}
 			</Table>
 		)
 	}
 }
 
 interface TicketsTableProps {
-	items: Ticket[],
+	items: Ticket[]
 	onItemClick: (ticket: Ticket) => void
 }
