@@ -5,8 +5,8 @@ import { Navbar, Nav, Button } from 'react-bootstrap';
 import BestBlockComponent from '../../features/networkinfo/BestBlockComponent';
 import ConnectionStatus from '../../features/networkinfo/ConnectionStatus';
 
+// @ts-ignore
 import Logo from '../../images/logo.svg'
-import SendTransaction from '../Transactions/SendTransaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
