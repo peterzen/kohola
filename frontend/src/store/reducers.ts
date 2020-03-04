@@ -5,7 +5,7 @@ import ping from '../features/networkinfo/pingSlice'
 import staking from '../features/staking/stakingSlice'
 import accounts from '../features/accounts/accountSlice'
 import networkinfo from '../features/networkinfo/networkInfoSlice'
-import transactions from "./transactions/reducers";
+import transactions from '../features/transactions/transactionsSlice'
 import walletbalance from '../features/walletbalance/walletBalanceSlice'
 import unspentoutputs from '../features/unspents/unspentsSlice'
 import appconfiguration from '../features/appconfiguration/settingsSlice'

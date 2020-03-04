@@ -1,76 +1,85 @@
 import _ from 'lodash';
+import { ActionCreator } from 'redux';
 
-import { Dispatch, ActionCreator } from 'redux';
-import { ThunkDispatch } from 'redux-thunk';
-
-import {
-	TransactionsActionTypes, TransactionNotificationsReceived, SendTransactionSteps, HumanreadableTxInfo,
-	GETTRANSACTION_ATTEMPT, GETTRANSACTION_SUCCESS, GETTRANSACTION_FAILED,
-	TRANSACTIONNOTIFICATIONS_RECEIVED,
-	CONSTRUCTTRANSACTIONATTEMPT, CONSTRUCTTRANSACTIONSUCCESS, CONSTRUCTTRANSACTIONFAILED,
-	SIGNTRANSACTIONATTEMPT, SIGNTRANSACTIONSUCCESS, SIGNTRANSACTIONFAILED, SIGNTRANSACTIONCANCEL,
-	PUBLISHTRANSACTIONATTEMPT, PUBLISHTRANSACTIONSUCCESS, PUBLISHTRANSACTIONFAILED,
-
-} from './types';
 
 import { CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED, CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL, DEFAULT_FEE } from '../../constants';
 
-import { IGetState, AppError } from '../types';
 import { ConstructTransactionRequest, SignTransactionRequest, PublishTransactionRequest, TransactionNotificationsResponse } from '../../proto/api_pb';
 import { ConstructTxOutput } from '../../datasources/models';
-import { getChangeScriptCache } from './selectors';
 import { decodeRawTransaction } from '../../helpers/tx';
 import LorcaBackend from '../../datasources/lorca';
+import { AppThunk, AppDispatch } from '../../store/store';
+import {
+	getTransactionsAttempt,
+	getTransactionsSuccess,
+	getTransactionsFailed,
+	transactionNotificationReceived,
+	getChangeScriptCache,
+	SendTransactionSteps,
+	constructTransactionFailed,
+	HumanreadableTxInfo,
+	constructTransactionSuccess,
+	signTransactionCancel,
+	signTransactionSuccess,
+	signTransactionFailed,
+	publishTransactionSuccess,
+	publishTransactionFailed,
+	validateAddressSuccess,
+	validateAddressFailed,
+	signTransactionAttempt,
+	constructTransactionAttempt,
+	publishTransactionAttempt
+} from './transactionsSlice';
+import { AppError, IGetState } from '../../store/types';
+
 import { loadWalletBalance } from '../../features/walletbalance/walletBalanceSlice';
 import { loadBestBlockHeight } from '../../features/networkinfo/networkInfoSlice';
 import { lookupAccount } from '../../features/accounts/accountSlice';
 import { loadStakeInfoAttempt, loadTicketsAttempt } from '../../features/staking/stakingSlice';
 
-
-export const loadTransactionsAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
+export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {
+	return async (dispatch, getState) => {
 
 		const { getTransactionsRequest, startBlockHeight, endBlockHeight, targetTxCount } = getState().transactions
 		if (getTransactionsRequest) {
 			return
 		}
-
-		dispatch({ type: GETTRANSACTION_ATTEMPT });
+		dispatch(getTransactionsAttempt())
 		try {
 			const resp = await LorcaBackend.fetchTransactions(startBlockHeight, endBlockHeight, targetTxCount)
-			dispatch({ payload: resp, type: GETTRANSACTION_SUCCESS });
+			dispatch(getTransactionsSuccess(resp))
 		}
 		catch (error) {
-			dispatch({ error, type: GETTRANSACTION_FAILED });
+			dispatch(getTransactionsFailed(error))
 		}
 	}
-};
+}
 
 
-export const transactionNotification: ActionCreator<any> = (message: TransactionNotificationsResponse) => {
-	return async (dispatch: Dispatch<TransactionNotificationsReceived>) => {
+export const transactionNotification: ActionCreator<any> = (message: TransactionNotificationsResponse): AppThunk => {
+	return async (dispatch) => {
 		dispatch(loadBestBlockHeight());
 		dispatch(loadStakeInfoAttempt());
 		dispatch(loadTicketsAttempt());
 		dispatch(loadTransactionsAttempt());
 		dispatch(loadWalletBalance());
-		dispatch({ type: TRANSACTIONNOTIFICATIONS_RECEIVED, payload: message });
+		dispatch(transactionNotificationReceived(message))
 	}
 }
 
 
-export const constructTransactionAttempt: ActionCreator<any> = (
+export const constructTransaction: ActionCreator<any> = (
 	account: number,
 	confirmations: number,
 	outputs: ConstructTxOutput[],
-	sendAllFlag: boolean) => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
+	sendAllFlag: boolean): AppThunk => {
 
+	return async (dispatch, getState) => {
+debugger
 		const { constructTransactionAttempting } = getState().transactions;
 		if (constructTransactionAttempting) {
 			return
 		}
-
 		const request = new ConstructTransactionRequest();
 		request.setSourceAccount(account);
 		request.setRequiredConfirmations(confirmations);
@@ -98,30 +107,24 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 			}
 		} else {
 			if (outputs.length > 1) {
-				return (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>) => {
+				return (dispatch: AppDispatch) => {
 					const error: AppError = {
 						status: 1,
 						msg: "Too many outputs provided for a send all request."
 					};
-					dispatch({
-						error,
-						currentStep: SendTransactionSteps.CONSTRUCT_DIALOG,
-						type: CONSTRUCTTRANSACTIONFAILED
-					});
-				};
-			} else if (outputs.length == 0) {
-				return (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>) => {
+					dispatch(constructTransactionFailed(error))
+				}
+			}
+			else if (outputs.length == 0) {
+				return (dispatch: AppDispatch) => {
 					const error = {
 						status: 2,
 						msg: "No destination specified for send all request."
 					};
-					dispatch({
-						error,
-						currentStep: SendTransactionSteps.CONSTRUCT_DIALOG,
-						type: CONSTRUCTTRANSACTIONFAILED
-					});
-				};
-			} else {
+					dispatch(constructTransactionFailed(error))
+				}
+			}
+			else {
 				const output = outputs[0];
 				request.setOutputSelectionAlgorithm(CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL);
 				const outputDest = new ConstructTransactionRequest.OutputDestination();
@@ -130,7 +133,7 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 			}
 		}
 
-		dispatch({ type: CONSTRUCTTRANSACTIONATTEMPT });
+		dispatch(constructTransactionAttempt())
 
 		let rawTx;
 
@@ -147,8 +150,8 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 					const decoded = decodeRawTransaction(rawTx);
 					changeScriptCache[account] = decoded.outputs[changeIndex].script;
 				}
-
-			} else {
+			}
+			else {
 				totalAmount = constructTxResponse.getTotalOutputAmount();
 			}
 
@@ -161,45 +164,33 @@ export const constructTransactionAttempt: ActionCreator<any> = (
 				constructTxReq: request,
 			}
 
-			dispatch({
-				type: CONSTRUCTTRANSACTIONSUCCESS,
+			dispatch(constructTransactionSuccess({
 				txInfo: humanreadableTxInfo,
-				constructTxReq: request,
-				constructTxResp: constructTxResponse,
-				changeScriptCache: changeScriptCache,
+				response: constructTxResponse,
 				currentStep: SendTransactionSteps.SIGN_DIALOG,
-			});
+				changeScriptCache: changeScriptCache,
+			}))
 
 			return constructTxResponse;
 		}
 		catch (error) {
-			dispatch({
-				error,
-				currentStep: SendTransactionSteps.SIGN_DIALOG,
-				type: CONSTRUCTTRANSACTIONFAILED
-			});
-			return
+			dispatch(constructTransactionFailed(error))
 		}
 	}
-};
+}
 
 
 
-
-export const cancelSignTransaction: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>) => {
-		dispatch({
-			type: SIGNTRANSACTIONCANCEL,
-			currentStep: SendTransactionSteps.CONSTRUCT_DIALOG
-		});
+export const cancelSignTransaction: ActionCreator<any> = (): AppThunk => {
+	return async (dispatch: AppDispatch) => {
+		dispatch(signTransactionCancel(SendTransactionSteps.CONSTRUCT_DIALOG))
 	}
-};
+}
 
 
 
-
-export const signTransactionAttempt: ActionCreator<any> = (passphrase: string) => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
+export const signTransaction: ActionCreator<any> = (passphrase: string): AppThunk => {
+	return async (dispatch: AppDispatch, getState) => {
 
 		const { signTransactionAttempting, constructTransactionResponse } = getState().transactions;
 		if (signTransactionAttempting) {
@@ -215,27 +206,23 @@ export const signTransactionAttempt: ActionCreator<any> = (passphrase: string) =
 		request.setPassphrase(new Uint8Array(Buffer.from(passphrase)))
 		request.setSerializedTransaction(new Uint8Array(Buffer.from(rawTx)))
 
-		dispatch({ type: SIGNTRANSACTIONATTEMPT });
+		dispatch(signTransactionAttempt())
+
 		try {
 			const resp = await LorcaBackend.signTransaction(request)
-			dispatch({
-				type: SIGNTRANSACTIONSUCCESS,
-				payload: resp,
-				currentStep: SendTransactionSteps.PUBLISH_DIALOG
-			});
+			dispatch(signTransactionSuccess({
+				currentStep: SendTransactionSteps.PUBLISH_DIALOG,
+				response: resp
+			}))
 		} catch (error) {
-			dispatch({
-				error,
-				type: SIGNTRANSACTIONFAILED
-			});
-
+			dispatch(signTransactionFailed(error))
 		}
 	}
-};
+}
 
 
-export const publishTransactionAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
+export const publishTransaction: ActionCreator<any> = (): AppThunk => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
 
 		const { publishTransactionAttempting, signTransactionResponse } = getState().transactions;
 		if (publishTransactionAttempting) {
@@ -252,56 +239,38 @@ export const publishTransactionAttempt: ActionCreator<any> = () => {
 		const request = new PublishTransactionRequest()
 		request.setSignedTransaction(new Uint8Array(Buffer.from(tx)))
 
-		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
+		dispatch(publishTransactionAttempt())
+
 		try {
 			const resp = await LorcaBackend.publishTransaction(request)
-			dispatch({
-				type: PUBLISHTRANSACTIONSUCCESS,
-				payload: resp,
-				currentStep: SendTransactionSteps.PUBLISH_CONFIRM_DIALOG
-			});
+			dispatch(publishTransactionSuccess({
+				currentStep: SendTransactionSteps.PUBLISH_CONFIRM_DIALOG,
+				response: resp
+			}))
 		} catch (error) {
-			dispatch({
-				error,
-				type: PUBLISHTRANSACTIONFAILED
-			});
+			dispatch(publishTransactionFailed(error))
 		}
 	}
-};
+}
 
 
-export const validateAddressAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
+export const validateAddressAttempt: ActionCreator<any> = (): AppThunk => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
 
 		const { publishTransactionAttempting } = getState().transactions;
 		if (publishTransactionAttempting) {
 			return
 		}
 
-		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
+		dispatch(validateAddressAttempt())
+
 		try {
+			// TODO implement me
 			const resp = await LorcaBackend.validateAddress()
-			dispatch({ type: PUBLISHTRANSACTIONSUCCESS, payload: resp });
+			dispatch(validateAddressSuccess(resp))
 		} catch (error) {
-			dispatch({ error, type: PUBLISHTRANSACTIONFAILED });
+			dispatch(validateAddressFailed(error))
 		}
 	}
-};
-export const committedTicketsAttempt: ActionCreator<any> = () => {
-	return async (dispatch: ThunkDispatch<{}, {}, TransactionsActionTypes>, getState: IGetState) => {
-
-		const { publishTransactionAttempting } = getState().transactions;
-		if (publishTransactionAttempting) {
-			return
-		}
-
-		dispatch({ type: PUBLISHTRANSACTIONATTEMPT });
-		try {
-			const resp = await LorcaBackend.committedTickets()
-			dispatch({ type: PUBLISHTRANSACTIONSUCCESS, payload: resp });
-		} catch (error) {
-			dispatch({ error, type: PUBLISHTRANSACTIONFAILED });
-		}
-	}
-};
+}
 

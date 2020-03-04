@@ -8,14 +8,16 @@ import {
 	faExclamationCircle,
 } from '@fortawesome/free-solid-svg-icons'
 
+interface IDialogAlertProps {
+	error: AppError | null
+}
 
-const DialogAlert = (props: {
-	error: AppError | null;
-}) => {
+const DialogAlert = (props: IDialogAlertProps) => {
 
-	if (props.error == null)
-		return null;
+	if (props.error == null) return null;
+
 	let msg = "";
+	console.error("Unhandled ERROR in DialogAlert", props.error)
 
 	switch (props.error.status) {
 		case 8:
@@ -29,14 +31,12 @@ const DialogAlert = (props: {
 			msg = props.error.msg;
 			break;
 	}
-
 	return (
 		<Alert variant="danger" className="mt-3 mb-3 p-2">
 			<FontAwesomeIcon icon={faExclamationCircle} />
 			{msg}
 		</Alert>
-	);
-};
-
+	)
+}
 
 export default DialogAlert

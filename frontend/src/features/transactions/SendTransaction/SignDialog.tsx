@@ -2,19 +2,19 @@ import _ from "lodash"
 import * as React from "react"
 
 import { Form, Button, InputGroup, FormControl, Alert, Table, Row, Col } from 'react-bootstrap';
-import { LoadingButton, Amount, TransactionHash, TxHash } from "../../Shared/shared"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faPaste,
 } from '@fortawesome/free-solid-svg-icons'
 import { AppError } from "../../../store/types";
-import { ConstructTransactionResponse, ConstructTransactionRequest } from "../../../proto/api_pb";
+import { ConstructTransactionResponse } from "../../../proto/api_pb";
 import { rawToHex } from "../../../helpers/byteActions";
 import { DecodedrawTx } from "../../../datasources/models";
-import { HumanreadableTxInfo } from "../../../store/transactions/types";
 import DialogAlert from "./DialogAlert";
 import { decodeRawTransaction } from "../../../helpers/tx";
+import { HumanreadableTxInfo } from "../transactionsSlice";
+import { Amount, TxHash } from "../../../components/Shared/shared";
 
 const ReviewTx = (props: {
 	txInfo: HumanreadableTxInfo,

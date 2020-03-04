@@ -12,15 +12,14 @@ import { Button, Card, Alert, Col, Row } from 'react-bootstrap';
 
 import { IApplicationState } from '../store/store'
 import { IndexedWalletAccounts, WalletAccount } from '../models';
-import AccountDetails from '../features/accounts/AccountDetails';
 import AccountBalanceTotals from '../features/accounts/AccountBalanceTotals';
-import SendTransaction from '../components/Transactions/SendTransaction';
 import GetNewAddressDialog from '../features/accounts/GetNewAddressDialog';
 import { bindActionCreators, Dispatch } from 'redux';
 import { loadNextAddressAttempt } from '../features/accounts/accountSlice';
 import UTXOContainer from '../features/unspents/UTXOContainer';
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
+import SendTransaction from '../features/transactions/SendTransaction';
 
 class AccountDetailsContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {

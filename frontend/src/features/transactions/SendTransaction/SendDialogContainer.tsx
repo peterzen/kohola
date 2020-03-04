@@ -5,18 +5,20 @@ import { Dispatch, bindActionCreators } from "redux"
 
 import { IndexedWalletAccounts } from "../../../models"
 
+import { AppError } from "../../../store/types"
 import { ATOMS_DIVISOR, } from "../../../constants"
-import { constructTransactionAttempt, signTransactionAttempt, cancelSignTransaction, publishTransactionAttempt } from "../../../store/transactions/actions"
 import { ConstructTxOutput } from "../../../datasources/models"
-import ConstructTxDialog, { ISendDialogFormData } from "./ConstructTxDialog"
+import { IApplicationState } from "../../../store/store"
 import { ConstructTransactionResponse, ConstructTransactionRequest, SignTransactionResponse, PublishTransactionResponse } from "../../../proto/api_pb"
-import { SendTransactionSteps, HumanreadableTxInfo } from "../../../store/transactions/types"
+
+import ConstructTxDialog, { ISendDialogFormData } from "./ConstructTxDialog"
 import SignDialog, { ISignDialogFormData } from "./SignDialog"
 import PublishDialog from "./PublishDialog"
 import PublishConfirmDialog from "./PublishConfirmDialog"
-import { IApplicationState } from "../../../store/store"
 import { getAccounts } from "../../../features/accounts/accountSlice"
-import { AppError } from "../../../store/types"
+
+import { cancelSignTransaction, constructTransaction, signTransaction, publishTransaction } from "../actions"
+import { SendTransactionSteps, HumanreadableTxInfo } from "../transactionsSlice"
 
 
 
@@ -34,8 +36,7 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 					/>
 				)}
 				{currentStep == SendTransactionSteps.SIGN_DIALOG &&
-					this.props.constructTransactionResponse != null &&
-					this.props.constructTransactionRequest != null && (
+					this.props.constructTransactionResponse != null && (
 						<SignDialog
 							error={this.props.errorSignTransaction}
 							txInfo={this.props.txInfo}
@@ -72,7 +73,7 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 			destination: formData.destinationAddress[0],
 			amount: formData.amount * ATOMS_DIVISOR
 		}]
-		this.props.constructTransactionAttempt(
+		this.props.constructTransaction(
 			formData.sourceAccount.getAccountNumber(),
 			formData.requiredConfirmations,
 			outputs,
@@ -85,7 +86,7 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 	}
 
 	onSignAttempt(formData: ISignDialogFormData) {
-		this.props.signTransactionAttempt(
+		this.props.signTransaction(
 			formData.passphrase
 		)
 	}
@@ -95,8 +96,38 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 	}
 
 	onPublishAttempt() {
-		this.props.publishTransactionAttempt()
+		this.props.publishTransaction()
 	}
+}
+
+
+interface OwnProps {
+	txInfo: HumanreadableTxInfo | null
+	accounts: IndexedWalletAccounts
+	currentStep: SendTransactionSteps
+	constructTransactionRequest: ConstructTransactionRequest | null
+
+	constructTransactionResponse: ConstructTransactionResponse | null
+	signTransactionResponse: SignTransactionResponse | null
+	publishTransactionResponse: PublishTransactionResponse | null
+
+	errorConstructTransaction: AppError | null
+	errorSignTransaction: AppError | null
+	errorPublishTransaction: AppError | null
+}
+
+
+interface DispatchProps {
+	cancel: () => void
+	cancelSign(): () => void
+	constructTransaction(...arguments: any): Promise<any>
+	signTransaction(...arguments: any): Promise<any>
+	publishTransaction(...arguments: any): Promise<any>
+}
+
+type Props = DispatchProps & OwnProps
+
+interface InternalState {
 }
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
@@ -115,39 +146,10 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 	};
 }
 
-interface OwnProps {
-	txInfo: HumanreadableTxInfo | null,
-	constructTransactionRequest: ConstructTransactionRequest | null
-	constructTransactionResponse: ConstructTransactionResponse | null
-	signTransactionResponse: SignTransactionResponse | null
-	publishTransactionResponse: PublishTransactionResponse | null
-	errorConstructTransaction: AppError | null
-	errorSignTransaction: AppError | null
-	errorPublishTransaction: AppError | null
-	currentStep: SendTransactionSteps
-	accounts: IndexedWalletAccounts
-}
-
-
-interface DispatchProps {
-	cancel: () => void
-	cancelSign(): () => void
-	constructTransactionAttempt(...arguments: any): Promise<any>
-	signTransactionAttempt(...arguments: any): Promise<any>
-	publishTransactionAttempt(...arguments: any): Promise<any>
-}
-
-type Props = DispatchProps & OwnProps
-
-
-
-interface InternalState {
-}
-
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-	constructTransactionAttempt: constructTransactionAttempt,
-	signTransactionAttempt: signTransactionAttempt,
-	publishTransactionAttempt: publishTransactionAttempt,
+	constructTransaction: constructTransaction,
+	signTransaction: signTransaction,
+	publishTransaction: publishTransaction,
 	cancelSign: cancelSignTransaction,
 }, dispatch)
 

@@ -6,7 +6,7 @@ import {
 	faCheck,
 } from '@fortawesome/free-solid-svg-icons'
 import { PublishTransactionResponse } from "../../../proto/api_pb";
-import { TxHash } from "../../Shared/shared";
+import { TxHash } from "../../../components/Shared/shared";
 
 export default class PublishConfirmDialog extends React.Component<OwnProps, InternalState>{
 	render() {

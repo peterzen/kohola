@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
 
-import RecentTransactions from '../components/Transactions/RecentTransactionsContainer';
+import RecentTransactions from '../features/transactions/RecentTransactionsContainer';
 import WalletBalanceContainer from "../features/walletbalance/WalletBalanceContainer";
 import { IApplicationState } from "../store/store";
 

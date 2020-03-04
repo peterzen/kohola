@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import _ from 'lodash';
 
 import { IApplicationState } from "../../store/store";
-import { ITransactionState } from '../../store/transactions/types';
 
 import { Button } from 'react-bootstrap';
 import SendTransactionModal from './SendTransaction/SendTransactionModal';
@@ -46,7 +45,7 @@ class SendTransaction extends React.Component<Props, InternalState> {
 
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): Props => {
+const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
 	return {
 		...state.transactions,
 	}
@@ -62,7 +61,7 @@ interface DispatchProps {
 	// onSomeEvent: () => void
 }
 
-type Props = ITransactionState & DispatchProps & OwnProps
+type Props = DispatchProps & OwnProps
 
 interface InternalState {
 	showSendTxModal: boolean

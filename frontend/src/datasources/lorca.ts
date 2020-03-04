@@ -18,7 +18,8 @@ import {
 	PurchaseTicketsRequest,
 	PurchaseTicketsResponse,
 	NextAccountResponse,
-	RenameAccountResponse
+	RenameAccountResponse,
+	ValidateAddressResponse
 } from '../proto/api_pb';
 import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from '../models';
 import { rawToHex } from '../helpers/byteActions';
@@ -141,7 +142,7 @@ const LorcaBackend = {
 
 		} catch (e) {
 			console.error("Serialization error", e)
-			return
+			throw e
 		}
 	},
 
@@ -156,7 +157,7 @@ const LorcaBackend = {
 		}
 		catch (e) {
 			console.error("Serialization error", e)
-			return
+			return e
 		}
 	},
 
@@ -172,7 +173,7 @@ const LorcaBackend = {
 			return PublishTransactionResponse.deserializeBinary(r.payload)
 		} catch (e) {
 			console.error("Serialization error", e)
-			return
+			return e
 		}
 	},
 
@@ -264,8 +265,13 @@ const LorcaBackend = {
 		}
 		catch (e) {
 			console.error("Serialization error", e)
-			return
+			return e
 		}
+	},
+
+	validateAddress: async () => {
+		const r = new ValidateAddressResponse()
+		return Promise.resolve(r)
 	},
 
 	unspentOutputs: async (

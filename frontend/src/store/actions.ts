@@ -3,7 +3,7 @@ import { batch } from 'react-redux'
 
 import { IGetState } from './types';
 import { pingAttempt } from '../features/networkinfo/pingSlice'
-import { transactionNotification, loadTransactionsAttempt } from './transactions/actions';
+
 import {
 	TransactionNotificationsResponse,
 	AccountNotificationsResponse,
@@ -19,6 +19,7 @@ import { loadBestBlockHeight } from '../features/networkinfo/networkInfoSlice';
 import { getConfiguration, canStartup } from '../features/appconfiguration/settingsSlice';
 import { loadAccountsAttempt, accountNotification } from '../features/accounts/accountSlice';
 import { getUnspentOutputsAttempt, fetchUnspentsAttempt } from '../features/unspents/unspentsSlice';
+import { loadTransactionsAttempt, transactionNotification } from '../features/transactions/actions';
 
 const w = (window as any)
 

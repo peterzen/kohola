@@ -1,15 +1,14 @@
+import _ from 'lodash';
 import * as React from 'react';
 import { connect } from "react-redux";
-import _ from 'lodash';
+
+import { Spinner, Button, Card } from 'react-bootstrap';
 
 import { Transaction } from "../../models";
 import { IApplicationState } from "../../store/store";
-import { ITransactionState } from '../../store/transactions/types';
-import { getFilteredTransactions } from '../../store/transactions/selectors';
-
-import { Spinner, Button, Card } from 'react-bootstrap';
 import TransactionTable from './TransactionTable';
 import TransactionDetailsModal from './TransactionDetailsComponent';
+import { getFilteredTransactions } from './transactionsSlice';
 
 
 class RecentTransactionsComponent extends React.Component<Props, InternalState> {
@@ -57,27 +56,27 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 	// }
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): Props => {
-	return {
-		...state.transactions,
-		txList: getFilteredTransactions(state),
-	}
-}
-
-export default connect(mapStateToProps)(RecentTransactionsComponent);
 
 interface OwnProps {
-	// propFromParent: number
+	getTransactionsRequest: boolean
+	txList: Transaction[]
 }
 
 interface DispatchProps {
-	// onSomeEvent: () => void
 }
 
-type Props = ITransactionState & DispatchProps & OwnProps
+type Props = DispatchProps & OwnProps
 
 interface InternalState {
 	showModal: boolean
 	selectedItem: Transaction | null
 }
 
+const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
+	return {
+		getTransactionsRequest: state.transactions.getTransactionsRequest,
+		txList: getFilteredTransactions(state),
+	}
+}
+
+export default connect(mapStateToProps)(RecentTransactionsComponent);

@@ -3,7 +3,7 @@ import * as React from "react"
 
 import { IndexedWalletAccounts, WalletAccount } from "../../../models"
 
-import { AccountSelector } from "../../Shared/shared"
+import { AccountSelector } from "../../../components/Shared/shared"
 
 import { isValidAddress } from "../../../helpers/validators"
 import { ATOMS_DIVISOR, DEFAULT_REQUIRED_CONFIRMATIONS } from "../../../constants"

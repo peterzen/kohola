@@ -2,7 +2,7 @@ import * as React from 'react';
 import _ from 'lodash';
 
 import { Transaction } from "../../models";
-import { TransactionHash, Amount } from '../Shared/shared';
+import { TransactionHash, Amount } from '../../components/Shared/shared';
 
 import TimeAgo from 'react-timeago';
 import { Table, Alert } from 'react-bootstrap';
