@@ -13,11 +13,11 @@ import {
 import { AppDispatch } from './store';
 
 import { hexToRaw } from '../helpers/byteActions';
-import { loadWalletBalance } from '../features/walletbalance/walletBalanceSlice'
+import { loadWalletBalance } from '../features/balances/walletBalanceSlice'
 import { loadTicketsAttempt } from '../features/staking/stakingSlice';
 import { loadBestBlockHeight } from '../features/networkinfo/networkInfoSlice';
 import { getConfiguration, canStartup } from '../features/appconfiguration/settingsSlice';
-import { loadAccountsAttempt, accountNotification } from '../features/accounts/accountSlice';
+import { loadAccountsAttempt, accountNotification } from '../features/balances/accountSlice';
 import { getUnspentOutputsAttempt, fetchUnspentsAttempt } from '../features/unspents/unspentsSlice';
 import { loadTransactionsAttempt, transactionNotification } from '../features/transactions/actions';
 

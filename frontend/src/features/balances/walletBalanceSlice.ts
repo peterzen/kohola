@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
-import { WalletBalance } from "../../models";
+import { WalletBalance, WalletTotals } from "../../models";
 import { AppError } from '../../store/types';
 import LorcaBackend from '../../datasources/lorca';
-import { AppThunk } from '../../store/store';
-import { getAllAccountNumbers } from '../accounts/accountSlice';
+import { AppThunk, IApplicationState } from '../../store/store';
+import { getAllAccountNumbers } from './accountSlice';
 
 
 export interface IWalletBalanceState {
@@ -64,3 +64,41 @@ export const loadWalletBalance: ActionCreator<any> = (): AppThunk => {
 		}
 	}
 }
+
+
+// selectors
+export const getWalletBalances = (state: IApplicationState): WalletBalance => {
+	return state.walletbalance.balances
+}
+
+export const getAccountBalance = (state: IApplicationState, accountNumber: number) => {
+	const acc = getWalletBalances(state)[accountNumber]
+	if (acc == undefined) {
+		throw new Error("non-existent account")
+	}
+	return acc
+}
+
+export const getWalletTotals = (state: IApplicationState): WalletTotals => {
+	const totals = {
+		unconfirmed: 0,
+		immature_stake: 0,
+		immature_coinbase: 0,
+		votingauth: 0,
+		locked: 0,
+		spendable: 0,
+		total: 0,
+	}
+	_.each(getWalletBalances(state), (b) => {
+		totals.unconfirmed += b.getUnconfirmed()
+		totals.immature_stake += b.getImmatureStakeGeneration()
+		totals.immature_coinbase += b.getImmatureReward()
+		totals.votingauth += b.getVotingAuthority()
+		totals.locked += b.getLockedByTickets()
+		totals.spendable += b.getSpendable()
+		totals.total += b.getTotal()
+	});
+	return totals
+}
+
+

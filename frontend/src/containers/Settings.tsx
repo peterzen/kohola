@@ -10,7 +10,7 @@ import { AppConfiguration } from '../proto/dcrwalletgui_pb';
 import { Alert, Tabs, Tab, Card } from 'react-bootstrap';
 import { saveConfigurationAttempt } from '../features/appconfiguration/settingsSlice';
 import ConnectionSettings from '../features/appconfiguration/ConnectionSettings';
-import AccountsSetup from '../features/accounts/AccountsSetup';
+import AccountsSetup from '../features/balances/AccountsSetup';
 import Preferences from '../features/appconfiguration/Preferences';
 
 class SettingsContainer extends React.Component<Props> {

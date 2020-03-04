@@ -32,9 +32,9 @@ import {
 } from './transactionsSlice';
 import { AppError, IGetState } from '../../store/types';
 
-import { loadWalletBalance } from '../../features/walletbalance/walletBalanceSlice';
+import { loadWalletBalance } from '../balances/walletBalanceSlice';
 import { loadBestBlockHeight } from '../../features/networkinfo/networkInfoSlice';
-import { lookupAccount } from '../../features/accounts/accountSlice';
+import { lookupAccount } from '../balances/accountSlice';
 import { loadStakeInfoAttempt, loadTicketsAttempt } from '../../features/staking/stakingSlice';
 
 export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {

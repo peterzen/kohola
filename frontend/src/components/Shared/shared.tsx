@@ -19,11 +19,11 @@ import { Button, ButtonProps, Popover, OverlayTrigger, Form } from 'react-bootst
 import { rawHashToHex } from "../../helpers/byteActions";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { ATOMS_DIVISOR } from "../../constants";
-import { getWalletBalances } from "../../features/walletbalance/selectors";
 import { connect } from "react-redux";
 import { IApplicationState } from "../../store/store";
-import { getAccounts } from "../../features/accounts/accountSlice";
+import { getAccounts } from "../../features/balances/accountSlice";
 import { IIndexedAccountPrefs, getAccountPrefs } from "../../features/appconfiguration/settingsSlice";
+import { getWalletBalances } from "../../features/balances/walletBalanceSlice";
 
 
 interface TimestampProps {

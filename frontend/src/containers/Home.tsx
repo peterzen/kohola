@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import Fade from 'react-reveal/Fade';
 
 import RecentTransactions from '../features/transactions/RecentTransactionsContainer';
-import WalletBalanceContainer from "../features/walletbalance/WalletBalanceContainer";
+import WalletBalanceContainer from "../features/balances/WalletBalanceContainer";
 import { IApplicationState } from "../store/store";
 
 class Home extends React.PureComponent {

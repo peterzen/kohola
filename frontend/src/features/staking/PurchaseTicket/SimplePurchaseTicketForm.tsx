@@ -3,9 +3,12 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Row, Col, Form, Button, Card, InputGroup, Alert, FormControl } from 'react-bootstrap';
+// import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
+
 import { AccountSelector, Amount } from '../../../components/Shared/shared';
 import { TxConfirmationPanel } from "../../../components/Shared/TxConfirmationPanel";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
 	faPlus, faMinus,
@@ -13,14 +16,12 @@ import {
 import { IApplicationState } from '../../../store/store';
 import { WalletBalance, TicketPrice } from '../../../models';
 
-import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import { PurchaseTicketsRequest, PurchaseTicketsResponse } from '../../../proto/api_pb';
 import PassphraseEntryDialog, { askPassphrase } from '../../../components/Shared/PassphraseEntryDialog';
-import { getWalletBalances } from '../../walletbalance/selectors';
 
 import { AppError } from '../../../store/types';
 import { purchaseTicket, getTicketPrice } from '../stakingSlice';
-import { Row, Col, Form, Button, Card, InputGroup, Alert, FormControl } from 'react-bootstrap';
+import { getWalletBalances } from '../../balances/walletBalanceSlice';
 
 interface IIntegerInputControlProps {
 	name: string,
@@ -262,15 +263,6 @@ const loadFormFields = (formRef: React.RefObject<any>, r: PurchaseTicketsRequest
 	r.setRequiredConfirmations(1)
 }
 
-const mapStateToProps = (state: IApplicationState): OwnProps => {
-	return {
-		...state.staking,
-		error: state.staking.errorPurchaseTickets,
-		purchaseTicketResponse: state.staking.purchaseTicketResponse,
-		balances: getWalletBalances(state),
-		ticketPrice: getTicketPrice(state),
-	};
-}
 
 interface OwnProps {
 	error: AppError | null
@@ -280,16 +272,30 @@ interface OwnProps {
 }
 
 
-interface DispatchProps {
-	purchaseTicket(...arguments: any): void
-}
-
 type Props = DispatchProps & OwnProps & IPurchaseTicketFormProps
 
 
 interface IPurchaseTicketFormProps {
 	error: AppError | null
 }
+
+const mapStateToProps = (state: IApplicationState): OwnProps => {
+	return {
+		error: state.staking.errorPurchaseTickets,
+		purchaseTicketResponse: state.staking.purchaseTicketResponse,
+		balances: getWalletBalances(state),
+		ticketPrice: getTicketPrice(state),
+	};
+}
+
+interface DispatchProps {
+	purchaseTicket:typeof purchaseTicket
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	purchaseTicket: purchaseTicket,
+}, dispatch)
+
 
 interface InternalState {
 	formRef: React.RefObject<any>
@@ -300,10 +306,5 @@ interface InternalState {
 	isDirty: boolean
 	purchaseTicketRequest: PurchaseTicketsRequest
 }
-
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-	purchaseTicket: purchaseTicket,
-}, dispatch)
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(PurchaseTicketForm);

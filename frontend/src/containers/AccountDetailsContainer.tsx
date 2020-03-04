@@ -12,10 +12,10 @@ import { Button, Card, Alert, Col, Row } from 'react-bootstrap';
 
 import { IApplicationState } from '../store/store'
 import { IndexedWalletAccounts, WalletAccount } from '../models';
-import AccountBalanceTotals from '../features/accounts/AccountBalanceTotals';
-import GetNewAddressDialog from '../features/accounts/GetNewAddressDialog';
+import AccountBalanceTotals from '../features/balances/AccountBalanceTotals';
+import GetNewAddressDialog from '../features/balances/GetNewAddressDialog';
 import { bindActionCreators, Dispatch } from 'redux';
-import { loadNextAddressAttempt } from '../features/accounts/accountSlice';
+import { loadNextAddressAttempt } from '../features/balances/accountSlice';
 import UTXOContainer from '../features/unspents/UTXOContainer';
 // @ts-ignore
 import Fade from 'react-reveal/Fade';

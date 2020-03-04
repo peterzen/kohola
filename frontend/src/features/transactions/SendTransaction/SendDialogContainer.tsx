@@ -15,7 +15,7 @@ import ConstructTxDialog, { ISendDialogFormData } from "./ConstructTxDialog"
 import SignDialog, { ISignDialogFormData } from "./SignDialog"
 import PublishDialog from "./PublishDialog"
 import PublishConfirmDialog from "./PublishConfirmDialog"
-import { getAccounts } from "../../../features/accounts/accountSlice"
+import { getAccounts } from "../../balances/accountSlice"
 
 import { cancelSignTransaction, constructTransaction, signTransaction, publishTransaction } from "../actions"
 import { SendTransactionSteps, HumanreadableTxInfo } from "../transactionsSlice"

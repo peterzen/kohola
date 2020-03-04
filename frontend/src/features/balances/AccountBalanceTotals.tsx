@@ -4,21 +4,20 @@ import { sprintf } from "sprintf-js";
 
 import { Row, Col, ProgressBar } from 'react-bootstrap';
 
-import { Amount, FiatAmount } from "../../components/Shared/shared";
 import { WalletAccount, WalletBalance } from "../../models";
-import { getWalletBalances } from "../walletbalance/selectors";
 import { IApplicationState } from "../../store/store";
-import AccountBalancePieChart from "./AccountBalancePieChart";
+import { getWalletBalances } from "./walletBalanceSlice";
+import { Amount, FiatAmount } from "../../components/Shared/shared";
 
 
-interface IValueCol {
+interface IValueColProps {
 	amount: number,
 	total: number,
 	label: string,
 	variant: string
 }
 
-const ValueCol = (props: IValueCol) => {
+const ValueCol = (props: IValueColProps) => {
 	const clazz = "spendable spendable-" + props.variant
 	const pct = props.amount > 0 ? sprintf("%.1f%%", 100 * props.amount / props.total) : "0%"
 	return (

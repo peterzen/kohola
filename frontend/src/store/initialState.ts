@@ -1,10 +1,10 @@
 
 import { initialState as pingInitialState } from '../features/networkinfo/pingSlice',
 import { initialState as ticketsInitialState } from '../features/staking/stakingSlice'
-import { initialState as accountsInitialState } from '../features/accounts/accountSlice'
+import { initialState as accountsInitialState } from '../features/balances/accountSlice'
 import { initialState as networkInfoInitialState } from "../features/networkinfo/networkInfoSlice"
 import { transactionsInitialState } from "./transactions/reducers";
-import { initialState as walletbalanceInitialState } from "../features/walletbalance/walletBalanceSlice";
+import { initialState as walletbalanceInitialState } from "../features/balances/walletBalanceSlice";
 import { initialState as appConfigurationInitialState } from "../features/appconfiguration/settingsSlice"
 import { initialState as unspentoutputsInitialState } from '../features/unspents/unspentsSlice'
 import { IApplicationState } from "./store";

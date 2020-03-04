@@ -3,22 +3,21 @@ import { connect } from "react-redux"
 import { Dispatch, bindActionCreators } from "redux"
 import _ from "lodash"
 
-import { getWalletBalances, getWalletTotals } from "./selectors"
-import { IWalletBalanceState } from "./walletBalanceSlice"
-import { IndexedWalletAccounts, WalletAccount, WalletTotals } from "../../models"
-
-import AccountBalanceTable from "./AccountBalanceTable"
-import GetNewAddressDialog from "../accounts/GetNewAddressDialog"
-import { MenuItems } from "../accounts/AccountToolsDropdown"
-import WalletTotalsComponent from "./WalletTotalsComponent"
-import { Card } from "react-bootstrap"
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
-import { loadNextAddressAttempt, getAccounts } from "../accounts/accountSlice"
-import { IApplicationState } from "../../store/store"
-
+import { Card } from "react-bootstrap"
 
 import { history } from '../../store/store'
+
+import { IApplicationState } from "../../store/store"
+import { IndexedWalletAccounts, WalletAccount, WalletTotals } from "../../models"
+import { IWalletBalanceState, getWalletBalances, getWalletTotals } from "./walletBalanceSlice"
+import { loadNextAddressAttempt, getAccounts } from "./accountSlice"
+
+import { MenuItems } from "./AccountToolsDropdown"
+import AccountBalanceTable from "./AccountBalanceTable"
+import GetNewAddressDialog from "./GetNewAddressDialog"
+import WalletTotalsComponent from "./WalletTotalsComponent"
 
 class WalletBalanceContainer extends React.PureComponent<Props, InternalState>{
 	constructor(props: Props) {

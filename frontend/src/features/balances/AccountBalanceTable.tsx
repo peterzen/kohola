@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { AccountBalance, IndexedWalletAccounts, WalletAccount, WalletBalance, WalletTotals } from '../../models';
 
 import { Amount } from '../../components/Shared/shared';
-import AccountToolsDropdown, { MenuItems } from '../accounts/AccountToolsDropdown';
+import AccountToolsDropdown, { MenuItems } from './AccountToolsDropdown';
 
 import { Table, Button } from 'react-bootstrap';
 
