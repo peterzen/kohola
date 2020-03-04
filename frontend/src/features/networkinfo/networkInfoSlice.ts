@@ -1,26 +1,22 @@
-import { BestBlock, Network } from "../../models";
 import { AppError } from "../../store/types";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 import LorcaBackend from "../../datasources/lorca";
 import { NetworkResponse, BestBlockResponse } from "../../proto/api_pb";
 import { AppThunk, IApplicationState } from "../../store/store";
 
-
+// BestBlock
 export interface IBestBlockState {
 	readonly error: AppError | null
-	readonly currentBlock: BestBlock | null
+	readonly currentBlock: BestBlockResponse | null
 	readonly getBestBlockHeightAttempting: boolean
 }
 
 // Network
-
 export interface INetworkState {
-	readonly network: Network | null
+	readonly network: NetworkResponse | null
 	readonly errorNetwork: AppError | null
 	readonly getNetworkinfoAttempting: boolean,
 }
-
-
 
 
 export const initialState: IBestBlockState & INetworkState = {
@@ -38,6 +34,7 @@ const networkinfoSlice = createSlice({
 	name: "networkSlice",
 	initialState,
 	reducers: {
+		// BestBlock
 		getBestblockAttempt(state) {
 			state.getBestBlockHeightAttempting = true
 		},
@@ -46,12 +43,13 @@ const networkinfoSlice = createSlice({
 			state.getBestBlockHeightAttempting = false
 			state.error = action.payload
 		},
-		getBestblockSuccess(state, action: PayloadAction<BestBlock>) {
+		getBestblockSuccess(state, action: PayloadAction<BestBlockResponse>) {
 			state.getBestBlockHeightAttempting = false
 			state.currentBlock = action.payload
 			state.error = null
 		},
 
+		// NetworkInfo
 		getNetworkinfoAttempt(state) {
 			state.getNetworkinfoAttempting = true
 		},
@@ -89,7 +87,7 @@ export const loadBestBlockHeight: ActionCreator<any> = (): AppThunk => {
 
 		dispatch(getBestblockAttempt())
 		try {
-			const resp = await LorcaBackend.fetchBestBlock() as BestBlock
+			const resp = await LorcaBackend.fetchBestBlock() 
 			dispatch(getBestblockSuccess(resp))
 		} catch (error) {
 			dispatch(getBestblockFailed(error))
@@ -115,9 +113,7 @@ export const loadNetworkAttempt: ActionCreator<any> = (): AppThunk => {
 }
 
 
-
 // selectors
-
 export const getBestBlock = (state: IApplicationState) => {
 	return state.networkinfo.currentBlock
 }

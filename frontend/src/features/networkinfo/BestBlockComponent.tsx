@@ -6,7 +6,7 @@ import { IApplicationState } from "../../store/store";
 import { formatHash } from "../../helpers";
 import { IBestBlockState, getBestBlock } from "./networkInfoSlice";
 
-class BestBlockComponent extends React.Component<IBestBlockState, IBestBlockState> {
+class BestBlockComponent extends React.Component<IBestBlockState> {
 	render() {
 		if (this.props.currentBlock == null) {
 			return null
@@ -21,7 +21,7 @@ class BestBlockComponent extends React.Component<IBestBlockState, IBestBlockStat
 }
 
 
-const mapStateToProps = function (state: IApplicationState, ownProps: any) {
+const mapStateToProps = function (state: IApplicationState) {
 	return {
 		currentBlock: getBestBlock(state)
 	};
