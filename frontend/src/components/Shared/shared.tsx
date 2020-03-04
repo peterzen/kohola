@@ -43,6 +43,10 @@ export function TransactionHash(props: { tx: Transaction }) {
 
 export function TxHash(props: { hash: Buffer, truncate?: boolean }) {
 	const h = rawHashToHex(props.hash)
+	if (h == null) {
+		console.error("rawHashToHex returned null")
+		return null
+	}
 	let truncate = true;
 	if (props.truncate != undefined) truncate = props.truncate;
 	const truncLength = truncate ? 15 : 100
