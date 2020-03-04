@@ -3,6 +3,7 @@
 export function reverseHash(s: string) {
 	s = s.replace(/^(.(..)*)$/, "0$1"); // add a leading zero if needed
 	var a = s.match(/../g);             // split number in groups of two
+	if (a == null) return null
 	a.reverse();                        // reverse the groups
 	var s2 = a.join("");
 	return s2;
@@ -47,6 +48,6 @@ export function str2utf8hex(str: string) {
 	return Buffer.from(str).toString("hex");
 }
 
-export function hex2b64(hex) {
+export function hex2b64(hex: string) {
 	return new Buffer(hex, "hex").toString("base64");
 }
