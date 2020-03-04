@@ -21,7 +21,6 @@ import { cancelSignTransaction, constructTransaction, signTransaction, publishTr
 import { SendTransactionSteps, HumanreadableTxInfo } from "../transactionsSlice"
 
 
-
 class SendDialogContainer extends React.Component<Props, InternalState>{
 	render() {
 		const currentStep = this.props.currentStep
@@ -32,7 +31,7 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 						error={this.props.errorConstructTransaction}
 						accounts={this.props.accounts}
 						onFormComplete={_.bind(this.onConstructAttempt, this)}
-						onCancel={_.bind(this.onConstructCancel, this)}
+						onCancel={() => this.props.cancel()}
 					/>
 				)}
 				{currentStep == SendTransactionSteps.SIGN_DIALOG &&
@@ -41,7 +40,7 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 							error={this.props.errorSignTransaction}
 							txInfo={this.props.txInfo}
 							constructTransactionResponse={this.props.constructTransactionResponse}
-							onCancel={_.bind(this.onSignCancel, this)}
+							onCancel={() => this.props.cancelSign()}
 							onFormComplete={_.bind(this.onSignAttempt, this)}
 						/>
 					)}
@@ -50,8 +49,8 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 						<PublishDialog
 							error={this.props.errorPublishTransaction}
 							signTransactionResponse={this.props.signTransactionResponse}
-							onCancel={_.bind(this.onPublishCancel, this)}
-							onFormComplete={_.bind(this.onPublishAttempt, this)}
+							onCancel={() => this.props.cancelSign()}
+							onFormComplete={() => this.props.publishTransaction()}
 						/>
 					)}
 				{currentStep == SendTransactionSteps.PUBLISH_CONFIRM_DIALOG &&
@@ -63,11 +62,6 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 			</div>
 		)
 	}
-
-	onConstructCancel() {
-		this.props.cancel()
-	}
-
 	onConstructAttempt(formData: ISendDialogFormData) {
 		const outputs: ConstructTxOutput[] = [{
 			destination: formData.destinationAddress[0],
@@ -80,23 +74,10 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 			formData.sendAllToggle
 		)
 	}
-
-	onSignCancel() {
-		this.props.cancelSign()
-	}
-
 	onSignAttempt(formData: ISignDialogFormData) {
 		this.props.signTransaction(
 			formData.passphrase
 		)
-	}
-
-	onPublishCancel() {
-		this.props.cancelSign()
-	}
-
-	onPublishAttempt() {
-		this.props.publishTransaction()
 	}
 }
 
@@ -114,15 +95,6 @@ interface OwnProps {
 	errorConstructTransaction: AppError | null
 	errorSignTransaction: AppError | null
 	errorPublishTransaction: AppError | null
-}
-
-
-interface DispatchProps {
-	cancel: () => void
-	cancelSign(): () => void
-	constructTransaction(...arguments: any): Promise<any>
-	signTransaction(...arguments: any): Promise<any>
-	publishTransaction(...arguments: any): Promise<any>
 }
 
 type Props = DispatchProps & OwnProps
@@ -143,6 +115,15 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 		constructTransactionResponse: state.transactions.constructTransactionResponse,
 		currentStep: state.transactions.sendTransactionCurrentStep,
 	};
+}
+
+
+interface DispatchProps {
+	cancel: () => void
+	cancelSign(): typeof cancelSignTransaction
+	constructTransaction: typeof constructTransaction
+	signTransaction: typeof signTransaction
+	publishTransaction: typeof publishTransaction
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
