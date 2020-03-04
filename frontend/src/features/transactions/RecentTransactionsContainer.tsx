@@ -13,7 +13,7 @@ import { getFilteredTransactions } from './transactionsSlice';
 
 class RecentTransactionsComponent extends React.Component<OwnProps, InternalState> {
 
-	constructor(props: Props) {
+	constructor(props: OwnProps) {
 		super(props)
 		this.state = {
 			showModal: false,
