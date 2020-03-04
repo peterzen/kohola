@@ -4,9 +4,10 @@ import { connect } from "react-redux";
 import { IApplicationState } from "../../store/store";
 
 import { formatHash } from "../../helpers";
-import { IBestBlockState, getBestBlock } from "./networkInfoSlice";
+import { getBestBlock } from "./networkInfoSlice";
+import { BestBlockResponse } from "../../proto/api_pb";
 
-class BestBlockComponent extends React.Component<IBestBlockState> {
+class BestBlockComponent extends React.Component<OwnProps> {
 	render() {
 		if (this.props.currentBlock == null) {
 			return null
@@ -20,6 +21,9 @@ class BestBlockComponent extends React.Component<IBestBlockState> {
 	}
 }
 
+interface OwnProps {
+	currentBlock: BestBlockResponse
+}
 
 const mapStateToProps = function (state: IApplicationState) {
 	return {
