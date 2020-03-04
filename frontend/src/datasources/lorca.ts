@@ -38,14 +38,14 @@ export function endpointFactory<T>(methodName: string, responseType: T) {
 	return async function <R>(request?: R) {
 		let r = null
 		if (request != undefined) {
-			r = request.serializeBinary()
+			r = (request as any).serializeBinary()
 		}
 		try {
 			const r = await w[methodName]()
 			if (r.error != undefined) {
 				throw r.error
 			}
-			return responseType.deserializeBinary(r.payload)
+			return (responseType as any).deserializeBinary(r.payload)
 		}
 		catch (e) {
 			console.error(e)
