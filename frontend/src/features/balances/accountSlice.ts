@@ -8,6 +8,7 @@ import { AppThunk, IApplicationState } from '../../store/store';
 import { AccountNotificationsResponse, NextAccountResponse, RenameAccountResponse } from '../../proto/api_pb';
 import { loadWalletBalance } from './walletBalanceSlice';
 import { getAccountPrefs } from '../appconfiguration/settingsSlice';
+import { batch } from 'react-redux';
 
 export interface WalletAccountsState {
 	readonly accounts: IndexedWalletAccounts,
@@ -190,9 +191,11 @@ export const loadAccountsAttempt: ActionCreator<any> = (): AppThunk => {
 
 export const accountNotification: ActionCreator<any> = (message: AccountNotificationsResponse): AppThunk => {
 	return (dispatch) => {
-		dispatch(accountNotificationsReceive(message))
-		dispatch(loadAccountsAttempt());
-		dispatch(loadWalletBalance());
+		batch(() => {
+			dispatch(accountNotificationsReceive(message))
+			dispatch(loadAccountsAttempt());
+			dispatch(loadWalletBalance());
+		})
 	}
 }
 
