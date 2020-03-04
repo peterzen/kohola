@@ -3,21 +3,18 @@ import * as React from "react"
 
 import { Form, Button, Row, Col } from 'react-bootstrap';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faPaste,
-} from '@fortawesome/free-solid-svg-icons'
 import { AppError } from "../../../store/types";
 import { rawToHex } from "../../../helpers/byteActions";
 import { SignTransactionResponse } from "../../../proto/api_pb";
 
-export default class PublishDialog extends React.Component<OwnProps, InternalState>{
+export default class PublishDialog extends React.Component<OwnProps>{
 	render() {
+		const txHash = rawToHex(this.props.signTransactionResponse.getTransaction_asU8())
 		return (
 			<div>
-				<h4>Publish tx?</h4>
+				<h4>Broadcast transaction</h4>
 				<Form
-					onSubmit={_.bind(this.handleFormSubmit, this)}
+					onSubmit={(e: React.FormEvent<HTMLFormElement>) => this.handleFormSubmit(e)}
 				>
 					<Form.Group controlId="unsignedTxHex">
 						<Form.Label>Signed tx</Form.Label>
@@ -26,7 +23,7 @@ export default class PublishDialog extends React.Component<OwnProps, InternalSta
 							as="textarea"
 							cols="20"
 							rows="5"
-							value={rawToHex(this.props.signTransactionResponse.getTransaction_asU8())}
+							value={txHash}
 						/>
 					</Form.Group>
 					<Row>
@@ -40,8 +37,8 @@ export default class PublishDialog extends React.Component<OwnProps, InternalSta
 						<Col className="text-right">
 							<Button
 								tabIndex={4}
-								variant="primary"
-								type="submit">Publish tx</Button>
+								variant="outline-primary"
+								type="submit">Broadcast tx</Button>
 
 						</Col>
 					</Row>
@@ -50,15 +47,9 @@ export default class PublishDialog extends React.Component<OwnProps, InternalSta
 		)
 	}
 
-	handleCancel(e: React.FormEvent<HTMLFormElement>) {
-		e.preventDefault();
-		e.stopPropagation();
-	}
-
 	handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		e.stopPropagation();
-		this.setState({ formIsValidated: true })
 		this.props.onFormComplete()
 		return false;
 	}
@@ -72,6 +63,3 @@ interface OwnProps {
 	onCancel: () => void
 }
 
-
-interface InternalState {
-}

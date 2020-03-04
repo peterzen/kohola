@@ -22,6 +22,7 @@ const ReviewTx = (props: {
 }) => {
 	const txInfo = props.txInfo
 	const resp = props.constructTxResp
+	const changeAddress = txInfo.constructTxReq.getChangeDestination() ? txInfo.constructTxReq.getChangeDestination()?.getAddress() : null
 	return (
 		<div>
 			<Table>
@@ -53,23 +54,25 @@ const ReviewTx = (props: {
 						<td>
 							<Table>
 								<tbody>
-									{txInfo.constructTxReq.getNonChangeOutputsList().map((o) => (
-										o.getDestination() != undefined ?
-											<tr key={o.getDestination().getAddress()}>
-												<td>{o.getDestination().getAddress()}</td>
+									{txInfo.constructTxReq.getNonChangeOutputsList().map((o) => {
+										if (o == undefined || o.getDestination() == undefined) return null
+										// @ts-ignore
+										const address = o.getDestination().getAddress()
+										return (
+											<tr key={address}>
+												<td>{address}</td>
 												<td><Amount amount={o.getAmount()} showCurrency /></td>
 											</tr>
-											: ""
-									))}
+										)
+									})}
 								</tbody>
 							</Table>
 
-							{txInfo.constructTxReq.getChangeDestination() != undefined ? (
+							{changeAddress && (
 								<div>
-									Change destination: {txInfo.constructTxReq.getChangeDestination().getAddress()}
+									Change destination: {changeAddress}
 								</div>
-							) : ""}
-
+							)}
 						</td>
 					</tr>
 					<tr>
@@ -142,7 +145,7 @@ export default class SignDialog extends React.Component<OwnProps, InternalState>
 						<Col className="text-right">
 							<Button
 								tabIndex={4}
-								variant="primary"
+								variant="outline-primary"
 								type="submit">Sign tx</Button>
 
 						</Col>
