@@ -24,8 +24,7 @@ class Home extends React.PureComponent {
 
 
 const mapStateToProps = function (state: IApplicationState) {
-
-	return state
+	return {}
 }
 
 export default withRouter(connect(mapStateToProps)(Home));

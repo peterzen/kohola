@@ -11,7 +11,7 @@ import TransactionDetailsModal from './TransactionDetailsComponent';
 import { getFilteredTransactions } from './transactionsSlice';
 
 
-class RecentTransactionsComponent extends React.Component<Props, InternalState> {
+class RecentTransactionsComponent extends React.Component<OwnProps, InternalState> {
 
 	constructor(props: Props) {
 		super(props)
@@ -38,12 +38,9 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 					tx={this.state.selectedItem}
 					modalTitle="Transaction details"
 					show={this.state.showModal}
-					onHide={_.bind(this.hideModal, this)} />
+					onHide={() => this.setState({ showModal: false })} />
 			</Card>
 		)
-	}
-	hideModal() {
-		this.setState({ showModal: false })
 	}
 	itemClickHandler(tx: Transaction) {
 		this.setState({
@@ -51,28 +48,19 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 			selectedItem: tx
 		})
 	}
-	// componentDidMount() {
-	// 	this.props.dispatch(loadTransactionsAttempt())
-	// }
 }
-
 
 interface OwnProps {
 	getTransactionsRequest: boolean
 	txList: Transaction[]
 }
 
-interface DispatchProps {
-}
-
-type Props = DispatchProps & OwnProps
-
 interface InternalState {
 	showModal: boolean
 	selectedItem: Transaction | null
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
+const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
 		getTransactionsRequest: state.transactions.getTransactionsRequest,
 		txList: getFilteredTransactions(state),
