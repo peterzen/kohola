@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
 import { WalletBalance, WalletTotals } from "../../models";
 import { AppError } from '../../store/types';
