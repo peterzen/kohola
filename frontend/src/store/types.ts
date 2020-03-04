@@ -1,23 +1,24 @@
 
+// @ts-ignore
 import { grpc } from "@improbable-eng/grpc-web";
 import { sprintf } from "sprintf-js";
 
 import { IApplicationState } from "./store";
 
-export type AppError = {
-	status: number | typeof grpc.Code,
-	msg: string
+interface IAppError {
+	code: number | typeof grpc.Code
+	message: string
 }
 
-export class GenericError {
+export class AppError implements IAppError {
 	public code: number
-	public msg: string
-	constructor(code: number, msg: string) {
+	public message: string
+	constructor(code: number, message: string) {
 		this.code = code
-		this.msg = msg
+		this.message = message
 	}
 	toString() {
-		return sprintf("[%d] %s", this.code, this.msg)
+		return sprintf("[%d] %s", this.code, this.message)
 	}
 }
 
@@ -29,7 +30,7 @@ export interface IGetState {
 export interface ILorcaMessage {
 	error: {
 		code: number
-		msg: string
+		message: string
 	}
 	payload: Uint8Array
 	apayload: Uint8Array[]

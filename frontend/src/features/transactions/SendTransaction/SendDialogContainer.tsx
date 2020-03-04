@@ -132,8 +132,8 @@ interface InternalState {
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
-		...state.walletbalance,
 		txInfo: state.transactions.txInfo,
+		accounts: getAccounts(state),
 		errorSignTransaction: state.transactions.errorSignTransaction,
 		errorPublishTransaction: state.transactions.errorPublishTransaction,
 		errorConstructTransaction: state.transactions.errorConstructTransaction,
@@ -142,7 +142,6 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 		constructTransactionRequest: state.transactions.constructTransactionRequest,
 		constructTransactionResponse: state.transactions.constructTransactionResponse,
 		currentStep: state.transactions.sendTransactionCurrentStep,
-		accounts: getAccounts(state),
 	};
 }
 

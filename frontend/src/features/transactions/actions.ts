@@ -75,7 +75,6 @@ export const constructTransaction: ActionCreator<any> = (
 	sendAllFlag: boolean): AppThunk => {
 
 	return async (dispatch, getState) => {
-debugger
 		const { constructTransactionAttempting } = getState().transactions;
 		if (constructTransactionAttempting) {
 			return
@@ -84,6 +83,8 @@ debugger
 		request.setSourceAccount(account);
 		request.setRequiredConfirmations(confirmations);
 		let totalAmount = 0;
+		const changeScriptCache = Object.assign({}, getChangeScriptCache(getState()))
+
 		if (!sendAllFlag) {
 			request.setOutputSelectionAlgorithm(CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED);
 			outputs.map(output => {
@@ -99,28 +100,22 @@ debugger
 			// If there's a previously stored change address for this account, use it.
 			// This alleviates a possible gap limit address exhaustion. See
 			// issue dcrwallet#1622.
-			const changeScript = getChangeScriptCache(getState())[account] || null;
-			if (changeScript) {
+			const cachedChangeScript = changeScriptCache[account] || null;
+			if (cachedChangeScript) {
 				const changeDest = new ConstructTransactionRequest.OutputDestination();
-				changeDest.setScript(changeScript);
+				changeDest.setScript(cachedChangeScript);
 				request.setChangeDestination(changeDest);
 			}
 		} else {
 			if (outputs.length > 1) {
 				return (dispatch: AppDispatch) => {
-					const error: AppError = {
-						status: 1,
-						msg: "Too many outputs provided for a send all request."
-					};
+					const error = new AppError(1, "Too many outputs provided for a send all request.")
 					dispatch(constructTransactionFailed(error))
 				}
 			}
 			else if (outputs.length == 0) {
 				return (dispatch: AppDispatch) => {
-					const error = {
-						status: 2,
-						msg: "No destination specified for send all request."
-					};
+					const error = new AppError(2, "No destination specified for send all request.")
 					dispatch(constructTransactionFailed(error))
 				}
 			}
@@ -138,8 +133,7 @@ debugger
 		let rawTx;
 
 		try {
-			const constructTxResponse = await LorcaBackend.constructTransaction(request);
-			const changeScriptCache = getChangeScriptCache(getState()) || {};
+			const constructTxResponse = await LorcaBackend.constructTransaction(request)
 			if (!sendAllFlag) {
 				// Store the change address we just generated so that future changes to
 				// the tx being constructed will use the same address and prevent gap

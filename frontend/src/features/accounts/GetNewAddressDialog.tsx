@@ -21,7 +21,7 @@ class GetNewAddressDialog extends GenericModalDialog<Props, InternalState> {
 					this.props.errorNextAddress != null && (
 						<div>
 							<h4>Error ({this.props.errorNextAddress.status})</h4>
-							<p className="text-danger">{this.props.errorNextAddress.msg}</p>
+							<p className="text-danger">{this.props.errorNextAddress.message}</p>
 						</div>
 					)
 				}

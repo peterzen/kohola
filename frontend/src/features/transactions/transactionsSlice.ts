@@ -11,41 +11,41 @@ import { TransactionType, TransactionDirection } from "../../constants";
 // GetTransactions
 export interface GetTransactionsState {
 	readonly txList: Transaction[]
-	readonly getTransactionsRequest: boolean,
-	readonly startBlockHeight: number,
-	readonly endBlockHeight: number,
-	readonly targetTxCount: number,
+	readonly getTransactionsRequest: boolean
+	readonly startBlockHeight: number
+	readonly endBlockHeight: number
+	readonly targetTxCount: number
 	readonly activeTypeFilter: TransactionDetails.TransactionTypeMap[keyof TransactionDetails.TransactionTypeMap] | null
 	readonly errorGetTransactions: AppError | null
 }
 
 // ConstructTransaction
 export interface ConstructTransactionState {
-	readonly txInfo: HumanreadableTxInfo | null,
-	readonly errorConstructTransaction: AppError | null,
-	readonly constructTransactionRequest: ConstructTransactionRequest | null,
-	readonly constructTransactionResponse: ConstructTransactionResponse | null,
-	readonly constructTransactionAttempting: boolean,
-	readonly changeScriptCache: IChangeScriptByAccount,
+	readonly txInfo: HumanreadableTxInfo | null
+	readonly errorConstructTransaction: AppError | null
+	readonly constructTransactionRequest: ConstructTransactionRequest | null
+	readonly constructTransactionResponse: ConstructTransactionResponse | null
+	readonly constructTransactionAttempting: boolean
+	readonly changeScriptCache: IChangeScriptByAccount
 }
 
 // SignTransaction
 export interface SignTransactionState {
-	readonly signTransactionAttempting: boolean,
+	readonly signTransactionAttempting: boolean
 	readonly signTransactionResponse: SignTransactionResponse | null
 	readonly errorSignTransaction: AppError | null
 }
 
 // PublishTransaction
 export interface PublishTransactionState {
-	readonly publishTransactionAttempting: boolean,
+	readonly publishTransactionAttempting: boolean
 	readonly publishTransactionResponse: PublishTransactionResponse | null
 	readonly errorPublishTransaction: AppError | null
 }
 
 // ValidateAddress
 export interface ValidateAddressState {
-	readonly validateAddressAttempting: boolean,
+	readonly validateAddressAttempting: boolean
 	readonly validateAddressResponse: ValidateAddressResponse | null
 	readonly errorValidateAddress: AppError | null
 }
@@ -65,15 +65,15 @@ export enum SendTransactionSteps {
 }
 
 export type HumanreadableTxInfo = {
-	rawTx: DecodedrawTx,
+	rawTx: DecodedrawTx
 	outputs: ConstructTxOutput[]
-	totalAmount: number,
-	sourceAccount: WalletAccount,
-	changeScript?: Buffer,
-	constructTxReq: ConstructTransactionRequest,
+	totalAmount: number
+	sourceAccount: WalletAccount
+	changeScript?: Buffer
+	constructTxReq: ConstructTransactionRequest
 }
 
-interface IChangeScriptByAccount {
+export interface IChangeScriptByAccount {
 	[accountNumber: number]: Buffer
 }
 
@@ -156,7 +156,6 @@ export const initialState: GetTransactionsState &
 
 	// Send transaction GUI
 	sendTransactionCurrentStep: SendTransactionSteps.CONSTRUCT_DIALOG
-
 }
 
 const transactionsSlice = createSlice({

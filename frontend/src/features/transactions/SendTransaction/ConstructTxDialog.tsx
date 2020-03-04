@@ -143,7 +143,7 @@ export default class ConstructTxDialog extends React.Component<OwnProps, ISendDi
 		const v = isValidAddress(address)
 
 		if (v != null) {
-			e.currentTarget.setCustomValidity(v.msg)
+			e.currentTarget.setCustomValidity(v.message)
 			return false
 		}
 		e.currentTarget.setCustomValidity("")

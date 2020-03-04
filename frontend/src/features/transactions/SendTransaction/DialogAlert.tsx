@@ -19,7 +19,7 @@ const DialogAlert = (props: IDialogAlertProps) => {
 	let msg = "";
 	console.error("Unhandled ERROR in DialogAlert", props.error)
 
-	switch (props.error.status) {
+	switch (props.error.code) {
 		case 8:
 			msg = "Insufficient balance."
 			break;
@@ -28,13 +28,12 @@ const DialogAlert = (props: IDialogAlertProps) => {
 			break;
 
 		default:
-			msg = props.error.msg;
+			msg = props.error.message;
 			break;
 	}
 	return (
 		<Alert variant="danger" className="mt-3 mb-3 p-2">
-			<FontAwesomeIcon icon={faExclamationCircle} />
-			{msg}
+			<FontAwesomeIcon icon={faExclamationCircle} /> <span>{msg}</span>
 		</Alert>
 	)
 }

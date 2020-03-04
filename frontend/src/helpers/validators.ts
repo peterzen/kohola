@@ -5,7 +5,7 @@ import createBlakeHash from 'blake-hash/js';
 import bs58checkBase from 'bs58check/base'
 
 import { Configuration, Networks } from '../constants';
-import { GenericError } from '../store/types';
+import { AppError } from '../store/types';
 
 
 function _blake256x2(buffer: string) {
@@ -16,8 +16,6 @@ function _blake256x2(buffer: string) {
 		.update(buffer)
 		.digest();
 }
-
-
 
 const ERR_INVALID_MASTER_PUB_KEY = "ERR_INVALID_MASTER_PUB_KEY";
 const ERR_INVALID_MASTERPUB_CHECKSUM = "ERR_INVALID_MASTERPUB_CHECKSUM";
@@ -44,7 +42,7 @@ export enum ValidationErrorCodes {
 	ERR_INVALID_ADDR_FORMAT
 }
 
-export const ValidationErrors ={
+export const ValidationErrors = {
 	0: "Empty address",
 	1: "Address too short",
 	2: "Address too long",
@@ -55,9 +53,9 @@ export const ValidationErrors ={
 
 
 
-export function isValidAddress(address: string):GenericError | null {
+export function isValidAddress(address: string): AppError | null {
 
-	const err = (code:  ValidationErrorCodes) =>  new GenericError(code as unknown as number, ValidationErrors[code])
+	const err = (code: ValidationErrorCodes) => new AppError(code, ValidationErrors[code])
 
 	address = address.trim();
 	if (!address.length) return err(ValidationErrorCodes.ERR_INVALID_ADDR_EMPTY)
