@@ -1,6 +1,5 @@
 import * as React from "react"
 import { connect } from "react-redux"
-import { Dispatch, bindActionCreators } from "redux"
 import _ from "lodash"
 
 // @ts-ignore
@@ -10,20 +9,18 @@ import { Card } from "react-bootstrap"
 import { history } from '../../store/store'
 
 import { IApplicationState } from "../../store/store"
-import { IndexedWalletAccounts, WalletAccount, WalletTotals } from "../../models"
-import { IWalletBalanceState, getWalletBalances, getWalletTotals } from "./walletBalanceSlice"
-import { loadNextAddressAttempt, getAccounts } from "./accountSlice"
+import { IndexedWalletAccounts, WalletAccount, WalletTotals, WalletBalance } from "../../models"
+import { getWalletBalances, getWalletTotals } from "./walletBalanceSlice"
+import { getAccounts } from "./accountSlice"
 
 import { MenuItems } from "./AccountToolsDropdown"
 import AccountBalanceTable from "./AccountBalanceTable"
-import GetNewAddressDialog from "./GetNewAddressDialog"
 import WalletTotalsComponent from "./WalletTotalsComponent"
 
-class WalletBalanceContainer extends React.PureComponent<Props, InternalState>{
-	constructor(props: Props) {
+class WalletBalanceContainer extends React.PureComponent<OwnProps, InternalState>{
+	constructor(props: OwnProps) {
 		super(props)
 		this.state = {
-			showModal: false,
 			selectedAccount: null
 		}
 	}
@@ -46,26 +43,12 @@ class WalletBalanceContainer extends React.PureComponent<Props, InternalState>{
 						/>
 					</Card>
 				</Fade>
-				<GetNewAddressDialog
-					modalTitle="New receive address"
-					show={this.state.showModal}
-					onHide={_.bind(this.hideModal, this)} />
 			</div>
 		)
-	}
-	showModal() {
-		this.setState({ showModal: true })
-	}
-	hideModal() {
-		this.setState({ showModal: false })
 	}
 	menuHandler(evtKey: keyof MenuItems, selectedAccount: WalletAccount) {
 		this.setState({ selectedAccount: selectedAccount });
 		switch (evtKey) {
-			case MenuItems[MenuItems.NEWADDRESS]:
-				this.props.loadNextAddressAttempt(selectedAccount)
-				this.showModal();
-				break;
 			case MenuItems[MenuItems.DETAILSVIEW]:
 				history.push("/account/" + selectedAccount.getAccountNumber())
 				break;
@@ -73,37 +56,23 @@ class WalletBalanceContainer extends React.PureComponent<Props, InternalState>{
 	}
 }
 
+interface OwnProps {
+	accounts: IndexedWalletAccounts
+	balances: WalletBalance
+	walletTotals: WalletTotals
+}
 
 
-const mapStateToProps = (state: IApplicationState): IWalletBalanceState & OwnProps => {
+interface InternalState {
+	selectedAccount: WalletAccount | null
+}
+
+const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
-		...state.walletbalance,
 		accounts: getAccounts(state),
 		balances: getWalletBalances(state),
 		walletTotals: getWalletTotals(state),
 	};
 }
 
-interface OwnProps {
-	accounts: IndexedWalletAccounts
-	walletTotals: WalletTotals
-}
-
-
-interface DispatchProps {
-	loadNextAddressAttempt: (account: WalletAccount) => void
-}
-
-type Props = IWalletBalanceState & DispatchProps & OwnProps
-
-interface InternalState {
-	showModal: boolean
-	selectedAccount: WalletAccount | null
-}
-
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-	loadNextAddressAttempt: loadNextAddressAttempt,
-}, dispatch)
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(WalletBalanceContainer);
+export default connect(mapStateToProps)(WalletBalanceContainer);
