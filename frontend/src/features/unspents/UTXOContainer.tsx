@@ -2,7 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { IApplicationState } from '../../store/store';
+import { bindActionCreators } from '@reduxjs/toolkit';
+
+import { IApplicationState, AppDispatch } from '../../store/store';
 import { UnspentOutputResponse } from '../../proto/api_pb';
 import UTXODetailsModal from './UTXODetailsComponent';
 import ListUTXOs from './ListUTXOs';
@@ -17,9 +19,9 @@ class UTXOContainer extends React.Component<Props, InternalState> {
 			selectedItem: null
 		}
 	}
+
 	componentDidMount() {
-		// @ts-ignore
-		this.props.dispatch(fetchUnspentsAttempt(this.props.account.getAccountNumber()))
+		this.props.fetchUnspents(this.props.account.getAccountNumber())
 	}
 
 	render() {
@@ -36,15 +38,12 @@ class UTXOContainer extends React.Component<Props, InternalState> {
 					utxo={this.state.selectedItem}
 					modalTitle="Coin details"
 					show={this.state.showModal}
-					onHide={_.bind(this.hideModal, this)} />
+					onHide={() => this.setState({ showModal: false })} />
 			</div>
 		)
 	}
-	hideModal() {
-		this.setState({ showModal: false })
-	}
+
 	menuHandler(evtKey: string, utxo: UnspentOutputResponse) {
-		console.log("ttt", utxo)
 		this.setState({
 			showModal: true,
 			selectedItem: utxo
@@ -52,18 +51,6 @@ class UTXOContainer extends React.Component<Props, InternalState> {
 	}
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
-	return {
-		...state.unspentoutputs,
-	};
-}
-
-export default connect(mapStateToProps)(UTXOContainer)
-
-
-interface DispatchProps {
-	// onSomeEvent: () => void
-}
 
 interface OwnProps {
 	account: WalletAccount
@@ -77,3 +64,19 @@ interface InternalState {
 	selectedItem: UnspentOutputResponse | null
 }
 
+const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
+	return {
+		...state.unspentoutputs,
+	};
+}
+
+interface DispatchProps {
+	fetchUnspents: typeof fetchUnspentsAttempt
+}
+
+const mapDispatchToProps = (dispatch: AppDispatch) => bindActionCreators({
+	fetchUnspents: fetchUnspentsAttempt
+}, dispatch)
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(UTXOContainer)

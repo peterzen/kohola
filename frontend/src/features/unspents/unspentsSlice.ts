@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
 import LorcaBackend from '../../datasources/lorca'
 import { AppError } from '../../store/types'
@@ -55,7 +55,7 @@ export const {
 export default unspentsDisplaySlice.reducer
 
 
-export const fetchUnspentsAttempt = (
+export const fetchUnspentsAttempt: ActionCreator<any> = (
 	accountNumber: number,
 	targetAmount: number = 0,
 	requiredConfirmations: number = 1,
