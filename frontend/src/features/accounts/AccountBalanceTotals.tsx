@@ -55,6 +55,12 @@ class AccountTotals extends React.PureComponent<Props, {}> {
 					variant="spendable"></ValueCol>
 
 				<ValueCol
+					label="Unconfirmed"
+					amount={balance.getUnconfirmed()}
+					total={balance.getTotal()}
+					variant="unconfirmed"></ValueCol>
+				
+				<ValueCol
 					label="Immature"
 					amount={balance.getImmatureReward() + balance.getImmatureStakeGeneration()}
 					total={balance.getTotal()}
@@ -65,12 +71,6 @@ class AccountTotals extends React.PureComponent<Props, {}> {
 					amount={balance.getVotingAuthority()}
 					total={balance.getTotal()}
 					variant="voting"></ValueCol>
-
-				<ValueCol
-					label="Locked"
-					amount={balance.getLockedByTickets()}
-					total={balance.getTotal()}
-					variant="locked"></ValueCol>
 			</Row>
 		)
 	}

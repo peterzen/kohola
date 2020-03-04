@@ -48,6 +48,12 @@ export default class WalletTotalsComponent extends React.PureComponent<IWalletTo
 					amount={totals.spendable}
 					total={totals.total}
 					variant="spendable"></ValueCol>
+				
+				<ValueCol
+					label="Unconfirmed"
+					amount={totals.unconfirmed}
+					total={totals.total}
+					variant="unconfirmed"></ValueCol>
 
 				<ValueCol
 					label="Immature"
@@ -56,16 +62,10 @@ export default class WalletTotalsComponent extends React.PureComponent<IWalletTo
 					variant="immature"></ValueCol>
 
 				<ValueCol
-					label="Voting auth"
+					label="Voting authority"
 					amount={totals.votingauth}
 					total={totals.total}
 					variant="votingauth"></ValueCol>
-				
-				<ValueCol
-					label="Locked"
-					amount={totals.locked}
-					total={totals.total}
-					variant="locked"></ValueCol>
 			</Row>
 		)
 	}
