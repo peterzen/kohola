@@ -21,7 +21,8 @@ export default class SettingsContainer extends React.Component<OwnProps> {
 		if (c == null) {
 			return null
 		}
-		const dcrd = c.getDcrdHost()
+		// @ts-ignore
+		const dcrd: RPCEndpoint = c.getDcrdHost()
 		const dcrwallets = c.getDcrwalletHostsList()
 
 		return (
@@ -30,14 +31,14 @@ export default class SettingsContainer extends React.Component<OwnProps> {
 					<Col sm={6}>
 						<Fade fade cascade>
 							{dcrwallets.map((endPoint) => (
-									<div className="mb-3">
-										<RPCEndpointConfigForm
-											onFormComplete={this.props.onFormComplete}
-											endPointConfig={endPoint}
-											error={this.props.setConfigError}
-											title="dcrwallet settings"
-											key={endPoint.getLabel()} />
-									</div>
+								<div className="mb-3">
+									<RPCEndpointConfigForm
+										onFormComplete={this.props.onFormComplete}
+										endPointConfig={endPoint}
+										error={this.props.setConfigError}
+										title="dcrwallet settings"
+										key={endPoint.getLabel()} />
+								</div>
 							))}
 						</Fade>
 						<div className="mt-3" >
@@ -70,9 +71,5 @@ interface OwnProps {
 	appConfig: AppConfiguration
 	setConfigError: AppError | null
 	onFormComplete: () => void
-}
-
-interface InternalState {
-	appConfig: AppConfiguration
 }
 
