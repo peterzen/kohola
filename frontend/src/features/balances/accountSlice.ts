@@ -7,6 +7,7 @@ import LorcaBackend from '../../datasources/lorca';
 import { AppThunk, IApplicationState } from '../../store/store';
 import { AccountNotificationsResponse, NextAccountResponse, RenameAccountResponse } from '../../proto/api_pb';
 import { loadWalletBalance } from './walletBalanceSlice';
+import { getAccountPrefs } from '../appconfiguration/settingsSlice';
 
 export interface WalletAccountsState {
 	readonly accounts: IndexedWalletAccounts,
@@ -249,8 +250,23 @@ export const doRenameAccountAttempt = (account: WalletAccount, newName: string):
 
 
 // Selectors
+
+export const isAccountVisible = (state: IApplicationState, accountNumber: number) => {
+	const accountPrefs = getAccountPrefs(state)
+	return accountPrefs[accountNumber] ?
+		accountPrefs[accountNumber].getIsHidden() == false : true
+}
+
 export const getAccounts = (state: IApplicationState): IndexedWalletAccounts => {
 	return _.filter(state.accounts.accounts, (r) => r.getAccountName() != "imported")
+}
+
+export const getFilteredAccounts = (state: IApplicationState): IndexedWalletAccounts => {
+	const accountPrefs = getAccountPrefs(state)
+	return _.filter(state.accounts.accounts, (a) => {
+		return accountPrefs[a.getAccountNumber()] ?
+			accountPrefs[a.getAccountNumber()].getIsHidden() == false : true
+	})
 }
 
 export const getAllAccountNumbers = (state: IApplicationState): number[] => {

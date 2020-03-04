@@ -11,7 +11,7 @@ import { history } from '../../store/store'
 import { IApplicationState } from "../../store/store"
 import { IndexedWalletAccounts, WalletAccount, WalletTotals, WalletBalance } from "../../models"
 import { getWalletBalances, getWalletTotals } from "./walletBalanceSlice"
-import { getAccounts } from "./accountSlice"
+import { getAccounts, getFilteredAccounts } from "./accountSlice"
 
 import { MenuItems } from "./AccountToolsDropdown"
 import AccountBalanceTable from "./AccountBalanceTable"

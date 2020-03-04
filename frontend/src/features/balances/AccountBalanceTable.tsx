@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { AccountBalance, IndexedWalletAccounts, WalletAccount, WalletBalance, WalletTotals } from '../../models';
 
 import { Amount } from '../../components/Shared/shared';
-import AccountToolsDropdown, { MenuItems } from './AccountToolsDropdown';
+import { MenuItems } from './AccountToolsDropdown';
 
 import { Table, Button } from 'react-bootstrap';
 
@@ -16,6 +16,31 @@ import {
 
 export default class AccountBalanceTable extends React.Component<OwnProps, InternalState>{
 
+	render() {
+		return (
+			<Table hover>
+				<thead>
+					<tr className="text-right">
+						<th></th>
+						<th>spendable</th>
+						<th>total</th>
+						<th className="text-secondary">unconf'd</th>
+						<th className="text-secondary">immature<br /><small>stake/reward</small></th>
+						<th className="text-secondary">voting<br />authority</th>
+						<th className="text-secondary">locked</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{this.renderItems()}
+				</tbody>
+				<tfoot>
+					{this.renderTotals()}
+				</tfoot>
+			</Table>
+		)
+	}
+	
 	renderBalanceRow(props: { account: WalletAccount, balance: AccountBalance }) {
 		const { account, balance } = props;
 		return (
@@ -66,31 +91,6 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 				<th className="text-secondary"><Amount amount={totals.locked} /></th>
 				<th></th>
 			</tr>
-		)
-	}
-
-	render() {
-		return (
-			<Table hover>
-				<thead>
-					<tr className="text-right">
-						<th></th>
-						<th>spendable</th>
-						<th>total</th>
-						<th className="text-secondary">unconf'd</th>
-						<th className="text-secondary">immature<br /><small>stake/reward</small></th>
-						<th className="text-secondary">voting<br />authority</th>
-						<th className="text-secondary">locked</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{this.renderItems()}
-				</tbody>
-				<tfoot>
-					{this.renderTotals()}
-				</tfoot>
-			</Table>
 		)
 	}
 }
