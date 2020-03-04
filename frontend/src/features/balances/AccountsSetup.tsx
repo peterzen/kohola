@@ -11,13 +11,14 @@ import {
 	faCheck
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { WalletAccount, IndexedWalletAccounts } from '../../models';
-import { Dispatch, bindActionCreators } from '@reduxjs/toolkit';
+import { WalletAccount, IndexedWalletAccounts, WalletBalance } from '../../models';
 import { loadNextAccountAttempt, doRenameAccountAttempt } from './accountSlice';
 import PassphraseEntryDialog, { askPassphrase } from '../../components/Shared/PassphraseEntryDialog';
 import { AppError } from '../../store/types';
 import { NextAccountResponse, RenameAccountResponse } from '../../proto/api_pb';
 import { getAccountPrefs, updateAccountPreference, IIndexedAccountPrefs } from '../appconfiguration/settingsSlice';
+import { getWalletBalances } from './walletBalanceSlice';
+import { Amount } from '../../components/Shared/shared';
 
 function enterHandler(e: React.KeyboardEvent<HTMLInputElement>, callback: () => void) {
 	if (e.key == "Enter") {
@@ -124,40 +125,42 @@ class AccountsSetup extends React.Component<Props, InternalState> {
 				<hr className="mt-3" />
 
 				<Row key="header">
-					<Col xs={8}></Col>
-					<Col xs={4}>Hidden</Col>
+					<Col xs={6}></Col>
+					<Col xs={3}><strong>Balance</strong></Col>
+					<Col xs={3}><strong>Hidden?</strong></Col>
 				</Row>
 
 				{accounts.map(account => {
-					const hiddenPrefValue = this.props.accountPrefs[account.getAccountNumber()] ? this.props.accountPrefs[account.getAccountNumber()].getIsHidden() : false
+					const accountNumber = account.getAccountNumber()
+					const hiddenPrefValue = this.props.accountPrefs[accountNumber] ? this.props.accountPrefs[accountNumber].getIsHidden() : false
+					const accountBalance = this.props.accountBalances[accountNumber] ? this.props.accountBalances[accountNumber].getTotal() : 0
 					return (
-						<Row key={`account-row-${account.getAccountNumber()}`}>
-							<Col xs={8}>
-								{this.state.editable != account.getAccountNumber() && (
+						<Row key={`account-row-${accountNumber}`}>
+							<Col xs={6}>
+								{this.state.editable != accountNumber && (
 									<span>
 										{account.getAccountName()}
 										<Button
 											variant="link"
-											onClick={() => {
-												this.setState({
-													editable: account.getAccountNumber()
-												})
-											}}
+											onClick={() => this.setState({ editable: accountNumber })}
 										><FontAwesomeIcon icon={faPencilAlt} /></Button>
 									</span>
 								)}
-								{this.state.editable == account.getAccountNumber() && (
+								{this.state.editable == accountNumber && (
 									<AccountNameInputComponent
 										account={account}
-										onEditComplete={(value) => this.renameAccount(account, value)} />
+										onEditComplete={(value) => this.props.doRenameAccountAttempt(account, value)} />
 								)}
 							</Col>
-							<Col xs={4}>
+							<Col xs={3}>
+								<Amount amount={accountBalance} showCurrency />
+							</Col>
+							<Col xs={3}>
 								<Form.Check
 									checked={hiddenPrefValue}
 									type="switch"
-									id={`account-visibility-${account.getAccountNumber()}`}
-									onChange={(e: React.FormEvent<HTMLInputElement>) => this.updateAccountPreference(account, e.currentTarget.checked)}
+									id={`account-visibility-${accountNumber}`}
+									onChange={(e: React.FormEvent<HTMLInputElement>) => this.props.updateAccountPreference(accountNumber, e.currentTarget.checked)}
 									label=""
 								/>
 							</Col>
@@ -178,29 +181,23 @@ class AccountsSetup extends React.Component<Props, InternalState> {
 				this.props.loadNextAccountAttempt(accountName, passphrase)
 			})
 	}
-
-	renameAccount(account: WalletAccount, accountName: string) {
-		this.props.renameAccountAttempt(account, accountName)
-	}
-
-	updateAccountPreference(account: WalletAccount, isHidden: boolean) {
-		this.props.updateAccountPreference(account.getAccountNumber(), isHidden)
-	}
 }
 
 interface OwnProps {
 	accounts: IndexedWalletAccounts
 	accountPrefs: IIndexedAccountPrefs
+	accountBalances: WalletBalance
 	renameAccountResponse: RenameAccountResponse | null
 	errorRenameAccount: AppError | null
 	nextAccountResponse: NextAccountResponse | null
 	errorNextAccount: AppError | null
 }
 
-const mapStateToProps = function (state: IApplicationState, ownProps: OwnProps) {
+const mapStateToProps = function (state: IApplicationState): OwnProps {
 	return {
 		accounts: state.accounts.accounts,
 		accountPrefs: getAccountPrefs(state),
+		accountBalances: getWalletBalances(state),
 		renameAccountResponse: state.accounts.renameAccountResponse,
 		errorRenameAccount: state.accounts.errorRenameAccount,
 		nextAccountResponse: state.accounts.nextAccountResponse,
@@ -212,20 +209,18 @@ type Props = OwnProps & DispatchProps
 
 interface DispatchProps {
 	loadNextAccountAttempt: typeof loadNextAccountAttempt
-	renameAccountAttempt: typeof doRenameAccountAttempt
+	doRenameAccountAttempt: typeof doRenameAccountAttempt
 	updateAccountPreference: (accountNumber: number, isHidden: boolean) => void
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-	renameAccountAttempt: doRenameAccountAttempt,
-	loadNextAccountAttempt: loadNextAccountAttempt,
-	updateAccountPreference: updateAccountPreference,
-}, dispatch)
+const mapDispatchToProps = {
+	doRenameAccountAttempt,
+	loadNextAccountAttempt,
+	updateAccountPreference,
+}
 
 interface InternalState {
 	editable?: number
 }
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountsSetup);
