@@ -1,41 +1,37 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { INetworkState } from "./networkInfoSlice";
 import { IApplicationState } from "../../store/store";
+import { NetworkResponse } from "../../proto/api_pb";
 
-interface OwnProps {
-	// propFromParent: number
-}
 
-interface DispatchProps {
-	// onSomeEvent: () => void
-}
-
-type Props = INetworkState & DispatchProps & OwnProps
-
-interface InternalState {
-	// internalComponentStateField: string
-}
-
-class NetworkComponent extends React.Component<Props, InternalState> {
+class NetworkComponent extends React.Component<Props> {
 	render() {
-		if (this.props.network == null) {
-			return null
-		}
 		return (
 			<div>
-				Active network: {this.props.network.getActiveNetwork()}
+				{this.props.network && (
+					<span>Active network: {this.props.network.getActiveNetwork()}</span>
+				)}
 			</div>
 		)
 	}
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): INetworkState => {
+interface OwnProps {
+	network: NetworkResponse
+}
+
+interface DispatchProps {
+}
+
+type Props = DispatchProps & OwnProps
+
+
+const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
 	return {
-		...state.networkinfo,
 		network: state.networkinfo.network,
 		errorNetwork: state.networkinfo.errorNetwork,
-	};
+	}
 }
+
 export default connect(mapStateToProps)(NetworkComponent)
