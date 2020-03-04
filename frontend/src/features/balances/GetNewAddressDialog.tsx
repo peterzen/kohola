@@ -41,13 +41,12 @@ class GetNewAddressDialog extends GenericModalDialog<Props, InternalState> {
 interface InternalState {
 }
 
+
 type Props = NextAddressState
 
-const mapStateToProps = (state: IApplicationState) => {
+const mapStateToProps = (state: IApplicationState): Props => {
 	return {
-		nextAddressAccount: state.accounts.nextAddressAccount,
-		nextAddressResponse: state.accounts.nextAddressResponse,
-		errorNextAddress: state.accounts.errorNextAddress,
+		...state.accounts
 	}
 }
 
