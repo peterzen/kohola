@@ -9,7 +9,7 @@ import { UnspentOutputResponse } from '../../proto/api_pb';
 import UTXODetailsModal from './UTXODetailsComponent';
 import ListUTXOs from './ListUTXOs';
 import { WalletAccount } from '../../models';
-import { fetchUnspentsAttempt, IUnspentOutputsByAccount } from '../unspents/unspentsSlice';
+import { fetchUnspentsAttempt, IUnspentOutputsByAccount, IUnspentState } from '../unspents/unspentsSlice';
 
 class UTXOContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -18,10 +18,6 @@ class UTXOContainer extends React.Component<Props, InternalState> {
 			showModal: false,
 			selectedItem: null
 		}
-	}
-
-	componentDidMount() {
-		this.props.fetchUnspents(this.props.account.getAccountNumber())
 	}
 
 	render() {
@@ -34,6 +30,7 @@ class UTXOContainer extends React.Component<Props, InternalState> {
 				<ListUTXOs
 					utxos={utxos}
 					menuHandler={_.bind(this.menuHandler, this)} />
+
 				<UTXODetailsModal
 					utxo={this.state.selectedItem}
 					modalTitle="Coin details"
@@ -49,6 +46,10 @@ class UTXOContainer extends React.Component<Props, InternalState> {
 			selectedItem: utxo
 		})
 	}
+
+	componentDidMount() {
+		this.props.fetchUnspentsAttempt(this.props.account.getAccountNumber())
+	}
 }
 
 
@@ -57,26 +58,25 @@ interface OwnProps {
 	unspentOutputsByAccount: IUnspentOutputsByAccount
 }
 
-type Props = OwnProps & DispatchProps
+type Props = OwnProps & DispatchProps & IUnspentState
 
 interface InternalState {
 	showModal: boolean
 	selectedItem: UnspentOutputResponse | null
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
+const mapStateToProps = (state: IApplicationState): IUnspentState => {
 	return {
 		...state.unspentoutputs,
 	};
 }
 
 interface DispatchProps {
-	fetchUnspents: typeof fetchUnspentsAttempt
+	fetchUnspentsAttempt: typeof fetchUnspentsAttempt
 }
 
-const mapDispatchToProps = (dispatch: AppDispatch) => bindActionCreators({
-	fetchUnspents: fetchUnspentsAttempt
-}, dispatch)
-
+const mapDispatchToProps = {
+	fetchUnspentsAttempt
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(UTXOContainer)
