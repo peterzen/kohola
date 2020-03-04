@@ -18,7 +18,6 @@ import { loadTicketsAttempt } from '../features/staking/stakingSlice';
 import { loadBestBlockHeight } from '../features/networkinfo/networkInfoSlice';
 import { getConfiguration, canStartup } from '../features/appconfiguration/settingsSlice';
 import { loadAccountsAttempt, accountNotification } from '../features/balances/accountSlice';
-import { getUnspentOutputsAttempt, fetchUnspentsAttempt } from '../features/unspents/unspentsSlice';
 import { loadTransactionsAttempt, transactionNotification } from '../features/transactions/actions';
 
 const w = (window as any)
@@ -51,7 +50,7 @@ export const initializeData: ActionCreator<any> = () => {
 
 		// dispatch(pingAttempt())
 
-		w.lorcareceiver__OnTxNotification = (serializedMsg: Uint8Array) => {
+		w.lorcareceiver__OnTxNotification = (serializedMsg: string) => {
 			const message = TransactionNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
 			dispatch(transactionNotification(message))
 		}
@@ -59,7 +58,7 @@ export const initializeData: ActionCreator<any> = () => {
 		// 	const message = ConfirmationNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
 		// 	dispatch(transactionNotification(message))
 		// }
-		w.lorcareceiver__OnAccountNotification = (serializedMsg: Uint8Array) => {
+		w.lorcareceiver__OnAccountNotification = (serializedMsg: string) => {
 			const message = AccountNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
 			dispatch(accountNotification(message))
 		}
