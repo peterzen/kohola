@@ -10,10 +10,18 @@ import { TicketStatusIcon } from './TicketStatusIcon';
 
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
+import { TransitionGroup } from 'react-transition-group';
+
+const transitionGroupProps = {
+	appear: true,
+	enter: true,
+	exit: true,
+}
 
 export default class TicketsTable extends React.Component<TicketsTableProps> {
 
 	render() {
+		
 		return (
 			<Table hover>
 				<thead>
@@ -24,7 +32,7 @@ export default class TicketsTable extends React.Component<TicketsTableProps> {
 					</tr>
 				</thead>
 				{this.props.items.length > 0 && (
-					<tbody>
+					<TransitionGroup {...transitionGroupProps} component="tbody">
 						{this.props.items.map((ticket) => {
 							const tx = ticket.getTx()
 							return (
@@ -37,7 +45,7 @@ export default class TicketsTable extends React.Component<TicketsTableProps> {
 								</Fade>
 							)
 						})}
-					</tbody>
+					</TransitionGroup>
 				)}
 			</Table>
 		)
