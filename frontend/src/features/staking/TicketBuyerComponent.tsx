@@ -16,21 +16,8 @@ import { Ticket } from '../../models';
 
 
 
-interface ITicketBuyerComponentProps {
-	title: string
-	error: AppError | null
-	onFormComplete: () => void
-}
-
-interface ITicketBuyerComponentState {
-	formRef: React.RefObject<any>
-	error: AppError | null
-	formIsValidated: boolean
-	isDirty: boolean
-}
-
-export default class TicketBuyerComponent extends React.Component<ITicketBuyerComponentProps, ITicketBuyerComponentState> {
-	constructor(props: ITicketBuyerComponentProps) {
+export default class TicketBuyerComponent extends React.Component<OwnProps, InternalState> {
+	constructor(props: OwnProps) {
 		super(props)
 		this.state = {
 			error: null,
@@ -45,7 +32,9 @@ export default class TicketBuyerComponent extends React.Component<ITicketBuyerCo
 			<Card>
 				<Card.Body>
 
-					<span className="float-right"><Button variant="link"><FontAwesomeIcon icon={faCog} /></Button></span>
+					<span className="float-right">
+						<Button variant="link"><FontAwesomeIcon icon={faCog} /></Button>
+					</span>
 					<Card.Title>Ticketbuyer</Card.Title>
 					<Form
 						// ref={this.state.formRef}
@@ -75,10 +64,8 @@ export default class TicketBuyerComponent extends React.Component<ITicketBuyerCo
 							</Col>
 						</Form.Group>
 					</Form>
-
 				</Card.Body>
 			</Card>
-
 		)
 	}
 
@@ -141,4 +128,19 @@ const loadFormFields = (formRef: React.RefObject<any>, ep: Ticket) => {
 	// ep.setNetwork(f.network.value)
 	// ep.setCertFileName(f.cert_file_name.value)
 	// ep.setLabel(generateEndpointLabel(ep))
+}
+
+
+
+
+interface OwnProps {
+	error: AppError | null
+	onFormComplete: () => void
+}
+
+interface InternalState {
+	formRef: React.RefObject<any>
+	error: AppError | null
+	formIsValidated: boolean
+	isDirty: boolean
 }
