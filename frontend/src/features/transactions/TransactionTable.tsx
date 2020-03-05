@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
+import { TransitionGroup } from 'react-transition-group';
 
 export const TransactionMempoolStatusIcon: any = (props: { isMined: boolean }) => {
 	return (
@@ -17,14 +18,21 @@ export const TransactionMempoolStatusIcon: any = (props: { isMined: boolean }) =
 	)
 }
 
+const transitionGroupProps = {
+	appear: true,
+	enter: true,
+	exit: true,
+}
+
 export default class TransactionTable extends React.Component<TransactionListProps> {
 
 	render() {
+		
 		return (
 			<div>
 				{this.props.items.length > 0 && (
 					<Table hover>
-						<tbody>
+						<TransitionGroup {...transitionGroupProps} component="tbody">
 							<Fade fade cascade>
 								{this.props.items.map((tx: Transaction) =>
 									<tr className="clickable" key={tx.getHash()} onClick={() => this.props.onItemClick(tx)}>
@@ -36,7 +44,7 @@ export default class TransactionTable extends React.Component<TransactionListPro
 									</tr>
 								)}
 							</Fade>
-						</tbody>
+						</TransitionGroup>
 					</Table>
 
 				)}
