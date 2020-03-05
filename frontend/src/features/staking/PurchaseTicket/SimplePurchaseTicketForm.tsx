@@ -138,7 +138,6 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 		)
 	}
 
-
 	handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -146,12 +145,12 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 			formIsValidated: true,
 			isDirty: false,
 		})
+
 		const request = new PurchaseTicketsRequest()
 		loadFormFields(this.state.formRef, request)
 		this.setState({
 			purchaseTicketRequest: request
 		})
-		console.log("formSubmit", request.toObject())
 		const cancelError = new Error()
 		askPassphrase()
 			.then((passphrase) => {
@@ -184,7 +183,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 		})
 		loadFormFields(this.state.formRef, this.state.purchaseTicketRequest)
 		this.getEstimate()
-		console.log("loadfFormFields", this.state.purchaseTicketRequest.toObject())
+		// console.log("loadfFormFields", this.state.purchaseTicketRequest.toObject())
 	}
 
 	getEstimate() {
@@ -199,9 +198,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 			remainingBalance: accountSpendableBalance - (f.num_tickets.value * ticketPrice)  // what about fees?
 		})
 	}
-
 }
-
 
 const loadFormFields = (formRef: React.RefObject<any>, r: PurchaseTicketsRequest) => {
 	const f = formRef.current
@@ -210,7 +207,6 @@ const loadFormFields = (formRef: React.RefObject<any>, r: PurchaseTicketsRequest
 	r.setRequiredConfirmations(1)
 }
 
-
 interface OwnProps {
 	error: AppError | null
 	balances: WalletBalance
@@ -218,13 +214,7 @@ interface OwnProps {
 	purchaseTicketResponse: PurchaseTicketsResponse | null
 }
 
-
-type Props = DispatchProps & OwnProps & IPurchaseTicketFormProps
-
-
-interface IPurchaseTicketFormProps {
-	error: AppError | null
-}
+type Props = DispatchProps & OwnProps 
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
@@ -239,10 +229,9 @@ interface DispatchProps {
 	purchaseTicket: typeof purchaseTicket
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+const mapDispatchToProps = {
 	purchaseTicket: purchaseTicket,
-}, dispatch)
-
+}
 
 interface InternalState {
 	formRef: React.RefObject<any>

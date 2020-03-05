@@ -42,6 +42,7 @@ export const SteppableNumberInput = (props: ISteppableNumberInputProps) => {
 					name={props.name}
 					type="number"
 					size="lg"
+					defaultValue={0}
 					ref={ref as React.RefObject<any>} {...props} />
 				<InputGroup.Append>
 					<Button
