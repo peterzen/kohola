@@ -5,6 +5,8 @@ import _ from 'lodash';
 import { Card, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
+
 
 import { Ticket } from '../../models';
 import { getTickets } from './stakingSlice';
@@ -15,35 +17,69 @@ import TicketsTable from './TicketsTable';
 import TicketDetailsModal from './TicketDetailsComponent';
 
 
+
 interface ITicketsListFilterDropdownProps {
 	menuHandler: (eventKey: string) => void
 }
 
-const TicketsListFilterDropdown = (props: ITicketsListFilterDropdownProps) => {
-	return (
-		<Dropdown
-			alignRight
-			onSelect={(evtKey: string) => props.menuHandler(evtKey)}
-		>
-			<Dropdown.Toggle variant="secondary" id="ticket-filter-dropdown">
-				<FontAwesomeIcon icon={faFilter} />
-			</Dropdown.Toggle>
+interface TicketsListFilterDropdownState {
+	selected: number
+}
 
-			<Dropdown.Menu>
-				<Dropdown.Header>Filter tickets</Dropdown.Header>
-				<Dropdown.Divider />
-				<Dropdown.Item eventKey="-1">All</Dropdown.Item>
-				<Dropdown.Divider />
-				<Dropdown.Item eventKey={TicketStatus.LIVE.toString()}>Live</Dropdown.Item>
-				<Dropdown.Item eventKey={TicketStatus.IMMATURE.toString()}>Immature</Dropdown.Item>
-				<Dropdown.Item eventKey={TicketStatus.MISSED.toString()}>Missed</Dropdown.Item>
-				<Dropdown.Item eventKey={TicketStatus.REVOKED.toString()}>Revoked</Dropdown.Item>
-				<Dropdown.Item eventKey={TicketStatus.VOTED.toString()}>Voted</Dropdown.Item>
-				<Dropdown.Item eventKey={TicketStatus.UNMINED.toString()}>Unmined</Dropdown.Item>
-				<Dropdown.Item eventKey={TicketStatus.EXPIRED.toString()}>Expired</Dropdown.Item>
-			</Dropdown.Menu>
-		</Dropdown>
-	)
+interface IMenuItems {
+	[status: number]: string
+}
+
+const menuItems: IMenuItems = {}
+menuItems[-1] = "All"
+menuItems[TicketStatus.LIVE] = "Live"
+menuItems[TicketStatus.IMMATURE] = "Immature"
+menuItems[TicketStatus.MISSED] = "Missed"
+menuItems[TicketStatus.REVOKED] = "Revoked"
+menuItems[TicketStatus.VOTED] = "Voted"
+menuItems[TicketStatus.UNMINED] = "Unmined"
+menuItems[TicketStatus.EXPIRED] = "Expired"
+
+class TicketsListFilterDropdown extends React.Component<ITicketsListFilterDropdownProps, TicketsListFilterDropdownState>{
+	constructor(props: ITicketsListFilterDropdownProps) {
+		super(props)
+		this.state = {
+			selected: -1
+		}
+	}
+	render() {
+		const selected = this.state.selected
+		const selectedLabel = menuItems[selected]
+		return (
+			<Dropdown
+				alignRight
+				onSelect={(evtKey: string) => this.onSelect(evtKey)}
+			>
+				<Dropdown.Toggle variant="secondary" id="ticket-filter-dropdown">
+					<FontAwesomeIcon icon={faFilter} /> {selectedLabel}
+				</Dropdown.Toggle>
+
+				<Dropdown.Menu>
+					<Dropdown.Header>Filter tickets</Dropdown.Header>
+					<Dropdown.Divider />
+					{_.map(menuItems, (label, status) => (
+						<Dropdown.Item eventKey={status} key={status}>
+							<span style={{ width: "1.5em" }}>
+								{status == selected.toString() && <FontAwesomeIcon icon={faCheck} />}
+							</span>
+							{label}
+						</Dropdown.Item>
+					))}
+				</Dropdown.Menu>
+			</Dropdown>
+		)
+	}
+	onSelect(value: string) {
+		this.setState({
+			selected: parseInt(value)
+		})
+		this.props.menuHandler(value)
+	}
 }
 
 
