@@ -10,7 +10,6 @@ import { TicketStatusIcon } from './TicketStatusIcon';
 
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
-import { TransactionMempoolStatusIcon } from '../transactions/TransactionTable';
 
 export default class TicketsTable extends React.Component<TicketsTableProps> {
 
@@ -21,7 +20,6 @@ export default class TicketsTable extends React.Component<TicketsTableProps> {
 					<tr>
 						<th></th>
 						<th>timestamp</th>
-						<th>status</th>
 						<th>hash</th>
 					</tr>
 				</thead>
@@ -30,12 +28,13 @@ export default class TicketsTable extends React.Component<TicketsTableProps> {
 						{this.props.items.map((ticket) => {
 							const tx = ticket.getTx()
 							return (
-								<tr className="clickable" key={tx.getHash()} onClick={() => this.props.onItemClick(ticket)}>
-									<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
-									<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
-									<td><TicketStatusIcon status={ticket.getStatus()} /></td>
-									<td><TransactionHash tx={tx} /></td>
-								</tr>
+								<Fade slide cascade key={tx.getHash()}>
+									<tr className="clickable" onClick={() => this.props.onItemClick(ticket)}>
+										<td><TicketStatusIcon status={ticket.getStatus()} /></td>
+										<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
+										<td><TransactionHash tx={tx} /></td>
+									</tr>
+								</Fade>
 							)
 						})}
 					</tbody>
