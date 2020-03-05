@@ -29,18 +29,18 @@ export default class SettingsContainer extends React.Component<OwnProps> {
 			<div>
 				<Row>
 					<Col sm={6}>
-						<Fade fade cascade>
-							{dcrwallets.map((endPoint) => (
+						{dcrwallets.map((endPoint) => (
+							<Fade fade cascade key={endPoint.getLabel()}>
 								<div className="mb-3">
 									<RPCEndpointConfigForm
 										onFormComplete={this.props.onFormComplete}
 										endPointConfig={endPoint}
 										error={this.props.setConfigError}
 										title="dcrwallet settings"
-										key={endPoint.getLabel()} />
+									/>
 								</div>
-							))}
-						</Fade>
+							</Fade>
+						))}
 						<div className="mt-3" >
 							<Button variant="outline-secondary" size="sm" onClick={_.bind(this.handleAddWallet, this)}>
 								<FontAwesomeIcon icon={faPlus} /> Add wallet host...
