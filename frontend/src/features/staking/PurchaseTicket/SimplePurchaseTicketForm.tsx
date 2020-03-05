@@ -7,7 +7,7 @@ import { Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 // import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
 import { AccountSelector, Amount } from '../../../components/Shared/shared';
-import { TxConfirmationPanel } from "../../../components/Shared/TxConfirmationPanel";
+import { TxConfirmationPanel } from "../../transactions/TxConfirmationPanel";
 
 import { IApplicationState } from '../../../store/store';
 import { WalletBalance, TicketPrice } from '../../../models';
