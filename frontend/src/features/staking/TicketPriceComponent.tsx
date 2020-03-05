@@ -1,21 +1,21 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { IApplicationState } from "../../store/store";
 import { Card } from 'react-bootstrap';
-import { Amount } from '../../components/Shared/shared';
-import { loadTicketPriceAttempt, getTicketPrice } from './stakingSlice';
-import { bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+
+import { IApplicationState } from "../../store/store";
 import { TicketPrice } from '../../models';
+import { loadTicketPriceAttempt, getTicketPrice } from './stakingSlice';
+import { Amount } from '../../components/Shared/shared';
 
 
-class TicketPriceComponent extends React.Component<Props, InternalState> {
+class TicketPriceComponent extends React.Component<Props> {
 	render() {
 		return (
 			<Card>
 				<Card.Body>
 					<h1><Amount amount={this.props.ticketPrice.getTicketPrice()} showCurrency /></h1>
-					Ticket price in next block
+					<h6 className="text-muted">Ticket price in next block</h6>
 				</Card.Body>
 			</Card>
 		)
@@ -31,22 +31,19 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-	loadTicketPriceAttempt: () => void
+	loadTicketPriceAttempt: typeof loadTicketPriceAttempt
 }
 
 type Props = DispatchProps & OwnProps
 
-interface InternalState {
-}
-
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
+const mapStateToProps = (state: IApplicationState) => {
 	return {
 		ticketPrice: getTicketPrice(state),
 	}
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-	loadTicketPriceAttempt: loadTicketPriceAttempt
-}, dispatch)
+const mapDispatchToProps = {
+	loadTicketPriceAttempt
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketPriceComponent)
