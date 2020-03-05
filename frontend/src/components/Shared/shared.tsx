@@ -14,6 +14,8 @@ import {
 	faSlidersH
 } from '@fortawesome/free-solid-svg-icons'
 
+// @ts-ignore
+import Fade from 'react-reveal/Fade';
 
 import { Button, ButtonProps, Popover, OverlayTrigger, Form } from 'react-bootstrap';
 import { rawHashToHex } from "../../helpers/byteActions";
@@ -185,7 +187,7 @@ export class CopyToClipboardButton extends React.Component<ICopyToClipboardButto
 				</CopyToClipboard>
 				{
 					this.state.copied ? (
-						<span className="text-info">Copied.</span>
+						<Fade bottom> <span className="text-info">Copied.</span></Fade>
 					) : null
 				}
 			</span>
@@ -212,7 +214,7 @@ export class CopyToClipboardText extends React.Component<ICopyToClipboardButtonP
 					</span>
 				</CopyToClipboard>
 				{this.state.copied ? (
-					<span className="text-info">Copied</span>
+					<Fade bottom>  <span className="text-info">Copied</span></Fade>
 				) : null}
 			</span>
 		)
