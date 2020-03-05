@@ -224,7 +224,7 @@ export class CopyToClipboardText extends React.Component<ICopyToClipboardButtonP
 interface IAccountSelectProps {
 	name: string
 	value: number
-	onChange: any
+	onChange: () => void
 }
 
 const _AccountSelector = (props: IAccountSelectProps & OwnProps) => {
