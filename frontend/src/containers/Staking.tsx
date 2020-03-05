@@ -2,19 +2,17 @@ import * as React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
-import StakeStats from '../features/staking/StakeStats';
-import TicketPriceComponent from '../features/staking/TicketPriceComponent';
-import StakeInfoComponent from '../features/staking/StakeInfoComponent';
-import AgendasComponent from '../features/staking/AgendasComponent';
-import TicketsOverviewContainer from '../features/staking/TicketsOverviewContainer';
 import { Row, Col } from 'react-bootstrap';
-import PurchaseTicketForm from '../features/staking/PurchaseTicket/SimplePurchaseTicketForm';
-import TicketBuyerComponent from '../features/staking/TicketBuyerComponent';
-import { IApplicationState } from '../store/store';
-
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
 
+import StakeStats from '../features/staking/StakeStats';
+import AgendasComponent from '../features/staking/AgendasComponent';
+import StakeInfoComponent from '../features/staking/StakeInfoComponent';
+import PurchaseTicketForm from '../features/staking/PurchaseTicket/SimplePurchaseTicketForm';
+import TicketBuyerComponent from '../features/staking/TicketBuyerComponent';
+import TicketPriceComponent from '../features/staking/TicketPriceComponent';
+import TicketsOverviewContainer from '../features/staking/TicketsOverviewContainer';
 
 class StakingContainer extends React.PureComponent<{}, {}> {
 
@@ -29,28 +27,25 @@ class StakingContainer extends React.PureComponent<{}, {}> {
 						<Fade fade><TicketsOverviewContainer /></Fade>
 					</Col>
 					<Col>
-						<Fade fade cascade>
-							<PurchaseTicketForm />
-							<div className="mt-3" />
-							<StakeStats />
-							<div className="mt-3" />
-							<TicketPriceComponent />
-							<div className="mt-3" />
-							<TicketBuyerComponent />
-							<div className="mt-3" />
-							<AgendasComponent />
-						</Fade >
+						<TicketPriceComponent />
+						<div className="mt-3" />
+						<PurchaseTicketForm />
+						<div className="mt-3" />
+						<StakeStats />
+						<div className="mt-3" />
+						<TicketBuyerComponent />
+						<div className="mt-3" />
+						<AgendasComponent />
 					</Col>
 				</Row>
-			</div>
+			</div >
 		)
 	}
 }
 
-const mapStateToProps = (state: IApplicationState): IStakingState => {
+const mapStateToProps = () => {
 	return {
-		...state.staking,
-	};
+	}
 }
 
 export default withRouter(connect(mapStateToProps)(StakingContainer));
