@@ -9,7 +9,7 @@ import RecentTransactions from '../features/transactions/RecentTransactionsConta
 import WalletBalanceContainer from "../features/balances/WalletBalanceContainer";
 import { IApplicationState } from "../store/store";
 
-class Home extends React.PureComponent {
+class Wallet extends React.PureComponent {
 
 	render() {
 		return (
@@ -27,4 +27,4 @@ const mapStateToProps = function (state: IApplicationState) {
 	return {}
 }
 
-export default withRouter(connect(mapStateToProps)(Home));
+export default withRouter(connect(mapStateToProps)(Wallet));

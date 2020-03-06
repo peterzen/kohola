@@ -22,49 +22,49 @@ import { loadTransactionsAttempt, transactionNotification } from '../features/tr
 
 const w = (window as any)
 
-export const checkBackend: ActionCreator<any> = () => {
-	return async (dispatch: Dispatch, getState: IGetState) => {
+// export const checkBackend: ActionCreator<any> = () => {
+// 	return async (dispatch: Dispatch, getState: IGetState) => {
 
-		await dispatch(getConfiguration())
-		await dispatch(canStartup());
+// 		await dispatch(getConfiguration())
+// 		await dispatch(canStartup());
 
-		if (getState().appconfiguration.needSetup) {
-			// need setup
-			throw {}
-		}
-	}
-}
+// 		if (getState().appconfiguration.needSetup) {
+// 			// need setup
+// 			throw {}
+// 		}
+// 	}
+// }
 
 
-export const initializeData: ActionCreator<any> = () => {
-	return async (dispatch: AppDispatch) => {
+// export const initializeData: ActionCreator<any> = () => {
+// 	return async (dispatch: AppDispatch) => {
 
-		await dispatch(loadBestBlockHeight())
-		await dispatch(loadAccountsAttempt())
+// 		await dispatch(loadBestBlockHeight())
+// 		await dispatch(loadAccountsAttempt())
 
-		batch(() => {
-			dispatch(loadTransactionsAttempt())
-			dispatch(loadWalletBalance())
-			dispatch(loadTicketsAttempt())
-		})
+// 		batch(() => {
+// 			dispatch(loadTransactionsAttempt())
+// 			dispatch(loadWalletBalance())
+// 			dispatch(loadTicketsAttempt())
+// 		})
 
-		// dispatch(pingAttempt())
+// 		// dispatch(pingAttempt())
 
-		w.lorcareceiver__OnTxNotification = (serializedMsg: string) => {
-			const message = TransactionNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
-			dispatch(transactionNotification(message))
-		}
-		// w.lorcareceiver__OnConfirmNotification = (serializedMsg: Uint8Array) => {
-		// 	const message = ConfirmationNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
-		// 	dispatch(transactionNotification(message))
-		// }
-		w.lorcareceiver__OnAccountNotification = (serializedMsg: string) => {
-			const message = AccountNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
-			dispatch(accountNotification(message))
-		}
-		// setTimeout(() => {
-		// 	dispatch(pingAttempt());
+// 		w.lorcareceiver__OnTxNotification = (serializedMsg: string) => {
+// 			const message = TransactionNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
+// 			dispatch(transactionNotification(message))
+// 		}
+// 		// w.lorcareceiver__OnConfirmNotification = (serializedMsg: Uint8Array) => {
+// 		// 	const message = ConfirmationNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
+// 		// 	dispatch(transactionNotification(message))
+// 		// }
+// 		w.lorcareceiver__OnAccountNotification = (serializedMsg: string) => {
+// 			const message = AccountNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
+// 			dispatch(accountNotification(message))
+// 		}
+// 		// setTimeout(() => {
+// 		// 	dispatch(pingAttempt());
 
-		// }, 5000)
-	}
-}
+// 		// }, 5000)
+// 	}
+// }

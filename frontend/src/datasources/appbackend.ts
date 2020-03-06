@@ -1,4 +1,4 @@
-import { AppConfiguration, SetConfigResponse, CanStartupResponse, SetConfigRequest } from "../proto/dcrwalletgui_pb"
+import { AppConfiguration, SetConfigResponse, CanStartupResponse, SetConfigRequest, ConnectWalletResponse, ConnectWalletRequest, GRPCEndpoint } from "../proto/dcrwalletgui_pb"
 import { endpointFactory } from "./lorca"
 import { rawToHex } from "../helpers/byteActions";
 
@@ -24,6 +24,22 @@ const AppBackend = {
 				throw r.error
 			}
 			return SetConfigResponse.deserializeBinary(r.payload)
+		}
+		catch (e) {
+			console.error("Serialization error", e)
+			return e
+		}
+	},
+
+	connectWalletEndpoint: async function (endpoint: GRPCEndpoint) {
+
+		try {
+
+			const r = await w.walletgui__ConnectWalletEndpoint(endpoint.getId())
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return GRPCEndpoint.deserializeBinary(r.payload)
 		}
 		catch (e) {
 			console.error("Serialization error", e)

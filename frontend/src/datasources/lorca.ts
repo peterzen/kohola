@@ -28,14 +28,15 @@ import { GRPCEndpoint } from '../proto/dcrwalletgui_pb';
 const w = (window as any)
 
 export function endpointFactory<T>(methodName: string, responseType: T) {
-	if (w[methodName] == undefined) {
-		throw {
-			code: 99,
-			msg: "Invalid methodname: window." + methodName + " does not exist"
-		}
-	}
 
 	return async function <R>(request?: R) {
+		if (w[methodName] == undefined) {
+			throw {
+				code: 99,
+				msg: "Invalid methodname: window." + methodName + " does not exist"
+			}
+		}
+		
 		let r = null
 		if (request != undefined) {
 			r = (request as any).serializeBinary()
@@ -300,7 +301,7 @@ const LorcaBackend = {
 
 	checkGRPCEndpointConnection: async (cfg: GRPCEndpoint) => {
 		const ser = rawToHex(cfg.serializeBinary().buffer)
-		return await w.walletgui_CheckGRPCConnection(ser)
+		return await w.walletgui__CheckGRPCConnection(ser)
 	},
 
 	doPing: endpointFactory("walletrpc__Ping", PingResponse),

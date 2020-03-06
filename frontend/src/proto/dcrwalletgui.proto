@@ -36,23 +36,25 @@ enum Network {
 }
 
 message RPCEndpoint {
-  string hostname = 1;
-  uint32 port = 2;
-  string username = 3;
-  string password = 4;
-  string cert_file_name = 5;
-  string cert_blob = 6;
-  Network network = 7;
-  string label = 8;
+  string id = 1;
+  string hostname = 2;
+  uint32 port = 3;
+  string username = 4;
+  string password = 5;
+  string cert_file_name = 6;
+  string cert_blob = 7;
+  Network network = 8;
+  string label = 9;
 }
 
 message GRPCEndpoint {
-  string hostname = 1;
-  uint32 port = 2;
-  string cert_file_name = 3;
-  string cert_blob = 4;
-  Network network = 5;
-  string label = 6;
+  string id = 1;
+  string hostname = 2;
+  uint32 port = 3;
+  string cert_file_name = 4;
+  string cert_blob = 5;
+  Network network = 6;
+  string label = 7;
 }
 
 message AccountPreference {
@@ -61,14 +63,20 @@ message AccountPreference {
   uint32 displayOrder = 3;
 }
 
+message WalletPreferences {
+  string wallet_endpoint_id = 1;
+  repeated AccountPreference account_prefs = 2;
+}
+
 message AppConfiguration {
-  RPCEndpoint dcrd_host = 1;
-  repeated GRPCEndpoint dcrwallet_hosts = 2;
-  repeated AccountPreference accountPrefs = 3;
+  RPCEndpoint dcrd_endpoint = 1;
+  repeated GRPCEndpoint wallet_endpoints = 2;
+  repeated WalletPreferences wallet_preferences = 3;
 }
 
 service NetworkService {
   rpc CheckConnection(CheckConnectionRequest) returns (CheckConnectionResponse);
+  rpc ConnectWallet(ConnectWalletRequest) returns (ConnectWalletResponse);
 }
 
 message CheckConnectionRequest {
@@ -79,6 +87,16 @@ message CheckConnectionRequest {
 message CheckConnectionResponse {
   bool isSuccess = 1;
   string error = 2;
+}
+
+message ConnectWalletRequest { 
+  string wallet_endpoint_id = 1; 
+}
+
+message ConnectWalletResponse {
+  bool isSuccess = 1;
+  string error = 2;
+  GRPCEndpoint endpoint = 3;
 }
 
 /*

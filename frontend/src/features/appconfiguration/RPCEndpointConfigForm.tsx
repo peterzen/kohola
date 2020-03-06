@@ -14,6 +14,7 @@ import {
 import { AppError } from '../../store/types';
 import { sprintf } from 'sprintf-js';
 import LorcaBackend from '../../datasources/lorca';
+import GenericModal, { GenericModalProps } from '../../components/Shared/GenericModal';
 
 const placeHolderCert = `-----BEGIN CERTIFICATE-----
 MIICRTCCAaegAwIBAgIRAMVLEv8v0Ji22D2hebnX7w
@@ -76,21 +77,6 @@ const ConnectionCheck = (props: { status: ConnectionCheckState, message?: string
 }
 
 
-interface IRPCFormProps {
-	title: string
-	error: AppError | null
-	endPointConfig: RPCEndpoint | GRPCEndpoint
-	onFormComplete: () => void
-}
-
-interface IRPCFormState {
-	connectionCheckStatus: ConnectionCheckState
-	connectionCheckMessage: string
-	formRef: React.RefObject<any>
-	error: AppError | null
-	formIsValidated: boolean
-	isDirty: boolean
-}
 
 export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps, IRPCFormState> {
 	constructor(props: IRPCFormProps) {
@@ -108,89 +94,87 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 		const endPoint = this.props.endPointConfig
 		const onChange = _.bind(this.handleChange, this)
 		return (
-			<Card>
-				<Card.Body>
-					<Card.Title>{this.props.title}</Card.Title>
-					<Form
-						ref={this.state.formRef}
-						validated={this.state.formIsValidated && !this.props.error}
-						onSubmit={_.bind(this.handleFormSubmit, this)}
-						className="m-0"
-					>
+			<Form
+				ref={this.state.formRef}
+				validated={this.state.formIsValidated && !this.props.error}
+				onSubmit={_.bind(this.handleFormSubmit, this)}
+				className="m-0"
+			>
+				<Form.Group>
+					{/* <Form.Label>Network</Form.Label> */}
+					<NetworkSelector
+						name="network"
+						onChange={onChange}
+						defaultValue={endPoint.getNetwork()} />
+				</Form.Group>
+				<Form.Group as={Row}>
+					<Col sm={9}>
+						<Form.Control
+							autoComplete="off"
+							required
+							type="text"
+							name="hostname"
+							placeholder="Hostname or IP"
+							onChange={onChange}
+							defaultValue={endPoint.getHostname()} />
+					</Col>
+					<Col sm={3}>
+						<Form.Control
+							autoComplete="off"
+							required
+							name="port"
+							type="text"
+							placeholder="Port"
+							onChange={onChange}
+							defaultValue={endPoint.getPort().toString()} />
+					</Col>
+				</Form.Group>
+				{(endPoint instanceof RPCEndpoint) && (
+					<div>
 						<Form.Group>
-							{/* <Form.Label>Network</Form.Label> */}
-							<NetworkSelector
-								name="network"
+							{/* <Form.Label>Username</Form.Label> */}
+							<Form.Control
+								autoComplete="off"
+								required
+								name="username"
+								placeholder="RPC username"
 								onChange={onChange}
-								defaultValue={endPoint.getNetwork()} />
+								defaultValue={endPoint.getUsername()} />
 						</Form.Group>
-						<Form.Group as={Row}>
-							<Col sm={9}>
-								<Form.Control
-									autoComplete="off"
-									required
-									type="text"
-									name="hostname"
-									placeholder="Hostname or IP"
-									onChange={onChange}
-									defaultValue={endPoint.getHostname()} />
-							</Col>
-							<Col sm={3}>
-								<Form.Control
-									autoComplete="off"
-									required
-									name="port"
-									type="text"
-									placeholder="Port"
-									onChange={onChange}
-									defaultValue={endPoint.getPort().toString()} />
-							</Col>
+						<Form.Group>
+							{/* <Form.Label >Password</Form.Label> */}
+							<Form.Control
+								autoComplete="off"
+								required
+								name="password"
+								type="password"
+								placeholder="RPC password"
+								onChange={onChange}
+								defaultValue={endPoint.getPassword()} />
 						</Form.Group>
-						{(endPoint instanceof RPCEndpoint) && (
-							<div>
-								<Form.Group>
-									{/* <Form.Label>Username</Form.Label> */}
-									<Form.Control
-										autoComplete="off"
-										required
-										name="username"
-										placeholder="RPC username"
-										onChange={onChange}
-										defaultValue={endPoint.getUsername()} />
-								</Form.Group>
-								<Form.Group>
-									{/* <Form.Label >Password</Form.Label> */}
-									<Form.Control
-										autoComplete="off"
-										required
-										name="password"
-										type="password"
-										placeholder="RPC password"
-										onChange={onChange}
-										defaultValue={endPoint.getPassword()} />
-								</Form.Group>
-							</div>
-						)}
+					</div>
+				)}
 
-						<Form.Group className="certificate-input">
-							<Form.Label>Client certificate</Form.Label>
-							<Row>
-								<Col sm={3}>
-									<Button
-										variant="outline-secondary"
-										size="sm"
-										onClick={_.bind(this.browseFile, this)}>Browse...</Button>
-								</Col>
-								<Col sm={9}>
-									<Form.Control
-										required
-										name="cert_file_name"
-										tabIndex={-1}
-										size="sm"
-										defaultValue={endPoint.getCertFileName()} />
-								</Col>
-							</Row>
-							{/* <Form.Control
+				<Form.Group className="certificate-input">
+					<Form.Label>Client certificate</Form.Label>
+					<Row>
+						<Col sm={3}>
+							<Button
+								variant="outline-secondary"
+								size="sm"
+								onClick={_.bind(this.browseFile, this)}>Browse...</Button>
+						</Col>
+						<Col sm={9}>
+							<Form.Control
+								required
+								autoComplete="false"
+								name="cert_file_name"
+								tabIndex={-1}
+								size="sm"
+								defaultValue={endPoint.getCertFileName()} />
+						</Col>
+					</Row>
+					{/* <Form.Control
 								name="cert_blob"
 								as="textarea"
 								rows={6}
@@ -209,27 +193,27 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 									Either select your cert file  or paste the blob into this field.  It will be saved in the configuration in encrypted form.
 								</small>
 							</div> */}
-						</Form.Group>
+				</Form.Group>
 
-						<Row>
-							<Col sm={9}>
-								<ConnectionCheck
-									status={this.state.connectionCheckStatus}
-									message={this.state.connectionCheckMessage} />
-							</Col>
-							<Col sm={3} className="text-right">
-								<Button
-									disabled={!this.state.isDirty}
-									type="submit"
-									variant="outline-primary">Save
+				<div>
+					<ConnectionCheck
+						status={this.state.connectionCheckStatus}
+						message={this.state.connectionCheckMessage} />
+				</div>
+
+				<Row>
+					<Col xs={6}>
+						<Button variant="link" onClick={this.props.onCancel}>Cancel</Button>
+					</Col>
+					<Col xs={6} className="text-right">
+						<Button
+							disabled={!this.state.isDirty}
+							type="submit"
+							variant="outline-primary">Save
 						</Button>
-							</Col>
-						</Row>
-					</Form>
-
-				</Card.Body>
-			</Card>
-
+					</Col>
+				</Row>
+			</Form>
 		)
 	}
 
@@ -253,7 +237,7 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 		})
 		loadFormFields(this.state.formRef, this.props.endPointConfig)
 		console.log("formSubmit", this.props.endPointConfig.toObject())
-		this.props.onFormComplete()
+		this.props.onFormComplete(this.props.endPointConfig)
 
 		return false;
 	}
@@ -278,6 +262,23 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 		}, this))
 	}
 }
+
+
+export class EditEndpointModal extends React.Component<GenericModalProps & IRPCFormProps, IRPCFormState>{
+	render() {
+		return (
+			<GenericModal
+				title={this.props.title}
+				show={this.props.show}
+				onHide={this.props.onHide}
+			>
+				<RPCEndpointConfigForm {...this.props} />
+			</GenericModal>
+		)
+	}
+}
+
+
 
 const generateEndpointLabel = (endpoint: GRPCEndpoint | RPCEndpoint) => {
 	const networks = {
@@ -313,3 +314,22 @@ const checkEndpointFn = _.debounce(async (formRef, endpoint, onComplete) => {
 	const r = await LorcaBackend.checkGRPCEndpointConnection(tmpEndpointCfg)
 	onComplete(r)
 }, 1000)
+
+
+
+interface IRPCFormProps {
+	title: string
+	error: AppError | null
+	endPointConfig: RPCEndpoint | GRPCEndpoint
+	onCancel: () => void
+	onFormComplete: (endpoint: GRPCEndpoint | RPCEndpoint) => void
+}
+
+interface IRPCFormState {
+	connectionCheckStatus: ConnectionCheckState
+	connectionCheckMessage: string
+	formRef: React.RefObject<any>
+	error: AppError | null
+	formIsValidated: boolean
+	isDirty: boolean
+}

@@ -1,6 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit'
 import { connectRouter } from 'connected-react-router'
 
+import app from '../features/app/appSlice'
 import ping from '../features/networkinfo/pingSlice'
 import staking from '../features/staking/stakingSlice'
 import accounts from '../features/balances/accountSlice'
@@ -14,6 +15,7 @@ import { History } from "history";
 export default function createRootReducer(history: History<History.PoorMansUnknown>) {
 	return combineReducers({
 		router: connectRouter(history),
+		app,
 		ping,
 		staking,
 		accounts,

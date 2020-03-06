@@ -125,6 +125,9 @@ export namespace SetConfigResponse {
 }
 
 export class RPCEndpoint extends jspb.Message {
+  getId(): string;
+  setId(value: string): void;
+
   getHostname(): string;
   setHostname(value: string): void;
 
@@ -161,6 +164,7 @@ export class RPCEndpoint extends jspb.Message {
 
 export namespace RPCEndpoint {
   export type AsObject = {
+    id: string,
     hostname: string,
     port: number,
     username: string,
@@ -173,6 +177,9 @@ export namespace RPCEndpoint {
 }
 
 export class GRPCEndpoint extends jspb.Message {
+  getId(): string;
+  setId(value: string): void;
+
   getHostname(): string;
   setHostname(value: string): void;
 
@@ -203,6 +210,7 @@ export class GRPCEndpoint extends jspb.Message {
 
 export namespace GRPCEndpoint {
   export type AsObject = {
+    id: string,
     hostname: string,
     port: number,
     certFileName: string,
@@ -240,21 +248,47 @@ export namespace AccountPreference {
   }
 }
 
+export class WalletPreferences extends jspb.Message {
+  getWalletEndpointId(): string;
+  setWalletEndpointId(value: string): void;
+
+  clearAccountPrefsList(): void;
+  getAccountPrefsList(): Array<AccountPreference>;
+  setAccountPrefsList(value: Array<AccountPreference>): void;
+  addAccountPrefs(value?: AccountPreference, index?: number): AccountPreference;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): WalletPreferences.AsObject;
+  static toObject(includeInstance: boolean, msg: WalletPreferences): WalletPreferences.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: WalletPreferences, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): WalletPreferences;
+  static deserializeBinaryFromReader(message: WalletPreferences, reader: jspb.BinaryReader): WalletPreferences;
+}
+
+export namespace WalletPreferences {
+  export type AsObject = {
+    walletEndpointId: string,
+    accountPrefsList: Array<AccountPreference.AsObject>,
+  }
+}
+
 export class AppConfiguration extends jspb.Message {
-  hasDcrdHost(): boolean;
-  clearDcrdHost(): void;
-  getDcrdHost(): RPCEndpoint | undefined;
-  setDcrdHost(value?: RPCEndpoint): void;
+  hasDcrdEndpoint(): boolean;
+  clearDcrdEndpoint(): void;
+  getDcrdEndpoint(): RPCEndpoint | undefined;
+  setDcrdEndpoint(value?: RPCEndpoint): void;
 
-  clearDcrwalletHostsList(): void;
-  getDcrwalletHostsList(): Array<GRPCEndpoint>;
-  setDcrwalletHostsList(value: Array<GRPCEndpoint>): void;
-  addDcrwalletHosts(value?: GRPCEndpoint, index?: number): GRPCEndpoint;
+  clearWalletEndpointsList(): void;
+  getWalletEndpointsList(): Array<GRPCEndpoint>;
+  setWalletEndpointsList(value: Array<GRPCEndpoint>): void;
+  addWalletEndpoints(value?: GRPCEndpoint, index?: number): GRPCEndpoint;
 
-  clearAccountprefsList(): void;
-  getAccountprefsList(): Array<AccountPreference>;
-  setAccountprefsList(value: Array<AccountPreference>): void;
-  addAccountprefs(value?: AccountPreference, index?: number): AccountPreference;
+  clearWalletPreferencesList(): void;
+  getWalletPreferencesList(): Array<WalletPreferences>;
+  setWalletPreferencesList(value: Array<WalletPreferences>): void;
+  addWalletPreferences(value?: WalletPreferences, index?: number): WalletPreferences;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AppConfiguration.AsObject;
@@ -268,9 +302,9 @@ export class AppConfiguration extends jspb.Message {
 
 export namespace AppConfiguration {
   export type AsObject = {
-    dcrdHost?: RPCEndpoint.AsObject,
-    dcrwalletHostsList: Array<GRPCEndpoint.AsObject>,
-    accountprefsList: Array<AccountPreference.AsObject>,
+    dcrdEndpoint?: RPCEndpoint.AsObject,
+    walletEndpointsList: Array<GRPCEndpoint.AsObject>,
+    walletPreferencesList: Array<WalletPreferences.AsObject>,
   }
 }
 
@@ -323,6 +357,56 @@ export namespace CheckConnectionResponse {
   export type AsObject = {
     issuccess: boolean,
     error: string,
+  }
+}
+
+export class ConnectWalletRequest extends jspb.Message {
+  getWalletEndpointId(): string;
+  setWalletEndpointId(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ConnectWalletRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ConnectWalletRequest): ConnectWalletRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ConnectWalletRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ConnectWalletRequest;
+  static deserializeBinaryFromReader(message: ConnectWalletRequest, reader: jspb.BinaryReader): ConnectWalletRequest;
+}
+
+export namespace ConnectWalletRequest {
+  export type AsObject = {
+    walletEndpointId: string,
+  }
+}
+
+export class ConnectWalletResponse extends jspb.Message {
+  getIssuccess(): boolean;
+  setIssuccess(value: boolean): void;
+
+  getError(): string;
+  setError(value: string): void;
+
+  hasEndpoint(): boolean;
+  clearEndpoint(): void;
+  getEndpoint(): GRPCEndpoint | undefined;
+  setEndpoint(value?: GRPCEndpoint): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ConnectWalletResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ConnectWalletResponse): ConnectWalletResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ConnectWalletResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ConnectWalletResponse;
+  static deserializeBinaryFromReader(message: ConnectWalletResponse, reader: jspb.BinaryReader): ConnectWalletResponse;
+}
+
+export namespace ConnectWalletResponse {
+  export type AsObject = {
+    issuccess: boolean,
+    error: string,
+    endpoint?: GRPCEndpoint.AsObject,
   }
 }
 

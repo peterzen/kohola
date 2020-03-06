@@ -47,9 +47,19 @@ type NetworkServiceCheckConnection = {
   readonly responseType: typeof dcrwalletgui_pb.CheckConnectionResponse;
 };
 
+type NetworkServiceConnectWallet = {
+  readonly methodName: string;
+  readonly service: typeof NetworkService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof dcrwalletgui_pb.ConnectWalletRequest;
+  readonly responseType: typeof dcrwalletgui_pb.ConnectWalletResponse;
+};
+
 export class NetworkService {
   static readonly serviceName: string;
   static readonly CheckConnection: NetworkServiceCheckConnection;
+  static readonly ConnectWallet: NetworkServiceConnectWallet;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -125,6 +135,15 @@ export class NetworkServiceClient {
   checkConnection(
     requestMessage: dcrwalletgui_pb.CheckConnectionRequest,
     callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.CheckConnectionResponse|null) => void
+  ): UnaryResponse;
+  connectWallet(
+    requestMessage: dcrwalletgui_pb.ConnectWalletRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.ConnectWalletResponse|null) => void
+  ): UnaryResponse;
+  connectWallet(
+    requestMessage: dcrwalletgui_pb.ConnectWalletRequest,
+    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.ConnectWalletResponse|null) => void
   ): UnaryResponse;
 }
 

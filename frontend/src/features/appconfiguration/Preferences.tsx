@@ -60,10 +60,10 @@ class AccountsSetup extends React.Component<WalletAccountsState, WalletAccountsS
 	}
 }
 
-const mapStateToProps = function (state: IApplicationState, ownProps: any) {
+const mapStateToProps = function (state: IApplicationState) {
 	return {
 		accounts: state.accounts.accounts
-	};
+	}
 }
 
-export default connect(mapStateToProps)(AccountsSetup);
+export default connect(mapStateToProps)(AccountsSetup)

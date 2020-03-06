@@ -15,10 +15,10 @@ import (
 var (
 	appDataDir        = dcrutil.AppDataDir("dcrwalletgui", false)
 	defaultConfigFile = filepath.Join("./", "dcrwalletgui.json")
-	cfg               = &AppConfiguration{}
+	cfg               = newConfig()
 
 	defaultConfig = &AppConfiguration{
-		DcrdHost: &RPCEndpoint{
+		DcrdEndpoint: &RPCEndpoint{
 			Hostname:     "localhost",
 			Port:         9109,
 			Username:     "gcUGfbMiULCnMm5OkmtDiS845GI=",
@@ -27,7 +27,7 @@ var (
 			CertFileName: "../dcrd-simnet.cert",
 			Label:        "localhost:9109 (SIMNET)",
 		},
-		DcrwalletHosts: []*GRPCEndpoint{
+		WalletEndpoints: []*GRPCEndpoint{
 			&GRPCEndpoint{
 				Hostname:     "localhost",
 				Port:         19558,
@@ -39,9 +39,17 @@ var (
 	}
 )
 
+func newConfig() *AppConfiguration {
+	return &AppConfiguration{
+		// DcrdHost:          &RPCEndpoint{},
+		// WalletEndpoints:   []*WalletEndpoint{},
+		// WalletPreferences: []*WalletPreferences{},
+	}
+}
+
 // HaveConfig checks whether there is at least one dcrwallet configuration
 func HaveConfig() bool {
-	return len(cfg.DcrwalletHosts) > 0
+	return len(cfg.WalletEndpoints) > 0
 }
 
 // GetConfig returns a copy of the active configuration

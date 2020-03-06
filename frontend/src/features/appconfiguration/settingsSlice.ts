@@ -2,9 +2,8 @@ import _ from 'lodash';
 
 import { createSlice, PayloadAction, ActionCreator, Dispatch } from '@reduxjs/toolkit'
 import { AppError, IGetState } from '../../store/types';
-import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference } from '../../proto/dcrwalletgui_pb';
+import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences } from '../../proto/dcrwalletgui_pb';
 import AppBackend from '../../datasources/appbackend';
-import { initializeData } from '../../store/actions';
 import { IApplicationState } from '../../store/store';
 
 
@@ -13,6 +12,7 @@ export interface IAppConfigurationState {
 	needSetup: boolean
 	setConfigError: AppError | null
 	setConfigAttempting: boolean
+	currentWalletEndpointId: string
 }
 
 export const initialState: IAppConfigurationState = {
@@ -20,6 +20,7 @@ export const initialState: IAppConfigurationState = {
 	needSetup: false,
 	setConfigError: null,
 	setConfigAttempting: false,
+	currentWalletEndpointId: "",
 }
 
 const settingsSlice = createSlice({
@@ -46,18 +47,29 @@ const settingsSlice = createSlice({
 		},
 		getConfigNeedsSetup(state) {
 			const cfg = state.appConfig
-			if (!cfg.hasDcrdHost()) cfg.setDcrdHost(new RPCEndpoint())
-			if (!cfg.getDcrwalletHostsList().length) cfg.addDcrwalletHosts(new GRPCEndpoint())
+			if (!cfg.hasDcrdEndpoint()) cfg.setDcrdEndpoint(new RPCEndpoint())
+			if (!cfg.getWalletEndpointsList().length) cfg.addWalletEndpoints(new GRPCEndpoint())
 			state.needSetup = true
 			state.appConfig = cfg
 		},
 		setAccountPreference(state, action: PayloadAction<AccountPreference>) {
-			const cfg = state.appConfig
-			const newPref = action.payload
-			const prefs = cfg.getAccountprefsList()
-			const updatedPrefs = _.filter(prefs, (p) => p.getAccountnumber() != newPref.getAccountnumber())
-			updatedPrefs.push(newPref)
-			cfg.setAccountprefsList(updatedPrefs)
+			// const cfg = state.appConfig
+			// const newPref = action.payload
+			// const prefs = cfg.getAccountprefsList()
+			// const updatedPrefs = _.filter(prefs, (p) => p.getAccountnumber() != newPref.getAccountnumber())
+			// updatedPrefs.push(newPref)
+			// cfg.setAccountprefsList(updatedPrefs)
+		},
+		updateEndpoint(state, action: PayloadAction<GRPCEndpoint>) {
+			const ep = action.payload
+			const endpoints = _.filter(state.appConfig.getWalletEndpointsList(), (e) => ep.getId() != e.getId())
+			endpoints.push(ep)
+			state.appConfig.setWalletEndpointsList(endpoints)
+		},
+		deleteEndpoint(state, action: PayloadAction<GRPCEndpoint>) {
+			const ep = action.payload
+			const endpoints = _.filter(state.appConfig.getWalletEndpointsList(), (e) => ep.getId() != e.getId())
+			state.appConfig.setWalletEndpointsList(endpoints)
 		}
 	}
 })
@@ -69,7 +81,9 @@ export const {
 	getConfigSuccess,
 	getConfigFailed,
 	getConfigNeedsSetup,
-	setAccountPreference
+	setAccountPreference,
+	updateEndpoint,
+	deleteEndpoint,
 } = settingsSlice.actions
 
 export default settingsSlice.reducer
@@ -101,8 +115,8 @@ export const saveConfigurationAttempt: ActionCreator<any> = () => {
 			const cfg = getState().appconfiguration.appConfig
 			const response = await AppBackend.setAppConfig(cfg)
 			dispatch(setConfigSuccess(response))
-			await dispatch(getConfiguration())
-			await dispatch(initializeData())
+			// await dispatch(getConfiguration())
+			// await dispatch(initializeData())
 		}
 		catch (error) {
 			dispatch(setConfigFailed(error))
@@ -142,6 +156,16 @@ export interface IIndexedAccountPrefs {
 
 export const getAccountPrefs = (state: IApplicationState): IIndexedAccountPrefs => {
 	const indexedAccountPrefs: IIndexedAccountPrefs = {}
-	_.each(state.appconfiguration.appConfig.getAccountprefsList(), (p) => indexedAccountPrefs[p.getAccountnumber()] = p)
+	// _.each(state.appconfiguration.appConfig.getWalletPreferencesList(), (p) => indexedAccountPrefs[p.getAccountnumber()] = p)
 	return indexedAccountPrefs
+}
+
+export const getWalletPrefs = (state: IApplicationState): WalletPreferences | null => {
+	const currentWalletId = state.appconfiguration.currentWalletEndpointId
+	const walletPrefs = state.appconfiguration.appConfig.getWalletPreferencesList()
+	if (walletPrefs == undefined) {
+		return null
+	}
+	const pref = _.find(walletPrefs, (p) => p.getWalletEndpointId() == currentWalletId)
+	return pref == undefined ? null : pref
 }

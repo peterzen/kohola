@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 
-export default class GenericModal<P, S> extends React.Component<P & Props, InternalState & S> {
+export default class GenericModal<P, S> extends React.Component<P & GenericModalProps, InternalState & S> {
 	render() {
 		return (
 			<Modal
@@ -19,11 +19,11 @@ export default class GenericModal<P, S> extends React.Component<P & Props, Inter
 				<Modal.Body>
 					{this.props.children}
 				</Modal.Body>
-				<Modal.Footer>
+				{/* <Modal.Footer>
 					<Button variant="outline-secondary" size="sm" onClick={this.props.onHide}>
 						Close
 					</Button>
-				</Modal.Footer>
+				</Modal.Footer> */}
 			</Modal>
 		)
 	}
@@ -35,7 +35,7 @@ export default class GenericModal<P, S> extends React.Component<P & Props, Inter
 	}
 }
 
-interface Props {
+export interface GenericModalProps {
 	title: string
 	show: boolean
 	onHide: () => void

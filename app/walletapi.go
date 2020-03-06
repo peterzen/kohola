@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -29,6 +30,15 @@ var (
 	votingServiceClient pb.VotingServiceClient
 	agendaServiceClient pb.AgendaServiceClient
 )
+
+func getEndpointByID(endpoints []*gui.GRPCEndpoint, id string) *gui.GRPCEndpoint {
+	for _, endpoint := range endpoints {
+		if endpoint.Id == id {
+			return endpoint
+		}
+	}
+	return nil
+}
 
 // InitFrontendGRPC creates a gRPC client connection
 func InitFrontendGRPC(endpointCfg *gui.GRPCEndpoint) error {
@@ -587,7 +597,9 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__PublishTransaction", publishTransaction)
 	ui.Bind("walletrpc__PurchaseTickets", purchaseTickets)
 
-	ui.Bind("walletgui_CheckGRPCConnection", func(requestAsHex string) (r gui.CheckConnectionResponse) {
+	ui.Bind("walletgui__ConnectWalletEndpoint", connectEndpoint)
+
+	ui.Bind("walletgui__CheckGRPCConnection", func(requestAsHex string) (r gui.CheckConnectionResponse) {
 		cfg := &gui.GRPCEndpoint{}
 		bytes, err := hex.DecodeString(requestAsHex)
 		err = proto.Unmarshal(bytes, cfg)
@@ -604,6 +616,29 @@ func ExportWalletAPI(ui lorca.UI) {
 		r.IsSuccess = true
 		return r
 	})
+}
+
+func connectEndpoint(endpointID string) (r gui.LorcaMessage) {
+
+	if gui.HaveConfig() {
+
+		endpoints := gui.GetConfig().GetWalletEndpoints()
+		endpoint := getEndpointByID(endpoints, endpointID)
+
+		if endpoint == nil {
+			r.Err = errors.New("Endpoint not found")
+			return r
+		}
+		err := InitFrontendGRPC(endpoint)
+		if err != nil {
+			r.Err = fmt.Errorf("Cannot connect to dcrwallet: %s", err)
+			return r
+		}
+		r.Payload, err = proto.Marshal(endpoint)
+	} else {
+		r.Err = errors.New("Missing dcrwallet entry in config file")
+	}
+	return r
 }
 
 func checkGRPCConnection(endpointCfg *gui.GRPCEndpoint) (bool, error) {

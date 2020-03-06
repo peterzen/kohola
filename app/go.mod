@@ -3,6 +3,7 @@ module github.com/peterzen/dcrwalletgui
 go 1.13
 
 require (
+	github.com/Kairi/godash v0.0.0-20140922054955-402b6c21bf23
 	github.com/aead/siphash v1.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.1
 	github.com/dchest/blake256 v1.1.0 // indirect

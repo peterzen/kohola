@@ -1,10 +1,13 @@
-import * as React from 'react';
 import _ from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+
+import * as React from 'react';
+import { connect } from "react-redux";
 
 import { AppError } from '../../store/types';
 import { Row, Col, Button } from 'react-bootstrap';
-import { AppConfiguration } from '../../proto/dcrwalletgui_pb';
-import RPCEndpointConfigForm from './DcrdForm';
+import { AppConfiguration, RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
+import RPCEndpointConfigForm from './RPCEndpointConfigForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
@@ -13,63 +16,101 @@ import {
 
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
+import { IApplicationState, AppDispatch } from '../../store/store';
+import { updateEndpoint, saveConfigurationAttempt } from './settingsSlice';
 
 
-export default class SettingsContainer extends React.Component<OwnProps> {
-	render() {
-		const c = this.props.appConfig
-		if (c == null) {
-			return null
+class ConnectionSettings extends React.Component<Props, InternalState> {
+	constructor(props: Props) {
+		super(props)
+		this.state = {
+			walletEndpoints: props.walletEndpoints
 		}
-		// @ts-ignore
-		const dcrd: RPCEndpoint = c.getDcrdHost()
-		const dcrwallets = c.getDcrwalletHostsList()
+	}
 
+	render() {
+		const walletEndpoints = this.state.walletEndpoints
 		return (
 			<div>
-				<Row>
-					<Col sm={6}>
-						{dcrwallets.map((endPoint) => (
-							<Fade fade cascade key={endPoint.getLabel()}>
-								<div className="mb-3">
-									<RPCEndpointConfigForm
-										onFormComplete={this.props.onFormComplete}
-										endPointConfig={endPoint}
-										error={this.props.setConfigError}
-										title="dcrwallet settings"
-									/>
-								</div>
-							</Fade>
+				<div className="mt-3 mb-3" >
+					<Button
+						variant="outline-secondary"
+						size="sm"
+						onClick={() => this.createNewEndpoint()}>
+						<FontAwesomeIcon icon={faPlus} /> Add wallet host...
+					</Button>
+				</div>
+				<Fade fade cascade>
+					<Row>
+						{walletEndpoints.map((endPoint) => (
+							<Col sm={6} key={endPoint.getId()} className="mb-4">
+								<RPCEndpointConfigForm
+									onCancel={() => this.cancelEdit}
+									onFormComplete={_.bind(this.finishEdit, this)}
+									endPointConfig={endPoint}
+									error={this.props.setConfigError}
+									title={endPoint.getLabel()}
+								/>
+							</Col>
 						))}
-						<div className="mt-3" >
-							<Button variant="outline-secondary" size="sm" onClick={_.bind(this.handleAddWallet, this)}>
-								<FontAwesomeIcon icon={faPlus} /> Add wallet host...
-							</Button>
-						</div>
-					</Col>
-					<Col sm={6}>
-						<Fade fade >
-							<RPCEndpointConfigForm
-								onFormComplete={this.props.onFormComplete}
-								error={this.props.setConfigError}
-								endPointConfig={dcrd}
-								title="dcrd settings"
-							/>
-						</Fade>
-					</Col>
-				</Row>
+					</Row>
+				</Fade>
 			</div>
 		)
 	}
 
-	handleAddWallet() {
+	createNewEndpoint() {
+		const endPoints = this.state.walletEndpoints
+		const newEndpoint = new GRPCEndpoint()
+		newEndpoint.setId(uuidv4())
+		endPoints.push(newEndpoint)
+		this.setState({
+			walletEndpoints: endPoints
+		})
+	}
 
+	finishEdit(endpoint: GRPCEndpoint | RPCEndpoint) {
+		this.props.updateEndpoint(endpoint)
+		this.cancelEdit()
+	}
+
+	cancelEdit() {
+		debugger
+		this.setState({
+			walletEndpoints: []
+		})
 	}
 }
 
 interface OwnProps {
-	appConfig: AppConfiguration
+	walletEndpoints: GRPCEndpoint[]
 	setConfigError: AppError | null
-	onFormComplete: () => void
 }
 
+interface InternalState {
+	walletEndpoints: GRPCEndpoint[]
+}
+
+interface DispatchProps {
+	updateEndpoint: (endpoint: GRPCEndpoint | RPCEndpoint) => void
+}
+
+type Props = OwnProps & DispatchProps
+
+const mapStateToProps = (state: IApplicationState) => {
+	return {
+		walletEndpoints: state.appconfiguration.appConfig.getWalletEndpointsList(),
+		setConfigError: state.appconfiguration.setConfigError,
+	}
+}
+
+const mapDispatchToProps = (dispatch: AppDispatch) => {
+	return {
+		updateEndpoint: (endpoint: GRPCEndpoint | RPCEndpoint) => {
+			dispatch(updateEndpoint(endpoint))
+			dispatch(saveConfigurationAttempt())
+		}
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectionSettings)

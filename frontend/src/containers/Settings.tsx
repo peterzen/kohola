@@ -2,7 +2,6 @@ import _ from 'lodash';
 import * as React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
-import { Dispatch, bindActionCreators } from 'redux';
 
 import { AppError } from '../store/types';
 import { IApplicationState } from '../store/store';
@@ -24,11 +23,7 @@ class SettingsContainer extends React.Component<Props> {
 				<Tabs defaultActiveKey="connections" id="appconfiguration-tabs">
 					<Tab eventKey="connections" title="Connections">
 						<Tab.Content>
-							<ConnectionSettings
-								appConfig={this.props.appConfig}
-								setConfigError={this.props.setConfigError}
-								onFormComplete={() => this.props.saveConfigurationAttempt()}
-							/>
+							<ConnectionSettings />
 						</Tab.Content>
 					</Tab>
 					<Tab eventKey="accounts" title="Accounts">
@@ -61,7 +56,7 @@ type Props = OwnProps & DispatchProps
 const mapStateToProps = (state: IApplicationState): IAppConfigurationState => {
 	return {
 		...state.appconfiguration
-	};
+	}
 }
 
 interface DispatchProps {
@@ -72,4 +67,4 @@ const mapDispatchToProps = {
 	saveConfigurationAttempt,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SettingsContainer));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SettingsContainer))

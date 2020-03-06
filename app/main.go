@@ -24,32 +24,44 @@ func main() {
 
 	// go initSystray()
 
-	initializeApplication()
+	launchUI(func(ui lorca.UI) {
+		err := gui.LoadConfig()
+		if err != nil {
+			log.Fatalf("Error in LoadConfig: %#v", err)
+		}
 
-	launchUI(bindUIAPI)
+		bindUIAPI(ui)
+	})
 }
 
-func initializeApplication() {
-
-	err := gui.LoadConfig()
+func launchUI(callbackFn func(lorca.UI)) {
+	args := []string{}
+	if runtime.GOOS == "linux" {
+		args = append(args, "--class=Lorca")
+	}
+	ui, err := lorca.New("https://localhost:8080", "", 1200, 800, args...)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
+	}
+	defer ui.Close()
+
+	callbackFn(ui)
+
+	// _ = ui.Load("https://localhost:8080")
+
+	// Wait until the interrupt signal arrives or browser window is closed
+	sigc := make(chan os.Signal)
+	signal.Notify(sigc, os.Interrupt)
+	select {
+	case <-sigc:
+	case <-ui.Done():
 	}
 
-	if gui.HaveConfig() {
-		endpointCfg := gui.GetConfig().GetDcrwalletHosts()[0]
-		err = InitFrontendGRPC(endpointCfg)
-		if err != nil {
-			log.Println("Cannot connect to dcrwallet: ", err)
-		}
-	} else {
-		log.Printf("Missing dcrwallet entry in config file")
-	}
-
+	log.Println("exiting...")
 }
 
 func bindUIAPI(ui lorca.UI) {
-	// captures the body.unload event from the frontend
+	// captures the body.onload event from the frontend
 	ui.Bind("start", func() {
 		log.Println("UI is ready")
 	})
@@ -95,7 +107,7 @@ func bindUIAPI(ui lorca.UI) {
 			return r
 		}
 
-		initializeApplication()
+		// initializeApplication()
 		return r
 	})
 
@@ -105,33 +117,7 @@ func bindUIAPI(ui lorca.UI) {
 	})
 
 	ExportWalletAPI(ui)
-	SetupNotifications(ui)
-}
-
-func launchUI(callbackFn func(lorca.UI)) {
-	args := []string{}
-	if runtime.GOOS == "linux" {
-		args = append(args, "--class=Lorca")
-	}
-	ui, err := lorca.New("https://localhost:8080", "", 1200, 800, args...)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer ui.Close()
-
-	callbackFn(ui)
-
-	// _ = ui.Load("https://localhost:8080")
-
-	// Wait until the interrupt signal arrives or browser window is closed
-	sigc := make(chan os.Signal)
-	signal.Notify(sigc, os.Interrupt)
-	select {
-	case <-sigc:
-	case <-ui.Done():
-	}
-
-	log.Println("exiting...")
+	// SetupNotifications(ui)
 }
 
 func showDialog() {

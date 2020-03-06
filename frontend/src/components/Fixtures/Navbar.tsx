@@ -1,12 +1,8 @@
 
 import * as React from 'react';
 
-import { Navbar, Nav, Button } from 'react-bootstrap';
-import BestBlockComponent from '../../features/networkinfo/BestBlockComponent';
-import ConnectionStatus from '../../features/networkinfo/ConnectionStatus';
+import { Navbar, Nav } from 'react-bootstrap';
 
-// @ts-ignore
-import Logo from '../../images/logo.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
@@ -14,12 +10,18 @@ import {
 	faTicketAlt,
 	faExchangeAlt
 } from '@fortawesome/free-solid-svg-icons'
+
+import ConnectionStatus from '../../features/networkinfo/ConnectionStatus';
+
+// @ts-ignore
+import Logo from '../../images/logo.svg'
+
 export default class NavbarComponent extends React.Component {
 
 	render() {
 		return (
 			<Navbar bg="light" expand="lg" fixed="top">
-				<Navbar.Brand href="/">
+				<Navbar.Brand href="/#">
 					<Logo height={36} width={36} />
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -27,7 +29,7 @@ export default class NavbarComponent extends React.Component {
 					className="justify-content-end"
 					id="basic-navbar-nav">
 					<Nav className="mr-auto">
-						<Nav.Link href="/#">
+						<Nav.Link href="/#wallet">
 							<FontAwesomeIcon icon={faExchangeAlt} className="text-secondary" /> Transactions
 						</Nav.Link>
 						<Nav.Link href="/#staking">
@@ -40,7 +42,6 @@ export default class NavbarComponent extends React.Component {
 						</Nav.Link>
 					</Nav>
 				</Navbar.Collapse>
-				<BestBlockComponent />
 				<ConnectionStatus />
 			</Navbar>
 		)
