@@ -597,7 +597,9 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__PublishTransaction", publishTransaction)
 	ui.Bind("walletrpc__PurchaseTickets", purchaseTickets)
 
-	ui.Bind("walletgui__ConnectWalletEndpoint", connectEndpoint)
+	ui.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) (r gui.LorcaMessage) {
+		return connectEndpoint(endpointID, ui)
+	})
 
 	ui.Bind("walletgui__CheckGRPCConnection", func(requestAsHex string) (r gui.CheckConnectionResponse) {
 		cfg := &gui.GRPCEndpoint{}
@@ -618,7 +620,7 @@ func ExportWalletAPI(ui lorca.UI) {
 	})
 }
 
-func connectEndpoint(endpointID string) (r gui.LorcaMessage) {
+func connectEndpoint(endpointID string, ui lorca.UI) (r gui.LorcaMessage) {
 
 	if gui.HaveConfig() {
 
@@ -635,6 +637,8 @@ func connectEndpoint(endpointID string) (r gui.LorcaMessage) {
 			return r
 		}
 		r.Payload, err = proto.Marshal(endpoint)
+		SetupNotifications(ui)
+
 	} else {
 		r.Err = errors.New("Missing dcrwallet entry in config file")
 	}

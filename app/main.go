@@ -104,7 +104,6 @@ func bindUIAPI(ui lorca.UI) {
 	})
 
 	ExportWalletAPI(ui)
-	// SetupNotifications(ui)
 }
 
 func showDialog() {
