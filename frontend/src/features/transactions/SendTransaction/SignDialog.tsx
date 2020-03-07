@@ -134,14 +134,14 @@ export default class SignDialog extends React.Component<OwnProps, InternalState>
 						<Col>
 							<Button
 								tabIndex={4}
-								variant="outline-secondary"
+								variant="secondary"
 								onClick={this.props.onCancel}
 							>Back</Button>
 						</Col>
 						<Col className="text-right">
 							<Button
 								tabIndex={4}
-								variant="outline-primary"
+								variant="primary"
 								type="submit">Sign tx</Button>
 
 						</Col>

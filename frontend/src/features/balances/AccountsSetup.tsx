@@ -72,7 +72,7 @@ class AddAccountComponent extends React.Component<IAddAccountProps, { visible: b
 		const toggle = this.state.visible
 		return (
 			<div>
-				<Button variant="outline-secondary" size="sm" onClick={() => this.setState({ visible: !toggle })}>
+				<Button variant="secondary" size="sm" onClick={() => this.setState({ visible: !toggle })}>
 					<FontAwesomeIcon icon={faPlus} /> Add account...
 				</Button>
 				{this.state.visible && this.props.nextAccountResponse == null && (

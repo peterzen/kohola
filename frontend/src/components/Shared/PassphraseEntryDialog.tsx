@@ -61,22 +61,20 @@ export default class PassphraseEntryDialog extends React.Component<Props, Intern
 						</Form.Group>
 					</Modal.Body>
 					<Modal.Footer>
-						<Row>
-							<Col>
-								<Button
-									variant="link"
-									onClick={() => this.setState({ showModal: false })}
-								>Cancel</Button>
-							</Col>
-							<Col className="text-right pr-4">
-								<Button
-									type="submit"
-									onClick={_.bind(this.handleFormSubmit, this)}
-									variant="outline-primary">
-									Unlock
-								</Button>
-							</Col>
-						</Row>
+						<div className="text-right pr-4">
+							<Button
+								variant="secondary"
+								onClick={() => this.setState({ showModal: false })}
+							>
+								Cancel
+							</Button>
+							<Button
+								type="submit"
+								onClick={_.bind(this.handleFormSubmit, this)}
+								variant="primary">
+								Unlock
+							</Button>
+						</div>
 					</Modal.Footer>
 				</Form>
 			</Modal>

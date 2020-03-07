@@ -149,7 +149,7 @@ export const InfoTooltip = (props: { text: string }) => {
 export const WidgetOptionsButton = (args: ButtonProps) => {
 	return (
 		<Button
-			variant="outline-secondary" {...args}>
+			variant="secondary" {...args}>
 			<FontAwesomeIcon icon={faSlidersH} />
 		</Button>
 	)
@@ -158,7 +158,7 @@ export const WidgetOptionsButton = (args: ButtonProps) => {
 export const PasteButton = (args: ButtonProps) => {
 	return (
 		<Button
-			variant="outline-secondary" {...args}>
+			variant="secondary" {...args}>
 			<FontAwesomeIcon icon={faPaste} />
 		</Button>
 	)
@@ -181,7 +181,7 @@ export class CopyToClipboardButton extends React.Component<ICopyToClipboardButto
 				<CopyToClipboard text={this.props.value}
 					onCopy={() => this.setState({ copied: true })}>
 					<Button
-						variant="outline-secondary" >
+						variant="secondary" >
 						<FontAwesomeIcon icon={faClipboard} />
 					</Button>
 				</CopyToClipboard>

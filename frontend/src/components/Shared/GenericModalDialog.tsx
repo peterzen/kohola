@@ -42,7 +42,7 @@ export default class GenericModalDialog<P, S> extends React.Component<P & Props,
 					<this.DialogContent />
 				</Modal.Body>
 				<Modal.Footer>
-					<Button variant="outline-secondary" size="sm" onClick={this.props.onHide}>
+					<Button variant="secondary" size="sm" onClick={this.props.onHide}>
 						Close
 						</Button>
 				</Modal.Footer>

@@ -57,7 +57,7 @@ class AccountDetailsContainer extends React.Component<Props, InternalState> {
 							</Col>
 							<Col xs={4} className="text-right">
 								<SendTransaction defaultAccount={this.state.account} />&nbsp;
-								<Button variant="outline-primary"
+								<Button variant="primary"
 									onClick={() => this.showReceiveDialog()}
 								>Receive</Button>
 							</Col>

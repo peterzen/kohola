@@ -104,21 +104,17 @@ export default class ConstructTxDialog extends React.Component<OwnProps, ISendDi
 					</Form.Control.Feedback>
 				</Form.Group>
 				<DialogAlert error={this.props.error} />
-				<Row className="mt-5">
-					<Col>
-						<Button
-							onClick={() => this.props.onCancel()}
-							tabIndex={-1}
-							variant="link"
-						>Cancel</Button>
-					</Col>
-					<Col className="text-right">
-						<Button
-							tabIndex={4}
-							variant="outline-primary"
-							type="submit">Create tx</Button>
-					</Col>
-				</Row>
+				<div className="mt-5 text-right">
+					<Button
+						onClick={() => this.props.onCancel()}
+						tabIndex={-1}
+						variant="secondary"
+					>Cancel</Button>
+					<Button
+						tabIndex={4}
+						variant="primary"
+						type="submit">Create tx</Button>
+				</div>
 			</Form>
 		)
 	}

@@ -30,14 +30,14 @@ export default class PublishDialog extends React.Component<OwnProps>{
 						<Col>
 							<Button
 								tabIndex={4}
-								variant="outline-secondary"
+								variant="secondary"
 								onClick={this.props.onCancel}
 							>Back</Button>
 						</Col>
 						<Col className="text-right">
 							<Button
 								tabIndex={4}
-								variant="outline-primary"
+								variant="primary"
 								type="submit">Broadcast tx</Button>
 
 						</Col>

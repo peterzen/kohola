@@ -152,7 +152,7 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 					<Row>
 						<Col sm={3}>
 							<Button
-								variant="outline-secondary"
+								variant="secondary"
 								size="sm"
 								onClick={_.bind(this.browseFile, this)}>Browse...</Button>
 						</Col>
@@ -195,25 +195,22 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 					/>
 				</Form.Group>
 
-
-				<div style={{height:"2em"}}>
+				<div style={{ height: "2em" }}>
 					<ConnectionCheck
 						status={this.state.connectionCheckStatus}
 						message={this.state.connectionCheckMessage} />
 				</div>
 
-				<Row>
-					<Col xs={6}>
-						<Button variant="link" onClick={this.props.onCancel}>Cancel</Button>
-					</Col>
-					<Col xs={6} className="text-right">
-						<Button
-							disabled={!this.state.isDirty}
-							type="submit"
-							variant="outline-primary">Save
-						</Button>
-					</Col>
-				</Row>
+				<div className="text-right">
+					<Button variant="secondary"
+						onClick={this.props.onCancel}>Cancel
+					</Button>
+					<Button
+						disabled={!this.state.isDirty}
+						type="submit"
+						variant="primary">Save
+					</Button>
+				</div>
 			</Form>
 		)
 	}

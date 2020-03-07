@@ -58,7 +58,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 							</Col>
 							<InputGroup as={Col} sm={6}>
 								<InputGroup.Prepend>
-									<Button variant="outline-secondary"
+									<Button variant="secondary"
 										onClick={() => { this.state.formRef.current.num_tickets.value > 0 && this.state.formRef.current.num_tickets.stepDown() }}>
 										<FontAwesomeIcon icon={faMinus} />
 									</Button>
@@ -73,7 +73,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 									defaultValue="1" />
 								<InputGroup.Append>
 									<Button
-										variant="outline-secondary"
+										variant="secondary"
 										onClick={() => { this.state.formRef.current.num_tickets.stepUp() }}
 									><FontAwesomeIcon icon={faPlus} />
 									</Button>
@@ -113,7 +113,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 					<Button
 						type="submit"
 						onClick={_.bind(this.handleFormSubmit, this)}
-						variant="outline-primary">
+						variant="primary">
 						Purchase
 						</Button>
 				</Card.Footer>

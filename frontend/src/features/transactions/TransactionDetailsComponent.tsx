@@ -71,7 +71,7 @@ export const TransactionDetailsComponent = (props: OwnProps) => {
 				</tbody>
 			</Table>
 			<Accordion >
-				<Accordion.Toggle as={Button} variant="link" size="sm" eventKey="0">
+				<Accordion.Toggle as={Button} variant="secondary" size="sm" eventKey="0">
 					Raw JSON <FontAwesomeIcon icon={faCaretDown} />
 				</Accordion.Toggle>
 				<Accordion.Collapse eventKey="0">

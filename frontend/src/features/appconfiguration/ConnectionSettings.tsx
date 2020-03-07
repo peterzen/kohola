@@ -29,7 +29,7 @@ class ConnectionSettings extends React.Component<Props, InternalState> {
 			<div>
 				<div className="mt-3 mb-3" >
 					<Button
-						variant="outline-secondary"
+						variant="secondary"
 						size="sm"
 						onClick={() => this.createNewEndpoint()}>
 						<FontAwesomeIcon icon={faPlus} /> Add wallet host...
