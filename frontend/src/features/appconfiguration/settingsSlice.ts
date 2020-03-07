@@ -4,6 +4,8 @@ import { createSlice, PayloadAction, ActionCreator, Dispatch } from '@reduxjs/to
 import { AppError, IGetState, IApplicationState } from '../../store/types';
 import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences } from '../../proto/dcrwalletgui_pb';
 import AppBackend from '../../datasources/appbackend';
+import { getConnectedEndpoint, getConnectedEndpointId } from '../app/appSlice';
+import { updateObjectInList } from '../../helpers/protobufHelpers';
 
 
 export interface IAppConfigurationState {
@@ -51,13 +53,16 @@ const settingsSlice = createSlice({
 			state.needSetup = true
 			state.appConfig = cfg
 		},
-		setAccountPreference(state, action: PayloadAction<AccountPreference>) {
-			// const cfg = state.appConfig
-			// const newPref = action.payload
-			// const prefs = cfg.getAccountprefsList()
-			// const updatedPrefs = _.filter(prefs, (p) => p.getAccountnumber() != newPref.getAccountnumber())
-			// updatedPrefs.push(newPref)
-			// cfg.setAccountprefsList(updatedPrefs)
+		setAccountPreference(state, action: PayloadAction<{ preference: AccountPreference, walletEndpointId: string }>) {
+			const { preference, walletEndpointId } = action.payload
+			const walletPrefs = getWalletPrefs(state, walletEndpointId)
+			const accountPrefs = walletPrefs.getAccountPrefsList()
+			walletPrefs.setAccountPrefsList(
+				updateObjectInList(accountPrefs, preference, "account_number")
+			)
+			state.appConfig.setWalletPreferencesList(
+				updateObjectInList(state.appConfig.getWalletPreferencesList(), walletPrefs, "wallet_endpoint_id")
+			)
 		},
 		updateEndpoint(state, action: PayloadAction<GRPCEndpoint>) {
 			const ep = action.payload
@@ -128,12 +133,15 @@ export const saveConfigurationAttempt: ActionCreator<any> = () => {
 	}
 }
 
-export const updateAccountPreference: ActionCreator<any> = (accountNumber: number, isHidden: boolean) => {
+export const updateAccountPreference: ActionCreator<any> = (walletEndpointId: string, accountNumber: number, isHidden: boolean) => {
 	return async (dispatch: Dispatch) => {
 		const pref = new AccountPreference()
-		pref.setAccountnumber(accountNumber)
+		pref.setAccountNumber(accountNumber)
 		pref.setIsHidden(isHidden)
-		dispatch(setAccountPreference(pref))
+		dispatch(setAccountPreference({
+			walletEndpointId: walletEndpointId,
+			preference: pref
+		}))
 		dispatch(saveConfigurationAttempt())
 	}
 }
@@ -145,16 +153,19 @@ export interface IIndexedAccountPrefs {
 
 export const getAccountPrefs = (state: IApplicationState): IIndexedAccountPrefs => {
 	const indexedAccountPrefs: IIndexedAccountPrefs = {}
-	// _.each(state.appconfiguration.appConfig.getWalletPreferencesList(), (p) => indexedAccountPrefs[p.getAccountnumber()] = p)
+	const walletEndpointId = getConnectedEndpointId(state)
+	const prefs = getWalletPrefs(state.appconfiguration, walletEndpointId)
+	_.each(prefs.getAccountPrefsList(), (p) => indexedAccountPrefs[p.getAccountNumber()] = p)
 	return indexedAccountPrefs
 }
 
-export const getWalletPrefs = (state: IApplicationState): WalletPreferences | null => {
-	const currentWalletId = state.appconfiguration.currentWalletEndpointId
-	const walletPrefs = state.appconfiguration.appConfig.getWalletPreferencesList()
-	if (walletPrefs == undefined) {
-		return null
+export const getWalletPrefs = (appConfigurationState: IAppConfigurationState, walletEndpointId: string): WalletPreferences => {
+	const walletPrefs = appConfigurationState.appConfig.getWalletPreferencesList() || []
+	let pref = _.find(walletPrefs, (p) => p.getWalletEndpointId() == walletEndpointId)
+	if (pref == undefined) {
+		pref = new WalletPreferences()
+		pref.setWalletEndpointId(walletEndpointId)
 	}
-	const pref = _.find(walletPrefs, (p) => p.getWalletEndpointId() == currentWalletId)
-	return pref == undefined ? null : pref
+	return pref
 }
+

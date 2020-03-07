@@ -185,14 +185,14 @@ export namespace GRPCEndpoint {
 }
 
 export class AccountPreference extends jspb.Message {
-  getAccountnumber(): number;
-  setAccountnumber(value: number): void;
+  getAccountNumber(): number;
+  setAccountNumber(value: number): void;
 
   getIsHidden(): boolean;
   setIsHidden(value: boolean): void;
 
-  getDisplayorder(): number;
-  setDisplayorder(value: number): void;
+  getDisplayOrder(): number;
+  setDisplayOrder(value: number): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AccountPreference.AsObject;
@@ -206,9 +206,9 @@ export class AccountPreference extends jspb.Message {
 
 export namespace AccountPreference {
   export type AsObject = {
-    accountnumber: number,
+    accountNumber: number,
     isHidden: boolean,
-    displayorder: number,
+    displayOrder: number,
   }
 }
 

@@ -53,9 +53,9 @@ message GRPCEndpoint {
 }
 
 message AccountPreference {
-  uint32 accountNumber = 1;
+  uint32 account_number = 1;
   bool is_hidden = 2;
-  uint32 displayOrder = 3;
+  uint32 display_order = 3;
 }
 
 message WalletPreferences {

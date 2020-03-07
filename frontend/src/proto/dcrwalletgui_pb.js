@@ -1301,9 +1301,9 @@ proto.dcrwalletgui.AccountPreference.prototype.toObject = function(opt_includeIn
  */
 proto.dcrwalletgui.AccountPreference.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accountnumber: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    accountNumber: jspb.Message.getFieldWithDefault(msg, 1, 0),
     isHidden: jspb.Message.getFieldWithDefault(msg, 2, false),
-    displayorder: jspb.Message.getFieldWithDefault(msg, 3, 0)
+    displayOrder: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -1342,7 +1342,7 @@ proto.dcrwalletgui.AccountPreference.deserializeBinaryFromReader = function(msg,
     switch (field) {
     case 1:
       var value = /** @type {number} */ (reader.readUint32());
-      msg.setAccountnumber(value);
+      msg.setAccountNumber(value);
       break;
     case 2:
       var value = /** @type {boolean} */ (reader.readBool());
@@ -1350,7 +1350,7 @@ proto.dcrwalletgui.AccountPreference.deserializeBinaryFromReader = function(msg,
       break;
     case 3:
       var value = /** @type {number} */ (reader.readUint32());
-      msg.setDisplayorder(value);
+      msg.setDisplayOrder(value);
       break;
     default:
       reader.skipField();
@@ -1380,7 +1380,7 @@ proto.dcrwalletgui.AccountPreference.prototype.serializeBinary = function() {
  */
 proto.dcrwalletgui.AccountPreference.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getAccountnumber();
+  f = message.getAccountNumber();
   if (f !== 0) {
     writer.writeUint32(
       1,
@@ -1394,7 +1394,7 @@ proto.dcrwalletgui.AccountPreference.serializeBinaryToWriter = function(message,
       f
     );
   }
-  f = message.getDisplayorder();
+  f = message.getDisplayOrder();
   if (f !== 0) {
     writer.writeUint32(
       3,
@@ -1405,16 +1405,16 @@ proto.dcrwalletgui.AccountPreference.serializeBinaryToWriter = function(message,
 
 
 /**
- * optional uint32 accountNumber = 1;
+ * optional uint32 account_number = 1;
  * @return {number}
  */
-proto.dcrwalletgui.AccountPreference.prototype.getAccountnumber = function() {
+proto.dcrwalletgui.AccountPreference.prototype.getAccountNumber = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /** @param {number} value */
-proto.dcrwalletgui.AccountPreference.prototype.setAccountnumber = function(value) {
+proto.dcrwalletgui.AccountPreference.prototype.setAccountNumber = function(value) {
   jspb.Message.setField(this, 1, value);
 };
 
@@ -1437,16 +1437,16 @@ proto.dcrwalletgui.AccountPreference.prototype.setIsHidden = function(value) {
 
 
 /**
- * optional uint32 displayOrder = 3;
+ * optional uint32 display_order = 3;
  * @return {number}
  */
-proto.dcrwalletgui.AccountPreference.prototype.getDisplayorder = function() {
+proto.dcrwalletgui.AccountPreference.prototype.getDisplayOrder = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
 /** @param {number} value */
-proto.dcrwalletgui.AccountPreference.prototype.setDisplayorder = function(value) {
+proto.dcrwalletgui.AccountPreference.prototype.setDisplayOrder = function(value) {
   jspb.Message.setField(this, 3, value);
 };
 

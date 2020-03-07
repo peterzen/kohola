@@ -142,6 +142,10 @@ export const getConnectedEndpoint = (state: IApplicationState) => {
 	return state.app.currentWalletEndpoint
 }
 
+export const getConnectedEndpointId = (state: IApplicationState) => {
+	return state.app.currentWalletEndpoint?.getId() || ""
+}
+
 export const isWalletConnected = (state: IApplicationState) => {
 	return state.app.isWalletConnected
 }

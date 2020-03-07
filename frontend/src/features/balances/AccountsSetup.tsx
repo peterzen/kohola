@@ -19,6 +19,7 @@ import { NextAccountResponse, RenameAccountResponse } from '../../proto/api_pb';
 import { getAccountPrefs, updateAccountPreference, IIndexedAccountPrefs } from '../appconfiguration/settingsSlice';
 import { getWalletBalances } from './walletBalanceSlice';
 import { Amount } from '../../components/Shared/shared';
+import { getConnectedEndpoint, getConnectedEndpointId } from '../app/appSlice';
 
 function enterHandler(e: React.KeyboardEvent<HTMLInputElement>, callback: () => void) {
 	if (e.key == "Enter") {
@@ -160,7 +161,8 @@ class AccountsSetup extends React.Component<Props, InternalState> {
 									checked={hiddenPrefValue}
 									type="switch"
 									id={`account-visibility-${accountNumber}`}
-									onChange={(e: React.FormEvent<HTMLInputElement>) => this.props.updateAccountPreference(accountNumber, e.currentTarget.checked)}
+									onChange={(e: React.FormEvent<HTMLInputElement>) =>
+										this.props.updateAccountPreference(this.props.walletEndpointId, accountNumber, e.currentTarget.checked)}
 									label=""
 								/>
 							</Col>
@@ -187,6 +189,7 @@ interface OwnProps {
 	accounts: IndexedWalletAccounts
 	accountPrefs: IIndexedAccountPrefs
 	accountBalances: WalletBalance
+	walletEndpointId: string,
 	renameAccountResponse: RenameAccountResponse | null
 	errorRenameAccount: AppError | null
 	nextAccountResponse: NextAccountResponse | null
@@ -194,10 +197,12 @@ interface OwnProps {
 }
 
 const mapStateToProps = function (state: IApplicationState): OwnProps {
+	const walletEndpointId = getConnectedEndpointId(state)
 	return {
 		accounts: state.accounts.accounts,
 		accountPrefs: getAccountPrefs(state),
 		accountBalances: getWalletBalances(state),
+		walletEndpointId: walletEndpointId,
 		renameAccountResponse: state.accounts.renameAccountResponse,
 		errorRenameAccount: state.accounts.errorRenameAccount,
 		nextAccountResponse: state.accounts.nextAccountResponse,
@@ -210,7 +215,7 @@ type Props = OwnProps & DispatchProps
 interface DispatchProps {
 	loadNextAccountAttempt: typeof loadNextAccountAttempt
 	doRenameAccountAttempt: typeof doRenameAccountAttempt
-	updateAccountPreference: (accountNumber: number, isHidden: boolean) => void
+	updateAccountPreference: typeof updateAccountPreference
 }
 
 const mapDispatchToProps = {
