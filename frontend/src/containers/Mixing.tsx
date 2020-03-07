@@ -14,15 +14,10 @@ class MixerContainer extends React.PureComponent<{}, {}> {
 	render() {
 		return (
 			<div>
-				<Card>
-					<Card.Header>
-						<Card.Title>Account mixer service</Card.Title>
-					</Card.Header>
-					<Card.Body>
-						<MixerSettings />
-					</Card.Body>
-				</Card>
-			</div >
+				<Fade fade>
+					<MixerSettings />
+				</Fade>
+			</div>
 		)
 	}
 }
