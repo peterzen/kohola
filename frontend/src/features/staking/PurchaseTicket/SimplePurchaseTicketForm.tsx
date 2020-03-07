@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 
 import { Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
-// import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
 import { AccountSelector, Amount } from '../../../components/Shared/shared';
 import { TxConfirmationPanel } from "../../transactions/TxConfirmationPanel";
@@ -14,6 +13,9 @@ import { AppError, IApplicationState } from '../../../store/types';
 import { purchaseTicket, getTicketPrice } from '../stakingSlice';
 import { getWalletBalances } from '../../balances/walletBalanceSlice';
 import { SteppableNumberInput } from '../../../components/Shared/SteppableNumberInput';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
+import PurchaseTicketSettings from './PurchaseTicketSettings';
 
 class PurchaseTicketForm extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -26,6 +28,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 			formRef: React.createRef(),
 			formIsValidated: false,
 			purchaseTicketRequest: new PurchaseTicketsRequest(),
+			showSettings: false,
 		}
 	}
 
@@ -35,101 +38,91 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 		const showConfirmation = !showForm
 
 		return (
-			<Card >
-				<Card.Body>
-					<Card.Title>Purchase tickets</Card.Title>
-					{showForm &&
-						<Form
-							ref={this.state.formRef}
-							validated={this.state.formIsValidated && !this.props.error}
-							onSubmit={_.bind(this.handleFormSubmit, this)}
-							className="m-0"
-						>
-							<Row>
-								<Col>
-									<div className="text-right">
-										<h4>
-											<small>Current price:</small> <Amount amount={this.props.ticketPrice.getTicketPrice()} showCurrency />
-										</h4>
-									</div>
-								</Col>
-							</Row>
-							<Form.Group >
-								<AccountSelector
-									value={-1}
-									name="account_select"
-									onChange={_.bind(this.handleChange, this)}
-								/>
-							</Form.Group>
-							<Form.Group as={Row}>
-								<Col sm={8}>
-									<SteppableNumberInput
-										className="ml-3 mr-3"
-										placeholder="# of tix"
-										name="num_tickets"
-										max={this.state.buyingPower}
+			<>
+				<Card >
+					<Card.Body>
+						<Card.Title>Purchase tickets</Card.Title>
+						{showForm &&
+							<Form
+								ref={this.state.formRef}
+								validated={this.state.formIsValidated && !this.props.error}
+								onSubmit={_.bind(this.handleFormSubmit, this)}
+								className="m-0"
+							>
+								<Row>
+									<Col>
+										<div className="text-right">
+											<h4>
+												<small>Current price:</small> <Amount amount={this.props.ticketPrice.getTicketPrice()} showCurrency />
+											</h4>
+										</div>
+									</Col>
+								</Row>
+								<Form.Group >
+									<AccountSelector
+										value={-1}
+										name="account_select"
 										onChange={_.bind(this.handleChange, this)}
 									/>
-									<br />
+								</Form.Group>
+								<Form.Group as={Row}>
+									<Col sm={8}>
+										<SteppableNumberInput
+											className="ml-3 mr-3"
+											placeholder="# of tix"
+											name="num_tickets"
+											max={this.state.buyingPower}
+											onChange={_.bind(this.handleChange, this)}
+										/>
+										<br />
 
-									Remaining balance: <Amount amount={this.state.remainingBalance} />
+										Remaining balance: <Amount amount={this.state.remainingBalance} />
 
-								</Col>
-								<Col>
-									Buying power: {this.state.buyingPower}<br />
-								</Col>
-							</Form.Group>
+									</Col>
+									<Col>
+										Buying power: {this.state.buyingPower}<br />
+									</Col>
+								</Form.Group>
+							</Form>}
 
+						{showConfirmation && this.props.purchaseTicketResponse != null &&
+							<TxConfirmationPanel hashes={this.props.purchaseTicketResponse.getTicketHashesList_asU8()} />
+						}
+						<PassphraseEntryDialog show={false} />
+					</Card.Body>
+					<Card.Footer >
+						{this.props.error != null && (
+							<Alert variant="danger">{this.props.error}</Alert>
+						)}
+
+						{showForm &&
 							<Row>
-								<Col sm={4}>
+								<Col xs={6}>
+								<Button
+									size="sm"
+									variant="secondary"
+									onClick={() => this.showSettings()}>
+										<FontAwesomeIcon icon={faCog} /> Settings
+								</Button>
 								</Col>
-								<Col>
+								<Col xs={6} className="text-right">
+									<Button
+										type="submit"
+										disabled={!this.state.formIsValidated}
+									onClick={_.bind(this.handleFormSubmit, this)}
+										variant="primary">
+										Purchase
+								</Button>
 								</Col>
 							</Row>
-
-							{/* <Form.Group as={Row} className="p-2">
-							<Col sm={4}>
-								<Form.Label>Fee</Form.Label>
-							</Col>
-							<InputGroup as={Col} sm={4}>
-								<RangeSlider
-									variant="secondary"
-									tooltip="off"
-									size="sm"
-									defaultValue={50}
-									className="pr-3"
-									title="fee rate"
-								// onChange={changeEvent => console.log(changeEvent.target.value)}
-								/>
-								<InputGroup.Append>
-								</InputGroup.Append>
-							</InputGroup>
-							<Col sm={4}>
-								40 atoms/B
-							</Col>
-						</Form.Group> */}
-						</Form>}
-					{showConfirmation && this.props.purchaseTicketResponse != null &&
-						<TxConfirmationPanel hashes={this.props.purchaseTicketResponse.getTicketHashesList_asU8()} />
-					}
-					<PassphraseEntryDialog show={false} />
-				</Card.Body>
-				<Card.Footer className="text-right">
-					{this.props.error != null && (
-						<Alert variant="danger">{this.props.error}</Alert>
-					)}
-
-					{showForm &&
-						<Button
-							type="submit"
-							disabled={!this.state.formIsValidated}
-							onClick={_.bind(this.handleFormSubmit, this)}
-							variant="outline-primary">
-							Purchase
-						</Button>
-					}
-				</Card.Footer>
-			</Card >
+						}
+					</Card.Footer>
+				</Card>
+				<PurchaseTicketSettings
+					onHide={()=>this.setState({showSettings:false})}
+					showModal={this.state.showSettings}
+				/>
+			</>
 		)
 	}
 
@@ -171,7 +164,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 		return false;
 	}
 
-	handleChange(e: any) {
+	handleChange() {
 		const f = this.state.formRef.current
 		this.setState({
 			formIsValidated: !(f.num_tickets.value < 1 || f.account_select.value < 0)
@@ -193,6 +186,12 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 			remainingBalance: accountSpendableBalance - (f.num_tickets.value * ticketPrice)  // what about fees?
 		})
 	}
+
+	showSettings() {
+		this.setState({
+			showSettings: true
+		})
+	}
 }
 
 const loadFormFields = (formRef: React.RefObject<any>, r: PurchaseTicketsRequest) => {
@@ -209,7 +208,7 @@ interface OwnProps {
 	purchaseTicketResponse: PurchaseTicketsResponse | null
 }
 
-type Props = DispatchProps & OwnProps 
+type Props = DispatchProps & OwnProps
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
@@ -236,6 +235,7 @@ interface InternalState {
 	remainingBalance: number
 	isDirty: boolean
 	purchaseTicketRequest: PurchaseTicketsRequest
+	showSettings: boolean
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PurchaseTicketForm);
