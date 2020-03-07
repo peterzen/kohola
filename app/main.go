@@ -71,19 +71,6 @@ func bindUIAPI(ui lorca.UI) {
 		ui.Close()
 	})
 
-	ui.Bind("walletgui__CanStartup", func() (r gui.LorcaMessage) {
-		response := &gui.CanStartupResponse{
-			NeedsSetup: !gui.HaveConfig(),
-		}
-		var err error
-		r.Payload, err = proto.Marshal(response)
-		if err != nil {
-			r.Err = err
-			return r
-		}
-		return r
-	})
-
 	ui.Bind("walletgui__GetConfig", func() (r gui.LorcaMessage) {
 		// signal the UI that the configuration is empty, needs initial setup
 		if !gui.HaveConfig() {
