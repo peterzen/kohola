@@ -1,10 +1,10 @@
 import _ from 'lodash'
 import * as React from 'react';
-
 import { Toast } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { IApplicationState } from "../../store/store";
+
 import { TransactionNotificationsResponse } from '../../proto/api_pb';
+import { IApplicationState } from '../../store/types';
 
 
 class ToastContainer extends React.Component<Props> {
@@ -51,7 +51,7 @@ class Notification extends React.Component<{ txHash: string }> {
 					top: 150,
 					right: 0,
 				}}>
-				<Toast.Header variant="success">
+				<Toast.Header >
 					<img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
 					<strong className="mr-auto">Incoming TX</strong>
 					<small>just now</small>
@@ -69,10 +69,10 @@ interface Props {
 	txNotifications: TransactionNotificationsResponse
 }
 
-const mapStateToProps = function (state: IApplicationState, ownProps: Props) {
+const mapStateToProps = function (state: IApplicationState) {
 	return {
 		txNotification: state.transactions.latestTxNotification
-	};
+	}
 }
 
-export default   connect(mapStateToProps)(ToastContainer)
+export default connect(mapStateToProps)(ToastContainer)

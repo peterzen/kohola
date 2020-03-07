@@ -1,12 +1,8 @@
 import _ from "lodash"
 import * as React from "react"
 
-import { Form, Button, InputGroup, FormControl, Alert, Table, Row, Col } from 'react-bootstrap';
+import { Form, Button, FormControl, Table, Row, Col } from 'react-bootstrap';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faPaste,
-} from '@fortawesome/free-solid-svg-icons'
 import { AppError } from "../../../store/types";
 import { ConstructTransactionResponse } from "../../../proto/api_pb";
 import { rawToHex } from "../../../helpers/byteActions";

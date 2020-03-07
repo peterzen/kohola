@@ -1,9 +1,8 @@
 import _ from "lodash";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 
-import { AppError } from "../../store/types";
+import { AppError, AppThunk, IApplicationState } from "../../store/types";
 import { PurchaseTicketsResponse, PurchaseTicketsRequest, CommittedTicketsResponse } from "../../proto/api_pb";
-import { AppThunk, IApplicationState } from "../../store/store";
 import LorcaBackend from "../../datasources/lorca";
 import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../models";
 

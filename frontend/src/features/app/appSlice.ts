@@ -1,11 +1,11 @@
-import { GRPCEndpoint } from "../../proto/dcrwalletgui_pb";
-import { AppError } from "../../store/types";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
-import { AppThunk, AppDispatch, IApplicationState } from "../../store/store";
+import { batch } from "react-redux";
+
 import AppBackend from "../../datasources/appbackend";
+import { GRPCEndpoint } from "../../proto/dcrwalletgui_pb";
+import { AppError, AppThunk, AppDispatch, IApplicationState } from "../../store/types";
 import { loadBestBlockHeight } from "../networkinfo/networkInfoSlice";
 import { loadAccountsAttempt, accountNotification } from "../balances/accountSlice";
-import { batch } from "react-redux";
 import { loadTransactionsAttempt, transactionNotification } from "../transactions/actions";
 import { loadWalletBalance } from "../balances/walletBalanceSlice";
 import { loadTicketsAttempt } from "../staking/stakingSlice";

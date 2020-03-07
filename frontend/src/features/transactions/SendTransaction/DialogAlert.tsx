@@ -1,12 +1,11 @@
 import * as React from "react"
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 import { Alert } from 'react-bootstrap';
+
 import { AppError } from "../../../store/types";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faExclamationCircle,
-} from '@fortawesome/free-solid-svg-icons'
 
 interface IDialogAlertProps {
 	error: AppError | null

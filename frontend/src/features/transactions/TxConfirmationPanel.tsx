@@ -1,9 +1,9 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+
 import { TxHash } from "../../components/Shared/shared";
 import { rawHashToHex } from "../../helpers/byteActions";
-
 
 export const TxConfirmationPanel = (props: {
 	hashes: Uint8Array[];

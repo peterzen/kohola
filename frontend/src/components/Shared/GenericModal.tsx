@@ -1,9 +1,8 @@
 import * as React from 'react';
 
-import { Modal, Button } from 'react-bootstrap';
-import ReactDOM from 'react-dom';
+import { Modal } from 'react-bootstrap'
 
-export default class GenericModal<P, S> extends React.Component<P & GenericModalProps, InternalState & S> {
+export default class GenericModal<P, S> extends React.Component<P & GenericModalProps, S> {
 	render() {
 		return (
 			<Modal
@@ -28,10 +27,8 @@ export default class GenericModal<P, S> extends React.Component<P & GenericModal
 		)
 	}
 	onEntered() {
-		// console.log("GenericModalDialog onEntered")
 	}
 	onExit() {
-		// console.log("onExit")
 	}
 }
 
@@ -41,6 +38,3 @@ export interface GenericModalProps {
 	onHide: () => void
 }
 
-
-interface InternalState {
-}

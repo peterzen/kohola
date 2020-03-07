@@ -2,16 +2,16 @@ import * as React from 'react';
 import { connect } from "react-redux";
 import _ from 'lodash';
 
-import { IApplicationState } from "../../store/store";
-
 import { Button } from 'react-bootstrap';
+
 import SendTransactionModal from './SendTransaction/SendTransactionModal';
 import { WalletAccount } from '../../models';
+import { IApplicationState } from '../../store/types';
 
 
-class SendTransaction extends React.Component<Props, InternalState> {
+class SendTransaction extends React.Component<OwnProps, InternalState> {
 
-	constructor(props: Props) {
+	constructor(props: OwnProps) {
 		super(props)
 		this.state = {
 			showSendTxModal: false,
@@ -39,13 +39,9 @@ class SendTransaction extends React.Component<Props, InternalState> {
 	hideSendTxModal() {
 		this.setState({ showSendTxModal: false })
 	}
-	// componentDidUpdate() {
-	// 	console.log("####componentDidUpdate")
-	// }
-
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
+const mapStateToProps = (state: IApplicationState) => {
 	return {
 		...state.transactions,
 	}
@@ -56,12 +52,6 @@ export default connect(mapStateToProps)(SendTransaction);
 interface OwnProps {
 	defaultAccount?: WalletAccount
 }
-
-interface DispatchProps {
-	// onSomeEvent: () => void
-}
-
-type Props = DispatchProps & OwnProps
 
 interface InternalState {
 	showSendTxModal: boolean

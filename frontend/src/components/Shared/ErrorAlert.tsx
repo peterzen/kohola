@@ -1,11 +1,8 @@
 import * as React from "react"
 
-import { Alert } from 'react-bootstrap';
-
+import { Alert } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faExclamationCircle,
-} from '@fortawesome/free-solid-svg-icons'
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 
 import { AppError } from "../../store/types";
 

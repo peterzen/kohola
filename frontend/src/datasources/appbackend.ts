@@ -1,4 +1,10 @@
-import { AppConfiguration, SetConfigResponse, CanStartupResponse, SetConfigRequest, ConnectWalletResponse, ConnectWalletRequest, GRPCEndpoint } from "../proto/dcrwalletgui_pb"
+import {
+	AppConfiguration,
+	SetConfigResponse,
+	CanStartupResponse,
+	SetConfigRequest,
+	GRPCEndpoint
+} from "../proto/dcrwalletgui_pb"
 import { endpointFactory } from "./lorca"
 import { rawToHex } from "../helpers/byteActions";
 

@@ -5,9 +5,9 @@ import { sprintf } from "sprintf-js";
 import { Row, Col, ProgressBar } from 'react-bootstrap';
 
 import { WalletAccount, WalletBalance } from "../../models";
-import { IApplicationState } from "../../store/store";
 import { getWalletBalances } from "./walletBalanceSlice";
 import { Amount, FiatAmount } from "../../components/Shared/shared";
+import { IApplicationState } from "../../store/types";
 
 
 interface IValueColProps {

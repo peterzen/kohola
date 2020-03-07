@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 
 import { Card } from 'react-bootstrap';
 
-import { IApplicationState } from "../../store/store";
 import { TicketPrice } from '../../models';
 import { loadTicketPriceAttempt, getTicketPrice } from './stakingSlice';
 import { Amount } from '../../components/Shared/shared';
+import { IApplicationState } from "../../store/types";
 
 
 class TicketPriceComponent extends React.Component<Props> {

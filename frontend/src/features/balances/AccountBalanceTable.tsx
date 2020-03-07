@@ -1,18 +1,13 @@
 import * as React from 'react';
 import _ from 'lodash';
 
-import { AccountBalance, IndexedWalletAccounts, WalletAccount, WalletBalance, WalletTotals } from '../../models';
+import { Table, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleRight} from '@fortawesome/free-solid-svg-icons'
 
 import { Amount } from '../../components/Shared/shared';
 import { MenuItems } from './AccountToolsDropdown';
-
-import { Table, Button } from 'react-bootstrap';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faAngleRight,
-} from '@fortawesome/free-solid-svg-icons'
-
+import { AccountBalance, IndexedWalletAccounts, WalletAccount, WalletBalance, WalletTotals } from '../../models';
 
 export default class AccountBalanceTable extends React.Component<OwnProps, InternalState>{
 
@@ -40,7 +35,7 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 			</Table>
 		)
 	}
-	
+
 	renderBalanceRow(props: { account: WalletAccount, balance: AccountBalance }) {
 		const { account, balance } = props;
 		return (

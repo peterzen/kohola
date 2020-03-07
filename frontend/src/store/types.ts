@@ -1,9 +1,10 @@
-
+import { Action } from "redux";
+import { ThunkAction } from "redux-thunk";
 // @ts-ignore
 import { grpc } from "@improbable-eng/grpc-web";
 import { sprintf } from "sprintf-js";
 
-import { IApplicationState } from "./store";
+import store, { rootReducer } from "./store";
 
 interface IAppError {
 	code: number | typeof grpc.Code
@@ -35,3 +36,9 @@ export interface ILorcaMessage {
 	payload: Uint8Array
 	apayload: Uint8Array[]
 }
+
+export type AppDispatch = typeof store.dispatch
+
+export type IApplicationState = ReturnType<typeof rootReducer>
+
+export type AppThunk = ThunkAction<void, IApplicationState, unknown, Action<string>>

@@ -1,19 +1,15 @@
 import * as React from 'react';
 import _ from 'lodash';
+import { sprintf } from 'sprintf-js';
 
 import { Row, Col, Form, Button, Card } from 'react-bootstrap';
-import { PasteButton, InfoTooltip, Amount } from '../../components/Shared/shared';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCog, faCheck } from '@fortawesome/free-solid-svg-icons'
 
-import {
-	faCog,
-	faCheck,
-} from '@fortawesome/free-solid-svg-icons'
 import { AppError } from '../../store/types';
-import { sprintf } from 'sprintf-js';
 import LorcaBackend from '../../datasources/lorca';
 import { Ticket } from '../../models';
-
+import { PasteButton, InfoTooltip, Amount } from '../../components/Shared/shared';
 
 
 export default class TicketBuyerComponent extends React.Component<OwnProps, InternalState> {

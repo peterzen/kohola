@@ -4,11 +4,11 @@ import { Row, Col, Card, Container } from 'react-bootstrap';
 
 import { StakeInfo } from "../../models";
 import { TicketStatus } from "../../constants";
-import { IApplicationState } from "../../store/store";
 import { loadStakeInfoAttempt } from "./stakingSlice";
 
 import { Amount } from "../../components/Shared/shared";
 import { TicketStatusIcon } from "./TicketStatusIcon";
+import { IApplicationState } from "../../store/types";
 
 
 class StakeStats extends React.Component<Props> {
@@ -42,34 +42,6 @@ class StakeStats extends React.Component<Props> {
 							</Col>
 						</Row>
 					</Container>
-					{/* <ListGroup variant="horizontal" className="list-group-flush">
-						<ListGroupItem>
-							<h3>{s.getVoted()}</h3>
-							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.VOTED} /> Voted</h6>
-						</ListGroupItem>
-
-						<ListGroupItem>
-							<h3><Amount amount={s.getTotalSubsidy()} showCurrency={true} /></h3>
-							<h6 className="text-muted">Total subsidy</h6>
-
-						</ListGroupItem>
-					</ListGroup>
-					<ListGroup variant="horizontal" className="list-group-flush">
-						<ListGroupItem>
-							<h3>{s.getMissed()}</h3>
-							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.MISSED} /> Missed</h6>
-
-						</ListGroupItem>
-						<ListGroupItem>
-							<h3>{s.getRevoked()}</h3>
-							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.REVOKED} /> Revoked</h6>
-
-						</ListGroupItem>
-					</ListGroup> */}
-					{/* <Card.Body>
-						<Card.Link href="#">Card Link</Card.Link>
-						<Card.Link href="#">Another Link</Card.Link>
-					</Card.Body> */}
 				</Card.Body>
 			</Card >
 		)

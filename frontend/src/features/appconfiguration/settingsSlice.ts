@@ -1,10 +1,9 @@
 import _ from 'lodash';
 
 import { createSlice, PayloadAction, ActionCreator, Dispatch } from '@reduxjs/toolkit'
-import { AppError, IGetState } from '../../store/types';
+import { AppError, IGetState, IApplicationState } from '../../store/types';
 import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences } from '../../proto/dcrwalletgui_pb';
 import AppBackend from '../../datasources/appbackend';
-import { IApplicationState } from '../../store/store';
 
 
 export interface IAppConfigurationState {

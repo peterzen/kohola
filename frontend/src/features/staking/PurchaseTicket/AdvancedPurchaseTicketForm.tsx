@@ -1,26 +1,20 @@
 import * as React from 'react';
 import _ from 'lodash';
-
-import { AccountSelector } from '../../../components/Shared/shared';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import {
-	faPlus, faMinus,
-} from '@fortawesome/free-solid-svg-icons'
-import { WalletBalance } from '../../../models';
-
-import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import { connect } from 'react-redux';
-import { Dispatch, bindActionCreators } from 'redux';
-import { PurchaseTicketsRequest } from '../../../proto/api_pb';
-import PassphraseEntryDialog, { askPassphrase } from '../../../components/Shared/PassphraseEntryDialog';
-import { getWalletBalances } from '../../walletbalance/selectors'
 
 import { Row, Col, Form, Button, Card, InputGroup, Alert } from 'react-bootstrap';
-import { AppError } from '../../../store/types';
-import { IApplicationState } from '../../../store/store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+
+import { WalletBalance } from '../../../models';
+import { AccountSelector } from '../../../components/Shared/shared';
+import PassphraseEntryDialog, { askPassphrase } from '../../../components/Shared/PassphraseEntryDialog';
+import { AppError, IApplicationState } from '../../../store/types';
+import { PurchaseTicketsRequest } from '../../../proto/api_pb';
+import { getWalletBalances } from '../../balances/walletBalanceSlice';
 import { purchaseTicket } from '../stakingSlice';
 
+// import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
 class PurchaseTicketForm extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -215,12 +209,12 @@ interface InternalState {
 }
 
 interface DispatchProps {
-	purchaseTicket(...arguments: any): void
+	purchaseTicket: typeof purchaseTicket
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-	purchaseTicket: purchaseTicket,
-}, dispatch)
+const mapDispatchToProps = {
+	purchaseTicket
+}
 
 type Props = DispatchProps & OwnProps & IPurchaseTicketFormProps
 

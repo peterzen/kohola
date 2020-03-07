@@ -1,21 +1,16 @@
 import * as React from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { Dispatch, bindActionCreators } from 'redux';
 
 import { Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 // import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
 import { AccountSelector, Amount } from '../../../components/Shared/shared';
 import { TxConfirmationPanel } from "../../transactions/TxConfirmationPanel";
-
-import { IApplicationState } from '../../../store/store';
 import { WalletBalance, TicketPrice } from '../../../models';
-
 import { PurchaseTicketsRequest, PurchaseTicketsResponse } from '../../../proto/api_pb';
 import PassphraseEntryDialog, { askPassphrase } from '../../../components/Shared/PassphraseEntryDialog';
-
-import { AppError } from '../../../store/types';
+import { AppError, IApplicationState } from '../../../store/types';
 import { purchaseTicket, getTicketPrice } from '../stakingSlice';
 import { getWalletBalances } from '../../balances/walletBalanceSlice';
 import { SteppableNumberInput } from '../../../components/Shared/SteppableNumberInput';

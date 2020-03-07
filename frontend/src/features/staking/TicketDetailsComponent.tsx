@@ -1,16 +1,14 @@
 import * as React from "react";
 
-import { Table, Accordion, Button } from 'react-bootstrap'
 import TimeAgo from 'react-timeago';
+import { Table, Accordion, Button } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 import { Ticket } from "../../models";
 import { TransactionHash, Amount } from "../../components/Shared/shared";
 import GenericModalDialog from '../../components/Shared/GenericModalDialog';
 import { TicketStatusIcon } from "./TicketStatusIcon";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faCaretDown
-} from '@fortawesome/free-solid-svg-icons'
 import { TransactionMempoolStatusIcon } from "../transactions/TransactionTable";
 
 

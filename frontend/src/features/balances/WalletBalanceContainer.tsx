@@ -8,14 +8,14 @@ import { Card } from "react-bootstrap"
 
 import { history } from '../../store/store'
 
-import { IApplicationState } from "../../store/store"
 import { IndexedWalletAccounts, WalletAccount, WalletTotals, WalletBalance } from "../../models"
 import { getWalletBalances, getWalletTotals } from "./walletBalanceSlice"
-import { getAccounts, getFilteredAccounts } from "./accountSlice"
+import { getAccounts } from "./accountSlice"
 
 import { MenuItems } from "./AccountToolsDropdown"
 import AccountBalanceTable from "./AccountBalanceTable"
 import WalletTotalsComponent from "./WalletTotalsComponent"
+import { IApplicationState } from "../../store/types";
 
 class WalletBalanceContainer extends React.PureComponent<OwnProps, InternalState>{
 	constructor(props: OwnProps) {
@@ -72,7 +72,7 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 		accounts: getAccounts(state),
 		balances: getWalletBalances(state),
 		walletTotals: getWalletTotals(state),
-	};
+	}
 }
 
 export default connect(mapStateToProps)(WalletBalanceContainer);

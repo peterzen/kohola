@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import * as React from 'react';
 
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import SendDialogContainer from './SendDialogContainer';
 
 
-export default class SendTransactionModal extends React.Component<Props, InternalState> {
+export default class SendTransactionModal extends React.Component<Props> {
 	render() {
 		return (
 			<Modal
@@ -39,8 +39,4 @@ export default class SendTransactionModal extends React.Component<Props, Interna
 interface Props {
 	show: boolean
 	onHide: () => void
-}
-
-
-interface InternalState {
 }

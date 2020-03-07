@@ -1,11 +1,10 @@
-import React from 'react';
+import React from 'react'
 
-import LogMonitor from 'redux-devtools-log-monitor';
-import DockMonitor from 'redux-devtools-dock-monitor';
+import LogMonitor from 'redux-devtools-log-monitor'
+import DockMonitor from 'redux-devtools-dock-monitor'
 // @ts-ignore
-import SliderMonitor from 'redux-slider-monitor';
-
-import { createDevTools } from 'redux-devtools';
+import SliderMonitor from 'redux-slider-monitor'
+import { createDevTools } from 'redux-devtools'
 
 const DevTools = createDevTools(
 	<DockMonitor
@@ -20,9 +19,9 @@ const DevTools = createDevTools(
 			theme="tomorrow"
 		/>
 	</DockMonitor>
-);
+)
 
-export default DevTools;
+export default DevTools
 
 
 

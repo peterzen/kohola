@@ -1,7 +1,8 @@
 import { createSlice, ActionCreator } from "@reduxjs/toolkit"
+
 import { WalletPing } from "../../models"
-import { AppThunk } from "../../store/store"
 import LorcaBackend from "../../datasources/lorca"
+import { AppThunk, AppDispatch, IGetState } from "../../store/types"
 
 
 export interface PingState {
@@ -61,7 +62,7 @@ export default pingSlice.reducer
 
 
 export const pingAttempt: ActionCreator<any> = (): AppThunk => {
-	return async (dispatch) => {
+	return async (dispatch: AppDispatch) => {
 		const pingTimer = setTimeout(() => dispatch(pingAttempt()), 10000);
 		try {
 			const resp = await LorcaBackend.doPing();
@@ -76,7 +77,7 @@ export const pingAttempt: ActionCreator<any> = (): AppThunk => {
 }
 
 export const cancelPingAttempt: ActionCreator<any> = (): AppThunk => {
-	return (dispatch, getState) => {
+	return (dispatch: AppDispatch, getState: IGetState) => {
 		const { pingTimer } = getState().ping;
 		if (pingTimer) {
 			clearTimeout(pingTimer);

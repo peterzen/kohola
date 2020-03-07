@@ -1,8 +1,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IApplicationState } from "../../store/store";
 import { NetworkResponse } from "../../proto/api_pb";
+import { IApplicationState } from "../../store/types";
 
 
 class NetworkComponent extends React.Component<OwnProps> {

@@ -1,27 +1,19 @@
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
-
+import { sprintf } from 'sprintf-js';
 import * as React from 'react';
 import { connect } from "react-redux";
 
-import { AppError } from '../../store/types';
-import { Row, Col, Button } from 'react-bootstrap';
-import { AppConfiguration, RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
+import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCog, faCheck } from '@fortawesome/free-solid-svg-icons'
 
-import {
-	faPlus, faCog, faCheck
-} from '@fortawesome/free-solid-svg-icons'
-
-// @ts-ignore
-import Fade from 'react-reveal/Fade';
-import { IApplicationState, AppDispatch } from '../../store/store';
+import { AppError, IApplicationState, AppDispatch } from '../../store/types';
+import { RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
 import WalletEndpointGrid from './WalletEndpointGrid';
 import { EditEndpointModal } from '../appconfiguration/RPCEndpointConfigForm';
 import { updateEndpoint, saveConfigurationAttempt, deleteEndpoint } from '../appconfiguration/settingsSlice';
 import { confirmDialog } from '../../components/Shared/ConfirmDialog';
-import { sprintf } from 'sprintf-js';
-
 
 
 class EditableEndpointGrid extends React.Component<Props, InternalState> {

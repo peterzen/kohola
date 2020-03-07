@@ -1,11 +1,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IApplicationState } from "../../store/store";
-
 import { formatHash } from "../../helpers";
 import { getBestBlock } from "./networkInfoSlice";
 import { BestBlockResponse } from "../../proto/api_pb";
+import { IApplicationState } from "../../store/types";
 
 class BestBlockComponent extends React.Component<OwnProps> {
 	render() {
@@ -28,6 +27,7 @@ interface OwnProps {
 const mapStateToProps = function (state: IApplicationState) {
 	return {
 		currentBlock: getBestBlock(state)
-	};
+	}
 }
+
 export default connect(mapStateToProps)(BestBlockComponent)

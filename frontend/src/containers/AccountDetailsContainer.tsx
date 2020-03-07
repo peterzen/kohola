@@ -4,22 +4,19 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { withRouter, RouteChildrenProps } from 'react-router-dom';
 
-import {
-	faChevronLeft,
-} from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, Alert, Col, Row } from 'react-bootstrap';
+// @ts-ignore
+import Fade from 'react-reveal/Fade';
 
-import { IApplicationState } from '../store/store'
 import { IndexedWalletAccounts, WalletAccount } from '../models';
 import AccountBalanceTotals from '../features/balances/AccountBalanceTotals';
 import GetNewAddressDialog from '../features/balances/GetNewAddressDialog';
-import { bindActionCreators, Dispatch } from 'redux';
 import { loadNextAddressAttempt } from '../features/balances/accountSlice';
 import UTXOContainer from '../features/unspents/UTXOContainer';
-// @ts-ignore
-import Fade from 'react-reveal/Fade';
 import SendTransaction from '../features/transactions/SendTransaction';
+import { IApplicationState } from '../store/types';
 
 class AccountDetailsContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -49,7 +46,10 @@ class AccountDetailsContainer extends React.Component<Props, InternalState> {
 						<Row>
 							<Col xs={8}>
 								<h2>
-									<Button variant="link" size="lg" onClick={_.bind(this.handleBack, this)} className="text-muted">
+									<Button variant="link"
+										size="lg"
+										onClick={_.bind(this.handleBack, this)}
+										className="text-muted">
 										<FontAwesomeIcon icon={faChevronLeft} />
 									</Button>&nbsp;
 									Account: {this.state.account.getAccountName()}
@@ -57,7 +57,9 @@ class AccountDetailsContainer extends React.Component<Props, InternalState> {
 							</Col>
 							<Col xs={4} className="text-right">
 								<SendTransaction defaultAccount={this.state.account} />&nbsp;
-								<Button variant="outline-primary" onClick={() => this.showReceiveDialog()}>Receive</Button>
+								<Button variant="outline-primary"
+									onClick={() => this.showReceiveDialog()}
+								>Receive</Button>
 							</Col>
 						</Row>
 
@@ -120,7 +122,7 @@ interface InternalState {
 }
 
 interface DispatchProps {
-	loadNextAddressAttempt: (account: WalletAccount) => void
+	loadNextAddressAttempt: typeof loadNextAddressAttempt
 }
 
 type Props = OwnProps & DispatchProps & RouteChildrenProps<{ accountNumber: string }>
@@ -131,9 +133,9 @@ const mapStateToProps = (state: IApplicationState) => {
 	};
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-	loadNextAddressAttempt: loadNextAddressAttempt,
-}, dispatch)
+const mapDispatchToProps = {
+	loadNextAddressAttempt
+}
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountDetailsContainer))
 

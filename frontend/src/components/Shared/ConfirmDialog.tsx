@@ -1,7 +1,7 @@
-import * as React from 'react';
-import _ from 'lodash';
+import * as React from 'react'
+import _ from 'lodash'
 
-import { Button, Modal, Form, Row, Col } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap'
 
 export const confirmDialog = (
 	title: string = "Are you sure?",

@@ -2,14 +2,16 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { bindActionCreators } from '@reduxjs/toolkit';
-
-import { IApplicationState, AppDispatch } from '../../store/store';
 import { UnspentOutputResponse } from '../../proto/api_pb';
 import UTXODetailsModal from './UTXODetailsComponent';
 import ListUTXOs from './ListUTXOs';
 import { WalletAccount } from '../../models';
-import { fetchUnspentsAttempt, IUnspentOutputsByAccount, IUnspentState } from '../unspents/unspentsSlice';
+import {
+	fetchUnspentsAttempt,
+	IUnspentOutputsByAccount,
+	IUnspentState
+} from '../unspents/unspentsSlice';
+import { IApplicationState } from '../../store/types';
 
 class UTXOContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {

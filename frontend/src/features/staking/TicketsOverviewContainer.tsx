@@ -7,14 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
-
 import { Ticket } from '../../models';
 import { getTickets } from './stakingSlice';
 import { TicketStatus } from '../../constants';
-import { IApplicationState } from '../../store/store';
-
 import TicketsTable from './TicketsTable';
 import TicketDetailsModal from './TicketDetailsComponent';
+import { IApplicationState } from "../../store/types";
 
 
 

@@ -1,24 +1,19 @@
 import _ from "lodash"
 import * as React from "react"
 import { connect } from "react-redux"
-import { Dispatch, bindActionCreators } from "redux"
 
 import { IndexedWalletAccounts } from "../../../models"
-
-import { AppError } from "../../../store/types"
+import { AppError, IApplicationState } from "../../../store/types"
 import { ATOMS_DIVISOR, } from "../../../constants"
 import { ConstructTxOutput } from "../../../datasources/models"
-import { IApplicationState } from "../../../store/store"
-import { ConstructTransactionResponse, ConstructTransactionRequest, SignTransactionResponse, PublishTransactionResponse } from "../../../proto/api_pb"
-
 import ConstructTxDialog, { ISendDialogFormData } from "./ConstructTxDialog"
 import SignDialog, { ISignDialogFormData } from "./SignDialog"
 import PublishDialog from "./PublishDialog"
 import PublishConfirmDialog from "./PublishConfirmDialog"
 import { getAccounts } from "../../balances/accountSlice"
-
 import { cancelSignTransaction, constructTransaction, signTransaction, publishTransaction } from "../actions"
 import { SendTransactionSteps, HumanreadableTxInfo } from "../transactionsSlice"
+import { ConstructTransactionResponse, ConstructTransactionRequest, SignTransactionResponse, PublishTransactionResponse } from "../../../proto/api_pb"
 
 
 class SendDialogContainer extends React.Component<Props, InternalState>{
@@ -126,12 +121,12 @@ interface DispatchProps {
 	publishTransaction: typeof publishTransaction
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+const mapDispatchToProps = {
 	constructTransaction: constructTransaction,
 	signTransaction: signTransaction,
 	publishTransaction: publishTransaction,
 	cancelSign: cancelSignTransaction,
-}, dispatch)
+}
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(SendDialogContainer);

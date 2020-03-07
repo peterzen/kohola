@@ -1,9 +1,6 @@
 import * as React from 'react';
 import _ from 'lodash';
 
-import { Transaction } from "../../models";
-import { TransactionHash, Amount } from '../../components/Shared/shared';
-
 import TimeAgo from 'react-timeago';
 import { Table, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,6 +8,11 @@ import { faClock } from '@fortawesome/free-solid-svg-icons'
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
 import { TransitionGroup } from 'react-transition-group';
+
+import { Transaction } from "../../models";
+import { TransactionHash, Amount } from '../../components/Shared/shared';
+
+
 
 export const TransactionMempoolStatusIcon: any = (props: { isMined: boolean }) => {
 	return (
@@ -46,7 +48,6 @@ export default class TransactionTable extends React.Component<TransactionListPro
 							</Fade>
 						</TransitionGroup>
 					</Table>
-
 				)}
 				{this.props.items.length < 1 && (
 					<Alert variant="info">No transaction yet.</Alert>

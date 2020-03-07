@@ -1,16 +1,14 @@
 import * as React from "react";
 
 import { Table, Accordion, Button } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 import { Transaction } from "../../models";
+import GenericModalDialog from '../../components/Shared/GenericModalDialog';
 import { Timestamp, TransactionHash, Amount } from "../../components/Shared/shared";
 import { TransactionMempoolStatusIcon } from "./TransactionTable";
-import GenericModalDialog from '../../components/Shared/GenericModalDialog';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faCaretDown,
-} from '@fortawesome/free-solid-svg-icons'
 
 export const TransactionDetailsComponent = (props: OwnProps) => {
 	const tx = props.tx

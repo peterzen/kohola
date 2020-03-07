@@ -57,3 +57,10 @@ type Configuration = {
 export const Configuration: Configuration = {
 	CurrentNetwork: Networks.TESTNET
 }
+
+
+export const transitionGroupProps = {
+	appear: true,
+	enter: true,
+	exit: true,
+}

@@ -1,14 +1,21 @@
 import _ from 'lodash';
 import { ActionCreator } from 'redux';
+import { batch } from 'react-redux';
 
+import {
+	CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED,
+	CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL
+} from '../../constants';
 
-import { CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED, CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL, DEFAULT_FEE } from '../../constants';
+import {
+	ConstructTransactionRequest,
+	SignTransactionRequest, PublishTransactionRequest,
+	TransactionNotificationsResponse
+} from '../../proto/api_pb';
 
-import { ConstructTransactionRequest, SignTransactionRequest, PublishTransactionRequest, TransactionNotificationsResponse } from '../../proto/api_pb';
 import { ConstructTxOutput } from '../../datasources/models';
 import { decodeRawTransaction } from '../../helpers/tx';
 import LorcaBackend from '../../datasources/lorca';
-import { AppThunk, AppDispatch } from '../../store/store';
 import {
 	getTransactionsAttempt,
 	getTransactionsSuccess,
@@ -30,16 +37,15 @@ import {
 	constructTransactionAttempt,
 	publishTransactionAttempt
 } from './transactionsSlice';
-import { AppError, IGetState } from '../../store/types';
+import { AppError, IGetState, AppDispatch, AppThunk } from '../../store/types';
 
 import { loadWalletBalance } from '../balances/walletBalanceSlice';
 import { loadBestBlockHeight } from '../../features/networkinfo/networkInfoSlice';
 import { lookupAccount } from '../balances/accountSlice';
 import { loadStakeInfoAttempt, loadTicketsAttempt } from '../../features/staking/stakingSlice';
-import { batch } from 'react-redux';
 
 export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {
-	return async (dispatch, getState) => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
 
 		const { getTransactionsRequest, startBlockHeight, endBlockHeight, targetTxCount } = getState().transactions
 		if (getTransactionsRequest) {

@@ -2,19 +2,12 @@ import _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { WalletAccountsState } from './accountSlice';
-import { IApplicationState } from '../../store/store';
-import { Table, Button, Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
+
+import { IApplicationState } from '../../store/types';
 
 
-import {
-	faPencilAlt,
-	faPlus
-} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-
-class AccountsSetup extends React.Component<WalletAccountsState, WalletAccountsState> {
+class AccountsSetup extends React.Component {
 
 	render() {
 		return (

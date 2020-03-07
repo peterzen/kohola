@@ -2,13 +2,12 @@ import _ from "lodash"
 import * as React from "react"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faCheck,
-} from '@fortawesome/free-solid-svg-icons'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
+
 import { PublishTransactionResponse } from "../../../proto/api_pb";
 import { TxHash } from "../../../components/Shared/shared";
 
-export default class PublishConfirmDialog extends React.Component<OwnProps, InternalState>{
+export default class PublishConfirmDialog extends React.Component<OwnProps>{
 	render() {
 		return (
 			<div className="text-center">
@@ -24,5 +23,3 @@ interface OwnProps {
 	publishTransactionResponse: PublishTransactionResponse
 }
 
-interface InternalState {
-}

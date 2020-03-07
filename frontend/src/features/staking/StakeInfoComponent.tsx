@@ -2,11 +2,11 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Row, Col, Card } from 'react-bootstrap';
 
-import { IApplicationState } from "../../store/store";
 import { TicketStatusIcon } from "./TicketStatusIcon";
 import { TicketStatus } from "../../constants";
-import { loadStakeInfoAttempt, IStakeInfoState } from "./stakingSlice";
+import { loadStakeInfoAttempt } from "./stakingSlice";
 import { StakeInfo } from "../../models";
+import { IApplicationState } from "../../store/types";
 
 class StakeInfoComponent extends React.Component<Props> {
 	render() {

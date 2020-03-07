@@ -7,14 +7,16 @@ import Fade from 'react-reveal/Fade';
 
 import RecentTransactions from '../features/transactions/RecentTransactionsContainer';
 import WalletBalanceContainer from "../features/balances/WalletBalanceContainer";
-import { IApplicationState } from "../store/store";
+import { IApplicationState } from "../store/types";
 
 class Wallet extends React.PureComponent {
 
 	render() {
 		return (
 			<div>
-				<Fade fade><WalletBalanceContainer /></Fade>
+				<Fade fade>
+					<WalletBalanceContainer />
+				</Fade>
 				<div className="mt-3" />
 				<RecentTransactions />
 			</div>

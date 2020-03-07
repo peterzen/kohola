@@ -2,13 +2,13 @@ import _ from 'lodash';
 import * as React from 'react';
 import { connect } from "react-redux";
 
-import { Spinner, Button, Card } from 'react-bootstrap';
+import { Spinner, Card } from 'react-bootstrap';
 
 import { Transaction } from "../../models";
-import { IApplicationState } from "../../store/store";
 import TransactionTable from './TransactionTable';
 import TransactionDetailsModal from './TransactionDetailsComponent';
 import { getFilteredTransactions } from './transactionsSlice';
+import { IApplicationState } from '../../store/types';
 
 
 class RecentTransactionsComponent extends React.Component<OwnProps, InternalState> {

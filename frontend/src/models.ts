@@ -1,3 +1,5 @@
+import moment = require('moment');
+
 import {
 	PingResponse,
 	NetworkResponse,
@@ -17,7 +19,6 @@ import {
 } from './proto/api_pb';
 import { TransactionDirection, TicketStatus, TicketStatusLabels } from './constants';
 import { reverseHash } from './helpers';
-import moment = require('moment');
 
 export class Agenda extends AgendasResponse.Agenda { }
 export class Agendas extends AgendasResponse { }
@@ -32,22 +33,6 @@ export class StopAutoBuyer extends StopAutoBuyerResponse { }
 export class WalletAccounts extends AccountsResponse { }
 export class TicketBuyerConfig extends TicketBuyerConfigResponse { }
 export class LoadActiveDataFilters extends LoadActiveDataFiltersResponse { }
-
-type WalletAccountAsObject = {
-	timestamp: Date
-	height: number
-	blockHash: string
-	index: number
-	hash: string
-	type: string
-	debitsAmount: number
-	creditsAmount: number
-	direction: TransactionDirection
-	amount: number
-	fee: number
-	debitAccounts: WalletAccount[]
-	creditAddresses: string[]
-}
 
 export class WalletAccount extends AccountsResponse.Account {
 	constructor(id?: number) {

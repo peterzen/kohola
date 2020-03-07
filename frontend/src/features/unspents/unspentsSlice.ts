@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
-import { AppThunk } from '../../store/store'
+
 import LorcaBackend from '../../datasources/lorca'
-import { AppError } from '../../store/types'
+import { AppError, AppDispatch, IGetState, AppThunk } from '../../store/types'
 import { UnspentOutputResponse } from '../../proto/api_pb'
 
 export interface IUnspentOutputsByAccount {
@@ -61,7 +61,7 @@ export const fetchUnspentsAttempt: ActionCreator<any> = (
 	requiredConfirmations: number = 1,
 	includeImmature: boolean = false
 ): AppThunk => {
-	return async (dispatch, getState) => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
 		if (getState().unspentoutputs.fetchUnspentsAttempting) {
 			return
 		}

@@ -1,9 +1,8 @@
 import * as React from "react";
-import { Container, Row, Col, ProgressBar } from 'react-bootstrap';
+import { Row, Col, ProgressBar } from 'react-bootstrap';
 
 import { Amount, FiatAmount } from "../../components/Shared/shared";
 import { WalletTotals } from "../../models";
-import AccountBalancePieChart from "./AccountBalancePieChart";
 import { sprintf } from "sprintf-js";
 
 interface IWalletTotals {
@@ -32,6 +31,7 @@ const ValueCol = (props: IValueColProps) => {
 		</Col>
 	)
 }
+
 export default class WalletTotalsComponent extends React.PureComponent<IWalletTotals, {}> {
 	render() {
 		const totals = this.props.totals

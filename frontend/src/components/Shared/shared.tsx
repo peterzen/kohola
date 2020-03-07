@@ -1,31 +1,31 @@
-import { Moment } from "moment";
-import { formatTimestamp } from "../../helpers";
 import React from "react";
-import { Transaction, IndexedWalletAccounts, WalletBalance, WalletAccount } from "../../models";
+import { connect } from "react-redux";
 import _ from "lodash";
+import { Moment } from "moment";
 import { sprintf } from "sprintf-js";
 
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faPaste,
-	faClipboard,
-	faInfoCircle,
-	faSlidersH
-} from '@fortawesome/free-solid-svg-icons'
+import { faPaste, faClipboard, faInfoCircle, faSlidersH } from '@fortawesome/free-solid-svg-icons'
 
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
-
 import { Button, ButtonProps, Popover, OverlayTrigger, Form } from 'react-bootstrap';
+
+import { formatTimestamp } from "../../helpers";
+import {
+	Transaction,
+	IndexedWalletAccounts,
+	WalletBalance,
+	WalletAccount
+} from "../../models";
+
 import { rawHashToHex } from "../../helpers/byteActions";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { ATOMS_DIVISOR } from "../../constants";
-import { connect } from "react-redux";
-import { IApplicationState } from "../../store/store";
 import { getAccounts } from "../../features/balances/accountSlice";
 import { IIndexedAccountPrefs, getAccountPrefs } from "../../features/appconfiguration/settingsSlice";
 import { getWalletBalances } from "../../features/balances/walletBalanceSlice";
+import { IApplicationState } from "../../store/types";
 
 
 interface TimestampProps {

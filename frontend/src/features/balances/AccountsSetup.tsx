@@ -2,7 +2,6 @@ import _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { IApplicationState } from '../../store/store';
 import { Button, Form, Row, Col, InputGroup, Alert } from 'react-bootstrap';
 
 import {
@@ -11,10 +10,11 @@ import {
 	faCheck
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { WalletAccount, IndexedWalletAccounts, WalletBalance } from '../../models';
 import { loadNextAccountAttempt, doRenameAccountAttempt } from './accountSlice';
 import PassphraseEntryDialog, { askPassphrase } from '../../components/Shared/PassphraseEntryDialog';
-import { AppError } from '../../store/types';
+import { AppError, IApplicationState } from '../../store/types';
 import { NextAccountResponse, RenameAccountResponse } from '../../proto/api_pb';
 import { getAccountPrefs, updateAccountPreference, IIndexedAccountPrefs } from '../appconfiguration/settingsSlice';
 import { getWalletBalances } from './walletBalanceSlice';

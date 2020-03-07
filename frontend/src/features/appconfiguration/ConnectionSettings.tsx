@@ -1,22 +1,17 @@
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
-
 import * as React from 'react';
 import { connect } from "react-redux";
 
-import { AppError } from '../../store/types';
+import { AppError, IApplicationState, AppDispatch } from '../../store/types';
 import { Row, Col, Button } from 'react-bootstrap';
-import { AppConfiguration, RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
+import { RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
 import RPCEndpointConfigForm from './RPCEndpointConfigForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import {
-	faPlus
-} from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
-import { IApplicationState, AppDispatch } from '../../store/store';
 import { updateEndpoint, saveConfigurationAttempt } from './settingsSlice';
 
 

@@ -1,27 +1,19 @@
 import * as React from 'react';
 import _ from 'lodash';
+import { sprintf } from 'sprintf-js';
 
-import { Row, Col, Form, Button, Card } from 'react-bootstrap';
-import { RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
-import { PasteButton, InfoTooltip } from '../../components/Shared/shared';
+import { Row, Col, Form, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import {
 	faExclamationTriangle,
 	faCircleNotch,
 	faCheck
 } from '@fortawesome/free-solid-svg-icons'
+
 import { AppError } from '../../store/types';
-import { sprintf } from 'sprintf-js';
 import LorcaBackend from '../../datasources/lorca';
 import GenericModal, { GenericModalProps } from '../../components/Shared/GenericModal';
-
-const placeHolderCert = `-----BEGIN CERTIFICATE-----
-MIICRTCCAaegAwIBAgIRAMVLEv8v0Ji22D2hebnX7w
-MB4GA1UEChMXZGNyZCBhdXRvZ2VuZXJhdGVkIGNlcn
-HhcNMTkxMjA1MTcxNzEwWhcNMjkxMjAzMTcxNzEwWj
-...............................`
-
+import { RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
 
 
 export const NetworkSelector = (props: { name: string, defaultValue: number, onChange: any }) => {

@@ -2,13 +2,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { Spinner, Row, Col } from 'react-bootstrap';
+import QrCodeRenderer from '../../components/Shared/QrCodeRenderer';
 
 import GenericModalDialog from '../../components/Shared/GenericModalDialog';
 import { CopyToClipboardText } from '../../components/Shared/shared';
-import { IApplicationState } from '../../store/store';
 import { NextAddressState } from './accountSlice';
 import ErrorAlert from '../../components/Shared/ErrorAlert';
-import QrCodeRenderer from '../../components/Shared/QrCodeRenderer';
+import { IApplicationState } from '../../store/types';
 
 class GetNewAddressDialog extends GenericModalDialog<Props, InternalState> {
 	DialogContent() {

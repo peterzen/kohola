@@ -19,7 +19,7 @@ import DevTools from '../../components/Fixtures/DevTools';
 
 // @ts-ignore
 import { AnimatedSwitch } from 'react-router-transition';
-import Login from './Login';
+import Login from '../../containers/Login';
 import { bounceTransition, mapStyles } from './routeSwitchAnimations';
 
 

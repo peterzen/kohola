@@ -1,10 +1,18 @@
 import _ from "lodash";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { AppError } from "../../store/types";
-import { IApplicationState } from "../../store/store";
+import { AppError, IApplicationState } from "../../store/types";
 import { Transaction, WalletAccount } from "../../models";
-import { TransactionDetails, ConstructTransactionRequest, ConstructTransactionResponse, SignTransactionResponse, PublishTransactionResponse, ValidateAddressResponse, SweepAccountResponse, TransactionNotificationsResponse } from "../../proto/api_pb";
+import {
+	TransactionDetails,
+	ConstructTransactionRequest,
+	ConstructTransactionResponse,
+	SignTransactionResponse,
+	PublishTransactionResponse,
+	ValidateAddressResponse,
+	SweepAccountResponse,
+	TransactionNotificationsResponse
+} from "../../proto/api_pb";
 import { DecodedrawTx, ConstructTxOutput } from "../../datasources/models";
 import { TransactionType, TransactionDirection } from "../../constants";
 
@@ -200,7 +208,7 @@ const transactionsSlice = createSlice({
 		},
 		constructTransactionSuccess(state, action: PayloadAction<IConstructTransactionSuccessPayload>) {
 			const { txInfo, response, changeScriptCache, currentStep } = action.payload
-			console.log("REDUCER",action.payload)
+			console.log("REDUCER", action.payload)
 			state.txInfo = txInfo
 			state.changeScriptCache = changeScriptCache
 			state.sendTransactionCurrentStep = currentStep
@@ -325,8 +333,6 @@ export const {
 } = transactionsSlice.actions
 
 export default transactionsSlice.reducer
-
-// actions
 
 
 

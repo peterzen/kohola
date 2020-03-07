@@ -1,10 +1,10 @@
 import _ from 'lodash';
 
 import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
+
 import { WalletBalance, WalletTotals } from "../../models";
-import { AppError } from '../../store/types';
+import { AppError, AppThunk, IApplicationState } from '../../store/types';
 import LorcaBackend from '../../datasources/lorca';
-import { AppThunk, IApplicationState } from '../../store/store';
 import { getAllAccountNumbers, isAccountVisible } from './accountSlice';
 
 

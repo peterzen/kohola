@@ -1,22 +1,17 @@
 import * as React from 'react';
 import _ from 'lodash';
 
-import { Ticket } from '../../models';
-import { TransactionHash } from '../../components/Shared/shared';
-
 import TimeAgo from 'react-timeago';
 import { Table } from 'react-bootstrap';
-import { TicketStatusIcon } from './TicketStatusIcon';
-
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
 import { TransitionGroup } from 'react-transition-group';
 
-const transitionGroupProps = {
-	appear: true,
-	enter: true,
-	exit: true,
-}
+import { Ticket } from '../../models';
+import { TransactionHash } from '../../components/Shared/shared';
+import { TicketStatusIcon } from './TicketStatusIcon';
+import { transitionGroupProps } from '../../constants';
+
 
 export default class TicketsTable extends React.Component<TicketsTableProps> {
 

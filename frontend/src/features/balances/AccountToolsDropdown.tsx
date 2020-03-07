@@ -1,13 +1,10 @@
-
 import * as React from 'react'
 
-import { WalletAccount } from "../../models"
 import { Dropdown } from "react-bootstrap"
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faEllipsisH,
-} from '@fortawesome/free-solid-svg-icons'
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
+
+import { WalletAccount } from "../../models"
 
 const AccountToolsDropdown = (props: { account: WalletAccount, menuHandler: any }) => {
 	return (

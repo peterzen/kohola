@@ -2,14 +2,13 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faCircle
-} from '@fortawesome/free-solid-svg-icons'
-import { IApplicationState } from "../../store/store";
+import { faCircle } from '@fortawesome/free-solid-svg-icons'
+
 import { PingResponse } from "../../proto/api_pb";
 import { GRPCEndpoint } from "../../proto/dcrwalletgui_pb";
 import { getConnectedEndpoint, isWalletConnected } from "../app/appSlice";
 import BestBlockComponent from "./BestBlockComponent";
+import { IApplicationState } from "../../store/types";
 
 class ConnectionStatusComponent extends React.Component<Props> {
 

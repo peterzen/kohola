@@ -1,8 +1,8 @@
-import { AppError } from "../../store/types";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
+
+import { AppError, AppThunk, IApplicationState, AppDispatch, IGetState } from "../../store/types";
 import LorcaBackend from "../../datasources/lorca";
 import { NetworkResponse, BestBlockResponse } from "../../proto/api_pb";
-import { AppThunk, IApplicationState } from "../../store/store";
 
 // BestBlock
 export interface IBestBlockState {
@@ -79,7 +79,7 @@ export const {
 export default networkinfoSlice.reducer
 
 export const loadBestBlockHeight: ActionCreator<any> = (): AppThunk => {
-	return async (dispatch, getState) => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
 
 		if (getState().networkinfo.getBestBlockHeightAttempting) {
 			return
@@ -87,7 +87,7 @@ export const loadBestBlockHeight: ActionCreator<any> = (): AppThunk => {
 
 		dispatch(getBestblockAttempt())
 		try {
-			const resp = await LorcaBackend.fetchBestBlock() 
+			const resp = await LorcaBackend.fetchBestBlock()
 			dispatch(getBestblockSuccess(resp))
 		} catch (error) {
 			dispatch(getBestblockFailed(error))
@@ -97,7 +97,7 @@ export const loadBestBlockHeight: ActionCreator<any> = (): AppThunk => {
 
 
 export const loadNetworkAttempt: ActionCreator<any> = (): AppThunk => {
-	return async (dispatch, getState) => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
 		if (getState().networkinfo.getNetworkinfoAttempting) {
 			return
 		}

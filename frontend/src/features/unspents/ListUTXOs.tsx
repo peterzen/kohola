@@ -1,12 +1,14 @@
 import * as React from 'react';
 import _ from 'lodash';
-import { UnspentOutputResponse } from '../../proto/api_pb';
+import moment from 'moment';
+import TimeAgo from 'react-timeago';
 import { Table, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+
 import { TxHash, Amount } from '../../components/Shared/shared';
-import moment from 'moment';
-import TimeAgo from 'react-timeago';
+import { UnspentOutputResponse } from '../../proto/api_pb';
+
 
 interface ICoinToolsDropdown {
 	utxo: UnspentOutputResponse
