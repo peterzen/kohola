@@ -1,34 +1,50 @@
 import * as React from "react";
+import _ from "lodash";
 import { connect } from "react-redux";
 import TimeAgo from 'react-timeago';
 
+import { Card, ListGroup, Row, Col, Form, Button } from "react-bootstrap";
+
 import { Agendas } from "../../../models";
 import { loadAgendasAttempt } from "../stakingSlice";
-
-import { Card, ListGroup } from "react-bootstrap";
 import { IApplicationState } from "../../../store/types";
-
+import VoteChoices from "./VoteChoices";
 
 class AgendasComponent extends React.Component<Props, InternalState> {
 	render() {
 		return (
 			<Card>
 				<Card.Header>
-					<Card.Title>Agendas <small className="text-muted">v{this.props.agendas.getVersion()}</small></Card.Title>
+					<span className="float-right text-muted">Version: v{this.props.agendas.getVersion()}</span>
+					<Card.Title>
+						Consensus changes
+					</Card.Title>
 				</Card.Header>
 				<Card.Body>
-					<ListGroup>
-						{this.props.agendas.getAgendasList().map((agenda) =>
-							<ListGroup.Item key={agenda.getId()}>
-								<p><strong>{agenda.getId()}</strong> {agenda.getDescription()}</p>
-								<small><TimeAgo date={agenda.getExpireTime() * 1000} /></small>
-							</ListGroup.Item>
-						)}
-					</ListGroup>
+					{this.props.agendas.getAgendasList().map((agenda) =>
+						<div>
+							<h4>{agenda.getId()}</h4>
+							<Row key={agenda.getId()}>
+								<Col sm={6}>
+									<p>{agenda.getDescription()}</p>
+									<p>
+										<span className="text-muted">
+											Voting closes: <TimeAgo date={agenda.getExpireTime() * 1000} />
+										</span>
+									</p>
+								</Col>
+								<Col sm={6}>
+									<p>My voting preference</p>
+									<VoteChoices agenda={agenda}/>
+								</Col>
+							</Row>
+						</div>
+					)}
 				</Card.Body>
 			</Card>
 		)
 	}
+	
 	componentDidMount() {
 		this.props.loadAgendasAttempt()
 	}
@@ -40,7 +56,7 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-	loadAgendasAttempt: () => void
+	loadAgendasAttempt: typeof loadAgendasAttempt
 }
 
 type Props = DispatchProps & OwnProps
@@ -51,13 +67,11 @@ interface InternalState {
 const mapStateToProps = (state: IApplicationState) => {
 	return {
 		agendas: state.staking.agendas,
-		errorAgendas: state.staking.errorAgendas,
-		getAgendasRequest: state.staking.getAgendasRequest
-	};
+	}
 }
 
 const mapDispatchToProps = {
-	loadAgendasAttempt: loadAgendasAttempt
+	loadAgendasAttempt,
 }
 
 
