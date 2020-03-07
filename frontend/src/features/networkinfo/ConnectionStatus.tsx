@@ -24,15 +24,18 @@ class ConnectionStatusComponent extends React.Component<Props> {
 							</small>
 						)}
 						<BestBlockComponent />
+						<span className="ml-2">
+							{connected ? (
+								<FontAwesomeIcon icon={faCircle} className="text-success" size="xs" />
+							) : (
+								<FontAwesomeIcon icon={faCircle} className="text-danger" size="xs" />
+							)}
+						</span>
 					</span>
 				)}
-				<span className="ml-2">
-					{connected ? (
-						<FontAwesomeIcon icon={faCircle} className="text-success" size="xs" />
-					) : (
-							<FontAwesomeIcon icon={faCircle} className="text-danger" size="xs" />
-						)}
-				</span>
+				{this.props.isEndpointConnected == false && (
+					<small className="text-muted">Not connected</small>
+				)}
 			</span>
 		)
 	}
