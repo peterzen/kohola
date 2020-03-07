@@ -172,6 +172,11 @@ const stakingSlice = createSlice({
 			state.purchaseTicketResponse = action.payload
 			state.isPurchaseTicketAttempting = false
 		},
+		purchaseTicketCleanup(state) {
+			state.errorPurchaseTickets = null
+			state.purchaseTicketResponse = null
+			state.isPurchaseTicketAttempting = false
+		},
 
 		// CommittedTickets
 		getCommittedTicketsAttempt(state) {
@@ -218,6 +223,7 @@ export const {
 	purchaseTicketAttempt,
 	purchaseTicketFailed,
 	purchaseTicketSuccess,
+	purchaseTicketCleanup,
 
 	// CommittedTickets
 	getCommittedTicketsAttempt,
@@ -320,6 +326,10 @@ export const purchaseTicket: ActionCreator<any> = (request: PurchaseTicketsReque
 		try {
 			const resp = await LorcaBackend.purchaseTickets(request)
 			dispatch(purchaseTicketSuccess(resp))
+
+			setTimeout(() => {
+				dispatch(purchaseTicketCleanup())
+			}, 3000)
 		} catch (error) {
 			dispatch(purchaseTicketFailed(error))
 		}
