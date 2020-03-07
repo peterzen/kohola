@@ -9,6 +9,7 @@ import { GRPCEndpoint } from "../../proto/dcrwalletgui_pb";
 import { getConnectedEndpoint, isWalletConnected } from "../app/appSlice";
 import BestBlockComponent from "./BestBlockComponent";
 import { IApplicationState } from "../../store/types";
+import OnOffIndicator from "../../components/Shared/OnOffIndicator";
 
 class ConnectionStatusComponent extends React.Component<Props> {
 
@@ -25,11 +26,7 @@ class ConnectionStatusComponent extends React.Component<Props> {
 						)}
 						<BestBlockComponent />
 						<span className="ml-2">
-							{connected ? (
-								<FontAwesomeIcon icon={faCircle} className="text-success" size="xs" />
-							) : (
-								<FontAwesomeIcon icon={faCircle} className="text-danger" size="xs" />
-							)}
+							<OnOffIndicator status={undefined} size="xs"/>
 						</span>
 					</span>
 				)}
