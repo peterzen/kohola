@@ -1,9 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle } from '@fortawesome/free-solid-svg-icons'
-
 import { PingResponse } from "../../proto/api_pb";
 import { GRPCEndpoint } from "../../proto/dcrwalletgui_pb";
 import { getConnectedEndpoint, isWalletConnected } from "../app/appSlice";
@@ -26,7 +23,7 @@ class ConnectionStatusComponent extends React.Component<Props> {
 						)}
 						<BestBlockComponent />
 						<span className="ml-2">
-							<OnOffIndicator status={undefined} size="xs"/>
+							<OnOffIndicator status={connected} size="xs"/>
 						</span>
 					</span>
 				)}
