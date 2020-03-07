@@ -224,7 +224,7 @@ export class CopyToClipboardText extends React.Component<ICopyToClipboardButtonP
 interface IAccountSelectProps {
 	name: string
 	value: number
-	onChange: () => void
+	onChange: (e: React.FormEvent<HTMLInputElement>) => void
 }
 
 const _AccountSelector = (props: IAccountSelectProps & OwnProps) => {
@@ -260,7 +260,7 @@ interface OwnProps {
 }
 
 
-const mapStateToProps = (state: IApplicationState): OwnProps => {
+const mapStateToProps = (state: IApplicationState) => {
 	return {
 		accounts: getAccounts(state),
 		balances: getWalletBalances(state),
