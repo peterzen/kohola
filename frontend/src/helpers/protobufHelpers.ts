@@ -6,7 +6,7 @@ import _ from "lodash"
 export function updateObjectInList<T extends jspb.Message>(list: T[], updatedObject: T, identityAttribute: string): T[] {
 	const updatedList = _.filter(
 		list,
-		(o) => (o.toObject() as any)[identityAttribute] == (updatedObject.toObject() as any)[identityAttribute]
+		(o) => (o.toObject() as any)[identityAttribute] != (updatedObject.toObject() as any)[identityAttribute]
 	)
 	updatedList.push(updatedObject)
 	return updatedList

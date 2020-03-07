@@ -58,10 +58,10 @@ const settingsSlice = createSlice({
 			const walletPrefs = getWalletPrefs(state, walletEndpointId)
 			const accountPrefs = walletPrefs.getAccountPrefsList()
 			walletPrefs.setAccountPrefsList(
-				updateObjectInList(accountPrefs, preference, "account_number")
+				updateObjectInList(accountPrefs, preference, "accountNumber")
 			)
 			state.appConfig.setWalletPreferencesList(
-				updateObjectInList(state.appConfig.getWalletPreferencesList(), walletPrefs, "wallet_endpoint_id")
+				updateObjectInList(state.appConfig.getWalletPreferencesList(), walletPrefs, "walletEndpointId")
 			)
 		},
 		updateEndpoint(state, action: PayloadAction<GRPCEndpoint>) {
