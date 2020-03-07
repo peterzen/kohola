@@ -2,7 +2,7 @@ import _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { Row, Col, Form, InputGroup, Card, Fade } from 'react-bootstrap';
+import { Row, Col, Form, InputGroup, Card, Fade, Button } from 'react-bootstrap';
 
 import { AccountSelector } from '../../../components/Shared/shared';
 import FeeChooserInput from '../FeeChooserInput';
@@ -38,7 +38,6 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
 							validated={this.state.formIsValidated}
 							onSubmit={_.bind(this.handleFormSubmit, this)}
 							className="m-0">
-
 
 							<Form.Group as={Row} className="pt-3 pb-3">
 								<Col sm={4} >
@@ -91,8 +90,8 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
 												onChange={onChange}
 												defaultValue="" />
 											<InputGroup.Append>
-												DCR
-										</InputGroup.Append>
+												<InputGroup.Text>DCR</InputGroup.Text>
+											</InputGroup.Append>
 										</InputGroup>
 									</Col>
 								</Form.Group>
@@ -157,6 +156,10 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
 										/>
 									</Col>
 								</Form.Group>
+
+								<div className="text-right mt-5">
+									<Button variant="primary">Save settings</Button>
+								</div>
 							</fieldset>
 						</Form>
 					</Card.Body>
