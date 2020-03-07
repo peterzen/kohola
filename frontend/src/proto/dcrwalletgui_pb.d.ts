@@ -53,42 +53,6 @@ export namespace SetConfigRequest {
   }
 }
 
-export class CanStartupRequest extends jspb.Message {
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): CanStartupRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: CanStartupRequest): CanStartupRequest.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: CanStartupRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): CanStartupRequest;
-  static deserializeBinaryFromReader(message: CanStartupRequest, reader: jspb.BinaryReader): CanStartupRequest;
-}
-
-export namespace CanStartupRequest {
-  export type AsObject = {
-  }
-}
-
-export class CanStartupResponse extends jspb.Message {
-  getNeedsSetup(): boolean;
-  setNeedsSetup(value: boolean): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): CanStartupResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: CanStartupResponse): CanStartupResponse.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: CanStartupResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): CanStartupResponse;
-  static deserializeBinaryFromReader(message: CanStartupResponse, reader: jspb.BinaryReader): CanStartupResponse;
-}
-
-export namespace CanStartupResponse {
-  export type AsObject = {
-    needsSetup: boolean,
-  }
-}
-
 export class SetConfigResponse extends jspb.Message {
   getUpdateStatus(): SetConfigResponse.UpdateStatusMap[keyof SetConfigResponse.UpdateStatusMap];
   setUpdateStatus(value: SetConfigResponse.UpdateStatusMap[keyof SetConfigResponse.UpdateStatusMap]): void;

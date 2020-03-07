@@ -123,21 +123,6 @@ export const saveConfigurationAttempt: ActionCreator<any> = () => {
 	}
 }
 
-
-export const canStartup: ActionCreator<any> = () => {
-	return async (dispatch: Dispatch) => {
-		try {
-			const r = await AppBackend.canStartup();
-			if (r.getNeedsSetup() == true) {
-				dispatch(getConfigNeedsSetup())
-			}
-		}
-		catch (error) {
-			dispatch(getConfigFailed(error))
-		}
-	}
-}
-
 export const updateAccountPreference: ActionCreator<any> = (accountNumber: number, isHidden: boolean) => {
 	return async (dispatch: Dispatch) => {
 		const pref = new AccountPreference()

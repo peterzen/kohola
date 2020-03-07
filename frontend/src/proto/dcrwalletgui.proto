@@ -5,7 +5,6 @@ package dcrwalletgui;
 service AppConfig {
   rpc GetConfig(GetConfigRequest) returns (AppConfiguration);
   rpc SetConfig(SetConfigRequest) returns (SetConfigResponse);
-  rpc CanStartup(CanStartupRequest) returns (CanStartupResponse);
 }
 
 message GetConfigRequest { bytes passphrase = 1; }
@@ -14,10 +13,6 @@ message SetConfigRequest {
   AppConfiguration app_config = 1;
   bytes passphrase = 2;
 }
-
-message CanStartupRequest {}
-
-message CanStartupResponse { bool needs_setup = 1; }
 
 message SetConfigResponse {
   enum UpdateStatus {

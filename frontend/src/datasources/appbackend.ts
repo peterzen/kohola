@@ -1,7 +1,6 @@
 import {
 	AppConfiguration,
 	SetConfigResponse,
-	CanStartupResponse,
 	SetConfigRequest,
 	GRPCEndpoint
 } from "../proto/dcrwalletgui_pb"
@@ -13,7 +12,6 @@ const w = (window as any)
 
 const AppBackend = {
 	getAppConfig: endpointFactory("walletgui__GetConfig", AppConfiguration),
-	canStartup: endpointFactory("walletgui__CanStartup", CanStartupResponse),
 
 	setAppConfig: async function (appConfig: AppConfiguration) {
 
