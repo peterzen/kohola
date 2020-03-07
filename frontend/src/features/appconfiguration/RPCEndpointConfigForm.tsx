@@ -187,7 +187,16 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 							</div> */}
 				</Form.Group>
 
-				<div>
+				<Form.Group controlId="default">
+					<Form.Check
+						name="default_checkbox"
+						label="Default"
+						onChange={onChange}
+					/>
+				</Form.Group>
+
+
+				<div style={{height:"2em"}}>
 					<ConnectionCheck
 						status={this.state.connectionCheckStatus}
 						message={this.state.connectionCheckMessage} />
@@ -228,14 +237,11 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 			isDirty: false,
 		})
 		loadFormFields(this.state.formRef, this.props.endPointConfig)
-		console.log("formSubmit", this.props.endPointConfig.toObject())
 		this.props.onFormComplete(this.props.endPointConfig)
-
 		return false;
 	}
 
 	handleChange() {
-		console.log("handleChange")
 		const ep = this.props.endPointConfig
 		this.setState({
 			isDirty: true

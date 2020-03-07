@@ -69,7 +69,11 @@ const settingsSlice = createSlice({
 			const ep = action.payload
 			const endpoints = _.filter(state.appConfig.getWalletEndpointsList(), (e) => ep.getId() != e.getId())
 			state.appConfig.setWalletEndpointsList(endpoints)
-		}
+		},
+		setDefaultEndpoint(state, action: PayloadAction<GRPCEndpoint>) {
+			const ep = action.payload
+			state.appConfig.setDefaultWalletEndpointId(ep.getId())
+		},
 	}
 })
 
@@ -83,6 +87,7 @@ export const {
 	setAccountPreference,
 	updateEndpoint,
 	deleteEndpoint,
+	setDefaultEndpoint,
 } = settingsSlice.actions
 
 export default settingsSlice.reducer

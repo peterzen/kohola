@@ -249,6 +249,9 @@ export class AppConfiguration extends jspb.Message {
   setWalletEndpointsList(value: Array<GRPCEndpoint>): void;
   addWalletEndpoints(value?: GRPCEndpoint, index?: number): GRPCEndpoint;
 
+  getDefaultWalletEndpointId(): string;
+  setDefaultWalletEndpointId(value: string): void;
+
   clearWalletPreferencesList(): void;
   getWalletPreferencesList(): Array<WalletPreferences>;
   setWalletPreferencesList(value: Array<WalletPreferences>): void;
@@ -268,6 +271,7 @@ export namespace AppConfiguration {
   export type AsObject = {
     dcrdEndpoint?: RPCEndpoint.AsObject,
     walletEndpointsList: Array<GRPCEndpoint.AsObject>,
+    defaultWalletEndpointId: string,
     walletPreferencesList: Array<WalletPreferences.AsObject>,
   }
 }

@@ -66,7 +66,8 @@ message WalletPreferences {
 message AppConfiguration {
   RPCEndpoint dcrd_endpoint = 1;
   repeated GRPCEndpoint wallet_endpoints = 2;
-  repeated WalletPreferences wallet_preferences = 3;
+  string default_wallet_endpoint_id = 3;
+  repeated WalletPreferences wallet_preferences = 4;
 }
 
 service NetworkService {

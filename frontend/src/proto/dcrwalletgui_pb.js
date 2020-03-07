@@ -1669,7 +1669,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.dcrwalletgui.AppConfiguration.repeatedFields_ = [2,3];
+proto.dcrwalletgui.AppConfiguration.repeatedFields_ = [2,4];
 
 
 
@@ -1702,6 +1702,7 @@ proto.dcrwalletgui.AppConfiguration.toObject = function(includeInstance, msg) {
     dcrdEndpoint: (f = msg.getDcrdEndpoint()) && proto.dcrwalletgui.RPCEndpoint.toObject(includeInstance, f),
     walletEndpointsList: jspb.Message.toObjectList(msg.getWalletEndpointsList(),
     proto.dcrwalletgui.GRPCEndpoint.toObject, includeInstance),
+    defaultWalletEndpointId: jspb.Message.getFieldWithDefault(msg, 3, ""),
     walletPreferencesList: jspb.Message.toObjectList(msg.getWalletPreferencesList(),
     proto.dcrwalletgui.WalletPreferences.toObject, includeInstance)
   };
@@ -1751,6 +1752,10 @@ proto.dcrwalletgui.AppConfiguration.deserializeBinaryFromReader = function(msg, 
       msg.addWalletEndpoints(value);
       break;
     case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDefaultWalletEndpointId(value);
+      break;
+    case 4:
       var value = new proto.dcrwalletgui.WalletPreferences;
       reader.readMessage(value,proto.dcrwalletgui.WalletPreferences.deserializeBinaryFromReader);
       msg.addWalletPreferences(value);
@@ -1799,10 +1804,17 @@ proto.dcrwalletgui.AppConfiguration.serializeBinaryToWriter = function(message, 
       proto.dcrwalletgui.GRPCEndpoint.serializeBinaryToWriter
     );
   }
+  f = message.getDefaultWalletEndpointId();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
   f = message.getWalletPreferencesList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      3,
+      4,
       f,
       proto.dcrwalletgui.WalletPreferences.serializeBinaryToWriter
     );
@@ -1874,20 +1886,35 @@ proto.dcrwalletgui.AppConfiguration.prototype.clearWalletEndpointsList = functio
 
 
 /**
- * repeated WalletPreferences wallet_preferences = 3;
+ * optional string default_wallet_endpoint_id = 3;
+ * @return {string}
+ */
+proto.dcrwalletgui.AppConfiguration.prototype.getDefaultWalletEndpointId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/** @param {string} value */
+proto.dcrwalletgui.AppConfiguration.prototype.setDefaultWalletEndpointId = function(value) {
+  jspb.Message.setField(this, 3, value);
+};
+
+
+/**
+ * repeated WalletPreferences wallet_preferences = 4;
  * If you change this array by adding, removing or replacing elements, or if you
  * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<!proto.dcrwalletgui.WalletPreferences>}
  */
 proto.dcrwalletgui.AppConfiguration.prototype.getWalletPreferencesList = function() {
   return /** @type{!Array.<!proto.dcrwalletgui.WalletPreferences>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.dcrwalletgui.WalletPreferences, 3));
+    jspb.Message.getRepeatedWrapperField(this, proto.dcrwalletgui.WalletPreferences, 4));
 };
 
 
 /** @param {!Array.<!proto.dcrwalletgui.WalletPreferences>} value */
 proto.dcrwalletgui.AppConfiguration.prototype.setWalletPreferencesList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 3, value);
+  jspb.Message.setRepeatedWrapperField(this, 4, value);
 };
 
 
@@ -1897,7 +1924,7 @@ proto.dcrwalletgui.AppConfiguration.prototype.setWalletPreferencesList = functio
  * @return {!proto.dcrwalletgui.WalletPreferences}
  */
 proto.dcrwalletgui.AppConfiguration.prototype.addWalletPreferences = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.dcrwalletgui.WalletPreferences, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.dcrwalletgui.WalletPreferences, opt_index);
 };
 
 

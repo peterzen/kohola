@@ -9,12 +9,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faCheck } from '@fortawesome/free-solid-svg-icons'
 
 import { AppError, IApplicationState, AppDispatch } from '../../store/types';
-import { RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
+import { GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
 import WalletEndpointGrid from './WalletEndpointGrid';
 import { EditEndpointModal } from '../appconfiguration/RPCEndpointConfigForm';
 import { updateEndpoint, saveConfigurationAttempt, deleteEndpoint } from '../appconfiguration/settingsSlice';
 import { confirmDialog } from '../../components/Shared/ConfirmDialog';
 
+import './EditableEndpointGrid.scss'
 
 class EditableEndpointGrid extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -100,7 +101,7 @@ class EditableEndpointGrid extends React.Component<Props, InternalState> {
 		})
 		this.showModal()
 	}
-	finishEdit(endpoint: GRPCEndpoint | RPCEndpoint) {
+	finishEdit(endpoint: GRPCEndpoint) {
 		this.props.updateEndpoint(endpoint)
 		this.hideModal()
 	}
@@ -132,8 +133,8 @@ interface InternalState {
 }
 
 interface DispatchProps {
-	updateEndpoint: (endpoint: GRPCEndpoint | RPCEndpoint) => void
-	deleteEndpoint: (endpoint: GRPCEndpoint | RPCEndpoint) => void
+	updateEndpoint: (endpoint: GRPCEndpoint) => void
+	deleteEndpoint: (endpoint: GRPCEndpoint) => void
 }
 
 type Props = OwnProps & DispatchProps
@@ -147,7 +148,7 @@ const mapStateToProps = (state: IApplicationState) => {
 
 const mapDispatchToProps = (dispatch: AppDispatch) => {
 	return {
-		updateEndpoint: (endpoint: GRPCEndpoint | RPCEndpoint) => {
+		updateEndpoint: (endpoint: GRPCEndpoint) => {
 			dispatch(updateEndpoint(endpoint))
 			dispatch(saveConfigurationAttempt())
 		},
