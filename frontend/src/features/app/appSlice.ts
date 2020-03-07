@@ -116,6 +116,7 @@ export const initializeStore: ActionCreator<any> = () => {
 
 		w.lorcareceiver__OnTxNotification = (serializedMsg: string) => {
 			const message = TransactionNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
+			console.log("TxNotification received", message)
 			dispatch(transactionNotification(message))
 		}
 		// w.lorcareceiver__OnConfirmNotification = (serializedMsg: Uint8Array) => {
@@ -124,6 +125,7 @@ export const initializeStore: ActionCreator<any> = () => {
 		// }
 		w.lorcareceiver__OnAccountNotification = (serializedMsg: string) => {
 			const message = AccountNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
+			console.log("AccountNotification received", message)
 			dispatch(accountNotification(message))
 		}
 		// setTimeout(() => {
