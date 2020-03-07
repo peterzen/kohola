@@ -2,20 +2,21 @@ import * as React from "react";
 import { connect } from "react-redux";
 import TimeAgo from 'react-timeago';
 
-import { Agendas } from "../../models";
-import { IApplicationState } from "../../store/store";
-import { loadAgendasAttempt } from "./stakingSlice";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
+import { Agendas } from "../../../models";
+import { loadAgendasAttempt } from "../stakingSlice";
 
 import { Card, ListGroup } from "react-bootstrap";
+import { IApplicationState } from "../../../store/types";
 
 
 class AgendasComponent extends React.Component<Props, InternalState> {
 	render() {
 		return (
 			<Card>
-				<Card.Body>
+				<Card.Header>
 					<Card.Title>Agendas <small className="text-muted">v{this.props.agendas.getVersion()}</small></Card.Title>
+				</Card.Header>
+				<Card.Body>
 					<ListGroup>
 						{this.props.agendas.getAgendasList().map((agenda) =>
 							<ListGroup.Item key={agenda.getId()}>
@@ -47,7 +48,7 @@ type Props = DispatchProps & OwnProps
 interface InternalState {
 }
 
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
+const mapStateToProps = (state: IApplicationState) => {
 	return {
 		agendas: state.staking.agendas,
 		errorAgendas: state.staking.errorAgendas,
@@ -55,9 +56,9 @@ const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
 	};
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+const mapDispatchToProps = {
 	loadAgendasAttempt: loadAgendasAttempt
-}, dispatch)
+}
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(AgendasComponent)
