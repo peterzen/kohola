@@ -39,7 +39,7 @@ export default class ConstructTxDialog extends React.Component<OwnProps, ISendDi
 					<AccountSelector
 						name="account"
 						value={this.state.sourceAccount.getAccountNumber()}
-						onChange={(e: any) => {
+						onChange={(e: React.FormEvent<HTMLInputElement>) => {
 							this.setState({
 								sourceAccount: this.props.accounts[parseInt(e.currentTarget.value)]
 							})
