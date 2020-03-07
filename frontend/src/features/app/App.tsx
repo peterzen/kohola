@@ -21,6 +21,7 @@ import DevTools from '../../components/Fixtures/DevTools';
 import { AnimatedSwitch } from 'react-router-transition';
 import Login from '../../containers/Login';
 import { bounceTransition, mapStyles } from './routeSwitchAnimations';
+import Mixing from '../../containers/Mixing';
 
 
 interface AppProps {
@@ -54,6 +55,7 @@ const App = ({ history }: AppProps) => {
 						<Route path="/settings" component={Settings} />
 						<Route path="/account/:accountNumber" component={AccountDetailsContainer} />
 						<Route path="/wallet" component={Wallet} />
+						<Route path="/mixing" component={Mixing} />
 						<Route exact path="/" component={Login} />
 						<Route component={NoRouteMatch} />
 					</AnimatedSwitch>

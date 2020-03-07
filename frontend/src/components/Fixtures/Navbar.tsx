@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { Navbar, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faTicketAlt, faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faTicketAlt, faExchangeAlt, faBlender } from '@fortawesome/free-solid-svg-icons'
 
 import ConnectionStatus from '../../features/networkinfo/ConnectionStatus';
 
@@ -34,6 +34,9 @@ class NavbarComponent extends React.Component<Props> {
 								</Nav.Link>
 								<Nav.Link href="/#staking">
 									<FontAwesomeIcon icon={faTicketAlt} className="text-secondary" /> Staking
+								</Nav.Link>
+								<Nav.Link href="/#mixing">
+									<FontAwesomeIcon icon={faBlender} className="text-secondary" /> Mixing
 								</Nav.Link>
 							</Nav>
 							<Nav>

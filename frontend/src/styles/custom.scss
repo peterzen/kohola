@@ -109,3 +109,8 @@ main.devmonitor {
   position: absolute;
   width: 100%;
 }
+
+
+fieldset[disabled] {
+	opacity: 0.6;
+}
