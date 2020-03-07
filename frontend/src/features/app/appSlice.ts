@@ -1,9 +1,10 @@
+import _ from "lodash";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 import { batch } from "react-redux";
 
 import AppBackend from "../../datasources/appbackend";
 import { GRPCEndpoint } from "../../proto/dcrwalletgui_pb";
-import { AppError, AppThunk, AppDispatch, IApplicationState } from "../../store/types";
+import { AppError, AppThunk, AppDispatch, IApplicationState, IGetState } from "../../store/types";
 import { loadBestBlockHeight } from "../networkinfo/networkInfoSlice";
 import { loadAccountsAttempt, accountNotification } from "../balances/accountSlice";
 import { loadTransactionsAttempt, transactionNotification } from "../transactions/actions";
@@ -11,6 +12,7 @@ import { loadWalletBalance } from "../balances/walletBalanceSlice";
 import { loadTicketsAttempt } from "../staking/stakingSlice";
 import { TransactionNotificationsResponse, AccountNotificationsResponse } from "../../proto/api_pb";
 import { hexToRaw } from "../../helpers/byteActions";
+import { history } from '../../store/store'
 
 const w = (window as any)
 
@@ -65,7 +67,7 @@ export default appSlice.reducer
 
 
 export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppThunk => {
-	return async (dispatch: AppDispatch, getState) => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
 
 		if (getState().app.connectWalletAttempting) {
 			return
@@ -75,9 +77,23 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 			const resp = await AppBackend.connectWalletEndpoint(endpoint)
 			dispatch(connectWalletSuccess(resp))
 			dispatch(initializeStore())
+				.then(() => {
+					setTimeout(() => {
+						history.push("/wallet")
+					}, 1000)
+				})
 		}
 		catch (error) {
 			dispatch(connectWalletFailed(error))
+		}
+	}
+}
+
+export const connectDefaultWallet: ActionCreator<any> = (): AppThunk => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
+		const firstEndpoint = _.first(getState().appconfiguration.appConfig.getWalletEndpointsList())
+		if (firstEndpoint != undefined) {
+			dispatch(connectWallet(firstEndpoint))
 		}
 	}
 }

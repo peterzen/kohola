@@ -10,6 +10,7 @@ import App from './features/app/App';
 // import "bootstrap/dist/css/bootstrap.css";
 import "./styles/main.scss";
 import { getConfiguration } from './features/appconfiguration/settingsSlice';
+import { connectDefaultWallet } from './features/app/appSlice';
 
 
 ReactDOM.render(
@@ -22,4 +23,9 @@ ReactDOM.render(
 );
 
 store.dispatch(getConfiguration())
-
+	.then(() => {
+		// connect to the first wallet endpoint, in lieu of a proper
+		// default flag.  
+		// @FIXME add GUI to select default endpoint
+		store.dispatch(connectDefaultWallet())
+	})
