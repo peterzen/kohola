@@ -2,7 +2,7 @@ import _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { Row, Col, Form, Button, Card, Fade } from 'react-bootstrap';
+import { Row, Col, Form, Button, Card } from 'react-bootstrap';
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
 
