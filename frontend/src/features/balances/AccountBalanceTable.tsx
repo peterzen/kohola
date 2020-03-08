@@ -38,6 +38,9 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 
 	renderBalanceRow(props: { account: WalletAccount, balance: AccountBalance }) {
 		const { account, balance } = props;
+		if(balance == undefined){
+			return null
+		}
 		return (
 			<tr key={account.getAccountNumber()} className="clickable p-4 text-right" onClick={() => {
 				this.props.menuHandler(MenuItems[MenuItems.DETAILSVIEW], account)
@@ -64,11 +67,11 @@ export default class AccountBalanceTable extends React.Component<OwnProps, Inter
 	}
 
 	renderItems() {
-		const accounts = this.props.accounts;
-		return _.map(this.props.balances, (balance, account) => {
+		const balances = this.props.balances;
+		return _.map(this.props.accounts, (account, accountNumber) => {
 			return this.renderBalanceRow({
-				account: accounts[parseInt(account)],
-				balance: balance
+				account: account,
+				balance: balances[parseInt(accountNumber)]
 			})
 		});
 	}

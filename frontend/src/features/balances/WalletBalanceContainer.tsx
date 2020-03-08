@@ -10,7 +10,7 @@ import { history } from '../../store/store'
 
 import { IndexedWalletAccounts, WalletAccount, WalletTotals, WalletBalance } from "../../models"
 import { getWalletBalances, getWalletTotals } from "./walletBalanceSlice"
-import { getAccounts } from "./accountSlice"
+import { getVisibleAccounts } from "./accountSlice"
 
 import { MenuItems } from "./AccountToolsDropdown"
 import AccountBalanceTable from "./AccountBalanceTable"
@@ -67,9 +67,9 @@ interface InternalState {
 	selectedAccount: WalletAccount | null
 }
 
-const mapStateToProps = (state: IApplicationState): OwnProps => {
+const mapStateToProps = (state: IApplicationState) => {
 	return {
-		accounts: getAccounts(state),
+		accounts: getVisibleAccounts(state),
 		balances: getWalletBalances(state),
 		walletTotals: getWalletTotals(state),
 	}

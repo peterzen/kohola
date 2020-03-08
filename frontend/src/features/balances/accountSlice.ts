@@ -69,15 +69,19 @@ const accountSlice = createSlice({
 	initialState,
 	reducers: {
 		getAccountsAttempt(state) {
+			state.accounts = {}
+			state.getAccountsError = null
 			state.getAccountsAttempting = true
 		},
 		getAccountsFailed(state, action: PayloadAction<AppError>) {
-			state.getAccountsAttempting = false
+			state.accounts = {}
 			state.getAccountsError = action.payload
+			state.getAccountsAttempting = false
 		},
 		getAccountsSuccess(state, action: PayloadAction<IndexedWalletAccounts>) {
-			state.getAccountsAttempting = false
 			state.accounts = action.payload
+			state.getAccountsError = null
+			state.getAccountsAttempting = false
 		},
 
 		// NextAddress
@@ -260,20 +264,23 @@ export const isAccountVisible = (state: IApplicationState, accountNumber: number
 }
 
 export const getAccounts = (state: IApplicationState): IndexedWalletAccounts => {
-	return _.filter(state.accounts.accounts, (r) => r.getAccountName() != "imported")
+	return state.accounts.accounts
 }
 
-export const getFilteredAccounts = (state: IApplicationState): IndexedWalletAccounts => {
-	const accountPrefs = getAccountPrefs(state)
-	return _.filter(state.accounts.accounts, (a) => {
-		return accountPrefs[a.getAccountNumber()] ?
-			accountPrefs[a.getAccountNumber()].getIsHidden() == false : true
+export const getVisibleAccounts = (state: IApplicationState): IndexedWalletAccounts => {
+
+	const filteredAccounts: IndexedWalletAccounts = {}
+	_.each(getAccounts(state), (account, accountNumber) => {
+		 const n = parseInt(accountNumber)
+		 if (isAccountVisible(state, n)) {
+			filteredAccounts[n] = account
+		}
 	})
+	return filteredAccounts
 }
 
-export const getAllAccountNumbers = (state: IApplicationState): number[] => {
-	return _.chain(state.accounts.accounts)
-		.filter((r) => r.getAccountName() != "imported")
+export const getAccountNumbers = (state: IApplicationState): number[] => {
+	return _.chain(getAccounts(state))
 		.keys()
 		.map((s) => parseInt(s))
 		.value()
