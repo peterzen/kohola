@@ -10,7 +10,6 @@ import { updateObjectInList, deleteObjectFromList } from '../../helpers/protobuf
 
 export interface IAppConfigurationState {
 	appConfig: AppConfiguration
-	needSetup: boolean
 	setConfigError: AppError | null
 	setConfigAttempting: boolean
 	currentWalletEndpointId: string
@@ -18,7 +17,6 @@ export interface IAppConfigurationState {
 
 export const initialState: IAppConfigurationState = {
 	appConfig: new AppConfiguration(),
-	needSetup: false,
 	setConfigError: null,
 	setConfigAttempting: false,
 	currentWalletEndpointId: "",
@@ -38,20 +36,12 @@ const settingsSlice = createSlice({
 		setConfigSuccess(state, action: PayloadAction<AppConfiguration>) {
 			state.setConfigAttempting = false
 			state.setConfigError = null
-			state.needSetup = false
 		},
 		getConfigSuccess(state, action: PayloadAction<AppConfiguration>) {
 			state.appConfig = action.payload
 		},
 		getConfigFailed(state, action) {
 
-		},
-		getConfigNeedsSetup(state) {
-			const cfg = state.appConfig
-			if (!cfg.hasDcrdEndpoint()) cfg.setDcrdEndpoint(new RPCEndpoint())
-			if (!cfg.getWalletEndpointsList().length) cfg.addWalletEndpoints(new GRPCEndpoint())
-			state.needSetup = true
-			state.appConfig = cfg
 		},
 		setAccountPreference(state, action: PayloadAction<{ preference: AccountPreference, walletEndpointId: string }>) {
 			const { preference, walletEndpointId } = action.payload
@@ -89,7 +79,7 @@ export const {
 	setConfigSuccess,
 	getConfigSuccess,
 	getConfigFailed,
-	getConfigNeedsSetup,
+
 	setAccountPreference,
 	updateEndpoint,
 	deleteEndpoint,
