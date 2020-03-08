@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteChildrenProps } from 'react-router-dom';
 
 import { Row, Col, Tabs, Tab } from 'react-bootstrap';
 // @ts-ignore
@@ -14,39 +14,61 @@ import TicketBuyerComponent from '../features/staking/Ticketbuyer/TicketBuyerCom
 import TicketPriceComponent from '../features/staking/TicketPriceComponent';
 import TicketsOverviewContainer from '../features/staking/TicketsOverviewContainer';
 
-class StakingContainer extends React.PureComponent<{}, {}> {
+class StakingContainer extends React.Component<Props, InternalState> {
+	constructor(props: Props) {
+		super(props)
+		this.state = {
+			activeTab: "overview"
+		}
+	}
 
 	render() {
 		return (
 			<div>
-				<Tabs defaultActiveKey="overview" id="purchaseticketsettings-tabs">
+				<Tabs defaultActiveKey="overview" id="purchaseticketsettings-tabs"
+					onSelect={(tab: string) => this.handleSelect(tab)}>
 					<Tab eventKey="overview" title="Overview">
-						<Fade fade>
-							<StakeInfoComponent />
-						</Fade>
-						<Row className="mt-3">
-							<Col>
-								<Fade fade><TicketsOverviewContainer /></Fade>
-							</Col>
-							<Col>
-								<TicketPriceComponent />
-								<div className="mt-3" />
-								<PurchaseTicketForm />
-								<div className="mt-3" />
-								<StakeStats />
-							</Col>
-						</Row>
+						{this.state.activeTab == "overview" && (
+							<div>
+								<Fade fade>
+									<StakeInfoComponent />
+								</Fade>
+								<Row className="mt-3">
+									<Col>
+										<Fade fade><TicketsOverviewContainer /></Fade>
+									</Col>
+									<Col>
+										<TicketPriceComponent />
+										<div className="mt-3" />
+										<PurchaseTicketForm />
+										<div className="mt-3" />
+										<StakeStats />
+									</Col>
+								</Row>
+							</div>
+						)}
 					</Tab>
 					<Tab eventKey="ticketbuyer" title="Tickerbuyer">
-						<TicketBuyerComponent />
+						{this.state.activeTab == "ticketbuyer" && <TicketBuyerComponent />}
 					</Tab>
 					<Tab eventKey="voting" title="Voting">
-						<AgendasComponent />
+						{this.state.activeTab == "voting" && <AgendasComponent />}
 					</Tab>
 				</Tabs>
 			</div>
 		)
 	}
+	handleSelect(currentTab: string) {
+		this.setState({
+			activeTab: currentTab
+		})
+	}
+}
+
+type Props = {}
+
+interface InternalState {
+	activeTab: string
 }
 
 const mapStateToProps = () => {
