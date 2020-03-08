@@ -5,7 +5,7 @@ import { AppError, IGetState, IApplicationState } from '../../store/types';
 import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences } from '../../proto/dcrwalletgui_pb';
 import AppBackend from '../../datasources/appbackend';
 import { getConnectedEndpoint, getConnectedEndpointId } from '../app/appSlice';
-import { updateObjectInList } from '../../helpers/protobufHelpers';
+import { updateObjectInList, deleteObjectFromList } from '../../helpers/protobufHelpers';
 
 
 export interface IAppConfigurationState {
@@ -65,15 +65,16 @@ const settingsSlice = createSlice({
 			)
 		},
 		updateEndpoint(state, action: PayloadAction<GRPCEndpoint>) {
-			const ep = action.payload
-			const endpoints = _.filter(state.appConfig.getWalletEndpointsList(), (e) => ep.getId() != e.getId())
-			endpoints.push(ep)
-			state.appConfig.setWalletEndpointsList(endpoints)
+			const endpoint = action.payload
+			state.appConfig.setWalletEndpointsList(
+				updateObjectInList(state.appConfig.getWalletEndpointsList(), endpoint, "id")
+			)
 		},
 		deleteEndpoint(state, action: PayloadAction<GRPCEndpoint>) {
-			const ep = action.payload
-			const endpoints = _.filter(state.appConfig.getWalletEndpointsList(), (e) => ep.getId() != e.getId())
-			state.appConfig.setWalletEndpointsList(endpoints)
+			const endpoint = action.payload
+			state.appConfig.setWalletEndpointsList(
+				deleteObjectFromList(state.appConfig.getWalletEndpointsList(), endpoint, "id")
+			)
 		},
 		setDefaultEndpoint(state, action: PayloadAction<GRPCEndpoint>) {
 			const ep = action.payload
