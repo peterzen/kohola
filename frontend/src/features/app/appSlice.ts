@@ -35,6 +35,7 @@ const appSlice = createSlice({
 	initialState,
 	reducers: {
 		connectWalletAttempting(state) {
+			state.isWalletConnected = false
 			state.connectWalletError = null
 			state.currentWalletEndpoint = null
 			state.connectWalletAttempting = true

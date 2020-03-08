@@ -23,12 +23,16 @@ import (
 )
 
 var (
-	gRPCConnection *grpc.ClientConn
-	rpcClient      *rpcclient.Client
+	gRPCConnection *grpc.ClientConn  = nil
+	rpcClient      *rpcclient.Client = nil
 
 	walletServiceClient pb.WalletServiceClient
 	votingServiceClient pb.VotingServiceClient
 	agendaServiceClient pb.AgendaServiceClient
+
+	txNtfnContext           context.Context
+	accountNtfnContext      context.Context
+	confirmationNtfnContext context.Context
 )
 
 func getEndpointByID(endpoints []*gui.GRPCEndpoint, id string) *gui.GRPCEndpoint {
@@ -41,7 +45,7 @@ func getEndpointByID(endpoints []*gui.GRPCEndpoint, id string) *gui.GRPCEndpoint
 }
 
 // InitFrontendGRPC creates a gRPC client connection
-func InitFrontendGRPC(endpointCfg *gui.GRPCEndpoint) error {
+func initFrontendGRPC(endpointCfg *gui.GRPCEndpoint) error {
 
 	var err error = nil
 	gRPCConnection, err = newGRPCClient(endpointCfg)
@@ -495,12 +499,10 @@ func listUnspent(
 
 // }
 
-type notificationSubscriptions struct {
-}
-
 func subscribeTxNotifications(ui lorca.UI) {
+	txNtfnContext = context.Background()
 	request := &pb.TransactionNotificationsRequest{}
-	ntfnStream, err := walletServiceClient.TransactionNotifications(context.Background(), request)
+	ntfnStream, err := walletServiceClient.TransactionNotifications(txNtfnContext, request)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -545,8 +547,11 @@ func subscribeTxNotifications(ui lorca.UI) {
 // }
 
 func subscribeAccountNotifications(ui lorca.UI) {
+
+	accountNtfnContext = context.Background()
 	request := &pb.AccountNotificationsRequest{}
-	ntfnStream, err := walletServiceClient.AccountNotifications(context.Background(), request)
+	ntfnStream, err := walletServiceClient.AccountNotifications(accountNtfnContext, request)
+
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -568,10 +573,22 @@ func subscribeAccountNotifications(ui lorca.UI) {
 }
 
 // SetupNotifications creates subscriptions
-func SetupNotifications(ui lorca.UI) {
+func subscribeNotifications(ui lorca.UI) {
 	go subscribeTxNotifications(ui)
 	go subscribeAccountNotifications(ui)
 	// go subscribeConfirmNotifications(ui)
+}
+
+func unsubscribeNotifications() {
+	if txNtfnContext != nil {
+		txNtfnContext.Done()
+	}
+	if accountNtfnContext != nil {
+		accountNtfnContext.Done()
+	}
+	// if confirmationNtfnContext != nil {
+	// 	confirmationNtfnContext.Done()
+	// }
 }
 
 // ExportWalletAPI exports the RPC API functions to the UI
@@ -620,7 +637,24 @@ func ExportWalletAPI(ui lorca.UI) {
 	})
 }
 
+func isEndpointConnected() bool {
+	return (gRPCConnection != nil)
+}
+
+func disconnectEndpoint() {
+	if gRPCConnection == nil {
+		return
+	}
+	unsubscribeNotifications()
+	// gRPCConnection.Close()
+	gRPCConnection = nil
+}
+
 func connectEndpoint(endpointID string, ui lorca.UI) (r gui.LorcaMessage) {
+
+	if isEndpointConnected() {
+		disconnectEndpoint()
+	}
 
 	if gui.HaveConfig() {
 
@@ -631,13 +665,13 @@ func connectEndpoint(endpointID string, ui lorca.UI) (r gui.LorcaMessage) {
 			r.Err = errors.New("Endpoint not found")
 			return r
 		}
-		err := InitFrontendGRPC(endpoint)
+		err := initFrontendGRPC(endpoint)
 		if err != nil {
 			r.Err = fmt.Errorf("Cannot connect to dcrwallet: %s", err)
 			return r
 		}
 		r.Payload, err = proto.Marshal(endpoint)
-		SetupNotifications(ui)
+		subscribeNotifications(ui)
 
 	} else {
 		r.Err = errors.New("Missing dcrwallet entry in config file")

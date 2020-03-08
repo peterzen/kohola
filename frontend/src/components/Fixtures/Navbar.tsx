@@ -9,10 +9,8 @@ import ConnectionStatus from '../../features/networkinfo/ConnectionStatus';
 
 // @ts-ignore
 import Logo from '../../images/logo.svg'
-import { GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
-import { PingResponse } from '../../proto/api_pb';
 import { IApplicationState } from '../../store/types';
-import { getConnectedEndpoint, isWalletConnected } from '../../features/app/appSlice';
+import { isWalletConnected } from '../../features/app/appSlice';
 
 class NavbarComponent extends React.Component<Props> {
 
@@ -54,13 +52,11 @@ class NavbarComponent extends React.Component<Props> {
 }
 
 interface Props {
-	connectedEndpoint: GRPCEndpoint
 	isEndpointConnected: boolean
 }
 
 const mapStateToProps = function (state: IApplicationState) {
 	return {
-		connectedEndpoint: getConnectedEndpoint(state),
 		isEndpointConnected: isWalletConnected(state),
 	}
 }

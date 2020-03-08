@@ -39,7 +39,7 @@ func launchUI(callbackFn func(lorca.UI)) {
 	if runtime.GOOS == "linux" {
 		args = append(args, "--class=Lorca")
 	}
-	ui, err := lorca.New("https://localhost:8080", "", 1200, 800, args...)
+	ui, err := lorca.New("", "", 1200, 800, args...)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -47,7 +47,7 @@ func launchUI(callbackFn func(lorca.UI)) {
 
 	callbackFn(ui)
 
-	// _ = ui.Load("https://localhost:8080")
+	_ = ui.Load("https://localhost:8080")
 
 	// Wait until the interrupt signal arrives or browser window is closed
 	sigc := make(chan os.Signal)

@@ -19,7 +19,7 @@ import { NextAccountResponse, RenameAccountResponse } from '../../proto/api_pb';
 import { getAccountPrefs, updateAccountPreference, IIndexedAccountPrefs } from '../appconfiguration/settingsSlice';
 import { getWalletBalances } from './walletBalanceSlice';
 import { Amount } from '../../components/Shared/shared';
-import { getConnectedEndpoint, getConnectedEndpointId } from '../app/appSlice';
+import { getConnectedEndpointId } from '../app/appSlice';
 
 function enterHandler(e: React.KeyboardEvent<HTMLInputElement>, callback: () => void) {
 	if (e.key == "Enter") {
