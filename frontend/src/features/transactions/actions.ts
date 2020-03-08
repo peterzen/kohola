@@ -65,14 +65,16 @@ export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {
 
 export const transactionNotification: ActionCreator<any> = (message: TransactionNotificationsResponse): AppThunk => {
 	return async (dispatch) => {
-		batch(() => {
-			dispatch(loadBestBlockHeight());
-			dispatch(loadStakeInfoAttempt());
-			dispatch(loadTicketsAttempt());
-			dispatch(loadTransactionsAttempt());
-			dispatch(loadWalletBalance());
-			dispatch(transactionNotificationReceived(message))
-		})
+		dispatch(transactionNotificationReceived(message))
+		_.debounce(() => {
+			batch(() => {
+				dispatch(loadBestBlockHeight());
+				dispatch(loadStakeInfoAttempt());
+				dispatch(loadTicketsAttempt());
+				dispatch(loadTransactionsAttempt());
+				dispatch(loadWalletBalance());
+			})
+		}, 1000)
 	}
 }
 

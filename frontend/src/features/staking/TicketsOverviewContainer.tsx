@@ -8,7 +8,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
 import { Ticket } from '../../models';
-import { getTickets } from './stakingSlice';
+import { getTickets, loadTicketsAttempt } from './stakingSlice';
 import { TicketStatus } from '../../constants';
 import TicketsTable from './TicketsTable';
 import TicketDetailsModal from './TicketDetailsComponent';
@@ -82,8 +82,8 @@ class TicketsListFilterDropdown extends React.Component<ITicketsListFilterDropdo
 
 
 
-class TicketsOverviewContainer extends React.Component<OwnProps, InternalState> {
-	constructor(props: OwnProps) {
+class TicketsOverviewContainer extends React.Component<Props, InternalState> {
+	constructor(props: Props) {
 		super(props)
 		this.state = {
 			showModal: false,
@@ -136,6 +136,13 @@ class TicketsOverviewContainer extends React.Component<OwnProps, InternalState> 
 			selectedItem: ticket
 		})
 	}
+
+	componentDidMount() {
+		setTimeout(() => {
+			this.props.loadTicketsAttempt()
+			
+		}, 1000)
+	}
 }
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
@@ -148,10 +155,20 @@ interface OwnProps {
 	tickets: Ticket[]
 }
 
+interface DispatchProps {
+	loadTicketsAttempt: typeof loadTicketsAttempt
+}
+
 interface InternalState {
 	showModal: boolean
 	currentFilter: TicketStatus
 	selectedItem: Ticket | null
 }
 
-export default connect(mapStateToProps)(TicketsOverviewContainer)
+type Props = OwnProps & DispatchProps
+
+const mapDispatchToProps = {
+	loadTicketsAttempt,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TicketsOverviewContainer)

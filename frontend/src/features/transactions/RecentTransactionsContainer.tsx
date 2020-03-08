@@ -9,11 +9,12 @@ import TransactionTable from './TransactionTable';
 import TransactionDetailsModal from './TransactionDetailsComponent';
 import { getFilteredTransactions } from './transactionsSlice';
 import { IApplicationState } from '../../store/types';
+import { loadTransactionsAttempt } from './actions';
 
 
-class RecentTransactionsComponent extends React.Component<OwnProps, InternalState> {
+class RecentTransactionsComponent extends React.Component<Props, InternalState> {
 
-	constructor(props: OwnProps) {
+	constructor(props: Props) {
 		super(props)
 		this.state = {
 			showModal: false,
@@ -48,6 +49,9 @@ class RecentTransactionsComponent extends React.Component<OwnProps, InternalStat
 			selectedItem: tx
 		})
 	}
+	componentDidMount() {
+		this.props.loadTransactionsAttempt()
+	}
 }
 
 interface OwnProps {
@@ -60,6 +64,12 @@ interface InternalState {
 	selectedItem: Transaction | null
 }
 
+interface DispatchProps {
+	loadTransactionsAttempt: typeof loadTransactionsAttempt
+}
+
+type Props = OwnProps & DispatchProps
+
 const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
 		getTransactionsRequest: state.transactions.getTransactionsRequest,
@@ -67,4 +77,8 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 	}
 }
 
-export default connect(mapStateToProps)(RecentTransactionsComponent);
+const mapDispatchToProps = {
+	loadTransactionsAttempt
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecentTransactionsComponent);

@@ -13,6 +13,7 @@ import { loadTicketsAttempt } from "../staking/stakingSlice";
 import { TransactionNotificationsResponse, AccountNotificationsResponse } from "../../proto/api_pb";
 import { hexToRaw } from "../../helpers/byteActions";
 import { history } from '../../store/store'
+import { pingAttempt } from "../networkinfo/pingSlice";
 
 const w = (window as any)
 
@@ -108,16 +109,16 @@ export const initializeStore: ActionCreator<any> = () => {
 		await dispatch(loadAccountsAttempt())
 
 		batch(() => {
-			dispatch(loadTransactionsAttempt())
+			// dispatch(loadTransactionsAttempt())
 			dispatch(loadWalletBalance())
-			dispatch(loadTicketsAttempt())
+			// dispatch(loadTicketsAttempt())
 		})
 
 		// dispatch(pingAttempt())
 
 		w.lorcareceiver__OnTxNotification = (serializedMsg: string) => {
 			const message = TransactionNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
-			console.log("TxNotification received", message)
+			// console.log("TxNotification received", message)
 			dispatch(transactionNotification(message))
 		}
 		// w.lorcareceiver__OnConfirmNotification = (serializedMsg: Uint8Array) => {
@@ -126,13 +127,13 @@ export const initializeStore: ActionCreator<any> = () => {
 		// }
 		w.lorcareceiver__OnAccountNotification = (serializedMsg: string) => {
 			const message = AccountNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
-			console.log("AccountNotification received", message)
+			// console.log("AccountNotification received", message)
 			dispatch(accountNotification(message))
 		}
 		// setTimeout(() => {
 		// 	dispatch(pingAttempt());
 
-		// }, 5000)
+		// }, 1000)
 	}
 }
 
