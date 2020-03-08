@@ -7,8 +7,8 @@ import QrCodeRenderer from '../../components/Shared/QrCodeRenderer';
 import GenericModalDialog from '../../components/Shared/GenericModalDialog';
 import { CopyToClipboardText } from '../../components/Shared/shared';
 import { NextAddressState } from './accountSlice';
-import ErrorAlert from '../../components/Shared/ErrorAlert';
 import { IApplicationState } from '../../store/types';
+import { ErrorAlert } from '../../components/Shared/FormStatusAlerts';
 
 class GetNewAddressDialog extends GenericModalDialog<Props, InternalState> {
 	DialogContent() {
