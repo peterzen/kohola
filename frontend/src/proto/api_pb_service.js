@@ -209,6 +209,15 @@ WalletService.BestBlock = {
   responseType: api_pb.BestBlockResponse
 };
 
+WalletService.Spender = {
+  methodName: "Spender",
+  service: WalletService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.SpenderRequest,
+  responseType: api_pb.SpenderResponse
+};
+
 WalletService.TransactionNotifications = {
   methodName: "TransactionNotifications",
   service: WalletService,
@@ -441,6 +450,15 @@ WalletService.SweepAccount = {
   responseStream: false,
   requestType: api_pb.SweepAccountRequest,
   responseType: api_pb.SweepAccountResponse
+};
+
+WalletService.SignHashes = {
+  methodName: "SignHashes",
+  service: WalletService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.SignHashesRequest,
+  responseType: api_pb.SignHashesResponse
 };
 
 exports.WalletService = WalletService;
@@ -936,6 +954,37 @@ WalletServiceClient.prototype.bestBlock = function bestBlock(requestMessage, met
     callback = arguments[1];
   }
   var client = grpc.unary(WalletService.BestBlock, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+WalletServiceClient.prototype.spender = function spender(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(WalletService.Spender, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
@@ -1814,6 +1863,37 @@ WalletServiceClient.prototype.sweepAccount = function sweepAccount(requestMessag
   };
 };
 
+WalletServiceClient.prototype.signHashes = function signHashes(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(WalletService.SignHashes, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
 exports.WalletServiceClient = WalletServiceClient;
 
 var WalletLoaderService = (function () {
@@ -2166,6 +2246,69 @@ WalletLoaderServiceClient.prototype.rescanPoint = function rescanPoint(requestMe
 };
 
 exports.WalletLoaderServiceClient = WalletLoaderServiceClient;
+
+var AccountMixerService = (function () {
+  function AccountMixerService() {}
+  AccountMixerService.serviceName = "walletrpc.AccountMixerService";
+  return AccountMixerService;
+}());
+
+AccountMixerService.RunAccountMixer = {
+  methodName: "RunAccountMixer",
+  service: AccountMixerService,
+  requestStream: false,
+  responseStream: true,
+  requestType: api_pb.RunAccountMixerRequest,
+  responseType: api_pb.RunAccountMixerResponse
+};
+
+exports.AccountMixerService = AccountMixerService;
+
+function AccountMixerServiceClient(serviceHost, options) {
+  this.serviceHost = serviceHost;
+  this.options = options || {};
+}
+
+AccountMixerServiceClient.prototype.runAccountMixer = function runAccountMixer(requestMessage, metadata) {
+  var listeners = {
+    data: [],
+    end: [],
+    status: []
+  };
+  var client = grpc.invoke(AccountMixerService.RunAccountMixer, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onMessage: function (responseMessage) {
+      listeners.data.forEach(function (handler) {
+        handler(responseMessage);
+      });
+    },
+    onEnd: function (status, statusMessage, trailers) {
+      listeners.status.forEach(function (handler) {
+        handler({ code: status, details: statusMessage, metadata: trailers });
+      });
+      listeners.end.forEach(function (handler) {
+        handler({ code: status, details: statusMessage, metadata: trailers });
+      });
+      listeners = null;
+    }
+  });
+  return {
+    on: function (type, handler) {
+      listeners[type].push(handler);
+      return this;
+    },
+    cancel: function () {
+      listeners = null;
+      client.close();
+    }
+  };
+};
+
+exports.AccountMixerServiceClient = AccountMixerServiceClient;
 
 var TicketBuyerV2Service = (function () {
   function TicketBuyerV2Service() {}

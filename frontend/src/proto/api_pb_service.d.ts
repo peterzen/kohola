@@ -162,6 +162,15 @@ type WalletServiceBestBlock = {
   readonly responseType: typeof api_pb.BestBlockResponse;
 };
 
+type WalletServiceSpender = {
+  readonly methodName: string;
+  readonly service: typeof WalletService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.SpenderRequest;
+  readonly responseType: typeof api_pb.SpenderResponse;
+};
+
 type WalletServiceTransactionNotifications = {
   readonly methodName: string;
   readonly service: typeof WalletService;
@@ -396,6 +405,15 @@ type WalletServiceSweepAccount = {
   readonly responseType: typeof api_pb.SweepAccountResponse;
 };
 
+type WalletServiceSignHashes = {
+  readonly methodName: string;
+  readonly service: typeof WalletService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.SignHashesRequest;
+  readonly responseType: typeof api_pb.SignHashesResponse;
+};
+
 export class WalletService {
   static readonly serviceName: string;
   static readonly Ping: WalletServicePing;
@@ -414,6 +432,7 @@ export class WalletService {
   static readonly StakeInfo: WalletServiceStakeInfo;
   static readonly BlockInfo: WalletServiceBlockInfo;
   static readonly BestBlock: WalletServiceBestBlock;
+  static readonly Spender: WalletServiceSpender;
   static readonly TransactionNotifications: WalletServiceTransactionNotifications;
   static readonly AccountNotifications: WalletServiceAccountNotifications;
   static readonly ConfirmationNotifications: WalletServiceConfirmationNotifications;
@@ -440,6 +459,7 @@ export class WalletService {
   static readonly ValidateAddress: WalletServiceValidateAddress;
   static readonly CommittedTickets: WalletServiceCommittedTickets;
   static readonly SweepAccount: WalletServiceSweepAccount;
+  static readonly SignHashes: WalletServiceSignHashes;
 }
 
 type WalletLoaderServiceWalletExists = {
@@ -524,6 +544,20 @@ export class WalletLoaderService {
   static readonly SpvSync: WalletLoaderServiceSpvSync;
   static readonly RpcSync: WalletLoaderServiceRpcSync;
   static readonly RescanPoint: WalletLoaderServiceRescanPoint;
+}
+
+type AccountMixerServiceRunAccountMixer = {
+  readonly methodName: string;
+  readonly service: typeof AccountMixerService;
+  readonly requestStream: false;
+  readonly responseStream: true;
+  readonly requestType: typeof api_pb.RunAccountMixerRequest;
+  readonly responseType: typeof api_pb.RunAccountMixerResponse;
+};
+
+export class AccountMixerService {
+  static readonly serviceName: string;
+  static readonly RunAccountMixer: AccountMixerServiceRunAccountMixer;
 }
 
 type TicketBuyerV2ServiceRunTicketBuyer = {
@@ -929,6 +963,15 @@ export class WalletServiceClient {
     requestMessage: api_pb.BestBlockRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.BestBlockResponse|null) => void
   ): UnaryResponse;
+  spender(
+    requestMessage: api_pb.SpenderRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.SpenderResponse|null) => void
+  ): UnaryResponse;
+  spender(
+    requestMessage: api_pb.SpenderRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.SpenderResponse|null) => void
+  ): UnaryResponse;
   transactionNotifications(requestMessage: api_pb.TransactionNotificationsRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.TransactionNotificationsResponse>;
   accountNotifications(requestMessage: api_pb.AccountNotificationsRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.AccountNotificationsResponse>;
   confirmationNotifications(metadata?: grpc.Metadata): BidirectionalStream<api_pb.ConfirmationNotificationsRequest, api_pb.ConfirmationNotificationsResponse>;
@@ -1123,6 +1166,15 @@ export class WalletServiceClient {
     requestMessage: api_pb.SweepAccountRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.SweepAccountResponse|null) => void
   ): UnaryResponse;
+  signHashes(
+    requestMessage: api_pb.SignHashesRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.SignHashesResponse|null) => void
+  ): UnaryResponse;
+  signHashes(
+    requestMessage: api_pb.SignHashesRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.SignHashesResponse|null) => void
+  ): UnaryResponse;
 }
 
 export class WalletLoaderServiceClient {
@@ -1185,6 +1237,13 @@ export class WalletLoaderServiceClient {
     requestMessage: api_pb.RescanPointRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.RescanPointResponse|null) => void
   ): UnaryResponse;
+}
+
+export class AccountMixerServiceClient {
+  readonly serviceHost: string;
+
+  constructor(serviceHost: string, options?: grpc.RpcOptions);
+  runAccountMixer(requestMessage: api_pb.RunAccountMixerRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.RunAccountMixerResponse>;
 }
 
 export class TicketBuyerV2ServiceClient {

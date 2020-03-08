@@ -2191,6 +2191,9 @@ export class PurchaseTicketsRequest extends jspb.Message {
   getTicketFee(): number;
   setTicketFee(value: number): void;
 
+  getDontSignTx(): boolean;
+  setDontSignTx(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PurchaseTicketsRequest.AsObject;
   static toObject(includeInstance: boolean, msg: PurchaseTicketsRequest): PurchaseTicketsRequest.AsObject;
@@ -2214,6 +2217,7 @@ export namespace PurchaseTicketsRequest {
     expiry: number,
     txFee: number,
     ticketFee: number,
+    dontSignTx: boolean,
   }
 }
 
@@ -2224,6 +2228,18 @@ export class PurchaseTicketsResponse extends jspb.Message {
   getTicketHashesList_asB64(): Array<string>;
   setTicketHashesList(value: Array<Uint8Array | string>): void;
   addTicketHashes(value: Uint8Array | string, index?: number): Uint8Array | string;
+
+  clearTicketsList(): void;
+  getTicketsList(): Array<Uint8Array | string>;
+  getTicketsList_asU8(): Array<Uint8Array>;
+  getTicketsList_asB64(): Array<string>;
+  setTicketsList(value: Array<Uint8Array | string>): void;
+  addTickets(value: Uint8Array | string, index?: number): Uint8Array | string;
+
+  getSplitTx(): Uint8Array | string;
+  getSplitTx_asU8(): Uint8Array;
+  getSplitTx_asB64(): string;
+  setSplitTx(value: Uint8Array | string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PurchaseTicketsResponse.AsObject;
@@ -2238,6 +2254,8 @@ export class PurchaseTicketsResponse extends jspb.Message {
 export namespace PurchaseTicketsResponse {
   export type AsObject = {
     ticketHashesList: Array<Uint8Array | string>,
+    ticketsList: Array<Uint8Array | string>,
+    splitTx: Uint8Array | string,
   }
 }
 
@@ -3537,6 +3555,60 @@ export class RunTicketBuyerResponse extends jspb.Message {
 }
 
 export namespace RunTicketBuyerResponse {
+  export type AsObject = {
+  }
+}
+
+export class RunAccountMixerRequest extends jspb.Message {
+  getPassphrase(): Uint8Array | string;
+  getPassphrase_asU8(): Uint8Array;
+  getPassphrase_asB64(): string;
+  setPassphrase(value: Uint8Array | string): void;
+
+  getMixedAccount(): number;
+  setMixedAccount(value: number): void;
+
+  getMixedAccountBranch(): number;
+  setMixedAccountBranch(value: number): void;
+
+  getChangeAccount(): number;
+  setChangeAccount(value: number): void;
+
+  getCsppServer(): string;
+  setCsppServer(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RunAccountMixerRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RunAccountMixerRequest): RunAccountMixerRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RunAccountMixerRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RunAccountMixerRequest;
+  static deserializeBinaryFromReader(message: RunAccountMixerRequest, reader: jspb.BinaryReader): RunAccountMixerRequest;
+}
+
+export namespace RunAccountMixerRequest {
+  export type AsObject = {
+    passphrase: Uint8Array | string,
+    mixedAccount: number,
+    mixedAccountBranch: number,
+    changeAccount: number,
+    csppServer: string,
+  }
+}
+
+export class RunAccountMixerResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RunAccountMixerResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: RunAccountMixerResponse): RunAccountMixerResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RunAccountMixerResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RunAccountMixerResponse;
+  static deserializeBinaryFromReader(message: RunAccountMixerResponse, reader: jspb.BinaryReader): RunAccountMixerResponse;
+}
+
+export namespace RunAccountMixerResponse {
   export type AsObject = {
   }
 }
@@ -4998,6 +5070,122 @@ export namespace SweepAccountResponse {
     totalPreviousOutputAmount: number,
     totalOutputAmount: number,
     estimatedSignedSize: number,
+  }
+}
+
+export class SignHashesRequest extends jspb.Message {
+  getPassphrase(): Uint8Array | string;
+  getPassphrase_asU8(): Uint8Array;
+  getPassphrase_asB64(): string;
+  setPassphrase(value: Uint8Array | string): void;
+
+  getAddress(): string;
+  setAddress(value: string): void;
+
+  clearHashesList(): void;
+  getHashesList(): Array<Uint8Array | string>;
+  getHashesList_asU8(): Array<Uint8Array>;
+  getHashesList_asB64(): Array<string>;
+  setHashesList(value: Array<Uint8Array | string>): void;
+  addHashes(value: Uint8Array | string, index?: number): Uint8Array | string;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SignHashesRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: SignHashesRequest): SignHashesRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SignHashesRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SignHashesRequest;
+  static deserializeBinaryFromReader(message: SignHashesRequest, reader: jspb.BinaryReader): SignHashesRequest;
+}
+
+export namespace SignHashesRequest {
+  export type AsObject = {
+    passphrase: Uint8Array | string,
+    address: string,
+    hashesList: Array<Uint8Array | string>,
+  }
+}
+
+export class SignHashesResponse extends jspb.Message {
+  getPublicKey(): Uint8Array | string;
+  getPublicKey_asU8(): Uint8Array;
+  getPublicKey_asB64(): string;
+  setPublicKey(value: Uint8Array | string): void;
+
+  clearSignaturesList(): void;
+  getSignaturesList(): Array<Uint8Array | string>;
+  getSignaturesList_asU8(): Array<Uint8Array>;
+  getSignaturesList_asB64(): Array<string>;
+  setSignaturesList(value: Array<Uint8Array | string>): void;
+  addSignatures(value: Uint8Array | string, index?: number): Uint8Array | string;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SignHashesResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: SignHashesResponse): SignHashesResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SignHashesResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SignHashesResponse;
+  static deserializeBinaryFromReader(message: SignHashesResponse, reader: jspb.BinaryReader): SignHashesResponse;
+}
+
+export namespace SignHashesResponse {
+  export type AsObject = {
+    publicKey: Uint8Array | string,
+    signaturesList: Array<Uint8Array | string>,
+  }
+}
+
+export class SpenderRequest extends jspb.Message {
+  getTransactionHash(): Uint8Array | string;
+  getTransactionHash_asU8(): Uint8Array;
+  getTransactionHash_asB64(): string;
+  setTransactionHash(value: Uint8Array | string): void;
+
+  getIndex(): number;
+  setIndex(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SpenderRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: SpenderRequest): SpenderRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SpenderRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SpenderRequest;
+  static deserializeBinaryFromReader(message: SpenderRequest, reader: jspb.BinaryReader): SpenderRequest;
+}
+
+export namespace SpenderRequest {
+  export type AsObject = {
+    transactionHash: Uint8Array | string,
+    index: number,
+  }
+}
+
+export class SpenderResponse extends jspb.Message {
+  getSpenderTransaction(): Uint8Array | string;
+  getSpenderTransaction_asU8(): Uint8Array;
+  getSpenderTransaction_asB64(): string;
+  setSpenderTransaction(value: Uint8Array | string): void;
+
+  getInputIndex(): number;
+  setInputIndex(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SpenderResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: SpenderResponse): SpenderResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SpenderResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SpenderResponse;
+  static deserializeBinaryFromReader(message: SpenderResponse, reader: jspb.BinaryReader): SpenderResponse;
+}
+
+export namespace SpenderResponse {
+  export type AsObject = {
+    spenderTransaction: Uint8Array | string,
+    inputIndex: number,
   }
 }
 
