@@ -22,9 +22,9 @@ class AgendasComponent extends React.Component<Props, InternalState> {
 				</Card.Header>
 				<Card.Body>
 					{this.props.agendas.getAgendasList().map((agenda) =>
-						<div>
+						<div key={agenda.getId()}>
 							<h4>{agenda.getId()}</h4>
-							<Row key={agenda.getId()}>
+							<Row>
 								<Col sm={6}>
 									<p>{agenda.getDescription()}</p>
 									<p>
@@ -35,7 +35,7 @@ class AgendasComponent extends React.Component<Props, InternalState> {
 								</Col>
 								<Col sm={6}>
 									<p>My voting preference</p>
-									<VoteChoices agenda={agenda}/>
+									<VoteChoices agenda={agenda} />
 								</Col>
 							</Row>
 						</div>
@@ -44,7 +44,7 @@ class AgendasComponent extends React.Component<Props, InternalState> {
 			</Card>
 		)
 	}
-	
+
 	componentDidMount() {
 		this.props.loadAgendasAttempt()
 	}

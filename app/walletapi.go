@@ -164,6 +164,45 @@ func getAgendas() (r gui.LorcaMessage) {
 	return r
 }
 
+func getVoteChoices() (r gui.LorcaMessage) {
+	request := &pb.VoteChoicesRequest{}
+	response, err := votingServiceClient.VoteChoices(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	return r
+}
+
+func setVoteChoices(agendaID string, choiceID string) (r gui.LorcaMessage) {
+	request := &pb.SetVoteChoicesRequest{
+		Choices: []*pb.SetVoteChoicesRequest_Choice{
+			&pb.SetVoteChoicesRequest_Choice{
+				AgendaId: agendaID,
+				ChoiceId: choiceID,
+			},
+		},
+	}
+	response, err := votingServiceClient.SetVoteChoices(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	return r
+}
+
 func getBestBlock() (r gui.LorcaMessage) {
 	request := &pb.BestBlockRequest{}
 	response, err := walletServiceClient.BestBlock(context.Background(), request)
@@ -260,22 +299,6 @@ func getTransactions(
 		}
 		r.APayload = append(r.APayload, b)
 	}
-}
-
-func getVoteChoices() (r gui.LorcaMessage) {
-	request := &pb.VoteChoicesRequest{}
-	response, err := votingServiceClient.VoteChoices(context.Background(), request)
-	if err != nil {
-		fmt.Println(err)
-		r.Err = err
-		return r
-	}
-	r.Payload, err = proto.Marshal(response)
-	if err != nil {
-		r.Err = err
-		return r
-	}
-	return r
 }
 
 func doPing() (r gui.LorcaMessage) {
@@ -598,6 +621,7 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__GetNetwork", getNetwork)
 	ui.Bind("walletrpc__GetBestBlock", getBestBlock)
 	ui.Bind("walletrpc__GetVoteChoices", getVoteChoices)
+	ui.Bind("walletrpc__SetVoteChoices", setVoteChoices)
 	ui.Bind("walletrpc__GetAgendas", getAgendas)
 	ui.Bind("walletrpc__GetBalance", getBalance)
 	ui.Bind("walletrpc__GetAccounts", getAccounts)

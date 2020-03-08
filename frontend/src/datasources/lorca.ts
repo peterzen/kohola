@@ -18,7 +18,8 @@ import {
 	PurchaseTicketsResponse,
 	NextAccountResponse,
 	RenameAccountResponse,
-	ValidateAddressResponse
+	ValidateAddressResponse,
+	SetVoteChoicesResponse,
 } from '../proto/api_pb';
 import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from '../models';
 import { rawToHex } from '../helpers/byteActions';
@@ -35,7 +36,7 @@ export function endpointFactory<T>(methodName: string, responseType: T) {
 				msg: "Invalid methodname: window." + methodName + " does not exist"
 			}
 		}
-		
+
 		let r = null
 		if (request != undefined) {
 			r = (request as any).serializeBinary()
@@ -65,7 +66,7 @@ const LorcaBackend = {
 				const td = GetTicketsResponse.deserializeBinary(s)
 				const ticket = td.getTicket()
 				if (ticket == undefined) {
-					return 
+					return
 				}
 				tix.push(new Ticket(ticket, td.getBlock()))
 			})
@@ -202,6 +203,20 @@ const LorcaBackend = {
 			throw e
 			// console.error("Serialization error", e)
 			// return e
+		}
+	},
+
+	setVoteChoices: async (agendaId: string, choiceId: string) => {
+		try {
+			const r = await w.walletrpc__SetVoteChoices(agendaId, choiceId)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return SetVoteChoicesResponse.deserializeBinary(r.payload)
+
+		} catch (e) {
+			console.error("Serialization error", e)
+			throw e
 		}
 	},
 
