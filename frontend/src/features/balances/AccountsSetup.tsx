@@ -127,14 +127,16 @@ class AccountsSetup extends React.Component<Props, InternalState> {
 
 				<Row key="header">
 					<Col xs={6}></Col>
-					<Col xs={3}><strong>Balance</strong></Col>
-					<Col xs={3}><strong>Hidden?</strong></Col>
+					<Col xs={2}><strong>Balance</strong></Col>
+					<Col xs={2}><strong>Voting auth</strong></Col>
+					<Col xs={2}><strong>Hidden?</strong></Col>
 				</Row>
 
 				{accounts.map(account => {
 					const accountNumber = account.getAccountNumber()
 					const hiddenPrefValue = this.props.accountPrefs[accountNumber] ? this.props.accountPrefs[accountNumber].getIsHidden() : false
-					const accountBalance = this.props.accountBalances[accountNumber] ? this.props.accountBalances[accountNumber].getTotal() : 0
+					const totalBalance = this.props.accountBalances[accountNumber] ? this.props.accountBalances[accountNumber].getTotal() : 0
+					const votingAuthBalance = this.props.accountBalances[accountNumber] ? this.props.accountBalances[accountNumber].getVotingAuthority() : 0
 					return (
 						<Row key={`account-row-${accountNumber}`}>
 							<Col xs={6}>
@@ -153,10 +155,13 @@ class AccountsSetup extends React.Component<Props, InternalState> {
 										onEditComplete={(value) => this.props.doRenameAccountAttempt(account, value)} />
 								)}
 							</Col>
-							<Col xs={3}>
-								<Amount amount={accountBalance} showCurrency />
+							<Col xs={2}>
+								<Amount amount={totalBalance} showCurrency />
 							</Col>
-							<Col xs={3}>
+							<Col xs={2}>
+								<Amount amount={votingAuthBalance} showCurrency />
+							</Col>
+							<Col xs={2}>
 								<Form.Check
 									checked={hiddenPrefValue}
 									type="switch"
