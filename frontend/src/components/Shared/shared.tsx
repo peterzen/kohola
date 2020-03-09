@@ -224,6 +224,7 @@ export class CopyToClipboardText extends React.Component<ICopyToClipboardButtonP
 interface IAccountSelectProps {
 	name: string
 	value: number
+	tabIndex?: number
 	onChange: (e: React.FormEvent<HTMLInputElement>) => void
 }
 
@@ -237,11 +238,12 @@ const _AccountSelector = (props: IAccountSelectProps & OwnProps) => {
 
 	return (
 		<Form.Control
-			tabIndex={0}
+			tabIndex={props.tabIndex}
 			name={props.name}
 			defaultValue={props.value && props.value.toString()}
 			onChange={props.onChange}
-			as="select">
+			as="select"
+			>
 			<option value={-1}>Choose account</option>
 			{_.map(props.accounts, (a, n) => {
 				if (isHidden(a) == true) return null
