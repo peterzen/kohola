@@ -11,7 +11,7 @@ import { rawToHex } from "../helpers/byteActions";
 const w = (window as any)
 
 const AppBackend = {
-	getAppConfig: endpointFactory("walletgui__GetConfig", AppConfiguration),
+	fetchAppConfig: endpointFactory("walletgui__GetConfig", AppConfiguration),
 
 	setAppConfig: async function (appConfig: AppConfiguration) {
 
@@ -20,7 +20,6 @@ const AppBackend = {
 
 		// TODO implement config file encryption with passphrase 
 		// request.setPassphrase(passphrase)
-
 		const ser = rawToHex(request.serializeBinary().buffer)
 		try {
 			const r = await w.walletgui__SetConfig(ser)

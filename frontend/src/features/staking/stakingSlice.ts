@@ -2,7 +2,7 @@ import _ from "lodash";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 
 import { AppError, AppThunk, IApplicationState } from "../../store/types";
-import { PurchaseTicketsResponse, PurchaseTicketsRequest, CommittedTicketsResponse, VoteChoicesResponse, SetVoteChoicesResponse } from "../../proto/api_pb";
+import { PurchaseTicketsResponse, PurchaseTicketsRequest, CommittedTicketsResponse, VoteChoicesResponse, SetVoteChoicesResponse, RunTicketBuyerResponse, RunTicketBuyerRequest } from "../../proto/api_pb";
 import LorcaBackend from "../../datasources/lorca";
 import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../models";
 
@@ -61,9 +61,16 @@ export interface IPurchaseTicketsState {
 
 // CommittedTickets
 export interface ICommittedTicketsState {
-	readonly committedTicketsAttempting: boolean,
+	readonly committedTicketsAttempting: boolean
 	readonly committedTicketsResponse: CommittedTicketsResponse | null
 	readonly errorCommittedTickets: AppError | null
+}
+
+// RunTicketBuyer
+export interface IRunTicketbuyerState {
+	readonly runTicketBuyerAttempting: boolean
+	readonly runTicketBuyerResponse: RunTicketBuyerResponse | null
+	readonly runTicketBuyerError: AppError | null
 }
 
 export const initialState: ITicketsState &
@@ -73,7 +80,8 @@ export const initialState: ITicketsState &
 	ISetVoteChoicesState &
 	IStakeInfoState &
 	IPurchaseTicketsState &
-	ICommittedTicketsState = {
+	ICommittedTicketsState &
+	IRunTicketbuyerState = {
 
 	// GetTickets
 	tickets: [],
@@ -117,6 +125,11 @@ export const initialState: ITicketsState &
 	committedTicketsAttempting: false,
 	committedTicketsResponse: null,
 	errorCommittedTickets: null,
+
+	// RunTicketBuyer
+	runTicketBuyerAttempting: false,
+	runTicketBuyerResponse: null,
+	runTicketBuyerError: null,
 }
 
 const stakingSlice = createSlice({
@@ -243,6 +256,23 @@ const stakingSlice = createSlice({
 			state.isPurchaseTicketAttempting = false
 		},
 
+		// RunTicketBuyer
+		runTicketBuyerAttempt(state) {
+			state.runTicketBuyerAttempting = true
+			state.runTicketBuyerResponse = null
+			state.runTicketBuyerError = null
+		},
+		runTicketBuyerFailed(state, action: PayloadAction<AppError>) {
+			state.runTicketBuyerAttempting = false
+			state.runTicketBuyerResponse = null
+			state.runTicketBuyerError = action.payload
+		},
+		runTicketBuyerSuccess(state, action: PayloadAction<RunTicketBuyerResponse>) {
+			state.runTicketBuyerAttempting = false
+			state.runTicketBuyerResponse = action.payload
+			state.runTicketBuyerError = null
+		},
+
 		// CommittedTickets
 		getCommittedTicketsAttempt(state) {
 			state.errorCommittedTickets = null
@@ -300,6 +330,11 @@ export const {
 	purchaseTicketFailed,
 	purchaseTicketSuccess,
 	purchaseTicketCleanup,
+
+	// RunTicketBuyer
+	runTicketBuyerAttempt,
+	runTicketBuyerFailed,
+	runTicketBuyerSuccess,
 
 	// CommittedTickets
 	getCommittedTicketsAttempt,
@@ -451,6 +486,26 @@ export const purchaseTicket: ActionCreator<any> = (request: PurchaseTicketsReque
 			}, 3000)
 		} catch (error) {
 			dispatch(purchaseTicketFailed(error))
+		}
+	}
+}
+
+
+export const runTicketBuyer: ActionCreator<any> = (request: RunTicketBuyerRequest): AppThunk => {
+	return async (dispatch, getState) => {
+
+		const { runTicketBuyerAttempting } = getState().staking;
+		if (runTicketBuyerAttempting) {
+			return
+		}
+
+		dispatch(runTicketBuyerAttempt())
+		try {
+			const resp = await LorcaBackend.runTicketBuyer(request)
+			debugger
+			dispatch(runTicketBuyerSuccess(resp))
+		} catch (error) {
+			dispatch(runTicketBuyerFailed(error))
 		}
 	}
 }

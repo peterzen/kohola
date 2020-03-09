@@ -60,7 +60,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 								</Row>
 								<Form.Group >
 									<AccountSelector
-										value={-1}
+										defaultValue={-1}
 										name="account_select"
 										onChange={_.bind(this.handleChange, this)}
 									/>

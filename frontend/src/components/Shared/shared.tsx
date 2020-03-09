@@ -22,7 +22,7 @@ import {
 import { rawHashToHex } from "../../helpers/byteActions";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { ATOMS_DIVISOR } from "../../constants";
-import { getAccounts } from "../../features/balances/accountSlice";
+import { getAccounts, getVisibleAccounts } from "../../features/balances/accountSlice";
 import { IIndexedAccountPrefs, getAccountPrefs } from "../../features/appconfiguration/settingsSlice";
 import { getWalletBalances } from "../../features/balances/walletBalanceSlice";
 import { IApplicationState } from "../../store/types";
@@ -223,36 +223,38 @@ export class CopyToClipboardText extends React.Component<ICopyToClipboardButtonP
 
 interface IAccountSelectProps {
 	name: string
-	value: number
 	tabIndex?: number
+	enableAccountCreate?: boolean
+	defaultValue:number
 	onChange: (e: React.FormEvent<HTMLInputElement>) => void
 }
 
-const _AccountSelector = (props: IAccountSelectProps & OwnProps) => {
-
-	const isHidden = (account: WalletAccount): boolean => {
-		const accountPref = props.accountPrefs[account.getAccountNumber()]
-		if (accountPref == undefined) return false
-		return accountPref.getIsHidden()
-	}
-
-	return (
-		<Form.Control
-			tabIndex={props.tabIndex}
-			name={props.name}
-			defaultValue={props.value && props.value.toString()}
-			onChange={props.onChange}
-			as="select"
+class _AccountSelector extends React.Component<IAccountSelectProps & OwnProps>{
+	render() {
+		const props = this.props
+		return (
+			<Form.Control
+				tabIndex={props.tabIndex}
+				name={props.name}
+				defaultValue={props.defaultValue}
+				onChange={props.onChange}
+				as="select"
 			>
-			<option value={-1}>Choose account</option>
-			{_.map(props.accounts, (a, n) => {
-				if (isHidden(a) == true) return null
-				return (
-					<option key={n} value={a.getAccountNumber()}>{a.getAccountName()} ({props.balances[a.getAccountNumber()] && props.balances[a.getAccountNumber()].getSpendable() / ATOMS_DIVISOR} DCR)</option>
-				)
-			})}
-		</Form.Control>
-	)
+				<option value={-1}>Choose account</option>
+				{_.map(props.accounts, (a, n) => {
+					return (
+						<option key={n} value={a.getAccountNumber()}>{a.getAccountName()} ({props.balances[a.getAccountNumber()] && props.balances[a.getAccountNumber()].getSpendable() / ATOMS_DIVISOR} DCR)</option>
+					)
+				})}
+				{props.enableAccountCreate && (
+					<>
+						<optgroup label="---------------"></optgroup>
+						<option value="-2">Add account...</option>
+					</>
+				)}
+			</Form.Control>
+		)
+	}
 }
 
 interface OwnProps {
@@ -264,7 +266,7 @@ interface OwnProps {
 
 const mapStateToProps = (state: IApplicationState) => {
 	return {
-		accounts: getAccounts(state),
+		accounts: getVisibleAccounts(state),
 		balances: getWalletBalances(state),
 		accountPrefs: getAccountPrefs(state)
 	};

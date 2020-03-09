@@ -1,11 +1,12 @@
 import _ from 'lodash';
 
 import { createSlice, PayloadAction, ActionCreator, Dispatch } from '@reduxjs/toolkit'
-import { AppError, IGetState, IApplicationState } from '../../store/types';
+import { AppError, IGetState, IApplicationState, AppDispatch } from '../../store/types';
 import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences } from '../../proto/dcrwalletgui_pb';
 import AppBackend from '../../datasources/appbackend';
 import { getConnectedEndpoint, getConnectedEndpointId } from '../app/appSlice';
 import { updateObjectInList, deleteObjectFromList } from '../../helpers/protobufHelpers';
+import { RunAccountMixerRequest, RunTicketBuyerRequest } from '../../proto/api_pb';
 
 
 export interface IAppConfigurationState {
@@ -70,6 +71,12 @@ const settingsSlice = createSlice({
 			const ep = action.payload
 			state.appConfig.setDefaultWalletEndpointId(ep.getId())
 		},
+		setMixerRequestDefaults(state, action: PayloadAction<RunAccountMixerRequest>) {
+			state.appConfig.setAccountMixerRequestDefaults(action.payload)
+		},
+		setAutobuyerRequestDefaults(state, action: PayloadAction<RunTicketBuyerRequest>) {
+			state.appConfig.setRunAutoBuyerRequestDefaults(action.payload)
+		},
 	}
 })
 
@@ -84,6 +91,10 @@ export const {
 	updateEndpoint,
 	deleteEndpoint,
 	setDefaultEndpoint,
+
+	setMixerRequestDefaults,
+	setAutobuyerRequestDefaults,
+
 } = settingsSlice.actions
 
 export default settingsSlice.reducer
@@ -92,7 +103,7 @@ export const getConfiguration: ActionCreator<any> = () => {
 
 	return async (dispatch: Dispatch) => {
 		try {
-			const cfg = await AppBackend.getAppConfig()
+			const cfg = await AppBackend.fetchAppConfig()
 			dispatch(getConfigSuccess(cfg))
 		}
 		catch (error) {
@@ -116,7 +127,6 @@ export const saveConfigurationAttempt: ActionCreator<any> = () => {
 			const response = await AppBackend.setAppConfig(cfg)
 			dispatch(setConfigSuccess(response))
 			// await dispatch(getConfiguration())
-			// await dispatch(initializeData())
 		}
 		catch (error) {
 			dispatch(setConfigFailed(error))
@@ -133,6 +143,13 @@ export const updateAccountPreference: ActionCreator<any> = (walletEndpointId: st
 			walletEndpointId: walletEndpointId,
 			preference: pref
 		}))
+		dispatch(saveConfigurationAttempt())
+	}
+}
+
+export const saveTicketbuyerRequestDefaults: ActionCreator<any> = (request: RunTicketBuyerRequest) => {
+	return async (dispatch: Dispatch) => {
+		dispatch(setAutobuyerRequestDefaults(request))
 		dispatch(saveConfigurationAttempt())
 	}
 }
@@ -160,3 +177,4 @@ export const getWalletPrefs = (appConfigurationState: IAppConfigurationState, wa
 	return pref
 }
 
+export const getAppConfig = (state: IApplicationState) => state.appconfiguration.appConfig

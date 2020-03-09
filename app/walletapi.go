@@ -26,9 +26,10 @@ var (
 	gRPCConnection *grpc.ClientConn  = nil
 	rpcClient      *rpcclient.Client = nil
 
-	walletServiceClient pb.WalletServiceClient
-	votingServiceClient pb.VotingServiceClient
-	agendaServiceClient pb.AgendaServiceClient
+	walletServiceClient        pb.WalletServiceClient
+	votingServiceClient        pb.VotingServiceClient
+	agendaServiceClient        pb.AgendaServiceClient
+	tickerbuyerv2ServiceClient pb.TicketBuyerV2ServiceClient
 
 	txNtfnContext           context.Context
 	accountNtfnContext      context.Context
@@ -57,6 +58,7 @@ func initFrontendGRPC(endpointCfg *gui.GRPCEndpoint) error {
 	walletServiceClient = walletrpc.NewWalletServiceClient(gRPCConnection)
 	votingServiceClient = walletrpc.NewVotingServiceClient(gRPCConnection)
 	agendaServiceClient = walletrpc.NewAgendaServiceClient(gRPCConnection)
+	tickerbuyerv2ServiceClient = walletrpc.NewTicketBuyerV2ServiceClient(gRPCConnection)
 	return nil
 }
 
@@ -458,6 +460,34 @@ func purchaseTickets(requestAsHex string) (r gui.LorcaMessage) {
 	return r
 }
 
+func runTicketbuyer(requestAsHex string) (r gui.LorcaMessage) {
+	request := &pb.RunTicketBuyerRequest{}
+	bytes, err := hex.DecodeString(requestAsHex)
+	err = proto.Unmarshal(bytes, request)
+	stream, err := tickerbuyerv2ServiceClient.RunTicketBuyer(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.APayload = make([][]byte, 0)
+	for {
+		runticketbuyerResponse, err := stream.Recv()
+		if err == io.EOF {
+			return r
+		}
+		if err != nil {
+			log.Fatalf("Failed to receive a RunTickerBuyerResponse: %#v", err)
+		}
+		b, err := proto.Marshal(runticketbuyerResponse)
+		if err != nil {
+			r.Err = err
+			return r
+		}
+		r.APayload = append(r.APayload, b)
+	}
+}
+
 /*
 uint32 account: Account number containing the keys controlling the output set to query.
 
@@ -637,6 +667,7 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__SignTransaction", signTransaction)
 	ui.Bind("walletrpc__PublishTransaction", publishTransaction)
 	ui.Bind("walletrpc__PurchaseTickets", purchaseTickets)
+	ui.Bind("walletrpc__RunTicketBuyer", runTicketbuyer)
 
 	ui.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) (r gui.LorcaMessage) {
 		return connectEndpoint(endpointID, ui)

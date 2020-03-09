@@ -20,6 +20,8 @@ import {
 	RenameAccountResponse,
 	ValidateAddressResponse,
 	SetVoteChoicesResponse,
+	RunTicketBuyerRequest,
+	RunTicketBuyerResponse,
 } from '../proto/api_pb';
 import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from '../models';
 import { rawToHex } from '../helpers/byteActions';
@@ -203,6 +205,20 @@ const LorcaBackend = {
 			throw e
 			// console.error("Serialization error", e)
 			// return e
+		}
+	},
+
+	runTicketBuyer: async (request: RunTicketBuyerRequest) => {
+		try {
+			const ser = rawToHex(request.serializeBinary().buffer)
+			const r = await w.walletrpc__RunTicketBuyer(ser)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return RunTicketBuyerResponse.deserializeBinary(r.payload)
+
+		} catch (e) {
+			throw e
 		}
 	},
 
