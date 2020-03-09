@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from "react-redux";
-import { withRouter, RouteChildrenProps } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import { Row, Col, Tabs, Tab } from 'react-bootstrap';
 // @ts-ignore
@@ -13,67 +13,62 @@ import PurchaseTicketForm from '../features/staking/PurchaseTicket/SimplePurchas
 import TicketBuyerComponent from '../features/staking/Ticketbuyer/TicketBuyerComponent';
 import TicketPriceComponent from '../features/staking/TicketPriceComponent';
 import TicketsOverviewContainer from '../features/staking/TicketsOverviewContainer';
+import { loadTicketsAttempt } from '../features/staking/stakingSlice';
 
-class StakingContainer extends React.Component<Props, InternalState> {
-	constructor(props: Props) {
-		super(props)
-		this.state = {
-			activeTab: "overview"
-		}
-	}
-
+class StakingContainer extends React.Component<Props> {
 	render() {
 		return (
-			<div>
-				<Tabs defaultActiveKey="overview" id="purchaseticketsettings-tabs"
-					onSelect={(tab: string) => this.handleSelect(tab)}>
-					<Tab eventKey="overview" title="Overview">
-						{this.state.activeTab == "overview" && (
-							<div>
-								<Fade fade>
-									<StakeInfoComponent />
-								</Fade>
-								<Row className="mt-3">
-									<Col>
-										<Fade fade><TicketsOverviewContainer /></Fade>
-									</Col>
-									<Col>
-										<TicketPriceComponent />
-										<div className="mt-3" />
-										<PurchaseTicketForm />
-										<div className="mt-3" />
-										<StakeStats />
-									</Col>
-								</Row>
-							</div>
-						)}
-					</Tab>
-					<Tab eventKey="ticketbuyer" title="Tickerbuyer">
-						{this.state.activeTab == "ticketbuyer" && <TicketBuyerComponent />}
-					</Tab>
-					<Tab eventKey="voting" title="Voting">
-						{this.state.activeTab == "voting" && <AgendasComponent />}
-					</Tab>
-				</Tabs>
-			</div>
+			<Tabs
+				defaultActiveKey="overview" id="purchaseticketsettings-tabs"
+				mountOnEnter={true}
+				unmountOnExit={true}
+			>
+				<Tab eventKey="overview" title="Overview">
+					<Fade fade>
+						<StakeInfoComponent />
+					</Fade>
+					<Row className="mt-3">
+						<Col>
+							<Fade fade>
+								<TicketsOverviewContainer />
+							</Fade>
+						</Col>
+						<Col>
+							<TicketPriceComponent />
+							<div className="mt-3" />
+							<PurchaseTicketForm />
+							<div className="mt-3" />
+							<StakeStats />
+						</Col>
+					</Row>
+				</Tab>
+				<Tab eventKey="ticketbuyer" title="Tickerbuyer">
+					<TicketBuyerComponent />
+				</Tab>
+				<Tab eventKey="voting" title="Voting">
+					<AgendasComponent />
+				</Tab>
+			</Tabs>
 		)
 	}
-	handleSelect(currentTab: string) {
-		this.setState({
-			activeTab: currentTab
-		})
+	componentDidMount() {
+		// this.props.loadTicketsAttempt()
 	}
 }
 
-type Props = {}
-
-interface InternalState {
-	activeTab: string
+interface DispatchProps {
+	loadTicketsAttempt: typeof loadTicketsAttempt
 }
+
+type Props = DispatchProps
 
 const mapStateToProps = () => {
 	return {
 	}
 }
 
-export default withRouter(connect(mapStateToProps)(StakingContainer));
+const mapDispatchToProps = {
+	loadTicketsAttempt,
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StakingContainer));

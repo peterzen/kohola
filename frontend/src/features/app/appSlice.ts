@@ -111,7 +111,7 @@ export const initializeStore: ActionCreator<any> = () => {
 		batch(() => {
 			// dispatch(loadTransactionsAttempt())
 			dispatch(loadWalletBalance())
-			// dispatch(loadTicketsAttempt())
+			dispatch(loadTicketsAttempt())
 		})
 
 		// dispatch(pingAttempt())

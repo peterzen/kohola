@@ -8,12 +8,11 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
 import { Ticket } from '../../models';
-import { getTickets, loadTicketsAttempt } from './stakingSlice';
+import { getTickets } from './stakingSlice';
 import { TicketStatus } from '../../constants';
 import TicketsTable from './TicketsTable';
 import TicketDetailsModal from './TicketDetailsComponent';
 import { IApplicationState } from "../../store/types";
-
 
 
 interface ITicketsListFilterDropdownProps {
@@ -137,12 +136,7 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
 		})
 	}
 
-	componentDidMount() {
-		setTimeout(() => {
-			this.props.loadTicketsAttempt()
-			
-		}, 1000)
-	}
+
 }
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
@@ -156,7 +150,6 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-	loadTicketsAttempt: typeof loadTicketsAttempt
 }
 
 interface InternalState {
@@ -167,8 +160,6 @@ interface InternalState {
 
 type Props = OwnProps & DispatchProps
 
-const mapDispatchToProps = {
-	loadTicketsAttempt,
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketsOverviewContainer)
+
+export default connect(mapStateToProps)(TicketsOverviewContainer)
