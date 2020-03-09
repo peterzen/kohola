@@ -125,3 +125,11 @@ fieldset[disabled] {
 form.in-progress {
 	opacity: 0.5;
 }
+
+.main-content {
+	opacity: 0.5;
+}
+
+main.endpoint-connected .main-content {
+	opacity: 1;
+}
