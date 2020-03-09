@@ -21,7 +21,7 @@ class StakingContainer extends React.Component<Props> {
 			<Tabs
 				defaultActiveKey="overview" id="purchaseticketsettings-tabs"
 				mountOnEnter={true}
-				unmountOnExit={true}
+				unmountOnExit={false}
 			>
 				<Tab eventKey="overview" title="Overview">
 					<Fade fade>
