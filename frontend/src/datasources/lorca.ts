@@ -208,15 +208,38 @@ const LorcaBackend = {
 		}
 	},
 
-	runTicketBuyer: async (request: RunTicketBuyerRequest) => {
+	runTicketBuyer: async (
+		request: RunTicketBuyerRequest,
+		onError: (error: any) => void,
+		onDone: () => void,
+		onStop: () => void
+	) => {
+
 		try {
 			const ser = rawToHex(request.serializeBinary().buffer)
-			const r = await w.walletrpc__RunTicketBuyer(ser)
-			if (r.error != undefined) {
-				throw r.error
-			}
-			return RunTicketBuyerResponse.deserializeBinary(r.payload)
 
+			const onErrorFnName = "lorcareceiver__RunTicketBuyer_onError"
+			const onDoneFnName = "lorcareceiver__RunTicketBuyer_onDone"
+			const onStopFnName = "lorcareceiver__RunTicketBuyer_onStop"
+			w[onErrorFnName] = onError
+			w[onDoneFnName] = onDone
+			w[onStopFnName] = onStop
+
+			const r = await w.walletrpc__RunTicketBuyer(
+				ser,
+				"window." + onErrorFnName,
+				"window." + onDoneFnName,
+				"window." + onStopFnName
+			)
+
+		} catch (e) {
+			throw e
+		}
+
+	},
+	stopTicketBuyer: async () => {
+		try {
+			await w.walletrpc__StopTicketBuyer()
 		} catch (e) {
 			throw e
 		}

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package dcrwalletgui;
 
+//import "api.proto";
+
 service AppConfig {
   rpc GetConfig(GetConfigRequest) returns (AppConfiguration);
   rpc SetConfig(SetConfigRequest) returns (SetConfigResponse);
@@ -63,12 +65,34 @@ message WalletPreferences {
   repeated AccountPreference account_prefs = 2;
 }
 
+message RunTicketBuyerRequest {
+	bytes passphrase = 1;
+	uint32 account = 2;
+	uint32 voting_account = 3;
+	int64 balance_to_maintain = 4;
+	string voting_address = 5;
+	string pool_address = 6;
+	double pool_fees = 7;
+}
+
+
+message RunAccountMixerRequest {
+	bytes passphrase = 1;
+	uint32 mixed_account = 2;
+	uint32 mixed_account_branch = 3;
+	uint32 change_account = 4;
+	string cspp_server = 5;
+}
+
 message AppConfiguration {
   RPCEndpoint dcrd_endpoint = 1;
   repeated GRPCEndpoint wallet_endpoints = 2;
   string default_wallet_endpoint_id = 3;
   repeated WalletPreferences wallet_preferences = 4;
+  RunAccountMixerRequest account_mixer_request_defaults = 5;
+  RunTicketBuyerRequest run_auto_buyer_request_defaults = 6;
 }
+
 
 service NetworkService {
   rpc CheckConnection(CheckConnectionRequest) returns (CheckConnectionResponse);

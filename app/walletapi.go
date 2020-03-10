@@ -470,31 +470,52 @@ func purchaseTickets(requestAsHex string) (r gui.LorcaMessage) {
 	return r
 }
 
-func runTicketbuyer(requestAsHex string) (r gui.LorcaMessage) {
+var tbCtx context.Context
+var tbCtxCancel context.CancelFunc
+
+func runTicketbuyer(requestAsHex string, onErrorFn func(error), onDoneFn func(), onStopFn func()) {
 	request := &pb.RunTicketBuyerRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
-	stream, err := tickerbuyerv2ServiceClient.RunTicketBuyer(context.Background(), request)
 	if err != nil {
 		fmt.Println(err)
-		r.Err = err
-		return r
+		onErrorFn(err)
 	}
-	r.APayload = make([][]byte, 0)
+	tbCtx, tbCtxCancel = context.WithCancel(ctx)
+
+	stream, err := tickerbuyerv2ServiceClient.RunTicketBuyer(tbCtx, request)
+	if err != nil {
+		fmt.Println(err)
+		onErrorFn(err)
+	}
+
+	var tbErr error
+
+	go func() {
 		for {
-		runticketbuyerResponse, err := stream.Recv()
-		if err == io.EOF {
-			return r
+			_, tbErr = stream.Recv()
+			if tbErr == io.EOF {
+				onStopFn()
+				return
+			}
+			if tbErr != nil {
+				log.Printf("runTicketbuyer: %#v", tbErr)
+				onErrorFn(tbErr)
+				return
+			}
 		}
-		if err != nil {
-			log.Fatalf("Failed to receive a RunTickerBuyerResponse: %#v", err)
+	}()
+
+	time.Sleep(2 * time.Second)
+
+	if tbErr == nil {
+		onDoneFn()
 	}
-		b, err := proto.Marshal(runticketbuyerResponse)
-		if err != nil {
-			r.Err = err
-			return r
 }
-		r.APayload = append(r.APayload, b)
+
+func stopTicketbuyer() {
+	if tbCtxCancel != nil {
+		tbCtxCancel()
 	}
 }
 
@@ -675,7 +696,25 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__SignTransaction", signTransaction)
 	ui.Bind("walletrpc__PublishTransaction", publishTransaction)
 	ui.Bind("walletrpc__PurchaseTickets", purchaseTickets)
-	ui.Bind("walletrpc__RunTicketBuyer", runTicketbuyer)
+	ui.Bind("walletrpc__RunTicketBuyer", func(requestAsHex string, onErrorFnName string, onDoneFnName string, onStopFnName string) {
+		onErrorFn := func(err error) {
+			js := fmt.Sprintf("%s('%s')", onErrorFnName, err.Error())
+			ui.Eval(js)
+		}
+		onDoneFn := func() {
+			js := fmt.Sprintf("%s()", onDoneFnName)
+			ui.Eval(js)
+		}
+		onStopFn := func() {
+			js := fmt.Sprintf("%s()", onStopFnName)
+			ui.Eval(js)
+		}
+		runTicketbuyer(requestAsHex, onErrorFn, onDoneFn, onStopFn)
+	})
+
+	ui.Bind("walletrpc__StopTicketBuyer", func() {
+		stopTicketbuyer()
+	})
 
 	ui.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) (r gui.LorcaMessage) {
 		return connectEndpoint(endpointID, ui)

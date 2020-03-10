@@ -238,6 +238,90 @@ export namespace WalletPreferences {
   }
 }
 
+export class RunTicketBuyerRequest extends jspb.Message {
+  getPassphrase(): Uint8Array | string;
+  getPassphrase_asU8(): Uint8Array;
+  getPassphrase_asB64(): string;
+  setPassphrase(value: Uint8Array | string): void;
+
+  getAccount(): number;
+  setAccount(value: number): void;
+
+  getVotingAccount(): number;
+  setVotingAccount(value: number): void;
+
+  getBalanceToMaintain(): number;
+  setBalanceToMaintain(value: number): void;
+
+  getVotingAddress(): string;
+  setVotingAddress(value: string): void;
+
+  getPoolAddress(): string;
+  setPoolAddress(value: string): void;
+
+  getPoolFees(): number;
+  setPoolFees(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RunTicketBuyerRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RunTicketBuyerRequest): RunTicketBuyerRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RunTicketBuyerRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RunTicketBuyerRequest;
+  static deserializeBinaryFromReader(message: RunTicketBuyerRequest, reader: jspb.BinaryReader): RunTicketBuyerRequest;
+}
+
+export namespace RunTicketBuyerRequest {
+  export type AsObject = {
+    passphrase: Uint8Array | string,
+    account: number,
+    votingAccount: number,
+    balanceToMaintain: number,
+    votingAddress: string,
+    poolAddress: string,
+    poolFees: number,
+  }
+}
+
+export class RunAccountMixerRequest extends jspb.Message {
+  getPassphrase(): Uint8Array | string;
+  getPassphrase_asU8(): Uint8Array;
+  getPassphrase_asB64(): string;
+  setPassphrase(value: Uint8Array | string): void;
+
+  getMixedAccount(): number;
+  setMixedAccount(value: number): void;
+
+  getMixedAccountBranch(): number;
+  setMixedAccountBranch(value: number): void;
+
+  getChangeAccount(): number;
+  setChangeAccount(value: number): void;
+
+  getCsppServer(): string;
+  setCsppServer(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RunAccountMixerRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RunAccountMixerRequest): RunAccountMixerRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RunAccountMixerRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RunAccountMixerRequest;
+  static deserializeBinaryFromReader(message: RunAccountMixerRequest, reader: jspb.BinaryReader): RunAccountMixerRequest;
+}
+
+export namespace RunAccountMixerRequest {
+  export type AsObject = {
+    passphrase: Uint8Array | string,
+    mixedAccount: number,
+    mixedAccountBranch: number,
+    changeAccount: number,
+    csppServer: string,
+  }
+}
+
 export class AppConfiguration extends jspb.Message {
   hasDcrdEndpoint(): boolean;
   clearDcrdEndpoint(): void;
@@ -257,6 +341,16 @@ export class AppConfiguration extends jspb.Message {
   setWalletPreferencesList(value: Array<WalletPreferences>): void;
   addWalletPreferences(value?: WalletPreferences, index?: number): WalletPreferences;
 
+  hasAccountMixerRequestDefaults(): boolean;
+  clearAccountMixerRequestDefaults(): void;
+  getAccountMixerRequestDefaults(): RunAccountMixerRequest | undefined;
+  setAccountMixerRequestDefaults(value?: RunAccountMixerRequest): void;
+
+  hasRunAutoBuyerRequestDefaults(): boolean;
+  clearRunAutoBuyerRequestDefaults(): void;
+  getRunAutoBuyerRequestDefaults(): RunTicketBuyerRequest | undefined;
+  setRunAutoBuyerRequestDefaults(value?: RunTicketBuyerRequest): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AppConfiguration.AsObject;
   static toObject(includeInstance: boolean, msg: AppConfiguration): AppConfiguration.AsObject;
@@ -273,6 +367,8 @@ export namespace AppConfiguration {
     walletEndpointsList: Array<GRPCEndpoint.AsObject>,
     defaultWalletEndpointId: string,
     walletPreferencesList: Array<WalletPreferences.AsObject>,
+    accountMixerRequestDefaults?: RunAccountMixerRequest.AsObject,
+    runAutoBuyerRequestDefaults?: RunTicketBuyerRequest.AsObject,
   }
 }
 

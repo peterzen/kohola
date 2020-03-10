@@ -71,6 +71,8 @@ export interface IRunTicketbuyerState {
 	readonly runTicketBuyerAttempting: boolean
 	readonly runTicketBuyerResponse: RunTicketBuyerResponse | null
 	readonly runTicketBuyerError: AppError | null
+	readonly isTicketBuyerRunning: boolean
+	readonly stopTicketBuyerAttempting: boolean
 }
 
 export const initialState: ITicketsState &
@@ -130,6 +132,8 @@ export const initialState: ITicketsState &
 	runTicketBuyerAttempting: false,
 	runTicketBuyerResponse: null,
 	runTicketBuyerError: null,
+	isTicketBuyerRunning: false,
+	stopTicketBuyerAttempting: false,
 }
 
 const stakingSlice = createSlice({
@@ -261,16 +265,27 @@ const stakingSlice = createSlice({
 			state.runTicketBuyerAttempting = true
 			state.runTicketBuyerResponse = null
 			state.runTicketBuyerError = null
+			state.isTicketBuyerRunning = false
 		},
 		runTicketBuyerFailed(state, action: PayloadAction<AppError>) {
 			state.runTicketBuyerAttempting = false
 			state.runTicketBuyerResponse = null
 			state.runTicketBuyerError = action.payload
+			state.isTicketBuyerRunning = false
 		},
-		runTicketBuyerSuccess(state, action: PayloadAction<RunTicketBuyerResponse>) {
+		runTicketBuyerSuccess(state) {
 			state.runTicketBuyerAttempting = false
-			state.runTicketBuyerResponse = action.payload
+			state.runTicketBuyerResponse = null
 			state.runTicketBuyerError = null
+			state.isTicketBuyerRunning = true
+		},
+		stopTicketBuyerAttempt(state) {
+			state.stopTicketBuyerAttempting = true
+		},
+		stopTicketBuyerSuccess(state) {
+			state.runTicketBuyerError = null
+			state.isTicketBuyerRunning = false
+			state.stopTicketBuyerAttempting = false
 		},
 
 		// CommittedTickets
@@ -335,6 +350,8 @@ export const {
 	runTicketBuyerAttempt,
 	runTicketBuyerFailed,
 	runTicketBuyerSuccess,
+	stopTicketBuyerAttempt,
+	stopTicketBuyerSuccess,
 
 	// CommittedTickets
 	getCommittedTicketsAttempt,
@@ -498,14 +515,46 @@ export const runTicketBuyer: ActionCreator<any> = (request: RunTicketBuyerReques
 		if (runTicketBuyerAttempting) {
 			return
 		}
-
 		dispatch(runTicketBuyerAttempt())
+
+		const onErrorFn = (errorMsg: string) => {
+			if (getState().staking.stopTicketBuyerAttempting) {
+				dispatch(stopTicketBuyerSuccess())
+			} else {
+				const err = new AppError(0, errorMsg)
+				dispatch(runTicketBuyerFailed(err))
+			}
+		}
+		const onDoneFn = () => {
+			dispatch(runTicketBuyerSuccess())
+		}
+		const onStopFn = () => {
+			dispatch(stopTicketBuyerSuccess())
+		}
+
 		try {
-			const resp = await LorcaBackend.runTicketBuyer(request)
-			debugger
-			dispatch(runTicketBuyerSuccess(resp))
+			await LorcaBackend.runTicketBuyer(request, onErrorFn, onDoneFn, onStopFn)
 		} catch (error) {
 			dispatch(runTicketBuyerFailed(error))
+		}
+	}
+}
+
+
+export const stopTicketBuyer: ActionCreator<any> = (): AppThunk => {
+	return async (dispatch, getState) => {
+
+		const { stopTicketBuyerAttempting } = getState().staking;
+		if (stopTicketBuyerAttempting) {
+			return
+		}
+
+		dispatch(stopTicketBuyerAttempt())
+		try {
+			await LorcaBackend.stopTicketBuyer()
+			// debugger
+		} catch (error) {
+			// dispatch(stopTicketBuyerFailed(error))
 		}
 	}
 }
