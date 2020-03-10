@@ -128,7 +128,7 @@ export const initialState: GetTransactionsState &
 	// and transactions through the best block and all
 	// unmined transactions are included.
 	endBlockHeight: 1,
-	targetTxCount: 100,
+	targetTxCount: 1000,
 	activeTypeFilter: TransactionType.REGULAR,
 
 	// ConstructTransaction
@@ -339,24 +339,49 @@ export default transactionsSlice.reducer
 // selectors
 
 export const getUnminedTransactions = (state: IApplicationState): Transaction[] => {
-	return _.chain(state.transactions.txList)
+	return _.chain(getTransactions(state))
 		.filter((t) => t.isMined() == false)
 		.orderBy((e) => e.getTimestamp(), "desc")
 		.value()
 }
 
 export const getMinedTransactions = (state: IApplicationState): Transaction[] => {
-	return _.chain(state.transactions.txList)
+	return _.chain(getTransactions(state))
 		.filter((t) => t.isMined() == true)
 		.orderBy((e) => e.getTimestamp(), "desc")
 		.value()
 }
 
-export const getFilteredTransactions = (state: IApplicationState): Transaction[] => {
-	// console.log("getFilteredTransactions", state.transactions.activeTypeFilter)
-	return _.chain(state.transactions.txList)
+export const getWalletTransactions = (state: IApplicationState): Transaction[] => {
+	return _.chain(getTransactions(state))
 		.filter((t) => t.getType() == state.transactions.activeTypeFilter)
-		.filter((t) => t.getDirection() == TransactionDirection.TRANSACTION_DIR_RECEIVED || t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT)
+		.filter((t) =>
+			t.getDirection() == TransactionDirection.TRANSACTION_DIR_RECEIVED ||
+			t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT)
+		.orderBy((e) => e.getTimestamp(), "desc")
+		.value()
+}
+
+export const getAddressTransactions = (state: IApplicationState, address: string): Transaction[] => {
+	return _.chain(getTransactions(state))
+		.filter((t) => t.getType() == state.transactions.activeTypeFilter)
+		.filter((t) =>
+			t.getDirection() == TransactionDirection.TRANSACTION_DIR_RECEIVED ||
+			t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT)
+		.filter((t) => {
+			return _.find(t.getCreditAddresses(), address) != undefined
+		})
+		.orderBy((e) => e.getTimestamp(), "desc")
+		.value()
+}
+export const getAccountTransactions = (state: IApplicationState, account: WalletAccount): Transaction[] => {
+	const accountNumber = account.getAccountNumber()
+	return _.chain(getTransactions(state))
+		.filter((t) => t.getType() == state.transactions.activeTypeFilter)
+		.filter((t) =>
+			t.getDirection() == TransactionDirection.TRANSACTION_DIR_RECEIVED ||
+			t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT)
+		.filter((t) => isTxLinkedToAccount(t, account))
 		.orderBy((e) => e.getTimestamp(), "desc")
 		.value()
 }
@@ -369,4 +394,10 @@ export const getTransactions = (state: IApplicationState): Transaction[] => {
 
 export const getChangeScriptCache = (state: IApplicationState): IChangeScriptByAccount => {
 	return state.transactions.changeScriptCache
+}
+
+function isTxLinkedToAccount(tx: Transaction, account: WalletAccount): boolean {
+	const accountNumber = account.getAccountNumber()
+	return _.find(tx.getDebitsList(), (input) => input.getPreviousAccount() == accountNumber) != undefined ||
+		_.find(tx.getCreditsList(), (output) => output.getAccount() == accountNumber) != undefined
 }

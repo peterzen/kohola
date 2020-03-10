@@ -2,15 +2,18 @@ import * as React from 'react';
 import _ from 'lodash';
 
 import TimeAgo from 'react-timeago';
-import { Table, Alert } from 'react-bootstrap';
+import { Table, Alert, Badge } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
 import { TransitionGroup } from 'react-transition-group';
 
-import { Transaction } from "../../models";
+import { Transaction, WalletAccount } from "../../models";
 import { TransactionHash, Amount } from '../../components/Shared/shared';
+import { lookupAccounts } from '../balances/accountSlice';
+import { connect } from 'react-redux';
+import { IApplicationState } from '../../store/types';
 
 
 
@@ -26,10 +29,10 @@ const transitionGroupProps = {
 	exit: true,
 }
 
-export default class TransactionTable extends React.Component<TransactionListProps> {
+class TransactionTable extends React.Component<OwnProps> {
 
 	render() {
-		
+		const showAccount = this.props.showAccount || false
 		return (
 			<div>
 				{this.props.items.length > 0 && (
@@ -39,8 +42,13 @@ export default class TransactionTable extends React.Component<TransactionListPro
 								{this.props.items.map((tx: Transaction) =>
 									<tr className="clickable" key={tx.getHash()} onClick={() => this.props.onItemClick(tx)}>
 										<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
-										<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
 										<td><Amount amount={tx.getAmount()} /></td>
+										{showAccount && (
+											<td>{_.map(this.props.lookupAccounts(tx.getAccounts()), (account) => (
+												<Badge variant="info">{account.getAccountName()}</Badge>
+											))}</td>
+										)}
+										<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
 										<td>{tx.getTypeAsString()}</td>
 										<td><TransactionHash tx={tx} /></td>
 									</tr>
@@ -58,8 +66,20 @@ export default class TransactionTable extends React.Component<TransactionListPro
 }
 
 
-interface TransactionListProps {
-	items: Transaction[],
+interface OwnProps {
+	items: Transaction[]
+	showAccount?: boolean
 	onItemClick: (tx: Transaction) => void
+	lookupAccounts: (accountNumbers: number[]) => WalletAccount[]
 }
 
+
+const mapStateToProps = (state: IApplicationState) => {
+	return {
+		lookupAccounts: (accountNumbers: number[]) => {
+			return lookupAccounts(state, accountNumbers)
+		}
+	}
+}
+
+export default connect(mapStateToProps)(TransactionTable)

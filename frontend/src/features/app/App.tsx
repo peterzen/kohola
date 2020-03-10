@@ -8,7 +8,7 @@ import { Container } from 'react-bootstrap'
 import Wallet from "../../containers/Wallet"
 import Staking from "../../containers/Staking"
 import Settings from '../../containers/Settings';
-import AccountDetailsContainer from '../../containers/AccountDetailsContainer'
+import AccountDetails  from '../../containers/AccountDetails'
 import { NoRouteMatch } from '../../components/Shared/shared';
 
 import { hot } from 'react-hot-loader/root'
@@ -60,7 +60,7 @@ class App extends React.Component<Props>{
 						>
 							<Route path="/staking" component={Staking} />
 							<Route path="/settings" component={Settings} />
-							<Route path="/account/:accountNumber" component={AccountDetailsContainer} />
+							<Route path="/account/:accountNumber" component={AccountDetails} />
 							<Route path="/wallet" component={Wallet} />
 							<Route path="/mixing" component={Mixing} />
 							<Route exact path="/" component={Login} />

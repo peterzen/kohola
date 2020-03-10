@@ -7,7 +7,7 @@ import { Spinner, Card } from 'react-bootstrap';
 import { Transaction } from "../../models";
 import TransactionTable from './TransactionTable';
 import TransactionDetailsModal from './TransactionDetailsComponent';
-import { getFilteredTransactions } from './transactionsSlice';
+import { getWalletTransactions } from './transactionsSlice';
 import { IApplicationState } from '../../store/types';
 import { loadTransactionsAttempt } from './actions';
 
@@ -23,18 +23,16 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 	}
 
 	render() {
-		if (this.props.getTransactionsRequest == true) {
-			return (
-				<Spinner animation="grow" />
-			)
-		}
 		const txList = this.props.txList;
 		return (
 			<Card>
 				<Card.Body>
 					<Card.Title>Recent transactions <small className="text-muted">({txList.length})</small></Card.Title>
 				</Card.Body>
-				<TransactionTable items={txList} onItemClick={_.bind(this.itemClickHandler, this)} />
+				<TransactionTable
+					items={txList}
+					onItemClick={_.bind(this.itemClickHandler, this)}
+					showAccount={this.props.showAccount}/>
 				<TransactionDetailsModal
 					tx={this.state.selectedItem}
 					modalTitle="Transaction details"
@@ -49,13 +47,11 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 			selectedItem: tx
 		})
 	}
-	componentDidMount() {
-		this.props.loadTransactionsAttempt()
-	}
+	
 }
 
 interface OwnProps {
-	getTransactionsRequest: boolean
+	showAccount?: boolean
 	txList: Transaction[]
 }
 
@@ -65,20 +61,16 @@ interface InternalState {
 }
 
 interface DispatchProps {
-	loadTransactionsAttempt: typeof loadTransactionsAttempt
 }
 
 type Props = OwnProps & DispatchProps
 
-const mapStateToProps = (state: IApplicationState): OwnProps => {
+const mapStateToProps = (state: IApplicationState) => {
 	return {
-		getTransactionsRequest: state.transactions.getTransactionsRequest,
-		txList: getFilteredTransactions(state),
 	}
 }
 
 const mapDispatchToProps = {
-	loadTransactionsAttempt
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecentTransactionsComponent);

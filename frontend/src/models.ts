@@ -19,6 +19,7 @@ import {
 } from './proto/api_pb';
 import { TransactionDirection, TicketStatus, TicketStatusLabels } from './constants';
 import { reverseHash } from './helpers';
+import _ from 'lodash';
 
 export class Agenda extends AgendasResponse.Agenda { }
 export class Agendas extends AgendasResponse { }
@@ -70,8 +71,8 @@ export class Transaction {
 	direction: TransactionDirection;
 	amount: number;
 	fee: number;
-	debitAccounts: TransactionDetails.Input[] = [];
-	creditAddresses: TransactionDetails.Output[] = [];
+	inputs: TransactionDetails.Input[] = [];
+	outputs: TransactionDetails.Output[] = [];
 	_isMined: boolean = true;
 	block: IBlockTemplate;
 
@@ -89,8 +90,8 @@ export class Transaction {
 		this.txHash = reverseHash(Buffer.from(tx.getHash_asU8()).toString("hex"));
 		this.type = tx.getTransactionType();
 
-		this.debitAccounts = tx.getDebitsList();
-		this.creditAddresses = tx.getCreditsList();
+		this.inputs = tx.getDebitsList();
+		this.outputs = tx.getCreditsList();
 
 		this.fee = tx.getFee();
 		const inputAmounts = tx.getDebitsList().reduce((s, input) => s + input.getPreviousAmount(), 0);
@@ -142,17 +143,26 @@ export class Transaction {
 	getFee() {
 		return this.fee;
 	}
-	getDebitsList(): TransactionDetails.Input[] {
-		return this.debitAccounts;
+	getDebitsList() {
+		return this.inputs;
 	}
-	getCreditsList(): TransactionDetails.Output[] {
-		return this.creditAddresses;
+	getCreditsList() {
+		return this.outputs;
+	}
+	getCreditAddresses() {
+		return _.map(this.outputs, (t) => t.getAddress())
 	}
 	isMined() {
 		return this._isMined;
 	}
 	setIsMined(flag: boolean) {
 		this._isMined = flag;
+	}
+	getAccounts() {
+		const accounts: number[] = []
+		accounts.push(..._.map(this.getDebitsList(), (input) => input.getPreviousAccount()))
+		accounts.push(..._.map(this.getCreditsList(), (output) => output.getAccount()))
+		return _.uniq(accounts)
 	}
 	getTypeAsString() {
 		switch (this.type) {
@@ -177,8 +187,8 @@ export class Transaction {
 			direction: this.direction,
 			amount: this.amount,
 			fee: this.fee,
-			debitAccounts: this.debitAccounts,
-			creditAddresses: this.creditAddresses
+			debitAccounts: _.map(this.inputs, a => a.toObject()),
+			creditAddresses: _.map(this.outputs, c => c.toObject())
 		}
 	}
 }

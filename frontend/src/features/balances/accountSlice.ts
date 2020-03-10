@@ -271,8 +271,8 @@ export const getVisibleAccounts = (state: IApplicationState): IndexedWalletAccou
 
 	const filteredAccounts: IndexedWalletAccounts = {}
 	_.each(getAccounts(state), (account, accountNumber) => {
-		 const n = parseInt(accountNumber)
-		 if (isAccountVisible(state, n)) {
+		const n = parseInt(accountNumber)
+		if (isAccountVisible(state, n)) {
 			filteredAccounts[n] = account
 		}
 	})
@@ -289,3 +289,8 @@ export const getAccountNumbers = (state: IApplicationState): number[] => {
 export const lookupAccount = (state: IApplicationState, accountNumber: number): WalletAccount => {
 	return state.accounts.accounts[accountNumber]
 }
+
+export const lookupAccounts = (state: IApplicationState, accountNumbers: number[]): WalletAccount[] => {
+	return _.map(accountNumbers, n => state.accounts.accounts[n])
+}
+

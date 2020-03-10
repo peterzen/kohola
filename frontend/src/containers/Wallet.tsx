@@ -8,8 +8,11 @@ import Fade from 'react-reveal/Fade';
 import RecentTransactions from '../features/transactions/RecentTransactionsContainer';
 import WalletBalanceContainer from "../features/balances/WalletBalanceContainer";
 import { IApplicationState } from "../store/types";
+import { Transaction } from "../models";
+import { loadTransactionsAttempt } from "../features/transactions/actions";
+import { getWalletTransactions } from "../features/transactions/transactionsSlice";
 
-class Wallet extends React.PureComponent {
+class Wallet extends React.PureComponent<Props> {
 
 	render() {
 		return (
@@ -18,15 +21,38 @@ class Wallet extends React.PureComponent {
 					<WalletBalanceContainer />
 				</Fade>
 				<div className="mt-3" />
-				<RecentTransactions />
+				<RecentTransactions
+					txList={this.props.txList}
+					showAccount={true} />
 			</div>
 		)
 	}
+	componentDidMount() {
+		this.props.loadTransactionsAttempt()
+	}
 }
 
-
-const mapStateToProps = function (state: IApplicationState) {
-	return {}
+interface OwnProps {
+	getTransactionsRequest: boolean
+	txList: Transaction[]
 }
 
-export default withRouter(connect(mapStateToProps)(Wallet));
+interface DispatchProps {
+	loadTransactionsAttempt: typeof loadTransactionsAttempt
+}
+
+type Props = OwnProps & DispatchProps
+
+
+const mapStateToProps = (state: IApplicationState): OwnProps => {
+	return {
+		getTransactionsRequest: state.transactions.getTransactionsRequest,
+		txList: getWalletTransactions(state),
+	}
+}
+
+const mapDispatchToProps = {
+	loadTransactionsAttempt
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Wallet));
