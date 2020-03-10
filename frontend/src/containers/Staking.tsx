@@ -36,9 +36,9 @@ class StakingContainer extends React.Component<Props> {
 						<Col>
 							<TicketPriceComponent />
 							<div className="mt-3" />
-							<PurchaseTicketForm />
-							<div className="mt-3" />
 							<StakeStats />
+							<div className="mt-3" />
+							<PurchaseTicketForm />
 						</Col>
 					</Row>
 				</Tab>
