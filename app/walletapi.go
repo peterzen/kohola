@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"time"
 
 	// walletjson "github.com/decred/dcrwallet/rpc/jsonrpc/types"
 	"google.golang.org/grpc"
@@ -31,9 +32,8 @@ var (
 	agendaServiceClient        pb.AgendaServiceClient
 	tickerbuyerv2ServiceClient pb.TicketBuyerV2ServiceClient
 
-	txNtfnContext           context.Context
-	accountNtfnContext      context.Context
-	confirmationNtfnContext context.Context
+	ctx       context.Context    = nil
+	ctxCancel context.CancelFunc = nil
 )
 
 func getEndpointByID(endpoints []*gui.GRPCEndpoint, id string) *gui.GRPCEndpoint {
@@ -45,8 +45,13 @@ func getEndpointByID(endpoints []*gui.GRPCEndpoint, id string) *gui.GRPCEndpoint
 	return nil
 }
 
-// InitFrontendGRPC creates a gRPC client connection
-func initFrontendGRPC(endpointCfg *gui.GRPCEndpoint) error {
+func createContext() (context.Context, context.CancelFunc) {
+	ctx, cancel := context.WithCancel(context.Background())
+	return ctx, cancel
+}
+
+// connectWallet creates a gRPC client connection
+func connectWallet(endpointCfg *gui.GRPCEndpoint) error {
 
 	var err error = nil
 	gRPCConnection, err = newGRPCClient(endpointCfg)
@@ -55,6 +60,11 @@ func initFrontendGRPC(endpointCfg *gui.GRPCEndpoint) error {
 		return err
 	}
 
+	if ctxCancel != nil {
+		ctxCancel()
+	}
+
+	ctx, ctxCancel = createContext()
 	walletServiceClient = walletrpc.NewWalletServiceClient(gRPCConnection)
 	votingServiceClient = walletrpc.NewVotingServiceClient(gRPCConnection)
 	agendaServiceClient = walletrpc.NewAgendaServiceClient(gRPCConnection)
@@ -87,7 +97,7 @@ func getBalance(accountNumber uint32, requiredConfirmations int32) (r gui.LorcaM
 		RequiredConfirmations: requiredConfirmations,
 	}
 
-	balanceResponse, err := walletServiceClient.Balance(context.Background(), request)
+	balanceResponse, err := walletServiceClient.Balance(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -104,7 +114,7 @@ func getBalance(accountNumber uint32, requiredConfirmations int32) (r gui.LorcaM
 
 func getStakeInfo() (r gui.LorcaMessage) {
 	request := &pb.StakeInfoRequest{}
-	response, err := walletServiceClient.StakeInfo(context.Background(), request)
+	response, err := walletServiceClient.StakeInfo(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -120,7 +130,7 @@ func getStakeInfo() (r gui.LorcaMessage) {
 
 func getAccounts() (r gui.LorcaMessage) {
 	request := &pb.AccountsRequest{}
-	response, err := walletServiceClient.Accounts(context.Background(), request)
+	response, err := walletServiceClient.Accounts(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -136,7 +146,7 @@ func getAccounts() (r gui.LorcaMessage) {
 
 func getTicketPrice() (r gui.LorcaMessage) {
 	request := &pb.TicketPriceRequest{}
-	response, err := walletServiceClient.TicketPrice(context.Background(), request)
+	response, err := walletServiceClient.TicketPrice(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -152,7 +162,7 @@ func getTicketPrice() (r gui.LorcaMessage) {
 
 func getAgendas() (r gui.LorcaMessage) {
 	request := &pb.AgendasRequest{}
-	response, err := agendaServiceClient.Agendas(context.Background(), request)
+	response, err := agendaServiceClient.Agendas(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -168,7 +178,7 @@ func getAgendas() (r gui.LorcaMessage) {
 
 func getVoteChoices() (r gui.LorcaMessage) {
 	request := &pb.VoteChoicesRequest{}
-	response, err := votingServiceClient.VoteChoices(context.Background(), request)
+	response, err := votingServiceClient.VoteChoices(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -191,7 +201,7 @@ func setVoteChoices(agendaID string, choiceID string) (r gui.LorcaMessage) {
 			},
 		},
 	}
-	response, err := votingServiceClient.SetVoteChoices(context.Background(), request)
+	response, err := votingServiceClient.SetVoteChoices(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -207,7 +217,7 @@ func setVoteChoices(agendaID string, choiceID string) (r gui.LorcaMessage) {
 
 func getBestBlock() (r gui.LorcaMessage) {
 	request := &pb.BestBlockRequest{}
-	response, err := walletServiceClient.BestBlock(context.Background(), request)
+	response, err := walletServiceClient.BestBlock(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -223,7 +233,7 @@ func getBestBlock() (r gui.LorcaMessage) {
 
 func getNetwork() (r gui.LorcaMessage) {
 	request := &pb.NetworkRequest{}
-	response, err := walletServiceClient.Network(context.Background(), request)
+	response, err := walletServiceClient.Network(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -246,7 +256,7 @@ func getTickets(
 		EndingBlockHeight:   EndingBlockHeight,
 		TargetTicketCount:   TargetTicketCount,
 	}
-	stream, err := walletServiceClient.GetTickets(context.Background(), request)
+	stream, err := walletServiceClient.GetTickets(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -259,7 +269,7 @@ func getTickets(
 			return r
 		}
 		if err != nil {
-			log.Fatalf("Failed to receive a TicketResponse : %v", err)
+			log.Printf("Failed to receive a TicketResponse : %v", err)
 		}
 		b, err := proto.Marshal(ticket)
 		if err != nil {
@@ -279,7 +289,7 @@ func getTransactions(
 		EndingBlockHeight:      endingBlockHeight,
 		TargetTransactionCount: targetTransactionCount,
 	}
-	stream, err := walletServiceClient.GetTransactions(context.Background(), request)
+	stream, err := walletServiceClient.GetTransactions(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -292,7 +302,7 @@ func getTransactions(
 			return r
 		}
 		if err != nil {
-			log.Fatalf("Failed to receive a GetTransactionsResponse: %#v", err)
+			log.Printf("Failed to receive a GetTransactionsResponse: %#v", err)
 		}
 		b, err := proto.Marshal(getTxResponse)
 		if err != nil {
@@ -305,7 +315,7 @@ func getTransactions(
 
 func doPing() (r gui.LorcaMessage) {
 	request := &pb.PingRequest{}
-	response, err := walletServiceClient.Ping(context.Background(), request)
+	response, err := walletServiceClient.Ping(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -328,7 +338,7 @@ func getNextAddress(
 		Kind:      kind,
 		GapPolicy: gapPolicy,
 	}
-	response, err := walletServiceClient.NextAddress(context.Background(), request)
+	response, err := walletServiceClient.NextAddress(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -351,7 +361,7 @@ func getNextAccount(
 		AccountName: accountName,
 		Passphrase:  pp,
 	}
-	response, err := walletServiceClient.NextAccount(context.Background(), request)
+	response, err := walletServiceClient.NextAccount(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -374,7 +384,7 @@ func renameAccount(
 		NewName:       newName,
 	}
 
-	response, err := walletServiceClient.RenameAccount(context.Background(), request)
+	response, err := walletServiceClient.RenameAccount(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -392,7 +402,7 @@ func constructTransaction(requestAsHex string) (r gui.LorcaMessage) {
 	request := &pb.ConstructTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
-	response, err := walletServiceClient.ConstructTransaction(context.Background(), request)
+	response, err := walletServiceClient.ConstructTransaction(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -410,7 +420,7 @@ func signTransaction(requestAsHex string) (r gui.LorcaMessage) {
 	request := &pb.SignTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
-	response, err := walletServiceClient.SignTransaction(context.Background(), request)
+	response, err := walletServiceClient.SignTransaction(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -428,7 +438,7 @@ func publishTransaction(requestAsHex string) (r gui.LorcaMessage) {
 	request := &pb.PublishTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
-	response, err := walletServiceClient.PublishTransaction(context.Background(), request)
+	response, err := walletServiceClient.PublishTransaction(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -446,7 +456,7 @@ func purchaseTickets(requestAsHex string) (r gui.LorcaMessage) {
 	request := &pb.PurchaseTicketsRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
-	response, err := walletServiceClient.PurchaseTickets(context.Background(), request)
+	response, err := walletServiceClient.PurchaseTickets(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -471,19 +481,19 @@ func runTicketbuyer(requestAsHex string) (r gui.LorcaMessage) {
 		return r
 	}
 	r.APayload = make([][]byte, 0)
-	for {
+		for {
 		runticketbuyerResponse, err := stream.Recv()
 		if err == io.EOF {
 			return r
 		}
 		if err != nil {
 			log.Fatalf("Failed to receive a RunTickerBuyerResponse: %#v", err)
-		}
+	}
 		b, err := proto.Marshal(runticketbuyerResponse)
 		if err != nil {
 			r.Err = err
 			return r
-		}
+}
 		r.APayload = append(r.APayload, b)
 	}
 }
@@ -509,9 +519,9 @@ func listUnspent(
 		RequiredConfirmations:    requiredConfirmations,
 		IncludeImmatureCoinbases: includeImmature,
 	}
-	m, err := walletServiceClient.UnspentOutputs(context.Background(), request)
+	m, err := walletServiceClient.UnspentOutputs(ctx, request)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf(err.Error())
 	}
 
 	unspents := make([][]byte, 0, 100)
@@ -553,9 +563,8 @@ func listUnspent(
 // }
 
 func subscribeTxNotifications(ui lorca.UI) {
-	txNtfnContext = context.Background()
 	request := &pb.TransactionNotificationsRequest{}
-	ntfnStream, err := walletServiceClient.TransactionNotifications(txNtfnContext, request)
+	ntfnStream, err := walletServiceClient.TransactionNotifications(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -564,7 +573,7 @@ func subscribeTxNotifications(ui lorca.UI) {
 	for {
 		ntfnResponse, err := ntfnStream.Recv()
 		if err != nil {
-			log.Fatalf("Failed to receive a TransactionNotificationsResponse: %#v", err)
+			log.Printf("Failed to receive a TransactionNotificationsResponse: %#v", err)
 		}
 		b, err := proto.Marshal(ntfnResponse)
 		if err != nil {
@@ -578,7 +587,7 @@ func subscribeTxNotifications(ui lorca.UI) {
 
 // func subscribeConfirmNotifications(ui lorca.UI) {
 // 	request := &pb.ConfirmationNotificationsRequest{}
-// 	ntfnStream, err := walletServiceClient.ConfirmationNotifications(context.Background(), request)
+// 	ntfnStream, err := walletServiceClient.ConfirmationNotifications(ctx, request)
 // 	if err != nil {
 // 		fmt.Println(err)
 // 		return
@@ -601,9 +610,8 @@ func subscribeTxNotifications(ui lorca.UI) {
 
 func subscribeAccountNotifications(ui lorca.UI) {
 
-	accountNtfnContext = context.Background()
 	request := &pb.AccountNotificationsRequest{}
-	ntfnStream, err := walletServiceClient.AccountNotifications(accountNtfnContext, request)
+	ntfnStream, err := walletServiceClient.AccountNotifications(ctx, request)
 
 	if err != nil {
 		fmt.Println(err)
@@ -613,7 +621,7 @@ func subscribeAccountNotifications(ui lorca.UI) {
 	for {
 		ntfnResponse, err := ntfnStream.Recv()
 		if err != nil {
-			log.Fatalf("Failed to receive a AccountNotificationsResponse: %#v", err)
+			log.Printf("Failed to receive a AccountNotificationsResponse: %#v", err)
 		}
 		b, err := proto.Marshal(ntfnResponse)
 		if err != nil {
@@ -633,12 +641,12 @@ func subscribeNotifications(ui lorca.UI) {
 }
 
 func unsubscribeNotifications() {
-	if txNtfnContext != nil {
-		txNtfnContext.Done()
-	}
-	if accountNtfnContext != nil {
-		accountNtfnContext.Done()
-	}
+	// if txNtfnContext != nil {
+	// 	txNtfnContext.Done()
+	// }
+	// if accountNtfnContext != nil {
+	// 	accountNtfnContext.Done()
+	// }
 	// if confirmationNtfnContext != nil {
 	// 	confirmationNtfnContext.Done()
 	// }
@@ -720,7 +728,7 @@ func connectEndpoint(endpointID string, ui lorca.UI) (r gui.LorcaMessage) {
 			r.Err = errors.New("Endpoint not found")
 			return r
 		}
-		err := initFrontendGRPC(endpoint)
+		err := connectWallet(endpoint)
 		if err != nil {
 			r.Err = fmt.Errorf("Cannot connect to dcrwallet: %s", err)
 			return r
@@ -742,7 +750,7 @@ func checkGRPCConnection(endpointCfg *gui.GRPCEndpoint) (bool, error) {
 	walletServiceClient := walletrpc.NewWalletServiceClient(gRPCConnection)
 
 	request := &pb.PingRequest{}
-	_, err = walletServiceClient.Ping(context.Background(), request)
+	_, err = walletServiceClient.Ping(ctx, request)
 	if err != nil {
 		return false, err
 	}
@@ -758,7 +766,7 @@ type apiInterface func(context.Context, *struct{}, ...grpc.CallOption) (proto.Me
 func makeAPIEndpoint(requestClass *struct{}, method apiInterface) func() gui.LorcaMessage {
 	return func() (r gui.LorcaMessage) {
 		request := requestClass
-		response, err := method(context.Background(), request)
+		response, err := method(ctx, request)
 		if err != nil {
 			fmt.Println(err)
 			r.Err = err
