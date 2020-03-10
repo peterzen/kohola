@@ -11,8 +11,10 @@ import OnOffIndicator from '../../../components/Shared/OnOffIndicator';
 import { RunTicketBuyerRequest, RunTicketBuyerResponse } from '../../../proto/api_pb';
 import { saveTicketbuyerRequestDefaults, getAppConfig } from '../../appconfiguration/settingsSlice';
 import { ErrorAlert } from '../../../components/Shared/FormStatusAlerts';
-import { runTicketBuyer } from '../stakingSlice';
+import { runTicketBuyer, stopTicketBuyer } from '../stakingSlice';
 import PassphraseEntryDialog, { askPassphrase } from '../../../components/Shared/PassphraseEntryDialog';
+import { faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 class Ticketbuyer extends React.Component<Props, InternalState> {
@@ -25,7 +27,6 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
 			formRef: React.createRef(),
 			votingTab: "voting_account",
 			formIsValidated: false,
-			ticketbuyerRunning: false,
 			ticketbuyerRequest: props.ticketbuyerRequest,
 		}
 	}
@@ -48,22 +49,25 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
 							<Col sm={4}>
 								<Card.Title>Ticketbuyer</Card.Title>
 							</Col>
-							<Col sm={4} className="text-center">
-								<Fade in={this.state.ticketbuyerRunning}>
-									<span><OnOffIndicator status={this.state.ticketbuyerRunning} /> <strong>Ticketbuyer is running</strong></span>
-								</Fade>
-								{/* <ErrorAlert error={this.props.runTicketBuyerError} /> */}
+							<Col sm={4} className="text-center pt-2">
+								<OnOffIndicator
+									status={this.props.isTicketBuyerRunning}
+									onMessage="Ticketbuyer is running"
+									offMessage="Ticketbuyer is not running" />
+								<ErrorAlert error={this.props.runTicketBuyerError} />
 							</Col>
 							<Col sm={4}>
 								<span className="float-right">
-									<Form.Check
-										custom
-										type="switch"
-										id="ticketbuyer_enabled"
-										label="Run tickerbuyer"
-										onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-											this.toggleTicketbuyer(e.currentTarget.checked)}
-									/>
+									<Button
+										variant="primary"
+										disabled={this.props.isTicketBuyerRunning}
+										onClick={() => this.startTicketbuyer()}
+									><FontAwesomeIcon icon={faPlay} /> Start</Button>
+									<Button
+										variant="secondary"
+										disabled={!this.props.isTicketBuyerRunning}
+										onClick={() => this.stopTicketbuyer()}
+									><FontAwesomeIcon icon={faStop} /> Stop</Button>
 								</span>
 							</Col>
 						</Row>
@@ -76,7 +80,7 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
 							onSubmit={_.bind(this.handleFormSubmit, this)}
 							className={this.props.inProgress ? "in-progress" : ""}>
 
-							<fieldset disabled={this.state.ticketbuyerRunning}>
+							<fieldset disabled={this.props.isTicketBuyerRunning || this.props.runTicketBuyerAttempting}>
 								<Row className="mb-4">
 									<Col sm={6} >
 										<Form.Group>
@@ -123,13 +127,13 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
 										<Col sm={3}>
 											<Nav variant="pills" className="flex-column">
 												<Nav.Item>
-													<Nav.Link eventKey="voting_account">Voting account</Nav.Link>
+													<Nav.Link disabled={this.props.isTicketBuyerRunning} eventKey="voting_account">Voting account</Nav.Link>
 												</Nav.Item>
 												<Nav.Item>
-													<Nav.Link eventKey="voting_address">Voting address</Nav.Link>
+													<Nav.Link disabled={this.props.isTicketBuyerRunning} eventKey="voting_address">Voting address</Nav.Link>
 												</Nav.Item>
 												<Nav.Item>
-													<Nav.Link eventKey="pool">VSP (pool address)</Nav.Link>
+													<Nav.Link disabled={this.props.isTicketBuyerRunning} eventKey="pool">VSP (pool address)</Nav.Link>
 												</Nav.Item>
 											</Nav>
 										</Col>
@@ -215,35 +219,30 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
 		return false;
 	}
 
-	toggleTicketbuyer(flag: boolean) {
-		if (flag) {
-			const request = this.state.ticketbuyerRequest
-			const cancelError = new AppError(0, "Please unlock wallet with your passphrase")
+	startTicketbuyer() {
+		const request = this.state.ticketbuyerRequest
+		const cancelError = new AppError(0, "Please unlock wallet with your passphrase")
 
-			askPassphrase()
-				.then((passphrase) => {
-					if (passphrase == "") {
-						throw cancelError
-					}
-					return request.setPassphrase(new Uint8Array(Buffer.from(passphrase)))
-				})
-				.then((r) => {
-					return this.props.runTicketBuyer(request)
-				})
-				.then((r) => {
-					// this.setState({ error: err })
-					console.log("response", r)
-					this.setState({
-						ticketbuyerRunning: flag
-					})
-				})
-				.catch((err) => {
-					this.setState({ error: err })
-					console.error(err)
-					console.log("askPassphrase", request.toObject())
-					// debugger
-				})
-		}
+		askPassphrase()
+			.then((passphrase) => {
+				if (passphrase == "") {
+					throw cancelError
+				}
+				return request.setPassphrase(new Uint8Array(Buffer.from(passphrase)))
+			})
+			.then((r) => {
+				return this.props.runTicketBuyer(request)
+			})
+			.catch((err) => {
+				this.setState({ error: err })
+				console.error(err)
+				console.log("askPassphrase", request.toObject())
+				// debugger
+			})
+	}
+
+	stopTicketbuyer() {
+		this.props.stopTicketBuyer()
 	}
 
 	handleChange() {
@@ -298,7 +297,6 @@ interface InternalState {
 	formRef: React.RefObject<any>
 	votingTab: string
 	formIsValidated: boolean
-	ticketbuyerRunning: boolean
 	ticketbuyerRequest: RunTicketBuyerRequest
 }
 
@@ -308,30 +306,37 @@ interface OwnProps {
 	ticketbuyerRequest: RunTicketBuyerRequest
 	runTicketBuyerError: AppError | null
 	runTicketBuyerResponse: RunTicketBuyerResponse
+	isTicketBuyerRunning: boolean
+	runTicketBuyerAttempting: boolean
 }
 
-interface DispatchProps {
-	runTicketBuyer: typeof runTicketBuyer
-	saveTicketbuyerRequestDefaults: typeof saveTicketbuyerRequestDefaults
-}
-
-type Props = OwnProps & DispatchProps
 
 
 const mapStateToProps = (state: IApplicationState) => {
 	const request = getAppConfig(state).getRunAutoBuyerRequestDefaults() || new RunTicketBuyerRequest()
-	console.error(state.staking.runTicketBuyerError)
+	console.error("runTicketBuyerError", state.staking.runTicketBuyerError)
 	return {
 		error: state.appconfiguration.setConfigError,
 		inProgress: state.appconfiguration.setConfigAttempting,
 		ticketbuyerRequest: request,
 		runTicketBuyerResponse: state.staking.runTicketBuyerResponse,
 		runTicketBuyerError: state.staking.runTicketBuyerError,
+		isTicketBuyerRunning: state.staking.isTicketBuyerRunning,
+		runTicketBuyerAttempting: state.staking.runTicketBuyerAttempting,
 	}
 }
 
+interface DispatchProps {
+	runTicketBuyer: typeof runTicketBuyer
+	stopTicketBuyer: typeof stopTicketBuyer
+	saveTicketbuyerRequestDefaults: typeof saveTicketbuyerRequestDefaults
+}
+
+type Props = OwnProps & DispatchProps
+
 const mapDispatchToProps = {
 	runTicketBuyer,
+	stopTicketBuyer,
 	saveTicketbuyerRequestDefaults,
 }
 

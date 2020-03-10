@@ -17,7 +17,7 @@ export const ErrorAlert = (props: IErrorAlertProps) => {
 	const { message } = props.error
 
 	return (
-		<Alert variant="danger" className="mt-3 mb-3 p-2">
+		<Alert variant="danger">
 			<FontAwesomeIcon icon={faExclamationCircle} /> <span>{message}</span>
 		</Alert>
 	)
@@ -31,7 +31,7 @@ export const SuccessAlert = (props: ISuccessAlertProps) => {
 
 	if (props.message == null) return null;
 	return (
-		<Alert variant="success" className="mt-3 mb-3 p-2">
+		<Alert variant="success">
 			<FontAwesomeIcon icon={faCheck} /> <span >{props.message}</span>
 		</Alert>
 	)
