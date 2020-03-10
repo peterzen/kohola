@@ -14,17 +14,17 @@ export const ErrorAlert = (props: IErrorAlertProps) => {
 
 	if (props.error == null) return null;
 
-	const { code, message } = props.error
+	const { message } = props.error
 
 	return (
 		<Alert variant="danger" className="mt-3 mb-3 p-2">
-			<FontAwesomeIcon icon={faExclamationCircle} /> <span title={code.toString()}>{message}</span>
+			<FontAwesomeIcon icon={faExclamationCircle} /> <span>{message}</span>
 		</Alert>
 	)
 }
 
 interface ISuccessAlertProps {
-	message:string
+	message: string
 }
 
 export const SuccessAlert = (props: ISuccessAlertProps) => {
