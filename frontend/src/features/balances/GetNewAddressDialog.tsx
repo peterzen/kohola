@@ -22,16 +22,16 @@ class GetNewAddressDialog extends GenericModalDialog<Props, InternalState> {
 					<ErrorAlert error={this.props.errorNextAddress} />
 				)}
 				{this.props.errorNextAddress == null && (
-					<Row>
-						<Col sm={8}>
-							<h4>Account: {this.props.nextAddressAccount?.getAccountName()}</h4>
-							<h6>Address: </h6>
-							<CopyToClipboardText value={address}><code>{address}</code></CopyToClipboardText>
-						</Col>
-						<Col sm={4}>
+					<div className="text-center">
+						<h5>Account: {this.props.nextAddressAccount?.getAccountName()}</h5>
+						<div>
 							<QrCodeRenderer value={`decred:${address}`} />
-						</Col>
-					</Row>
+						</div>
+						<div className="mt-4">
+							<h6>Address: </h6>
+							<h5><CopyToClipboardText value={address}><code>{address}</code></CopyToClipboardText></h5>
+						</div>
+					</div>
 				)}
 			</div>
 		)

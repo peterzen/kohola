@@ -5,7 +5,7 @@ import { Moment } from "moment";
 import { sprintf } from "sprintf-js";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPaste, faClipboard, faInfoCircle, faSlidersH } from '@fortawesome/free-solid-svg-icons'
+import { faPaste, faClipboard, faInfoCircle, faSlidersH, faCopy } from '@fortawesome/free-solid-svg-icons'
 
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
@@ -210,7 +210,7 @@ export class CopyToClipboardText extends React.Component<ICopyToClipboardButtonP
 					onCopy={() => this.setState({ copied: true })}
 				>
 					<span className="copy-to-clipboard-inner">
-						{this.props.children} <FontAwesomeIcon icon={faClipboard} />
+						{this.props.children} <FontAwesomeIcon icon={faCopy} className="text-muted"/>
 					</span>
 				</CopyToClipboard>
 				{this.state.copied ? (
