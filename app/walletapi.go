@@ -30,7 +30,7 @@ var (
 	walletServiceClient        pb.WalletServiceClient
 	votingServiceClient        pb.VotingServiceClient
 	agendaServiceClient        pb.AgendaServiceClient
-	tickerbuyerv2ServiceClient pb.TicketBuyerV2ServiceClient
+	ticketbuyerv2ServiceClient pb.TicketBuyerV2ServiceClient
 
 	ctx       context.Context    = nil
 	ctxCancel context.CancelFunc = nil
@@ -68,7 +68,7 @@ func connectWallet(endpointCfg *gui.GRPCEndpoint) error {
 	walletServiceClient = walletrpc.NewWalletServiceClient(gRPCConnection)
 	votingServiceClient = walletrpc.NewVotingServiceClient(gRPCConnection)
 	agendaServiceClient = walletrpc.NewAgendaServiceClient(gRPCConnection)
-	tickerbuyerv2ServiceClient = walletrpc.NewTicketBuyerV2ServiceClient(gRPCConnection)
+	ticketbuyerv2ServiceClient = walletrpc.NewTicketBuyerV2ServiceClient(gRPCConnection)
 	return nil
 }
 
@@ -483,7 +483,7 @@ func runTicketbuyer(requestAsHex string, onErrorFn func(error), onDoneFn func(),
 	}
 	tbCtx, tbCtxCancel = context.WithCancel(ctx)
 
-	stream, err := tickerbuyerv2ServiceClient.RunTicketBuyer(tbCtx, request)
+	stream, err := ticketbuyerv2ServiceClient.RunTicketBuyer(tbCtx, request)
 	if err != nil {
 		fmt.Println(err)
 		onErrorFn(err)

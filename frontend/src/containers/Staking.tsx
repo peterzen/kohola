@@ -42,7 +42,7 @@ class StakingContainer extends React.Component<Props> {
 						</Col>
 					</Row>
 				</Tab>
-				<Tab eventKey="ticketbuyer" title="Tickerbuyer">
+				<Tab eventKey="ticketbuyer" title="Ticketbuyer">
 					<TicketBuyerComponent />
 				</Tab>
 				<Tab eventKey="voting" title="Voting">
