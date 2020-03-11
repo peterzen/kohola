@@ -100,7 +100,7 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 		dispatch(connectWalletAttempting())
 		try {
 			const resp = await AppBackend.connectWalletEndpoint(endpoint)
-			dispatch(connectWalletSuccess(resp))
+			dispatch(connectWalletSuccess(endpoint))
 			dispatch(initializeStore())
 				.then(() => {
 					setTimeout(() => {
@@ -114,6 +114,7 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 		}
 		catch (error) {
 			dispatch(connectWalletFailed(error))
+			dispatch(showProgressbar(false))
 		}
 	}
 }

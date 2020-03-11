@@ -6,6 +6,7 @@ import {
 } from "../proto/dcrwalletgui_pb"
 import { endpointFactory } from "./lorca"
 import { rawToHex } from "../helpers/byteActions";
+import { AppError } from "../store/types";
 
 
 const w = (window as any)
@@ -37,16 +38,10 @@ const AppBackend = {
 	connectWalletEndpoint: async function (endpoint: GRPCEndpoint) {
 
 		try {
-
-			const r = await w.walletgui__ConnectWalletEndpoint(endpoint.getId())
-			if (r.error != undefined) {
-				throw r.error
-			}
-			return GRPCEndpoint.deserializeBinary(r.payload)
+			const err = await w.walletgui__ConnectWalletEndpoint(endpoint.getId())
 		}
-		catch (e) {
-			console.error("Serialization error", e)
-			return e
+		catch (err) {
+			throw new AppError(0, err)
 		}
 	},
 }

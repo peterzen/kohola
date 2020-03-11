@@ -721,7 +721,10 @@ func ExportWalletAPI(ui lorca.UI) {
 		stopTicketbuyer()
 	})
 
-	ui.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) (r gui.LorcaMessage) {
+	ui.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) error {
+		if !gui.HaveConfig() {
+			return errors.New("Missing dcrwallet entry in config file")
+		}
 		return connectEndpoint(endpointID, ui)
 	})
 
@@ -757,33 +760,34 @@ func disconnectEndpoint() {
 	gRPCConnection = nil
 }
 
-func connectEndpoint(endpointID string, ui lorca.UI) (r gui.LorcaMessage) {
+func connectEndpoint(endpointID string, ui lorca.UI) (err error) {
 
 	if isEndpointConnected() {
 		disconnectEndpoint()
 	}
 
-	if gui.HaveConfig() {
-
 	endpoints := gui.GetConfig().GetWalletEndpoints()
 	endpoint := getEndpointByID(endpoints, endpointID)
 
 	if endpoint == nil {
-			r.Err = errors.New("Endpoint not found")
-			return r
+		return errors.New("Endpoint not found")
 	}
-		err := connectWallet(endpoint)
+	isOK, err := checkGRPCConnection(endpoint)
+	if !isOK {
+		if err != nil {
+			err = fmt.Errorf("Cannot connect to dcrwallet: %s", err.Error())
+		} else {
+			err = fmt.Errorf("Connection check failed for %s", endpoint.Label)
+		}
+		return err
+	}
+	err = connectWallet(endpoint)
 	if err != nil {
-			r.Err = fmt.Errorf("Cannot connect to dcrwallet: %s", err)
-			return r
+		err = fmt.Errorf("Cannot connect to dcrwallet: %s", err)
+		return err
 	}
-		r.Payload, err = proto.Marshal(endpoint)
 	subscribeNotifications(ui)
-
-	} else {
-		r.Err = errors.New("Missing dcrwallet entry in config file")
-	}
-	return r
+	return nil
 }
 
 func checkGRPCConnection(endpointCfg *gui.GRPCEndpoint) (bool, error) {
@@ -794,7 +798,7 @@ func checkGRPCConnection(endpointCfg *gui.GRPCEndpoint) (bool, error) {
 	walletServiceClient := walletrpc.NewWalletServiceClient(gRPCConnection)
 
 	request := &pb.PingRequest{}
-	_, err = walletServiceClient.Ping(ctx, request)
+	_, err = walletServiceClient.Ping(context.Background(), request)
 	if err != nil {
 		return false, err
 	}

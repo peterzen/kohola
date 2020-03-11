@@ -10,7 +10,8 @@ import { IAppConfigurationState } from '../features/appconfiguration/settingsSli
 import { AppConfiguration } from '../proto/dcrwalletgui_pb';
 import EditableEndpointGrid from '../features/app/EditableEndpointGrid';
 import { connectWallet } from '../features/app/appSlice';
-import { IApplicationState } from '../store/types';
+import { IApplicationState, AppError } from '../store/types';
+import { ErrorAlert } from '../components/Shared/FormStatusAlerts';
 
 
 class Login extends React.Component<Props> {
@@ -19,20 +20,21 @@ class Login extends React.Component<Props> {
 			<div>
 				<h1><FontAwesomeIcon icon={faPlug} /> Connect to wallet</h1>
 				<EditableEndpointGrid onSelect={(endpoint) => this.props.connectWallet(endpoint)} />
+				<ErrorAlert error={this.props.connectWalletError} />
 			</div>
 		)
 	}
 }
 
 interface OwnProps {
-	appConfig: AppConfiguration
+	connectWalletError: AppError | null
 }
 
 type Props = OwnProps & DispatchProps
 
-const mapStateToProps = (state: IApplicationState): IAppConfigurationState => {
+const mapStateToProps = (state: IApplicationState) => {
 	return {
-		...state.appconfiguration
+		connectWalletError: state.app.connectWalletError
 	};
 }
 
