@@ -7,13 +7,10 @@ import { withRouter, RouteChildrenProps } from 'react-router-dom';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, Alert, Col, Row, Tabs, Tab } from 'react-bootstrap';
-// @ts-ignore
-import Fade from 'react-reveal/Fade';
 
 import { WalletAccount, Transaction } from '../models';
 import AccountBalanceTotals from '../features/balances/AccountBalanceTotals';
 import GetNewAddressDialog from '../features/balances/GetNewAddressDialog';
-import { loadNextAddressAttempt } from '../features/balances/accountSlice';
 import UTXOContainer from '../features/unspents/UTXOContainer';
 import SendTransaction from '../features/transactions/SendTransaction';
 import { IApplicationState } from '../store/types';
@@ -73,7 +70,6 @@ class AccountDetails extends React.Component<Props, InternalState> {
 									<RecentTransactions
 										txList={this.props.txList(account)}
 										showAccount={false} />
-
 								</Tab>
 								<Tab eventKey="utxo" title="UTXOs">
 									<Card>
@@ -84,13 +80,11 @@ class AccountDetails extends React.Component<Props, InternalState> {
 									</Card>
 								</Tab>
 							</Tabs>
-							<Fade fade>
-							</Fade>
-
 						</div>
 						<GetNewAddressDialog
 							modalTitle="New receive address"
 							show={this.state.showNewAddressModal}
+							account={account}
 							onHide={() => this.setState({ showNewAddressModal: false })} />
 					</div>
 				)}
@@ -108,14 +102,9 @@ class AccountDetails extends React.Component<Props, InternalState> {
 		this.setState({ showNewAddressModal: true })
 	}
 	showReceiveDialog(account: WalletAccount) {
-		if (account == null) {
-			return
-		}
-		this.props.loadNextAddressAttempt(account)
 		this.showModal();
 	}
 }
-
 
 interface OwnProps {
 	txList: (account: WalletAccount) => Transaction[]
@@ -127,7 +116,6 @@ interface InternalState {
 }
 
 interface DispatchProps {
-	loadNextAddressAttempt: typeof loadNextAddressAttempt
 }
 
 type Props = OwnProps & DispatchProps & RouteChildrenProps<{ accountNumber: string }>
@@ -140,7 +128,6 @@ const mapStateToProps = (state: IApplicationState) => {
 }
 
 const mapDispatchToProps = {
-	loadNextAddressAttempt
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountDetails))
