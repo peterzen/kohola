@@ -45,6 +45,11 @@ func getEndpointByID(endpoints []*gui.GRPCEndpoint, id string) *gui.GRPCEndpoint
 	return nil
 }
 
+// WalletAPIInit creates the context
+func WalletAPIInit() {
+	ctx, ctxCancel = createContext()
+}
+
 func createContext() (context.Context, context.CancelFunc) {
 	ctx, cancel := context.WithCancel(context.Background())
 	return ctx, cancel
@@ -760,20 +765,20 @@ func connectEndpoint(endpointID string, ui lorca.UI) (r gui.LorcaMessage) {
 
 	if gui.HaveConfig() {
 
-		endpoints := gui.GetConfig().GetWalletEndpoints()
-		endpoint := getEndpointByID(endpoints, endpointID)
+	endpoints := gui.GetConfig().GetWalletEndpoints()
+	endpoint := getEndpointByID(endpoints, endpointID)
 
-		if endpoint == nil {
+	if endpoint == nil {
 			r.Err = errors.New("Endpoint not found")
 			return r
-		}
+	}
 		err := connectWallet(endpoint)
-		if err != nil {
+	if err != nil {
 			r.Err = fmt.Errorf("Cannot connect to dcrwallet: %s", err)
 			return r
-		}
+	}
 		r.Payload, err = proto.Marshal(endpoint)
-		subscribeNotifications(ui)
+	subscribeNotifications(ui)
 
 	} else {
 		r.Err = errors.New("Missing dcrwallet entry in config file")

@@ -24,6 +24,8 @@ func main() {
 
 	// go initSystray()
 
+	WalletAPIInit()
+
 	launchUI(func(ui lorca.UI) {
 		err := gui.LoadConfig()
 		if err != nil {
