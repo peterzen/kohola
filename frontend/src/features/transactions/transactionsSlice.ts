@@ -367,13 +367,16 @@ export const getAddressTransactions = (state: IApplicationState, address: string
 		.filter((t) => t.getType() == state.transactions.activeTypeFilter)
 		.filter((t) =>
 			t.getDirection() == TransactionDirection.TRANSACTION_DIR_RECEIVED ||
-			t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT)
+			t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT
+		)
 		.filter((t) => {
+			// @FIXME - this doesn't work
 			return _.find(t.getCreditAddresses(), address) != undefined
 		})
 		.orderBy((e) => e.getTimestamp(), "desc")
 		.value()
 }
+
 export const getAccountTransactions = (state: IApplicationState, account: WalletAccount): Transaction[] => {
 	const accountNumber = account.getAccountNumber()
 	return _.chain(getTransactions(state))
