@@ -1,18 +1,14 @@
 import _ from 'lodash';
 import * as React from 'react';
-import { connect } from "react-redux";
 
-import { Spinner, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
 import { Transaction } from "../../models";
 import TransactionTable from './TransactionTable';
 import TransactionDetailsModal from './TransactionDetailsComponent';
-import { getWalletTransactions } from './transactionsSlice';
-import { IApplicationState } from '../../store/types';
-import { loadTransactionsAttempt } from './actions';
 
 
-class RecentTransactionsComponent extends React.Component<Props, InternalState> {
+export default class RecentTransactionsComponent extends React.Component<Props, InternalState> {
 
 	constructor(props: Props) {
 		super(props)
@@ -27,7 +23,9 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 		return (
 			<Card>
 				<Card.Body>
-					<Card.Title>Recent transactions <small className="text-muted">({txList.length})</small></Card.Title>
+					<Card.Title>
+						Recent transactions <small className="text-muted">({txList.length})</small>
+					</Card.Title>
 				</Card.Body>
 				<TransactionTable
 					items={txList}
@@ -47,7 +45,6 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
 			selectedItem: tx
 		})
 	}
-	
 }
 
 interface OwnProps {
@@ -60,17 +57,5 @@ interface InternalState {
 	selectedItem: Transaction | null
 }
 
-interface DispatchProps {
-}
+type Props = OwnProps 
 
-type Props = OwnProps & DispatchProps
-
-const mapStateToProps = (state: IApplicationState) => {
-	return {
-	}
-}
-
-const mapDispatchToProps = {
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(RecentTransactionsComponent);
