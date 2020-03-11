@@ -45,7 +45,7 @@ class TransactionTable extends React.Component<OwnProps> {
 										<td><Amount amount={tx.getAmount()} /></td>
 										{showAccount && (
 											<td>{_.map(this.props.lookupAccounts(tx.getAccounts()), (account) => (
-												<Badge variant="info">{account.getAccountName()}</Badge>
+												<Badge key={account.getAccountName()} variant="info">{account.getAccountName()}</Badge>
 											))}</td>
 										)}
 										<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
