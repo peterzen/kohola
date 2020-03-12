@@ -14,7 +14,7 @@ import { loadAccountsAttempt, accountNotification } from "../balances/accountSli
 import { createTxNotificationReceivers } from "../transactions/actions";
 import { loadWalletBalance } from "../balances/walletBalanceSlice";
 import { loadTicketsAttempt } from "../staking/stakingSlice";
-import { showTransactionToast } from "./fixtures/Toasts";
+import { showTransactionToast, showInfoToast, showDangerToast } from "./fixtures/Toasts";
 import { Transaction } from "../../models";
 import AppBackend from "../../datasources/appbackend";
 
@@ -134,6 +134,11 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 						setTimeout(() => {
 							dispatch(showProgressbar(false))
 							dispatch(setWalletOpened())
+							dispatch(endpointStatusChange({
+								isEndpointConnected: true,
+								endpointConnectionErrorMsg: "",
+								endpointLastConnectionCheckTs: 0,
+							}))
 						}, 1000)
 					}, 1000)
 				})
@@ -146,13 +151,26 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 }
 
 export const subscribeMonitorEndpointNotifications: ActionCreator<any> = () => {
-	return async (dispatch: AppDispatch) => {
-		w.lorcareceiver__onEndpointConnectionStatusChange = (isConnected: boolean, errMsg: string, lastCheckTimestamp: number) => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
+		
+		w.lorcareceiver__onEndpointConnectionStatusChange = (
+			isConnected: boolean,
+			errMsg: string,
+			lastCheckTimestamp: number
+		) => {
 			dispatch(endpointStatusChange({
 				isEndpointConnected: isConnected,
 				endpointConnectionErrorMsg: errMsg,
 				endpointLastConnectionCheckTs: lastCheckTimestamp,
 			}))
+
+			const currentWalletEndpoint = getState().app.currentWalletEndpoint
+			if (isConnected) {
+				dispatch(loadMainData())
+				showInfoToast("Wallet reconnected", `Wallet connection is back`)
+			} else {
+				showDangerToast("Wallet disconnected", `Lost connection to ${currentWalletEndpoint?.getHostname()}`)
+			}
 		}
 	}
 }
@@ -166,13 +184,8 @@ export const connectDefaultWallet: ActionCreator<any> = (): AppThunk => {
 	}
 }
 
-
-
-export const initializeStore: ActionCreator<any> = () => {
+export const loadMainData: ActionCreator<any> = () => {
 	return async (dispatch: AppDispatch) => {
-
-		dispatch(subscribeMonitorEndpointNotifications())
-
 		await dispatch(loadBestBlockHeight())
 		await dispatch(loadAccountsAttempt())
 
@@ -181,20 +194,23 @@ export const initializeStore: ActionCreator<any> = () => {
 			dispatch(loadWalletBalance())
 			dispatch(loadTicketsAttempt())
 		})
+	}
+}
+
+export const initializeStore: ActionCreator<any> = () => {
+	return async (dispatch: AppDispatch) => {
+
+		dispatch(subscribeMonitorEndpointNotifications())
+
+		dispatch(loadMainData())
 
 		dispatch(createTxNotificationReceivers())
-
-		// dispatch(pingAttempt())
 
 		w.lorcareceiver__OnAccountNotification = (serializedMsg: string) => {
 			const message = AccountNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
 			// console.log("AccountNotification received", message)
 			dispatch(accountNotification(message))
 		}
-		// setTimeout(() => {
-		// 	dispatch(pingAttempt());
-
-		// }, 1000)
 	}
 }
 

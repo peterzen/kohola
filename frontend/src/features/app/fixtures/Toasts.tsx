@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconDefinition, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition, faCheck, faInfo, faExclamation } from '@fortawesome/free-solid-svg-icons';
 
 import { Transaction } from '../../../models';
 import { TransactionType } from '../../../constants';
@@ -50,6 +50,28 @@ export const showTransactionToast = (tx: Transaction) => {
 	}
 	toast(<ToastNotification {...toastProps} />)
 }
+
+export const showInfoToast = (title: string, message: string) => {
+	const toastProps: IToastNotificationProps = {
+		title: title,
+		message: message,
+		variant: "default",
+		icon: faInfo,
+	}
+	toast(<ToastNotification {...toastProps} />)
+}
+
+export const showDangerToast = (title: string, message: string) => {
+	const toastProps: IToastNotificationProps = {
+		title: title,
+		message: message,
+		variant: "danger",
+		icon: faExclamation,
+	}
+	toast(<ToastNotification {...toastProps} />)
+}
+
+
 
 interface IToastNotificationProps {
 	title: string
