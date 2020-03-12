@@ -41,6 +41,7 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__SignTransaction", signTransaction)
 	ui.Bind("walletrpc__PublishTransaction", publishTransaction)
 	ui.Bind("walletrpc__PurchaseTickets", purchaseTickets)
+	ui.Bind("walletrpc__RevokeTickets", revokeExpiredTickets)
 	ui.Bind("walletrpc__RunTicketBuyer", func(requestAsHex string, onErrorFnName string, onDoneFnName string, onStopFnName string) {
 		onErrorFn := func(err error) {
 			js := fmt.Sprintf("%s('%s')", onErrorFnName, err.Error())
@@ -461,6 +462,23 @@ func purchaseTickets(requestAsHex string) (r gui.LorcaMessage) {
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
 	response, err := walletServiceClient.PurchaseTickets(ctx, request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	return r
+}
+
+func revokeExpiredTickets(passphrase string) (r gui.LorcaMessage) {
+	request := &pb.RevokeTicketsRequest{}
+	request.Passphrase = []byte(passphrase)
+	response, err := walletServiceClient.RevokeTickets(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err

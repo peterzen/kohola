@@ -1,10 +1,21 @@
 import _ from "lodash";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 
-import { AppError, AppThunk, IApplicationState } from "../../store/types";
-import { PurchaseTicketsResponse, PurchaseTicketsRequest, CommittedTicketsResponse, VoteChoicesResponse, SetVoteChoicesResponse, RunTicketBuyerResponse, RunTicketBuyerRequest } from "../../proto/api_pb";
+import { AppError, AppThunk, IApplicationState, AppDispatch, IGetState } from "../../store/types";
+import {
+	PurchaseTicketsResponse,
+	PurchaseTicketsRequest,
+	CommittedTicketsResponse,
+	VoteChoicesResponse,
+	SetVoteChoicesResponse,
+	RunTicketBuyerResponse,
+	RunTicketBuyerRequest,
+	RevokeTicketsRequest,
+	RevokeTicketsResponse
+} from "../../proto/api_pb";
 import LorcaBackend from "../../datasources/lorca";
 import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../models";
+import { SteppableNumberInput } from "../../components/Shared/SteppableNumberInput";
 
 
 // GetTickets
@@ -75,6 +86,14 @@ export interface IRunTicketbuyerState {
 	readonly stopTicketBuyerAttempting: boolean
 }
 
+// RevokeTickets
+export interface IRevokeTicketsState {
+	readonly revokeTicketsAttempting: boolean
+	readonly revokeTicketsResponse: RevokeTicketsResponse | null
+	readonly errorRevokeTickets: AppError | null
+}
+
+
 export const initialState: ITicketsState &
 	ITicketPriceState &
 	IAgendasState &
@@ -83,7 +102,8 @@ export const initialState: ITicketsState &
 	IStakeInfoState &
 	IPurchaseTicketsState &
 	ICommittedTicketsState &
-	IRunTicketbuyerState = {
+	IRunTicketbuyerState &
+	IRevokeTicketsState = {
 
 	// GetTickets
 	tickets: [],
@@ -134,6 +154,11 @@ export const initialState: ITicketsState &
 	runTicketBuyerError: null,
 	isTicketBuyerRunning: false,
 	stopTicketBuyerAttempting: false,
+
+	// RevokeTickets
+	revokeTicketsAttempting: false,
+	revokeTicketsResponse: null,
+	errorRevokeTickets: null,
 }
 
 const stakingSlice = createSlice({
@@ -304,6 +329,23 @@ const stakingSlice = createSlice({
 			state.committedTicketsResponse = action.payload
 			state.committedTicketsAttempting = false
 		},
+
+		// RevokeTickets
+		revokeExpiredTicketsAttempt(state) {
+			state.revokeTicketsAttempting = true
+			state.revokeTicketsResponse = null
+			state.errorRevokeTickets = null
+		},
+		revokeExpiredTicketsFailed(state, action: PayloadAction<AppError>) {
+			state.revokeTicketsAttempting = false
+			state.revokeTicketsResponse = null
+			state.errorRevokeTickets = action.payload
+		},
+		revokeExpiredTicketsSuccess(state, action: PayloadAction<RevokeTicketsResponse>) {
+			state.revokeTicketsAttempting = false
+			state.revokeTicketsResponse = action.payload
+			state.errorRevokeTickets = null
+		},
 	}
 })
 
@@ -357,6 +399,11 @@ export const {
 	getCommittedTicketsAttempt,
 	getCommittedTicketsFailed,
 	getCommittedTicketsSuccess,
+
+	// RevokeTickets
+	revokeExpiredTicketsAttempt,
+	revokeExpiredTicketsFailed,
+	revokeExpiredTicketsSuccess,
 
 } = stakingSlice.actions
 
@@ -466,6 +513,22 @@ export const setVoteChoices: ActionCreator<any> = (agendaId: string, choiceId: s
 	}
 }
 
+export const revokeExpiredTickets: ActionCreator<any> = (passphrase: string) => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
+		const { revokeTicketsAttempting } = getState().staking
+		if (revokeTicketsAttempting) {
+			return
+		}
+		dispatch(revokeExpiredTicketsAttempt())
+
+		try {
+			const resp = await LorcaBackend.revokeExpiredTickets(passphrase)
+			dispatch(revokeExpiredTicketsSuccess(resp))
+		} catch (error) {
+			dispatch(revokeExpiredTicketsFailed(error))
+		}
+	}
+}
 
 export const loadStakeInfoAttempt: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch, getState) => {

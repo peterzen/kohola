@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
+import _ from 'lodash';
 
 import { Row, Col, Tabs, Tab } from 'react-bootstrap';
 // @ts-ignore
@@ -13,51 +14,68 @@ import PurchaseTicketForm from '../features/staking/PurchaseTicket/SimplePurchas
 import TicketBuyerComponent from '../features/staking/Ticketbuyer/TicketBuyerComponent';
 import TicketPriceComponent from '../features/staking/TicketPriceComponent';
 import TicketsOverviewContainer from '../features/staking/TicketsOverviewContainer';
-import { loadTicketsAttempt } from '../features/staking/stakingSlice';
+import { loadTicketsAttempt, revokeExpiredTickets } from '../features/staking/stakingSlice';
+import StakingToolsMenu, { StakingToolsMenuItems } from '../features/staking/StakingToolsMenu';
+import PassphraseEntryDialog, { askPassphrase } from '../components/Shared/PassphraseEntryDialog';
 
 class StakingContainer extends React.Component<Props> {
 	render() {
 		return (
-			<Tabs
-				defaultActiveKey="overview" id="purchaseticketsettings-tabs"
-				mountOnEnter={true}
-				unmountOnExit={false}
-			>
-				<Tab eventKey="overview" title="Overview">
-					<Fade fade>
-						<StakeInfoComponent />
-					</Fade>
-					<Row className="mt-3">
-						<Col>
-							<Fade fade>
-								<TicketsOverviewContainer />
-							</Fade>
-						</Col>
-						<Col>
+				<Tabs
+					defaultActiveKey="overview" id="purchaseticketsettings-tabs"
+					mountOnEnter={true}
+					unmountOnExit={false}
+				>
+					<Tab eventKey="overview" title="Overview">
+						<Fade fade>
+							<StakeInfoComponent />
+						</Fade>
+						<Row className="mt-3">
+							<Col>
+								<Fade fade>
+									<TicketsOverviewContainer />
+								</Fade>
+							</Col>
+							<Col>
 							<TicketPriceComponent />
 							<div className="mt-3" />
-							<StakeStats />
-							<div className="mt-3" />
-							<PurchaseTicketForm />
-						</Col>
-					</Row>
-				</Tab>
-				<Tab eventKey="ticketbuyer" title="Ticketbuyer">
-					<TicketBuyerComponent />
-				</Tab>
-				<Tab eventKey="voting" title="Voting">
-					<AgendasComponent />
-				</Tab>
-			</Tabs>
+								<StakeStats />
+								<div className="mt-3" />
+								<PurchaseTicketForm />
+							</Col>
+						</Row>
+					</Tab>
+					<Tab eventKey="ticketbuyer" title="Ticketbuyer">
+						<TicketBuyerComponent />
+					</Tab>
+					<Tab eventKey="voting" title="Voting">
+						<AgendasComponent />
+					</Tab>
+				</Tabs>
+				<PassphraseEntryDialog show={false} />
+			</div>
 		)
 	}
 	componentDidMount() {
 		// this.props.loadTicketsAttempt()
 	}
+	menuHandler(evtKey: keyof StakingToolsMenuItems) {
+		switch (evtKey) {
+			case StakingToolsMenuItems[StakingToolsMenuItems.REVOKE]:
+				askPassphrase()
+					.then((passphrase) => {
+						if (passphrase == "") {
+							throw "empty passphrase"
+						}
+						this.props.revokeExpiredTickets(passphrase)
+					})
+		}
+	}
 }
 
 interface DispatchProps {
 	loadTicketsAttempt: typeof loadTicketsAttempt
+	revokeExpiredTickets: typeof revokeExpiredTickets
 }
 
 type Props = DispatchProps
@@ -69,6 +87,7 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = {
 	loadTicketsAttempt,
+	revokeExpiredTickets,
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StakingContainer));

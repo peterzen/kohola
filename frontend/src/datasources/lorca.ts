@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import * as jspb from "google-protobuf";
 
 import {
 	StakeInfoResponse,
@@ -22,6 +23,7 @@ import {
 	SetVoteChoicesResponse,
 	RunTicketBuyerRequest,
 	RunTicketBuyerResponse,
+	RevokeTicketsResponse,
 } from '../proto/api_pb';
 import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from '../models';
 import { rawToHex } from '../helpers/byteActions';
@@ -55,6 +57,35 @@ export function endpointFactory<T>(methodName: string, responseType: T) {
 		}
 	}
 }
+
+
+// // @FIXME make this work and replace the above with it
+// export function endpointFactory<T>(methodName: string, responseType: T) {
+
+// 	return async function <R extends jspb.Message>(request?: R) {
+// 		if (w[methodName] == undefined) {
+// 			throw {
+// 				code: 99,
+// 				msg: "Invalid methodname: window." + methodName + " does not exist"
+// 			}
+// 		}
+// 		let r = null
+// 		let ser = null
+// 		if (request != undefined) {
+// 			ser = rawToHex((request as jspb.Message).serializeBinary().buffer)
+// 		}
+// 		try {
+// 			const r = await w[methodName](ser)
+// 			if (r.error != undefined) {
+// 				throw r.error
+// 			}
+// 			return (responseType as any).deserializeBinary(r.payload)
+// 		}
+// 		catch (e) {
+// 			console.error(e)
+// 		}
+// 	}
+// }
 
 const LorcaBackend = {
 	fetchTickets: async (startBlockHeight: number, endBlockHeight: number, targetTicketCount: number) => {
@@ -270,6 +301,20 @@ const LorcaBackend = {
 		} catch (e) {
 			console.error("Serialization error", e)
 			return
+		}
+	},
+
+	revokeExpiredTickets: async (passphrase: string) => {
+		try {
+			const r = await w.walletrpc__RevokeTickets(passphrase)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return RevokeTicketsResponse.deserializeBinary(r.payload)
+		}
+		catch (e) {
+			console.error(e)
+			throw e
 		}
 	},
 
