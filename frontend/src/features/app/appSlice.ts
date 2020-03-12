@@ -16,6 +16,7 @@ import { loadWalletBalance } from "../balances/walletBalanceSlice";
 import { loadTicketsAttempt } from "../staking/stakingSlice";
 import { showTransactionToast } from "../../components/Fixtures/Toasts";
 import { Transaction } from "../../models";
+import AppBackend from "../../datasources/appbackend";
 
 const w = (window as any)
 
@@ -101,7 +102,7 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 		}
 		dispatch(connectWalletAttempting())
 		try {
-			const resp = await AppBackend.connectWalletEndpoint(endpoint)
+			await AppBackend.connectWalletEndpoint(endpoint)
 			dispatch(connectWalletSuccess(endpoint))
 			dispatch(initializeStore())
 				.then(() => {
