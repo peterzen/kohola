@@ -29,13 +29,29 @@ export interface AppState {
 	readonly progressbarShown: boolean
 }
 
-export const initialState: AppState = {
+
+export interface IEndpointConnectionState {
+	readonly isEndpointConnected: boolean
+	readonly endpointConnectionErrorMsg: string
+	readonly endpointLastConnectionCheckTs: number
+}
+
+
+export const initialState:
+	AppState &
+	IEndpointConnectionState = {
+
 	isWalletConnected: false,
 	connectWalletError: null,
 	currentWalletEndpoint: null,
 	connectWalletAttempting: false,
 
 	progressbarShown: false,
+
+	// endpointConnectionStatusChange
+	isEndpointConnected: false,
+	endpointConnectionErrorMsg: "",
+	endpointLastConnectionCheckTs: 0,
 }
 
 const appSlice = createSlice({
@@ -67,6 +83,11 @@ const appSlice = createSlice({
 		setWalletOpened(state) {
 			state.isWalletConnected = true
 		},
+		endpointConnectionStatusChange(state, action: PayloadAction<IEndpointConnectionState>) {
+			state.isEndpointConnected = action.payload.isEndpointConnected
+			state.endpointConnectionErrorMsg = action.payload.endpointConnectionErrorMsg
+			state.endpointLastConnectionCheckTs = action.payload.endpointLastConnectionCheckTs
+		},
 
 		// Progressbar
 		showProgressbar(state, action: PayloadAction<boolean>) {
@@ -74,7 +95,6 @@ const appSlice = createSlice({
 		},
 	}
 })
-
 
 
 export const {
@@ -85,6 +105,9 @@ export const {
 	setWalletOpened,
 
 	showProgressbar,
+
+	endpointConnectionStatusChange: endpointStatusChange,
+
 } = appSlice.actions
 
 
@@ -122,6 +145,18 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 	}
 }
 
+export const subscribeMonitorEndpointNotifications: ActionCreator<any> = () => {
+	return async (dispatch: AppDispatch) => {
+		w.lorcareceiver__onEndpointConnectionStatusChange = (isConnected: boolean, errMsg: string, lastCheckTimestamp: number) => {
+			dispatch(endpointStatusChange({
+				isEndpointConnected: isConnected,
+				endpointConnectionErrorMsg: errMsg,
+				endpointLastConnectionCheckTs: lastCheckTimestamp,
+			}))
+		}
+	}
+}
+
 export const connectDefaultWallet: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
 		const firstEndpoint = _.first(getState().appconfiguration.appConfig.getWalletEndpointsList())
@@ -135,6 +170,8 @@ export const connectDefaultWallet: ActionCreator<any> = (): AppThunk => {
 
 export const initializeStore: ActionCreator<any> = () => {
 	return async (dispatch: AppDispatch) => {
+
+		dispatch(subscribeMonitorEndpointNotifications())
 
 		await dispatch(loadBestBlockHeight())
 		await dispatch(loadAccountsAttempt())

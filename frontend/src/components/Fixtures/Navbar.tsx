@@ -5,7 +5,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faTicketAlt, faExchangeAlt, faBlender } from '@fortawesome/free-solid-svg-icons'
 
-import ConnectionStatus from '../../features/networkinfo/ConnectionStatus';
+import ConnectionStatus from '../../features/app/ConnectionStatus';
 
 // @ts-ignore
 import Logo from '../../images/logo.svg'
