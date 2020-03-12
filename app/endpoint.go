@@ -36,12 +36,7 @@ var (
 
 // WalletAPIInit creates the context
 func WalletAPIInit() {
-	ctx, ctxCancel = createContext()
-}
-
-func createContext() (context.Context, context.CancelFunc) {
-	ctx, cancel := context.WithCancel(context.Background())
-	return ctx, cancel
+	ctx, ctxCancel = context.WithCancel(context.Background())
 }
 
 // connectWallet creates a gRPC client connection
@@ -58,13 +53,17 @@ func connectWallet(endpointCfg *gui.GRPCEndpoint) error {
 		ctxCancel()
 	}
 
-	ctx, ctxCancel = createContext()
+	ctx, ctxCancel = context.WithCancel(context.Background())
 	walletServiceClient = walletrpc.NewWalletServiceClient(gRPCConnection)
 	votingServiceClient = walletrpc.NewVotingServiceClient(gRPCConnection)
 	agendaServiceClient = walletrpc.NewAgendaServiceClient(gRPCConnection)
 	ticketbuyerv2ServiceClient = walletrpc.NewTicketBuyerV2ServiceClient(gRPCConnection)
 
-	go monitorEndpoint(walletServiceClient)
+	monitorCtx, monitorCtxCancel := context.WithCancel(ctx)
+	// @FIXME there must be a clean way of doing this.  We just need monitorCtx
+	// to get cancelled along with the parent context.
+	_ = monitorCtxCancel
+	go monitorEndpoint(monitorCtx, walletServiceClient)
 
 	return nil
 }
@@ -225,15 +224,23 @@ var monitorEndPointChangeCallback func(bool, string, int64) = nil
 
 // MonitorEndpoint pings the connected endpoint regularly and calls the
 // supplied function when status changes.
-func monitorEndpoint(cc pb.WalletServiceClient) {
+func monitorEndpoint(ctx context.Context, cc pb.WalletServiceClient) {
 
 	request := &pb.PingRequest{}
 
-	lastConnectionStatus := false
+	lastConnectionStatus := true
 	lastErrorMsg := ""
 	var lastCheckedTimestamp int64 = 0
 
 	for {
+		time.Sleep(10 * time.Second)
+
+		select {
+		case <-ctx.Done():
+			log.Printf("monitorEndpoint stopped")
+			return
+		default:
+		}
 		_, err := cc.Ping(ctx, request)
 
 		lastCheckedTimestamp = time.Now().Unix()
@@ -252,12 +259,6 @@ func monitorEndpoint(cc pb.WalletServiceClient) {
 				monitorEndPointChangeCallback(isConnected, lastErrorMsg, lastCheckedTimestamp)
 			}
 			lastConnectionStatus = isConnected
-		}
-		select {
-		case <-ctx.Done():
-			return
-		default:
-			time.Sleep(10 * time.Second)
 		}
 	}
 }
