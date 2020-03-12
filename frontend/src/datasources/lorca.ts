@@ -54,6 +54,7 @@ export function endpointFactory<T>(methodName: string, responseType: T) {
 		}
 		catch (e) {
 			console.error(e)
+			throw e
 		}
 	}
 }
@@ -363,8 +364,8 @@ const LorcaBackend = {
 			return foundTx
 		}
 		catch (e) {
-			console.error("Serialization error", e)
-			return e
+			console.error("fetchTransactions error", e)
+			throw e
 		}
 	},
 
