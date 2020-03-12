@@ -12,7 +12,6 @@ import AgendasComponent from '../features/staking/Voting/AgendasComponent';
 import StakeInfoComponent from '../features/staking/StakeInfoComponent';
 import PurchaseTicketForm from '../features/staking/PurchaseTicket/SimplePurchaseTicketForm';
 import TicketBuyerComponent from '../features/staking/Ticketbuyer/TicketBuyerComponent';
-import TicketPriceComponent from '../features/staking/TicketPriceComponent';
 import TicketsOverviewContainer from '../features/staking/TicketsOverviewContainer';
 import { loadTicketsAttempt, revokeExpiredTickets } from '../features/staking/stakingSlice';
 import StakingToolsMenu, { StakingToolsMenuItems } from '../features/staking/StakingToolsMenu';
@@ -21,6 +20,10 @@ import PassphraseEntryDialog, { askPassphrase } from '../components/Shared/Passp
 class StakingContainer extends React.Component<Props> {
 	render() {
 		return (
+			<div>
+				<div className="float-right">
+					<StakingToolsMenu menuHandler={_.bind(this.menuHandler, this)} />
+				</div>
 				<Tabs
 					defaultActiveKey="overview" id="purchaseticketsettings-tabs"
 					mountOnEnter={true}
@@ -37,8 +40,6 @@ class StakingContainer extends React.Component<Props> {
 								</Fade>
 							</Col>
 							<Col>
-							<TicketPriceComponent />
-							<div className="mt-3" />
 								<StakeStats />
 								<div className="mt-3" />
 								<PurchaseTicketForm />

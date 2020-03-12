@@ -1,10 +1,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { Row, Col, Card, Container } from 'react-bootstrap';
+import { Row, Col, Card } from 'react-bootstrap';
 
-import { StakeInfo } from "../../models";
+import { StakeInfo, TicketPrice } from "../../models";
 import { TicketStatus } from "../../constants";
-import { loadStakeInfoAttempt } from "./stakingSlice";
+import { loadStakeInfoAttempt, loadTicketPriceAttempt, getTicketPrice } from "./stakingSlice";
 
 import { Amount } from "../../components/Shared/shared";
 import { TicketStatusIcon } from "./TicketStatusIcon";
@@ -17,31 +17,31 @@ class StakeStats extends React.Component<Props> {
 		return (
 			<Card>
 				<Card.Body>
-					<Card.Title>Staking stats</Card.Title>
-					<Container>
-						<Row>
-							<Col xs={6}>
-								<h3>{s.getVoted()}</h3>
-								<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.VOTED} /> Voted</h6>
+					<h1><Amount amount={this.props.ticketPrice.getTicketPrice()} showCurrency /></h1>
+					<h6 className="text-muted">Ticket price in next block</h6>
+				</Card.Body>
+				<hr className="m-0"/>
+				<Card.Body>
+					<Row>
+						<Col xs={6}>
+							<h3>{s.getVoted()}</h3>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.VOTED} /> Voted</h6>
 
-							</Col>
-							<Col xs={6}>
-								<h3><Amount amount={s.getTotalSubsidy()} showCurrency={true} /></h3>
-								<h6 className="text-muted">Total subsidy</h6>
-							</Col>
-							<Col xs={6}>
-								<h3>{s.getMissed()}</h3>
-								<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.MISSED} /> Missed</h6>
+						</Col>
+						<Col xs={6}>
+							<h3><Amount amount={s.getTotalSubsidy()} showCurrency={true} /></h3>
+							<h6 className="text-muted">Total subsidy</h6>
+						</Col>
+						<Col xs={6}>
+							<h3>{s.getMissed()}</h3>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.MISSED} /> Missed</h6>
 
-							</Col>
-							<Col xs={6}>
-								<h3>{s.getRevoked()}</h3>
-								<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.REVOKED} /> Revoked</h6>
-
-
-							</Col>
-						</Row>
-					</Container>
+						</Col>
+						<Col xs={6}>
+							<h3>{s.getRevoked()}</h3>
+							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.REVOKED} /> Revoked</h6>
+						</Col>
+					</Row>
 				</Card.Body>
 			</Card >
 		)
@@ -49,27 +49,32 @@ class StakeStats extends React.Component<Props> {
 
 	componentDidMount() {
 		this.props.loadStakeInfoAttempt()
+		this.props.loadTicketPriceAttempt()
 	}
 }
 
 
 interface OwnProps {
 	stakeinfo: StakeInfo
+	ticketPrice: TicketPrice
 }
 
 interface DispatchProps {
 	loadStakeInfoAttempt: typeof loadStakeInfoAttempt
+	loadTicketPriceAttempt: typeof loadTicketPriceAttempt
 }
 
 type Props = DispatchProps & OwnProps
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
+		ticketPrice: getTicketPrice(state),
 		stakeinfo: state.staking.stakeinfo,
 	}
 }
 
 const mapDispatchToProps = {
+	loadTicketPriceAttempt,
 	loadStakeInfoAttempt
 }
 
