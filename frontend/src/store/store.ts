@@ -7,7 +7,7 @@ import {  createHashHistory } from 'history';
 import { persistState } from 'redux-devtools';
 
 import createRootReducer from "./reducers";
-import DevTools from "../components/Fixtures/DevTools";
+import DevTools from "../features/app/fixtures/DevTools";
 
 export const history = createHashHistory({
 	hashType: 'slash',

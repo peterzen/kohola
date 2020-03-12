@@ -5,7 +5,7 @@ import { GRPCEndpoint } from "../../proto/dcrwalletgui_pb";
 import { getConnectedEndpoint } from "../app/appSlice";
 import OnOffIndicator from "../../components/Shared/OnOffIndicator";
 import { IApplicationState } from "../../store/types";
-import BestBlockComponent from "../networkinfo/BestBlockComponent";
+import BestBlockComponent from "./networkinfo/BestBlockComponent";
 
 class ConnectionStatusComponent extends React.Component<Props> {
 

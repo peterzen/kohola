@@ -9,12 +9,12 @@ import { AppError, AppThunk, AppDispatch, IApplicationState, IGetState } from ".
 import { AccountNotificationsResponse } from "../../proto/api_pb";
 
 import { hexToRaw } from "../../helpers/byteActions";
-import { loadBestBlockHeight } from "../networkinfo/networkInfoSlice";
+import { loadBestBlockHeight } from "./networkinfo/networkInfoSlice";
 import { loadAccountsAttempt, accountNotification } from "../balances/accountSlice";
 import { createTxNotificationReceivers } from "../transactions/actions";
 import { loadWalletBalance } from "../balances/walletBalanceSlice";
 import { loadTicketsAttempt } from "../staking/stakingSlice";
-import { showTransactionToast } from "../../components/Fixtures/Toasts";
+import { showTransactionToast } from "./fixtures/Toasts";
 import { Transaction } from "../../models";
 import AppBackend from "../../datasources/appbackend";
 

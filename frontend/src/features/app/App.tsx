@@ -14,9 +14,9 @@ import AccountDetails from '../../containers/AccountDetails'
 import { NoRouteMatch } from '../../components/Shared/shared';
 
 import { IApplicationState } from '../../store/types';
-import { AppToastContainer } from '../../components/Fixtures/Toasts';
-import Navbar from "../../components/Fixtures/Navbar"
-import DevTools from '../../components/Fixtures/DevTools';
+import { AppToastContainer } from './fixtures/Toasts';
+import Navbar from "./fixtures/Navbar"
+import DevTools from './fixtures/DevTools';
 // import Drawer from 'rc-drawer'
 
 // @ts-ignore

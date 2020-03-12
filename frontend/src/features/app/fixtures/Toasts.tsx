@@ -8,9 +8,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconDefinition, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-import { Transaction } from '../../models';
-import { TransactionType } from '../../constants';
-import { Amount } from '../Shared/shared';
+import { Transaction } from '../../../models';
+import { TransactionType } from '../../../constants';
+import { Amount } from '../../../components/Shared/shared';
 
 
 export const showTransactionToast = (tx: Transaction) => {

@@ -41,7 +41,7 @@ import {
 import { AppError, IGetState, AppDispatch, AppThunk } from '../../store/types';
 
 import { loadWalletBalance } from '../balances/walletBalanceSlice';
-import { loadBestBlockHeight } from '../../features/networkinfo/networkInfoSlice';
+import { loadBestBlockHeight } from '../app/networkinfo/networkInfoSlice';
 import { lookupAccount, accountNotification } from '../balances/accountSlice';
 import { loadStakeInfoAttempt, loadTicketsAttempt } from '../../features/staking/stakingSlice';
 import { Transaction } from '../../models';

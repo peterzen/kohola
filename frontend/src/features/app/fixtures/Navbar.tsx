@@ -5,12 +5,12 @@ import { Navbar, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faTicketAlt, faExchangeAlt, faBlender } from '@fortawesome/free-solid-svg-icons'
 
-import ConnectionStatus from '../../features/app/ConnectionStatus';
+import ConnectionStatus from '../ConnectionStatus';
 
 // @ts-ignore
-import Logo from '../../images/logo.svg'
-import { IApplicationState } from '../../store/types';
-import { isWalletConnected } from '../../features/app/appSlice';
+import Logo from '../../../images/logo.svg'
+import { IApplicationState } from '../../../store/types';
+import { isWalletConnected } from '../appSlice';
 
 class NavbarComponent extends React.Component<Props> {
 
