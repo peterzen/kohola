@@ -2,18 +2,20 @@ import _ from "lodash";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 import { batch } from "react-redux";
 
-import AppBackend from "../../datasources/appbackend";
+import { history } from '../../store/store'
+
 import { GRPCEndpoint } from "../../proto/dcrwalletgui_pb";
 import { AppError, AppThunk, AppDispatch, IApplicationState, IGetState } from "../../store/types";
+import { AccountNotificationsResponse } from "../../proto/api_pb";
+
+import { hexToRaw } from "../../helpers/byteActions";
 import { loadBestBlockHeight } from "../networkinfo/networkInfoSlice";
 import { loadAccountsAttempt, accountNotification } from "../balances/accountSlice";
-import { loadTransactionsAttempt, transactionNotification } from "../transactions/actions";
+import { createTxNotificationReceivers } from "../transactions/actions";
 import { loadWalletBalance } from "../balances/walletBalanceSlice";
 import { loadTicketsAttempt } from "../staking/stakingSlice";
-import { TransactionNotificationsResponse, AccountNotificationsResponse } from "../../proto/api_pb";
-import { hexToRaw } from "../../helpers/byteActions";
-import { history } from '../../store/store'
-import { pingAttempt } from "../networkinfo/pingSlice";
+import { showTransactionToast } from "../../components/Fixtures/Toasts";
+import { Transaction } from "../../models";
 
 const w = (window as any)
 
@@ -142,17 +144,10 @@ export const initializeStore: ActionCreator<any> = () => {
 			dispatch(loadTicketsAttempt())
 		})
 
+		dispatch(createTxNotificationReceivers())
+
 		// dispatch(pingAttempt())
 
-		w.lorcareceiver__OnTxNotification = (serializedMsg: string) => {
-			const message = TransactionNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
-			// console.log("TxNotification received", message)
-			dispatch(transactionNotification(message))
-		}
-		// w.lorcareceiver__OnConfirmNotification = (serializedMsg: Uint8Array) => {
-		// 	const message = ConfirmationNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
-		// 	dispatch(transactionNotification(message))
-		// }
 		w.lorcareceiver__OnAccountNotification = (serializedMsg: string) => {
 			const message = AccountNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
 			// console.log("AccountNotification received", message)
@@ -165,9 +160,11 @@ export const initializeStore: ActionCreator<any> = () => {
 	}
 }
 
-
-
-
+export const displayTXNotification: ActionCreator<any> = (tx: Transaction) => {
+	return async () => {
+		showTransactionToast(tx)
+	}
+}
 
 // selectors
 export const getConnectedEndpoint = (state: IApplicationState) => {

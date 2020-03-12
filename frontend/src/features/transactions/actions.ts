@@ -4,13 +4,15 @@ import { batch } from 'react-redux';
 
 import {
 	CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED,
-	CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL
+	CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL,
+	TransactionType
 } from '../../constants';
 
 import {
 	ConstructTransactionRequest,
 	SignTransactionRequest, PublishTransactionRequest,
-	TransactionNotificationsResponse
+	TransactionNotificationsResponse,
+	AccountNotificationsResponse
 } from '../../proto/api_pb';
 
 import { ConstructTxOutput } from '../../datasources/models';
@@ -20,7 +22,6 @@ import {
 	getTransactionsAttempt,
 	getTransactionsSuccess,
 	getTransactionsFailed,
-	transactionNotificationReceived,
 	getChangeScriptCache,
 	SendTransactionSteps,
 	constructTransactionFailed,
@@ -41,8 +42,11 @@ import { AppError, IGetState, AppDispatch, AppThunk } from '../../store/types';
 
 import { loadWalletBalance } from '../balances/walletBalanceSlice';
 import { loadBestBlockHeight } from '../../features/networkinfo/networkInfoSlice';
-import { lookupAccount } from '../balances/accountSlice';
+import { lookupAccount, accountNotification } from '../balances/accountSlice';
 import { loadStakeInfoAttempt, loadTicketsAttempt } from '../../features/staking/stakingSlice';
+import { Transaction } from '../../models';
+import { displayTXNotification } from '../app/appSlice';
+import { hexToRaw } from '../../helpers/byteActions';
 
 export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
@@ -63,9 +67,13 @@ export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {
 }
 
 
-export const transactionNotification: ActionCreator<any> = (message: TransactionNotificationsResponse): AppThunk => {
+export const processTransactionNotification: ActionCreator<any> = (
+	unminedTxList: Transaction[]
+): AppThunk => {
 	return async (dispatch) => {
-		dispatch(transactionNotificationReceived(message))
+
+		_.map(unminedTxList, tx => dispatch(displayTXNotification(tx)))
+
 		batch(() => {
 			dispatch(loadBestBlockHeight());
 			dispatch(loadStakeInfoAttempt());
@@ -76,6 +84,25 @@ export const transactionNotification: ActionCreator<any> = (message: Transaction
 	}
 }
 
+const w = (window as any)
+
+export const createTxNotificationReceivers: ActionCreator<any> = (): AppThunk => {
+	return async (dispatch: AppDispatch) => {
+
+		w.lorcareceiver__OnTxNotification = (serializedMsg: string) => {
+			const message = TransactionNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
+			console.log("TxNotification received", message)
+			const unminedTxList = _.map(message.getUnminedTransactionsList(), td => new Transaction(td))
+			dispatch(processTransactionNotification(unminedTxList))
+		}
+
+		// w.lorcareceiver__OnConfirmNotification = (serializedMsg: Uint8Array) => {
+		// 	const message = ConfirmationNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
+		// 	dispatch(transactionNotification(message))
+		// }
+
+	}
+}
 
 export const constructTransaction: ActionCreator<any> = (
 	account: number,

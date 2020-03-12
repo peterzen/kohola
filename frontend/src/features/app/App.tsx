@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { hot } from 'react-hot-loader/root'
 
 import { Route } from "react-router-dom"
 import { ConnectedRouter } from "connected-react-router"
@@ -8,11 +10,11 @@ import { Container } from 'react-bootstrap'
 import Wallet from "../../containers/Wallet"
 import Staking from "../../containers/Staking"
 import Settings from '../../containers/Settings';
-import AccountDetails  from '../../containers/AccountDetails'
+import AccountDetails from '../../containers/AccountDetails'
 import { NoRouteMatch } from '../../components/Shared/shared';
 
-import { hot } from 'react-hot-loader/root'
-import ToastContainer from '../../components/Fixtures/Toasts';
+import { IApplicationState } from '../../store/types';
+import { AppToastContainer } from '../../components/Fixtures/Toasts';
 import Navbar from "../../components/Fixtures/Navbar"
 import DevTools from '../../components/Fixtures/DevTools';
 // import Drawer from 'rc-drawer'
@@ -23,15 +25,12 @@ import Login from '../../containers/Login';
 import { bounceTransition, mapStyles } from './routeSwitchAnimations';
 import Mixing from '../../containers/Mixing';
 import AppProgressIndicator from './AppProgressIndicator';
-import { IApplicationState } from '../../store/types';
-import { connect } from 'react-redux';
 
 
 const devMonitorEnabled = true
 
 class App extends React.Component<Props>{
 	render() {
-
 		const history = this.props.history
 
 		const mainClassNames = []
@@ -51,6 +50,7 @@ class App extends React.Component<Props>{
 				</Drawer> */}
 					<Navbar />
 					<Container fluid={true} className="main-content mt-5">
+						<AppToastContainer />
 						<AnimatedSwitch
 							atEnter={bounceTransition.atEnter}
 							atLeave={bounceTransition.atLeave}
@@ -67,7 +67,6 @@ class App extends React.Component<Props>{
 							<Route component={NoRouteMatch} />
 						</AnimatedSwitch>
 					</Container>
-					{/* <ToastContainer /> */}
 					{this.props.showProgress && <AppProgressIndicator />}
 				</main>
 			</ConnectedRouter>

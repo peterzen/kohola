@@ -11,7 +11,6 @@ import {
 	PublishTransactionResponse,
 	ValidateAddressResponse,
 	SweepAccountResponse,
-	TransactionNotificationsResponse
 } from "../../proto/api_pb";
 import { DecodedrawTx, ConstructTxOutput } from "../../datasources/models";
 import { TransactionType, TransactionDirection } from "../../constants";
@@ -90,10 +89,6 @@ export interface GUISendTransaction {
 	sendTransactionCurrentStep: SendTransactionSteps
 }
 
-export interface TxNotificationState {
-	latestTxNotification: TransactionNotificationsResponse | null
-}
-
 interface IConstructTransactionSuccessPayload {
 	txInfo: HumanreadableTxInfo
 	response: ConstructTransactionResponse
@@ -107,8 +102,7 @@ export const initialState: GetTransactionsState &
 	PublishTransactionState &
 	ValidateAddressState &
 	SweepAccountState &
-	GUISendTransaction &
-	TxNotificationState = {
+	GUISendTransaction = {
 
 	txList: [],
 	getTransactionsRequest: false,
@@ -137,9 +131,6 @@ export const initialState: GetTransactionsState &
 	constructTransactionRequest: null,
 	constructTransactionResponse: null,
 	constructTransactionAttempting: false,
-
-	// Tx notifications
-	latestTxNotification: null,
 
 	// SignTransaction
 	signTransactionAttempting: false,
@@ -183,14 +174,6 @@ const transactionsSlice = createSlice({
 			state.txList = action.payload
 			state.errorGetTransactions = null
 			state.getTransactionsRequest = false
-		},
-
-		// TransactionNotifications
-		transactionNotificationSubscribe(state) {
-
-		},
-		transactionNotificationReceived(state, action: PayloadAction<TransactionNotificationsResponse>) {
-			state.latestTxNotification = action.payload
 		},
 
 		// ConstructTransaction
@@ -299,10 +282,6 @@ export const {
 	getTransactionsAttempt,
 	getTransactionsFailed,
 	getTransactionsSuccess,
-
-	// TransactionNotifications
-	transactionNotificationSubscribe,
-	transactionNotificationReceived,
 
 	// ConstructTransaction
 	constructTransactionAttempt,
