@@ -5,7 +5,7 @@ import { Table, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleRight} from '@fortawesome/free-solid-svg-icons'
 
-import { Amount } from '../../components/Shared/shared';
+import { Amount } from '../../components/Shared/Amount';
 import { MenuItems } from './AccountToolsDropdown';
 import { AccountBalance, IndexedWalletAccounts, WalletAccount, WalletBalance, WalletTotals } from '../../models';
 

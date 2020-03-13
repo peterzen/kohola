@@ -18,8 +18,8 @@ import { AppError, IApplicationState } from '../../store/types';
 import { NextAccountResponse, RenameAccountResponse } from '../../proto/api_pb';
 import { getAccountPrefs, updateAccountPreference, IIndexedAccountPrefs } from '../appconfiguration/settingsSlice';
 import { getWalletBalances } from './walletBalanceSlice';
-import { Amount } from '../../components/Shared/shared';
 import { getConnectedEndpointId } from '../app/appSlice';
+import { Amount } from '../../components/Shared/Amount';
 
 function enterHandler(e: React.KeyboardEvent<HTMLInputElement>, callback: () => void) {
 	if (e.key == "Enter") {

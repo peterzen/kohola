@@ -3,8 +3,10 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 
 import { Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { AccountSelector, Amount } from '../../../components/Shared/shared';
+import { AccountSelector } from '../../../components/Shared/shared';
 import { TxConfirmationPanel } from "../../transactions/TxConfirmationPanel";
 import { WalletBalance, TicketPrice } from '../../../models';
 import { PurchaseTicketsRequest, PurchaseTicketsResponse } from '../../../proto/api_pb';
@@ -13,8 +15,7 @@ import { AppError, IApplicationState } from '../../../store/types';
 import { purchaseTicket, getTicketPrice } from '../stakingSlice';
 import { getWalletBalances } from '../../balances/walletBalanceSlice';
 import { SteppableNumberInput } from '../../../components/Shared/SteppableNumberInput';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { Amount } from '../../../components/Shared/Amount';
 import PurchaseTicketSettings from './PurchaseTicketSettings';
 
 class PurchaseTicketForm extends React.Component<Props, InternalState> {

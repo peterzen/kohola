@@ -6,9 +6,9 @@ import { StakeInfo, TicketPrice } from "../../models";
 import { TicketStatus } from "../../constants";
 import { loadStakeInfoAttempt, loadTicketPriceAttempt, getTicketPrice } from "./stakingSlice";
 
-import { Amount } from "../../components/Shared/shared";
 import { TicketStatusIcon } from "./TicketStatusIcon";
 import { IApplicationState } from "../../store/types";
+import { Amount } from "../../components/Shared/Amount";
 
 
 class StakeStats extends React.Component<Props> {

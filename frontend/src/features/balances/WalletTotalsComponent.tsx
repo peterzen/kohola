@@ -1,9 +1,10 @@
 import * as React from "react";
+import { sprintf } from "sprintf-js";
+
 import { Row, Col, ProgressBar } from 'react-bootstrap';
 
-import { Amount, FiatAmount } from "../../components/Shared/shared";
 import { WalletTotals } from "../../models";
-import { sprintf } from "sprintf-js";
+import { Amount, FiatAmount } from "../../components/Shared/Amount";
 
 interface IWalletTotals {
 	totals: WalletTotals
@@ -26,7 +27,9 @@ const ValueCol = (props: IValueColProps) => {
 				<ProgressBar className={clazz} now={100 * props.amount / props.total} />
 			</div>
 			<p className=" text-muted">{props.label}</p>
-			<h4 className="text-right text-muted"><Amount amount={props.amount} rounding={2} showCurrency /></h4>
+			<h4 className="text-right text-muted">
+				<Amount amount={props.amount} rounding={2} showCurrency />
+			</h4>
 			{/* <h4 className="text-right text-muted"><FiatAmount amount={props.amount} showCurrency currency="USD" /></h4> */}
 		</Col>
 	)
@@ -40,7 +43,9 @@ export default class WalletTotalsComponent extends React.PureComponent<IWalletTo
 				<Col>
 					<h1><Amount amount={totals.total} /></h1>
 					<p className="text-muted text-right">Total DCR</p>
-					<h4 className="text-right text-muted"><FiatAmount amount={totals.total} showCurrency currency="USD" /></h4>
+					<h4 className="text-right text-muted">
+						<FiatAmount amount={totals.total} showCurrency currency="USD" />
+					</h4>
 				</Col>
 
 				<ValueCol

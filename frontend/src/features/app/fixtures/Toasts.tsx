@@ -10,7 +10,7 @@ import { IconDefinition, faCheck, faInfo, faExclamation } from '@fortawesome/fre
 
 import { Transaction } from '../../../models';
 import { TransactionType } from '../../../constants';
-import { Amount } from '../../../components/Shared/shared';
+import { Amount } from '../../../components/Shared/Amount';
 
 
 export const showTransactionToast = (tx: Transaction) => {

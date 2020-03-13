@@ -3,10 +3,11 @@ import moment from 'moment'
 import { Table } from 'react-bootstrap'
 import TimeAgo from 'react-timeago';
 
-import { Amount, TxHash } from "../../components/Shared/shared";
 import GenericModalDialog from "../../components/Shared/GenericModalDialog";
 import { UnspentOutputResponse } from "../../proto/api_pb";
 import { rawHashToHex } from "../../helpers/byteActions";
+import { TxHash } from "../../components/Shared/shared";
+import { Amount } from "../../components/Shared/Amount";
 
 export const UTXODetailsComponent = (props: IUTXODetailsComponentProps) => {
 	const utxo = props.utxo

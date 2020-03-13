@@ -1,5 +1,6 @@
 import * as React from 'react';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 
 import TimeAgo from 'react-timeago';
 import { Table, Alert, Badge } from 'react-bootstrap';
@@ -10,10 +11,10 @@ import Fade from 'react-reveal/Fade';
 import { TransitionGroup } from 'react-transition-group';
 
 import { Transaction, WalletAccount } from "../../models";
-import { TransactionHash, Amount } from '../../components/Shared/shared';
+import { TransactionHash } from '../../components/Shared/shared';
 import { lookupAccounts } from '../balances/accountSlice';
-import { connect } from 'react-redux';
 import { IApplicationState } from '../../store/types';
+import { Amount } from '../../components/Shared/Amount';
 
 
 

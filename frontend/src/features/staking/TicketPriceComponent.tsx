@@ -5,8 +5,8 @@ import { Card } from 'react-bootstrap';
 
 import { TicketPrice } from '../../models';
 import { loadTicketPriceAttempt, getTicketPrice } from './stakingSlice';
-import { Amount } from '../../components/Shared/shared';
 import { IApplicationState } from "../../store/types";
+import { Amount } from '../../components/Shared/Amount';
 
 
 class TicketPriceComponent extends React.Component<Props> {

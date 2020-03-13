@@ -6,8 +6,9 @@ import { Table, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
-import { TxHash, Amount } from '../../components/Shared/shared';
 import { UnspentOutputResponse } from '../../proto/api_pb';
+import { TxHash } from '../../components/Shared/shared';
+import { Amount } from '../../components/Shared/Amount';
 
 
 interface ICoinToolsDropdown {

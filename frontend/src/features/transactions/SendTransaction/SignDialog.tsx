@@ -10,7 +10,8 @@ import { DecodedrawTx } from "../../../datasources/models";
 import DialogAlert from "./DialogAlert";
 import { decodeRawTransaction } from "../../../helpers/tx";
 import { HumanreadableTxInfo } from "../transactionsSlice";
-import { Amount, TxHash } from "../../../components/Shared/shared";
+import { TxHash } from "../../../components/Shared/shared";
+import { Amount } from "../../../components/Shared/Amount";
 
 const ReviewTx = (props: {
 	txInfo: HumanreadableTxInfo,
@@ -52,8 +53,7 @@ const ReviewTx = (props: {
 								<tbody>
 									{txInfo.constructTxReq.getNonChangeOutputsList().map((o) => {
 										if (o == undefined || o.getDestination() == undefined) return null
-										// @ts-ignore
-										const address = o.getDestination().getAddress()
+										const address = o.getDestination()?.getAddress()
 										return (
 											<tr key={address}>
 												<td>{address}</td>

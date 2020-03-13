@@ -6,8 +6,8 @@ import { Row, Col, ProgressBar } from 'react-bootstrap';
 
 import { WalletAccount, WalletBalance } from "../../models";
 import { getWalletBalances } from "./walletBalanceSlice";
-import { Amount, FiatAmount } from "../../components/Shared/shared";
 import { IApplicationState } from "../../store/types";
+import { Amount, FiatAmount } from "../../components/Shared/Amount";
 
 
 interface IValueColProps {

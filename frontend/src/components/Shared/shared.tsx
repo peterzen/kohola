@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { Moment } from "moment";
-import { sprintf } from "sprintf-js";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaste, faClipboard, faInfoCircle, faSlidersH, faCopy } from '@fortawesome/free-solid-svg-icons'
@@ -15,14 +14,12 @@ import { formatTimestamp } from "../../helpers";
 import {
 	Transaction,
 	IndexedWalletAccounts,
-	WalletBalance,
-	WalletAccount
-} from "../../models";
+	WalletBalance} from "../../models";
 
 import { rawHashToHex } from "../../helpers/byteActions";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { ATOMS_DIVISOR } from "../../constants";
-import { getAccounts, getVisibleAccounts } from "../../features/balances/accountSlice";
+import { getVisibleAccounts } from "../../features/balances/accountSlice";
 import { IIndexedAccountPrefs, getAccountPrefs } from "../../features/appconfiguration/settingsSlice";
 import { getWalletBalances } from "../../features/balances/walletBalanceSlice";
 import { IApplicationState } from "../../store/types";
@@ -57,53 +54,7 @@ export function TxHash(props: { hash: Buffer, truncate?: boolean }) {
 	)
 }
 
-interface AmountProps {
-	amount: number
-	rounding?: number
-	currency?: string
-	showCurrency?: boolean
-}
 
-export function Amount(props: AmountProps) {
-
-	const showCurrency = props.showCurrency || false
-	const rounding = props.rounding || 4;
-	const dcrAmount = props.amount / 100000000;
-	const split = dcrAmount.toFixed(rounding).toString().split(".");
-	const head = [split[0], split[1].slice(0, 2)].join(".");
-	const tail = split[1].slice(2).replace(/0{1,3}$/, "");
-	const negativeZero = (parseFloat(head) === 0) && (dcrAmount < 0);
-
-	return (
-		<span className="amount" title={dcrAmount.toString()}>
-			<span>{sprintf("%s%02.02f", negativeZero ? '-' : '', head)}</span>
-			<span className="fractions" >{tail}</span>
-			{showCurrency ? <span className="currency"> DCR</span> : ""}
-		</span>
-	)
-}
-
-
-
-export function FiatAmount(props: AmountProps) {
-
-
-	const MOCK_EXCHANGE_RATE = 21;
-
-	const showCurrency = props.showCurrency || false
-	const rounding = props.rounding || 4;
-	const dcrAmount = props.amount / 100000000 * MOCK_EXCHANGE_RATE
-	const split = dcrAmount.toFixed(rounding).toString().split(".");
-	const head = [split[0], split[1].slice(0, 2)].join(".");
-	const negativeZero = (parseFloat(head) === 0) && (dcrAmount < 0);
-
-	return (
-		<span className="amount" title={dcrAmount.toString()}>
-			<span>{sprintf("%s%2f", negativeZero ? '-' : '', head)}</span>&nbsp;
-			{showCurrency ? <span className="currency">{props.currency}</span> : ""}
-		</span>
-	)
-}
 
 interface HashProps {
 	hash: Uint8Array
