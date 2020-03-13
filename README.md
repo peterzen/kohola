@@ -18,7 +18,7 @@ By default, `dcrwallet` listens on port 9111 (mainnet) or 19111 (testnet).  The 
 
 1. Clone repo
 
-`git clone https://github.com/peterzen/dcrwalletgui && cd dcrwalletgui`
+`git clone --recurse-submodules https://github.com/peterzen/dcrwalletgui && cd dcrwalletgui`
 
 2. Run prep script that creates `dcrwallet/rpc/walletrpc/go.mod` so that it can be `require`'d by the Go code:
 
@@ -26,8 +26,10 @@ By default, `dcrwallet` listens on port 9111 (mainnet) or 19111 (testnet).  The 
 
 3. Build and run React frontend 
 
-`cd frontend && yarn`
-`yarn start`
+```
+cd frontend && yarn
+yarn start
+```
 
 4. Open another terminal, and build and run app binary
 
