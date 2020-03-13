@@ -20,7 +20,7 @@ require (
 	github.com/decred/dcrwallet/rpc/walletrpc v0.3.0
 	github.com/decred/go-socks v1.1.0
 	github.com/getlantern/systray v0.0.0-20200109124156-9abdfb6448b3
-	github.com/golang/protobuf v1.3.2
+	github.com/golang/protobuf v1.3.5
 	github.com/gorilla/websocket v1.4.1
 	github.com/gotk3/gotk3 v0.0.0-20200129211157-69caac910e50 // indirect
 	github.com/jessevdk/go-flags v1.4.0
@@ -29,7 +29,7 @@ require (
 	github.com/superoo7/go-gecko v1.0.0
 	github.com/zserge/lorca v0.1.8
 	golang.org/x/crypto v0.0.0-20200204104054-c9f3fb736b72 // indirect
-	google.golang.org/grpc v1.27.0
+	google.golang.org/grpc v1.28.0
 
 )
 
