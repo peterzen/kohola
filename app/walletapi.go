@@ -21,6 +21,11 @@ import (
 // ExportWalletAPI exports the RPC API functions to the UI
 func ExportWalletAPI(ui lorca.UI) {
 
+	var (
+		tbCtx       context.Context
+		tbCtxCancel context.CancelFunc
+	)
+
 	ui.Bind("walletrpc__Ping", doPing)
 	ui.Bind("walletrpc__GetNetwork", getNetwork)
 	ui.Bind("walletrpc__GetBestBlock", getBestBlock)
@@ -43,6 +48,7 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__PurchaseTickets", purchaseTickets)
 	ui.Bind("walletrpc__RevokeTickets", revokeExpiredTickets)
 	ui.Bind("walletrpc__RunTicketBuyer", func(requestAsHex string, onErrorFnName string, onDoneFnName string, onStopFnName string) {
+
 		onErrorFn := func(err error) {
 			js := fmt.Sprintf("%s('%s')", onErrorFnName, err.Error())
 			ui.Eval(js)
@@ -55,11 +61,22 @@ func ExportWalletAPI(ui lorca.UI) {
 			js := fmt.Sprintf("%s()", onStopFnName)
 			ui.Eval(js)
 		}
-		runTicketbuyer(requestAsHex, onErrorFn, onDoneFn, onStopFn)
+
+		request := &pb.RunTicketBuyerRequest{}
+		bytes, err := hex.DecodeString(requestAsHex)
+		err = proto.Unmarshal(bytes, request)
+		if err != nil {
+			fmt.Println(err)
+			onErrorFn(err)
+		}
+		tbCtx, tbCtxCancel = context.WithCancel(ctx)
+		runTicketbuyer(tbCtx, request, onErrorFn, onDoneFn, onStopFn)
 	})
 
 	ui.Bind("walletrpc__StopTicketBuyer", func() {
-		stopTicketbuyer()
+		if tbCtxCancel != nil {
+			tbCtxCancel()
+		}
 	})
 
 	ui.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) error {
@@ -492,27 +509,15 @@ func revokeExpiredTickets(passphrase string) (r gui.LorcaMessage) {
 	return r
 }
 
-var tbCtx context.Context
-var tbCtxCancel context.CancelFunc
+func runTicketbuyer(ctx context.Context, request *pb.RunTicketBuyerRequest, onErrorFn func(error), onDoneFn func(), onStopFn func()) {
 
-func runTicketbuyer(requestAsHex string, onErrorFn func(error), onDoneFn func(), onStopFn func()) {
-	request := &pb.RunTicketBuyerRequest{}
-	bytes, err := hex.DecodeString(requestAsHex)
-	err = proto.Unmarshal(bytes, request)
-	if err != nil {
-		fmt.Println(err)
-		onErrorFn(err)
-	}
-	tbCtx, tbCtxCancel = context.WithCancel(ctx)
-
-	stream, err := ticketbuyerv2ServiceClient.RunTicketBuyer(tbCtx, request)
+	stream, err := ticketbuyerv2ServiceClient.RunTicketBuyer(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		onErrorFn(err)
 	}
 
 	var tbErr error
-
 	go func() {
 		for {
 			_, tbErr = stream.Recv()
@@ -532,12 +537,6 @@ func runTicketbuyer(requestAsHex string, onErrorFn func(error), onDoneFn func(),
 
 	if tbErr == nil {
 		onDoneFn()
-	}
-}
-
-func stopTicketbuyer() {
-	if tbCtxCancel != nil {
-		tbCtxCancel()
 	}
 }
 
