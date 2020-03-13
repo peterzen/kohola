@@ -1,5 +1,3 @@
-
-frontend/yarn.lock
-app/gui
 app/__debug_bin
+app/dcrwalletgui
 app/dcrwalletgui.json
