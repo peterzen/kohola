@@ -39,5 +39,4 @@ replace (
 	github.com/decred/dcrwallet/rpc/walletrpc v0.3.0 => ../deps/dcrwallet/rpc/walletrpc
 	github.com/peterzen/dcrwalletgui/dcrwalletgui => ./walletgui
 	github.com/peterzen/dcrwalletgui/feeds => ./feeds
-	github.com/zserge/lorca => ../lorca
 )
