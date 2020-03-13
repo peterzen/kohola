@@ -34,9 +34,9 @@ require (
 )
 
 replace (
-	github.com/decred/dcrd/rpc/jsonrpc/types/v2 => /home/peter/go/src/github.com/decred/dcrd/rpc/jsonrpc/types/
-	github.com/decred/dcrwallet/rpc/walletrpc v0.3.0 => ../dcrwallet/rpc/walletrpc
-	github.com/peterzen/dcrwalletgui/dcrwalletgui => ./dcrwalletgui
+	github.com/decred/dcrd/rpc/jsonrpc/types/v2 => ../deps/dcrd/rpc/jsonrpc/types/
+	github.com/decred/dcrwallet/rpc/walletrpc v0.3.0 => ../deps/dcrwallet/rpc/walletrpc
+	github.com/peterzen/dcrwalletgui/dcrwalletgui => ./deps/dcrwalletgui
 	github.com/peterzen/dcrwalletgui/feeds => ./feeds
 	github.com/zserge/lorca => ../lorca
 )
