@@ -15,9 +15,7 @@ import { NoRouteMatch } from '../../components/Shared/shared';
 
 import { IApplicationState } from '../../store/types';
 import { AppToastContainer } from './fixtures/Toasts';
-import Navbar from "./fixtures/Navbar"
 import DevTools from './fixtures/DevTools';
-// import Drawer from 'rc-drawer'
 
 // @ts-ignore
 import { AnimatedSwitch } from 'react-router-transition';
@@ -25,9 +23,10 @@ import Login from '../../containers/Login';
 import { bounceTransition, mapStyles } from './routeSwitchAnimations';
 import Mixing from '../../containers/Mixing';
 import AppProgressIndicator from './AppProgressIndicator';
+import AppSidebar from './fixtures/AppSidebar';
 
 
-const devMonitorEnabled = true
+const devMonitorEnabled = false
 
 class App extends React.Component<Props>{
 	render() {
@@ -41,33 +40,27 @@ class App extends React.Component<Props>{
 			<ConnectedRouter history={history}>
 				{devMonitorEnabled && <DevTools />}
 				<main id="main" className={mainClassNames.join(" ")}>
-					{/* <Drawer
-					placement='right'
-					width={400}
-					// height={this.state.height}
-				>
-					<DevTools />
-				</Drawer> */}
-					<Navbar />
-					<Container fluid={true} className="main-content mt-5">
-						<AppToastContainer />
-						<AnimatedSwitch
-							atEnter={bounceTransition.atEnter}
-							atLeave={bounceTransition.atLeave}
-							atActive={bounceTransition.atActive}
-							mapStyles={mapStyles}
-							className="switch-wrapper"
-						>
-							<Route path="/staking" component={Staking} />
-							<Route path="/settings" component={Settings} />
-							<Route path="/account/:accountNumber" component={AccountDetails} />
-							<Route path="/wallet" component={Wallet} />
-							<Route path="/mixing" component={Mixing} />
-							<Route exact path="/" component={Login} />
-							<Route component={NoRouteMatch} />
-						</AnimatedSwitch>
-					</Container>
-					{this.props.showProgress && <AppProgressIndicator />}
+					<AppSidebar>
+						<Container fluid={true} className="main-content mt-5">
+							<AppToastContainer />
+							<AnimatedSwitch
+								atEnter={bounceTransition.atEnter}
+								atLeave={bounceTransition.atLeave}
+								atActive={bounceTransition.atActive}
+								mapStyles={mapStyles}
+								className="switch-wrapper"
+							>
+								<Route path="/staking" component={Staking} />
+								<Route path="/settings" component={Settings} />
+								<Route path="/account/:accountNumber" component={AccountDetails} />
+								<Route path="/wallet" component={Wallet} />
+								<Route path="/mixing" component={Mixing} />
+								<Route exact path="/" component={Login} />
+								<Route component={NoRouteMatch} />
+							</AnimatedSwitch>
+						</Container>
+						{this.props.showProgress && <AppProgressIndicator />}
+					</AppSidebar>
 				</main>
 			</ConnectedRouter>
 		)
