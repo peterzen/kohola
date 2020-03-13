@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/decred/dcrd/dcrutil"
-	pb "github.com/decred/dcrwallet/rpc/walletrpc"
 	walletrpc "github.com/decred/dcrwallet/rpc/walletrpc"
 	proto "github.com/golang/protobuf/proto"
 	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
@@ -64,7 +63,7 @@ func ExportWalletAPI(ui lorca.UI) {
 			ui.Eval(js)
 		}
 
-		request := &pb.RunTicketBuyerRequest{}
+		request := &walletrpc.RunTicketBuyerRequest{}
 		bytes, err := hex.DecodeString(requestAsHex)
 		err = proto.Unmarshal(bytes, request)
 		if err != nil {
@@ -96,7 +95,7 @@ func ExportWalletAPI(ui lorca.UI) {
 			ui.Eval(js)
 		}
 
-		request := &pb.RunAccountMixerRequest{}
+		request := &walletrpc.RunAccountMixerRequest{}
 		bytes, err := hex.DecodeString(requestAsHex)
 		err = proto.Unmarshal(bytes, request)
 		if err != nil {
@@ -148,7 +147,7 @@ func ExportWalletAPI(ui lorca.UI) {
 
 func getBalance(accountNumber uint32, requiredConfirmations int32) (r gui.LorcaMessage) {
 
-	request := &pb.BalanceRequest{
+	request := &walletrpc.BalanceRequest{
 		AccountNumber:         accountNumber,
 		RequiredConfirmations: requiredConfirmations,
 	}
@@ -169,7 +168,7 @@ func getBalance(accountNumber uint32, requiredConfirmations int32) (r gui.LorcaM
 }
 
 func getStakeInfo() (r gui.LorcaMessage) {
-	request := &pb.StakeInfoRequest{}
+	request := &walletrpc.StakeInfoRequest{}
 	response, err := walletServiceClient.StakeInfo(ctx, request)
 	if err != nil {
 		fmt.Println(err)
@@ -185,7 +184,7 @@ func getStakeInfo() (r gui.LorcaMessage) {
 }
 
 func getAccounts() (r gui.LorcaMessage) {
-	request := &pb.AccountsRequest{}
+	request := &walletrpc.AccountsRequest{}
 	response, err := walletServiceClient.Accounts(ctx, request)
 	if err != nil {
 		fmt.Println(err)
@@ -201,7 +200,7 @@ func getAccounts() (r gui.LorcaMessage) {
 }
 
 func getTicketPrice() (r gui.LorcaMessage) {
-	request := &pb.TicketPriceRequest{}
+	request := &walletrpc.TicketPriceRequest{}
 	response, err := walletServiceClient.TicketPrice(ctx, request)
 	if err != nil {
 		fmt.Println(err)
@@ -217,7 +216,7 @@ func getTicketPrice() (r gui.LorcaMessage) {
 }
 
 func getAgendas() (r gui.LorcaMessage) {
-	request := &pb.AgendasRequest{}
+	request := &walletrpc.AgendasRequest{}
 	response, err := agendaServiceClient.Agendas(ctx, request)
 	if err != nil {
 		fmt.Println(err)
@@ -233,7 +232,7 @@ func getAgendas() (r gui.LorcaMessage) {
 }
 
 func getVoteChoices() (r gui.LorcaMessage) {
-	request := &pb.VoteChoicesRequest{}
+	request := &walletrpc.VoteChoicesRequest{}
 	response, err := votingServiceClient.VoteChoices(ctx, request)
 	if err != nil {
 		fmt.Println(err)
@@ -249,9 +248,9 @@ func getVoteChoices() (r gui.LorcaMessage) {
 }
 
 func setVoteChoices(agendaID string, choiceID string) (r gui.LorcaMessage) {
-	request := &pb.SetVoteChoicesRequest{
-		Choices: []*pb.SetVoteChoicesRequest_Choice{
-			&pb.SetVoteChoicesRequest_Choice{
+	request := &walletrpc.SetVoteChoicesRequest{
+		Choices: []*walletrpc.SetVoteChoicesRequest_Choice{
+			&walletrpc.SetVoteChoicesRequest_Choice{
 				AgendaId: agendaID,
 				ChoiceId: choiceID,
 			},
@@ -272,7 +271,7 @@ func setVoteChoices(agendaID string, choiceID string) (r gui.LorcaMessage) {
 }
 
 func getBestBlock() (r gui.LorcaMessage) {
-	request := &pb.BestBlockRequest{}
+	request := &walletrpc.BestBlockRequest{}
 	response, err := walletServiceClient.BestBlock(ctx, request)
 	if err != nil {
 		fmt.Println(err)
@@ -288,7 +287,7 @@ func getBestBlock() (r gui.LorcaMessage) {
 }
 
 func getNetwork() (r gui.LorcaMessage) {
-	request := &pb.NetworkRequest{}
+	request := &walletrpc.NetworkRequest{}
 	response, err := walletServiceClient.Network(ctx, request)
 	if err != nil {
 		fmt.Println(err)
@@ -307,7 +306,7 @@ func getTickets(
 	StartingBlockHeight int32,
 	EndingBlockHeight int32,
 	TargetTicketCount int32) (r gui.LorcaMessage) {
-	request := &pb.GetTicketsRequest{
+	request := &walletrpc.GetTicketsRequest{
 		StartingBlockHeight: StartingBlockHeight,
 		EndingBlockHeight:   EndingBlockHeight,
 		TargetTicketCount:   TargetTicketCount,
@@ -340,7 +339,7 @@ func getTransactions(
 	startingBlockHeight int32,
 	endingBlockHeight int32,
 	targetTransactionCount int32) (r gui.LorcaMessage) {
-	request := &pb.GetTransactionsRequest{
+	request := &walletrpc.GetTransactionsRequest{
 		StartingBlockHeight:    startingBlockHeight,
 		EndingBlockHeight:      endingBlockHeight,
 		TargetTransactionCount: targetTransactionCount,
@@ -373,7 +372,7 @@ func getNextAddress(
 	account uint32,
 	kind walletrpc.NextAddressRequest_Kind,
 	gapPolicy walletrpc.NextAddressRequest_GapPolicy) (r gui.LorcaMessage) {
-	request := &pb.NextAddressRequest{
+	request := &walletrpc.NextAddressRequest{
 		Account:   account,
 		Kind:      kind,
 		GapPolicy: gapPolicy,
@@ -397,7 +396,7 @@ func getNextAccount(
 	passphrase string) (r gui.LorcaMessage) {
 	pp := []byte(passphrase)
 
-	request := &pb.NextAccountRequest{
+	request := &walletrpc.NextAccountRequest{
 		AccountName: accountName,
 		Passphrase:  pp,
 	}
@@ -419,7 +418,7 @@ func renameAccount(
 	accountNumber uint32,
 	newName string) (r gui.LorcaMessage) {
 
-	request := &pb.RenameAccountRequest{
+	request := &walletrpc.RenameAccountRequest{
 		AccountNumber: accountNumber,
 		NewName:       newName,
 	}
@@ -439,7 +438,7 @@ func renameAccount(
 }
 
 func constructTransaction(requestAsHex string) (r gui.LorcaMessage) {
-	request := &pb.ConstructTransactionRequest{}
+	request := &walletrpc.ConstructTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
 	response, err := walletServiceClient.ConstructTransaction(ctx, request)
@@ -457,7 +456,7 @@ func constructTransaction(requestAsHex string) (r gui.LorcaMessage) {
 }
 
 func signTransaction(requestAsHex string) (r gui.LorcaMessage) {
-	request := &pb.SignTransactionRequest{}
+	request := &walletrpc.SignTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
 	response, err := walletServiceClient.SignTransaction(ctx, request)
@@ -475,7 +474,7 @@ func signTransaction(requestAsHex string) (r gui.LorcaMessage) {
 }
 
 func publishTransaction(requestAsHex string) (r gui.LorcaMessage) {
-	request := &pb.PublishTransactionRequest{}
+	request := &walletrpc.PublishTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
 	response, err := walletServiceClient.PublishTransaction(ctx, request)
@@ -493,7 +492,7 @@ func publishTransaction(requestAsHex string) (r gui.LorcaMessage) {
 }
 
 func purchaseTickets(requestAsHex string) (r gui.LorcaMessage) {
-	request := &pb.PurchaseTicketsRequest{}
+	request := &walletrpc.PurchaseTicketsRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
 	response, err := walletServiceClient.PurchaseTickets(ctx, request)
@@ -511,7 +510,7 @@ func purchaseTickets(requestAsHex string) (r gui.LorcaMessage) {
 }
 
 func revokeExpiredTickets(passphrase string) (r gui.LorcaMessage) {
-	request := &pb.RevokeTicketsRequest{}
+	request := &walletrpc.RevokeTicketsRequest{}
 	request.Passphrase = []byte(passphrase)
 	response, err := walletServiceClient.RevokeTickets(ctx, request)
 	if err != nil {
@@ -527,7 +526,7 @@ func revokeExpiredTickets(passphrase string) (r gui.LorcaMessage) {
 	return r
 }
 
-func runTicketbuyer(ctx context.Context, request *pb.RunTicketBuyerRequest, onErrorFn func(error), onDoneFn func(), onStopFn func()) {
+func runTicketbuyer(ctx context.Context, request *walletrpc.RunTicketBuyerRequest, onErrorFn func(error), onDoneFn func(), onStopFn func()) {
 
 	stream, err := ticketbuyerv2ServiceClient.RunTicketBuyer(ctx, request)
 	if err != nil {
@@ -557,7 +556,7 @@ func runTicketbuyer(ctx context.Context, request *pb.RunTicketBuyerRequest, onEr
 		onDoneFn()
 	}
 }
-func runAccountMixer(ctx context.Context, request *pb.RunAccountMixerRequest, onErrorFn func(error), onDoneFn func(), onStopFn func()) {
+func runAccountMixer(ctx context.Context, request *walletrpc.RunAccountMixerRequest, onErrorFn func(error), onDoneFn func(), onStopFn func()) {
 
 	stream, err := mixerServiceClient.RunAccountMixer(ctx, request)
 	if err != nil {
@@ -603,7 +602,7 @@ func listUnspent(
 	targetAmount int64,
 	requiredConfirmations int32,
 	includeImmature bool) (r gui.LorcaMessage) {
-	request := &pb.UnspentOutputsRequest{
+	request := &walletrpc.UnspentOutputsRequest{
 		Account:                  accountNumber,
 		TargetAmount:             targetAmount,
 		RequiredConfirmations:    requiredConfirmations,

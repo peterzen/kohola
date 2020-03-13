@@ -13,7 +13,6 @@ import (
 	"google.golang.org/grpc/credentials"
 
 	"github.com/decred/dcrd/rpcclient/v6"
-	pb "github.com/decred/dcrwallet/rpc/walletrpc"
 	walletrpc "github.com/decred/dcrwallet/rpc/walletrpc"
 	proto "github.com/golang/protobuf/proto"
 	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
@@ -25,11 +24,11 @@ var (
 	gRPCConnection *grpc.ClientConn  = nil
 	rpcClient      *rpcclient.Client = nil
 
-	walletServiceClient        pb.WalletServiceClient
-	votingServiceClient        pb.VotingServiceClient
-	agendaServiceClient        pb.AgendaServiceClient
-	mixerServiceClient         pb.AccountMixerServiceClient
-	ticketbuyerv2ServiceClient pb.TicketBuyerV2ServiceClient
+	walletServiceClient        walletrpc.WalletServiceClient
+	votingServiceClient        walletrpc.VotingServiceClient
+	agendaServiceClient        walletrpc.AgendaServiceClient
+	mixerServiceClient         walletrpc.AccountMixerServiceClient
+	ticketbuyerv2ServiceClient walletrpc.TicketBuyerV2ServiceClient
 
 	ctx       context.Context    = nil
 	ctxCancel context.CancelFunc = nil
@@ -89,7 +88,7 @@ func newGRPCClient(endpointCfg *gui.GRPCEndpoint) (*grpc.ClientConn, error) {
 }
 
 func subscribeTxNotifications(ui lorca.UI) {
-	request := &pb.TransactionNotificationsRequest{}
+	request := &walletrpc.TransactionNotificationsRequest{}
 	ntfnStream, err := walletServiceClient.TransactionNotifications(ctx, request)
 	if err != nil {
 		fmt.Println(err)
@@ -112,7 +111,7 @@ func subscribeTxNotifications(ui lorca.UI) {
 }
 
 // func subscribeConfirmNotifications(ui lorca.UI) {
-// 	request := &pb.ConfirmationNotificationsRequest{}
+// 	request := &walletrpc.ConfirmationNotificationsRequest{}
 // 	ntfnStream, err := walletServiceClient.ConfirmationNotifications(ctx, request)
 // 	if err != nil {
 // 		fmt.Println(err)
@@ -136,7 +135,7 @@ func subscribeTxNotifications(ui lorca.UI) {
 
 func subscribeAccountNotifications(ui lorca.UI) {
 
-	request := &pb.AccountNotificationsRequest{}
+	request := &walletrpc.AccountNotificationsRequest{}
 	ntfnStream, err := walletServiceClient.AccountNotifications(ctx, request)
 
 	if err != nil {
@@ -214,7 +213,7 @@ func checkGRPCConnection(endpointCfg *gui.GRPCEndpoint) (bool, error) {
 	}
 	walletServiceClient := walletrpc.NewWalletServiceClient(gRPCConnection)
 
-	request := &pb.PingRequest{}
+	request := &walletrpc.PingRequest{}
 	_, err = walletServiceClient.Ping(context.Background(), request)
 	if err != nil {
 		return false, err
@@ -226,9 +225,9 @@ var monitorEndPointChangeCallback func(bool, string, int64) = nil
 
 // MonitorEndpoint pings the connected endpoint regularly and calls the
 // supplied function when status changes.
-func monitorEndpoint(ctx context.Context, cc pb.WalletServiceClient) {
+func monitorEndpoint(ctx context.Context, cc walletrpc.WalletServiceClient) {
 
-	request := &pb.PingRequest{}
+	request := &walletrpc.PingRequest{}
 
 	lastConnectionStatus := true
 	lastErrorMsg := ""
