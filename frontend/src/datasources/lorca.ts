@@ -403,7 +403,6 @@ const LorcaBackend = {
 		return await w.walletgui__CheckGRPCConnection(ser)
 	},
 
-	doPing: endpointFactory("walletrpc__Ping", PingResponse),
 	fetchAgendas: endpointFactory("walletrpc__GetAgendas", AgendasResponse),
 	fetchNetwork: endpointFactory("walletrpc__GetNetwork", NetworkResponse),
 	fetchUnspent: endpointFactory("walletrpc__ListUnspent", UnspentOutputResponse),

@@ -26,7 +26,6 @@ func ExportWalletAPI(ui lorca.UI) {
 		tbCtxCancel context.CancelFunc
 	)
 
-	ui.Bind("walletrpc__Ping", doPing)
 	ui.Bind("walletrpc__GetNetwork", getNetwork)
 	ui.Bind("walletrpc__GetBestBlock", getBestBlock)
 	ui.Bind("walletrpc__GetVoteChoices", getVoteChoices)
@@ -333,22 +332,6 @@ func getTransactions(
 		}
 		r.APayload = append(r.APayload, b)
 	}
-}
-
-func doPing() (r gui.LorcaMessage) {
-	request := &pb.PingRequest{}
-	response, err := walletServiceClient.Ping(ctx, request)
-	if err != nil {
-		fmt.Println(err)
-		r.Err = err
-		return r
-	}
-	r.Payload, err = proto.Marshal(response)
-	if err != nil {
-		r.Err = err
-		return r
-	}
-	return r
 }
 
 func getNextAddress(
