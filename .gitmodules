@@ -1,6 +1,6 @@
-[submodule "deps/dcrwallet"]
-	path = deps/dcrwallet
-	url = https://github.com/decred/dcrwallet
 [submodule "deps/dcrd"]
 	path = deps/dcrd
 	url = https://github.com/decred/dcrd
+[submodule "deps/dcrwallet"]
+	path = deps/dcrwallet
+	url = https://github.com/decred/dcrwallet
