@@ -24,6 +24,7 @@ import {
 	RunTicketBuyerRequest,
 	RunTicketBuyerResponse,
 	RevokeTicketsResponse,
+	RunAccountMixerRequest,
 } from '../proto/api_pb';
 import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from '../models';
 import { rawToHex } from '../helpers/byteActions';
@@ -272,6 +273,43 @@ const LorcaBackend = {
 	stopTicketBuyer: async () => {
 		try {
 			await w.walletrpc__StopTicketBuyer()
+		} catch (e) {
+			throw e
+		}
+	},
+
+	runAccountMixer: async (
+		request: RunAccountMixerRequest,
+		onError: (error: any) => void,
+		onDone: () => void,
+		onStop: () => void
+	) => {
+
+		try {
+			const ser = rawToHex(request.serializeBinary().buffer)
+
+			const onErrorFnName = "lorcareceiver__RunAccountMixer_onError"
+			const onDoneFnName = "lorcareceiver__RunAccountMixer_onDone"
+			const onStopFnName = "lorcareceiver__RunAccountMixer_onStop"
+			w[onErrorFnName] = onError
+			w[onDoneFnName] = onDone
+			w[onStopFnName] = onStop
+
+			const r = await w.walletrpc__RunAccountMixer(
+				ser,
+				"window." + onErrorFnName,
+				"window." + onDoneFnName,
+				"window." + onStopFnName
+			)
+
+		} catch (e) {
+			throw e
+		}
+
+	},
+	stopAccountMixer: async () => {
+		try {
+			await w.walletrpc__StopAccountMixer()
 		} catch (e) {
 			throw e
 		}

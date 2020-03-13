@@ -1,0 +1,3 @@
+[submodule "dcrwallet"]
+	path = dcrwallet
+	url = https://github.com/decred/dcrwallet

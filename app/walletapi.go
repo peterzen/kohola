@@ -24,6 +24,9 @@ func ExportWalletAPI(ui lorca.UI) {
 	var (
 		tbCtx       context.Context
 		tbCtxCancel context.CancelFunc
+
+		mixerCtx       context.Context
+		mixerCtxCancel context.CancelFunc
 	)
 
 	ui.Bind("walletrpc__GetNetwork", getNetwork)
@@ -75,6 +78,38 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__StopTicketBuyer", func() {
 		if tbCtxCancel != nil {
 			tbCtxCancel()
+		}
+	})
+
+	ui.Bind("walletrpc__RunAccountMixer", func(requestAsHex string, onErrorFnName string, onDoneFnName string, onStopFnName string) {
+
+		onErrorFn := func(err error) {
+			js := fmt.Sprintf("%s('%s')", onErrorFnName, err.Error())
+			ui.Eval(js)
+		}
+		onDoneFn := func() {
+			js := fmt.Sprintf("%s()", onDoneFnName)
+			ui.Eval(js)
+		}
+		onStopFn := func() {
+			js := fmt.Sprintf("%s()", onStopFnName)
+			ui.Eval(js)
+		}
+
+		request := &pb.RunAccountMixerRequest{}
+		bytes, err := hex.DecodeString(requestAsHex)
+		err = proto.Unmarshal(bytes, request)
+		if err != nil {
+			fmt.Println(err)
+			onErrorFn(err)
+		}
+		mixerCtx, mixerCtxCancel = context.WithCancel(ctx)
+		runAccountMixer(mixerCtx, request, onErrorFn, onDoneFn, onStopFn)
+	})
+
+	ui.Bind("walletrpc__StopAccountMixer", func() {
+		if mixerCtxCancel != nil {
+			mixerCtxCancel()
 		}
 	})
 
@@ -510,6 +545,36 @@ func runTicketbuyer(ctx context.Context, request *pb.RunTicketBuyerRequest, onEr
 			}
 			if tbErr != nil {
 				log.Printf("runTicketbuyer: %#v", tbErr)
+				onErrorFn(tbErr)
+				return
+			}
+		}
+	}()
+
+	time.Sleep(2 * time.Second)
+
+	if tbErr == nil {
+		onDoneFn()
+	}
+}
+func runAccountMixer(ctx context.Context, request *pb.RunAccountMixerRequest, onErrorFn func(error), onDoneFn func(), onStopFn func()) {
+
+	stream, err := mixerServiceClient.RunAccountMixer(ctx, request)
+	if err != nil {
+		fmt.Println(err)
+		onErrorFn(err)
+	}
+
+	var tbErr error
+	go func() {
+		for {
+			_, tbErr = stream.Recv()
+			if tbErr == io.EOF {
+				onStopFn()
+				return
+			}
+			if tbErr != nil {
+				log.Printf("runAccountMixer: %#v", tbErr)
 				onErrorFn(tbErr)
 				return
 			}

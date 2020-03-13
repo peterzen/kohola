@@ -2,6 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit'
 import { connectRouter } from 'connected-react-router'
 
 import app from '../features/app/appSlice'
+import mixer from '../features/privacy/mixerSlice'
 import staking from '../features/staking/stakingSlice'
 import accounts from '../features/balances/accountSlice'
 import networkinfo from '../features/app/networkinfo/networkInfoSlice'
@@ -15,6 +16,7 @@ export default function createRootReducer(history: History<History.PoorMansUnkno
 	return combineReducers({
 		router: connectRouter(history),
 		app,
+		mixer,
 		staking,
 		accounts,
 		networkinfo,

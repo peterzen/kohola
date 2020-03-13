@@ -154,6 +154,13 @@ export const saveTicketbuyerRequestDefaults: ActionCreator<any> = (request: RunT
 	}
 }
 
+export const saveAccountMixerRequestDefaults: ActionCreator<any> = (request: RunAccountMixerRequest) => {
+	return async (dispatch: Dispatch) => {
+		dispatch(setMixerRequestDefaults(request))
+		dispatch(saveConfigurationAttempt())
+	}
+}
+
 // selectors
 export interface IIndexedAccountPrefs {
 	[accountNumber: number]: AccountPreference
