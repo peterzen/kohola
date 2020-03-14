@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { Navbar, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTicketAlt, faBlender, faExchangeAlt, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTicketAlt, faExchangeAlt, faCog, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
 
 import "./AppSidebar.scss"
 
@@ -42,9 +42,9 @@ class NavMenu extends React.Component<NavMenuProps> {
 							</Nav.Link>
 						</Nav.Item>
 						<Nav.Item>
-							<Nav.Link href="/#mixing" title="Mixing">
-								<FontAwesomeIcon icon={faBlender} className="text-secondary" />
-								<span>Mixing</span>
+							<Nav.Link href="/#mixing" title="Privacy">
+								<FontAwesomeIcon icon={faShieldAlt} className="text-secondary" />
+								<span>Privacy</span>
 							</Nav.Link>
 						</Nav.Item>
 						<Nav.Item className="mt-5">
