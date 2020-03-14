@@ -9,6 +9,7 @@ import { loadStakeInfoAttempt, loadTicketPriceAttempt, getTicketPrice } from "./
 import { TicketStatusIcon } from "./TicketStatusIcon";
 import { IApplicationState } from "../../store/types";
 import { Amount } from "../../components/Shared/Amount";
+import TinyChart from "../../components/charts/TinyChart";
 
 
 class StakeStats extends React.Component<Props> {
@@ -17,29 +18,38 @@ class StakeStats extends React.Component<Props> {
 		return (
 			<Card>
 				<Card.Body>
-					<h1><Amount amount={this.props.ticketPrice.getTicketPrice()} showCurrency /></h1>
-					<h6 className="text-muted">Ticket price in next block</h6>
+					<Row>
+						<Col sm={6}>
+							<h2><Amount amount={this.props.ticketPrice.getTicketPrice()} showCurrency /></h2>
+							<h6 className="text-muted">Ticket price in next block</h6>
+						</Col>
+						<Col sm={6} className="pt-3">
+							<TinyChart />
+						</Col>
+					</Row>
 				</Card.Body>
-				<hr className="m-0"/>
+				<hr className="m-0" />
 				<Card.Body>
 					<Row>
 						<Col xs={6}>
 							<h3>{s.getVoted()}</h3>
 							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.VOTED} /> Voted</h6>
-
+							<TinyChart />
 						</Col>
 						<Col xs={6}>
 							<h3><Amount amount={s.getTotalSubsidy()} showCurrency={true} /></h3>
 							<h6 className="text-muted">Total subsidy</h6>
+							<TinyChart />
 						</Col>
 						<Col xs={6}>
 							<h3>{s.getMissed()}</h3>
 							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.MISSED} /> Missed</h6>
-
+							<TinyChart />
 						</Col>
 						<Col xs={6}>
 							<h3>{s.getRevoked()}</h3>
 							<h6 className="text-muted"><TicketStatusIcon status={TicketStatus.REVOKED} /> Revoked</h6>
+							<TinyChart />
 						</Col>
 					</Row>
 				</Card.Body>
