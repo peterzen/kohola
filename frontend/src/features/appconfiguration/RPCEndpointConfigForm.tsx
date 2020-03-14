@@ -14,7 +14,7 @@ import { AppError } from '../../store/types';
 import LorcaBackend from '../../datasources/lorca';
 import GenericModal, { GenericModalProps } from '../../components/Shared/GenericModal';
 import { RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
-
+import { Networks } from '../../constants';
 
 export const NetworkSelector = (props: { name: string, defaultValue: number, onChange: any }) => {
 	return (
@@ -96,7 +96,7 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 					{/* <Form.Label>Network</Form.Label> */}
 					<NetworkSelector
 						name="network"
-						onChange={onChange}
+						onChange={_.bind(this.onNetworkChange, this)}
 						defaultValue={endPoint.getNetwork()} />
 				</Form.Group>
 				<Form.Group as={Row}>
@@ -187,10 +187,12 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 							</div> */}
 				</Form.Group>
 
-				<Form.Group controlId="default">
+				<Form.Group controlId="default-checkbox">
 					<Form.Check
 						name="default_checkbox"
 						label="Default"
+						disabled={true}
+						title="Not implemented"
 						onChange={onChange}
 					/>
 				</Form.Group>
@@ -219,7 +221,7 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 		const w = (window as any)
 		w.walletgui_FileOpenDialog()
 			.then((file: string) => {
-				console.log("FILE", file)
+				// console.log("FILE", file)
 				this.state.formRef.current.cert_file_name.value = file
 				this.handleChange()
 				// endPoint.setCertFileName(file)
@@ -256,6 +258,22 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 			})
 		}, this))
 	}
+
+	onNetworkChange(e: React.ChangeEvent<HTMLInputElement>) {
+		const portInput = this.state.formRef.current.port
+		switch (parseInt(e.currentTarget.value)) {
+			case Networks.MAINNET:
+				portInput.value = 9111
+				break;
+			case Networks.TESTNET:
+				portInput.value = 19111
+				break;
+			case Networks.SIMNET:
+				portInput.value = 19558
+				break;
+		}
+		this.handleChange()
+	}
 }
 
 
@@ -276,16 +294,11 @@ export class EditEndpointModal extends React.Component<GenericModalProps & IRPCF
 
 
 const generateEndpointLabel = (endpoint: GRPCEndpoint | RPCEndpoint) => {
-	const networks = {
-		0: 'MAINNET',
-		1: 'TESTNET',
-		2: 'SIMNET'
-	}
 	return sprintf(
 		"%s:%d (%s)",
 		endpoint.getHostname(),
 		endpoint.getPort(),
-		networks[endpoint.getNetwork()]
+		Networks[endpoint.getNetwork()]
 	)
 }
 

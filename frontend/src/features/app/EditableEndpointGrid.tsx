@@ -16,6 +16,7 @@ import { updateEndpoint, saveConfigurationAttempt, deleteEndpoint } from '../app
 import { confirmDialog } from '../../components/Shared/ConfirmDialog';
 
 import './EditableEndpointGrid.scss'
+import { Networks } from '../../constants';
 
 class EditableEndpointGrid extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -96,6 +97,8 @@ class EditableEndpointGrid extends React.Component<Props, InternalState> {
 		const newEndpoint = new GRPCEndpoint()
 		newEndpoint.setId(uuidv4())
 		newEndpoint.setLabel("New connection")
+		newEndpoint.setNetwork(Networks.MAINNET)
+		newEndpoint.setPort(9111)
 		this.setState({
 			selectedItem: newEndpoint
 		})
