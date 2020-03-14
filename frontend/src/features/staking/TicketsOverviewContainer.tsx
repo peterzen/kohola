@@ -53,7 +53,7 @@ class TicketsListFilterDropdown extends React.Component<ITicketsListFilterDropdo
 				onSelect={(evtKey: string) => this.onSelect(evtKey)}
 			>
 				<Dropdown.Toggle variant="secondary" id="ticket-filter-dropdown">
-					<FontAwesomeIcon icon={faFilter} /> {selectedLabel}
+					<FontAwesomeIcon icon={faFilter} /> <span className="mr-3">{selectedLabel}</span> 
 				</Dropdown.Toggle>
 
 				<Dropdown.Menu>
