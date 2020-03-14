@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconDefinition, faCheck, faInfo, faExclamation } from '@fortawesome/free-solid-svg-icons';
 
-import { Transaction } from '../../../api/models';
+import { Transaction } from '../../../middleware/models';
 import { TransactionType } from '../../../constants';
 import { Amount } from '../../../components/Shared/Amount';
 

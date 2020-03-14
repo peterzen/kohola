@@ -1,4 +1,4 @@
-import { DecodedrawTx, DecodedRawTxInput, DecodedRawTxOutput } from "../api/models";
+import { DecodedrawTx, DecodedRawTxInput, DecodedRawTxOutput } from "../middleware/models";
 import { Uint64LE } from "int64-buffer";
 
 export const decodeRawTransaction = (rawTx: Buffer): DecodedrawTx => {

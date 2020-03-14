@@ -6,7 +6,7 @@ import { Form, Button, FormControl, Table, Row, Col } from 'react-bootstrap';
 import { AppError } from "../../../store/types";
 import { ConstructTransactionResponse } from "../../../proto/api_pb";
 import { rawToHex } from "../../../helpers/byteActions";
-import { DecodedrawTx } from "../../../api/models";
+import { DecodedrawTx } from "../../../middleware/models";
 import DialogAlert from "./DialogAlert";
 import { decodeRawTransaction } from "../../../helpers/tx";
 import { HumanreadableTxInfo } from "../transactionsSlice";

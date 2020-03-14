@@ -8,7 +8,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, Alert, Col, Row, Tabs, Tab } from 'react-bootstrap';
 
-import { WalletAccount, Transaction } from '../api/models';
+import { WalletAccount, Transaction } from '../middleware/models';
 import AccountBalanceTotals from '../features/balances/AccountBalanceTotals';
 import GetNewAddressDialog from '../features/balances/GetNewAddressDialog';
 import UTXOContainer from '../features/unspents/UTXOContainer';

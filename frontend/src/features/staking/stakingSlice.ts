@@ -12,8 +12,8 @@ import {
 	RunTicketBuyerRequest,
 	RevokeTicketsResponse
 } from "../../proto/api_pb";
-import LorcaBackend from "../../api/lorca";
-import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../api/models";
+import LorcaBackend from "../../middleware/lorca";
+import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../middleware/models";
 
 
 // GetTickets

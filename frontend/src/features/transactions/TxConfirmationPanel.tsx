@@ -4,7 +4,7 @@ import { faCheck, faAngleDoubleDown } from '@fortawesome/free-solid-svg-icons';
 
 import { TxHash } from "../../components/Shared/shared";
 import { rawHashToHex } from "../../helpers/byteActions";
-import { Transaction } from "../../api/models";
+import { Transaction } from "../../middleware/models";
 
 export const TxConfirmationPanel = (props: {
 	hashes: Uint8Array[];

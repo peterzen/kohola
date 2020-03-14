@@ -15,7 +15,7 @@ import {
 	Transaction,
 	IndexedWalletAccounts,
 	WalletBalance
-} from "../../api/models";
+} from "../../middleware/models";
 
 import { rawHashToHex } from "../../helpers/byteActions";
 import CopyToClipboard from "react-copy-to-clipboard";

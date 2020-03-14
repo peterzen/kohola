@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Row, Col, Card } from 'react-bootstrap';
 
-import { StakeInfo, TicketPrice } from "../../api/models";
+import { StakeInfo, TicketPrice } from "../../middleware/models";
 import { TicketStatus } from "../../constants";
 import { loadStakeInfoAttempt, loadTicketPriceAttempt, getTicketPrice } from "./stakingSlice";
 

@@ -5,7 +5,7 @@ import { Row, Col, Card } from 'react-bootstrap';
 import { TicketStatusIcon } from "./TicketStatusIcon";
 import { TicketStatus } from "../../constants";
 import { loadStakeInfoAttempt } from "./stakingSlice";
-import { StakeInfo } from "../../api/models";
+import { StakeInfo } from "../../middleware/models";
 import { IApplicationState } from "../../store/types";
 
 class StakeInfoComponent extends React.Component<Props> {

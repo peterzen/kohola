@@ -6,7 +6,7 @@ import { Row, Col, Form, Button, Card, InputGroup, Alert } from 'react-bootstrap
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 
-import { WalletBalance } from '../../../api/models';
+import { WalletBalance } from '../../../middleware/models';
 import { AccountSelector } from '../../../components/Shared/shared';
 import PassphraseEntryDialog, { askPassphrase } from '../../../components/Shared/PassphraseEntryDialog';
 import { AppError, IApplicationState } from '../../../store/types';

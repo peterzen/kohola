@@ -10,7 +10,7 @@ import { faClock } from '@fortawesome/free-solid-svg-icons'
 import Fade from 'react-reveal/Fade';
 import { TransitionGroup } from 'react-transition-group';
 
-import { Transaction, WalletAccount } from "../../api/models";
+import { Transaction, WalletAccount } from "../../middleware/models";
 import { TransactionHash } from '../../components/Shared/shared';
 import { lookupAccounts } from '../balances/accountSlice';
 import { IApplicationState } from '../../store/types';

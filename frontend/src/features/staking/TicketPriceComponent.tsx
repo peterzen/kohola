@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { Card } from 'react-bootstrap';
 
-import { TicketPrice } from '../../api/models';
+import { TicketPrice } from '../../middleware/models';
 import { loadTicketPriceAttempt, getTicketPrice } from './stakingSlice';
 import { IApplicationState } from "../../store/types";
 import { Amount } from '../../components/Shared/Amount';

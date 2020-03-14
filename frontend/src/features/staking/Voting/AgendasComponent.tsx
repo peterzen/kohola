@@ -5,7 +5,7 @@ import TimeAgo from 'react-timeago';
 
 import { Card, ListGroup, Row, Col, Form, Button } from "react-bootstrap";
 
-import { Agendas } from "../../../api/models";
+import { Agendas } from "../../../middleware/models";
 import { loadAgendasAttempt } from "../stakingSlice";
 import { IApplicationState } from "../../../store/types";
 import VoteChoices from "./VoteChoices";

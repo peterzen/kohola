@@ -7,7 +7,7 @@ import { Table } from 'react-bootstrap';
 import Fade from 'react-reveal/Fade';
 import { TransitionGroup } from 'react-transition-group';
 
-import { Ticket } from '../../api/models';
+import { Ticket } from '../../middleware/models';
 import { TransactionHash } from '../../components/Shared/shared';
 import { TicketStatusIcon } from './TicketStatusIcon';
 import { transitionGroupProps } from '../../constants';

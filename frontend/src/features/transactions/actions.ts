@@ -15,9 +15,9 @@ import {
 	AccountNotificationsResponse
 } from '../../proto/api_pb';
 
-import { ConstructTxOutput } from '../../api/models';
+import { ConstructTxOutput } from '../../middleware/models';
 import { decodeRawTransaction } from '../../helpers/tx';
-import LorcaBackend from '../../api/lorca';
+import LorcaBackend from '../../middleware/lorca';
 import {
 	getTransactionsAttempt,
 	getTransactionsSuccess,
@@ -44,7 +44,7 @@ import { loadWalletBalance } from '../balances/walletBalanceSlice';
 import { loadBestBlockHeight } from '../app/networkinfo/networkInfoSlice';
 import { lookupAccount, accountNotification } from '../balances/accountSlice';
 import { loadStakeInfoAttempt, loadTicketsAttempt } from '../../features/staking/stakingSlice';
-import { Transaction } from '../../api/models';
+import { Transaction } from '../../middleware/models';
 import { displayTXNotification } from '../app/appSlice';
 import { hexToRaw } from '../../helpers/byteActions';
 

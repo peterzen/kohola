@@ -2,7 +2,7 @@ import _ from "lodash"
 import * as React from "react"
 import { connect } from "react-redux"
 
-import { IndexedWalletAccounts, WalletAccount } from "../../../api/models"
+import { IndexedWalletAccounts, WalletAccount } from "../../../middleware/models"
 
 import { AccountSelector } from "../../../components/Shared/shared"
 
