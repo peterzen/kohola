@@ -3,6 +3,7 @@ import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 import { AppError, AppThunk, IApplicationState, AppDispatch, IGetState } from "../../../store/types";
 import LorcaBackend from "../../../api/lorca";
 import { NetworkResponse, BestBlockResponse } from "../../../proto/api_pb";
+import { CurrencyNet, Networks } from "../../../constants";
 
 // BestBlock
 export interface IBestBlockState {
@@ -51,17 +52,19 @@ const networkinfoSlice = createSlice({
 
 		// NetworkInfo
 		getNetworkinfoAttempt(state) {
+			state.network = null
+			state.errorNetwork = null
 			state.getNetworkinfoAttempting = true
 		},
 		getNetworkinfoFailed(state, action: PayloadAction<AppError>) {
-			state.getNetworkinfoAttempting = false
-			state.errorNetwork = action.payload
 			state.network = null
+			state.errorNetwork = action.payload
+			state.getNetworkinfoAttempting = false
 		},
 		getNetworkinfoSuccess(state, action: PayloadAction<NetworkResponse>) {
-			state.getNetworkinfoAttempting = false
-			state.errorNetwork = null
 			state.network = action.payload
+			state.errorNetwork = null
+			state.getNetworkinfoAttempting = false
 		}
 	}
 })
@@ -123,4 +126,10 @@ export const getBestBlockHeight = (state: IApplicationState) => {
 		return 0
 	}
 	return state.networkinfo.currentBlock.getHeight();
+}
+
+export const getCurrentNetwork = (state: IApplicationState): number => {
+	const activeNet = state.networkinfo.network?.getActiveNetwork()
+	if (activeNet == undefined) return -1
+	return CurrencyNet[activeNet]
 }

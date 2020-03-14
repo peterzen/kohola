@@ -9,7 +9,7 @@ import { AppError, AppThunk, AppDispatch, IApplicationState, IGetState } from ".
 import { AccountNotificationsResponse } from "../../proto/api_pb";
 
 import { hexToRaw } from "../../helpers/byteActions";
-import { loadBestBlockHeight } from "./networkinfo/networkInfoSlice";
+import { loadBestBlockHeight, loadNetworkAttempt } from "./networkinfo/networkInfoSlice";
 import { loadAccountsAttempt, accountNotification } from "../balances/accountSlice";
 import { createTxNotificationReceivers } from "../transactions/actions";
 import { loadWalletBalance } from "../balances/walletBalanceSlice";
@@ -130,6 +130,7 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 			dispatch(connectWalletSuccess(endpoint))
 			dispatch(initializeStore())
 				.then(() => {
+					dispatch(loadNetworkAttempt())
 					setTimeout(() => {
 						history.push("/wallet")
 						setTimeout(() => {

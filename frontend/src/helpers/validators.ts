@@ -53,7 +53,7 @@ export const ValidationErrors = {
 
 
 
-export function isValidAddress(address: string): AppError | null {
+export function isValidAddress(activeNetwork: number, address: string): AppError | null {
 
 	const err = (code: ValidationErrorCodes) => new AppError(code, ValidationErrors[code])
 
@@ -63,7 +63,7 @@ export function isValidAddress(address: string): AppError | null {
 	if (address.length > 36) return err(ValidationErrorCodes.ERR_INVALID_ADDR_TOOLONG)
 
 	let formV = null;
-	switch (Configuration.CurrentNetwork) {
+	switch (activeNetwork) {
 		case Networks.MAINNET:
 			formV = address.match(/^Ds[a-zA-Z0-9]{25,35}$/)
 			break;

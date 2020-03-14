@@ -1,5 +1,6 @@
 import _ from "lodash"
 import * as React from "react"
+import { connect } from "react-redux"
 
 import { IndexedWalletAccounts, WalletAccount } from "../../../api/models"
 
@@ -7,13 +8,14 @@ import { AccountSelector } from "../../../components/Shared/shared"
 
 import { isValidAddress } from "../../../helpers/validators"
 import { ATOMS_DIVISOR, DEFAULT_REQUIRED_CONFIRMATIONS } from "../../../constants"
-import { AppError } from "../../../store/types";
+import { AppError, IApplicationState } from "../../../store/types";
 import DialogAlert from "./DialogAlert";
 
 import { Form, Button, InputGroup, FormControl, Row, Col } from 'react-bootstrap';
+import { getCurrentNetwork } from "../../app/networkinfo/networkInfoSlice"
 
-export default class ConstructTxDialog extends React.Component<OwnProps, ISendDialogFormData>{
-	constructor(props: OwnProps) {
+class ConstructTxDialog extends React.Component<Props, ISendDialogFormData>{
+	constructor(props: Props) {
 		super(props)
 		this.state = {
 			error: null,
@@ -136,7 +138,7 @@ export default class ConstructTxDialog extends React.Component<OwnProps, ISendDi
 		if (!address.length) {
 			return
 		}
-		const v = isValidAddress(address)
+		const v = isValidAddress(this.props.activeNetwork, address)
 
 		if (v != null) {
 			e.currentTarget.setCustomValidity(v.message)
@@ -178,3 +180,18 @@ export interface ISendDialogFormData {
 	destinationAddress: string[]
 	requiredConfirmations: number
 }
+
+interface StateProps {
+	activeNetwork: number
+}
+
+const mapStateToProps = (state: IApplicationState): StateProps => {
+	return {
+		activeNetwork: getCurrentNetwork(state),
+	}
+}
+
+type Props = OwnProps & StateProps
+
+export default connect(mapStateToProps)(ConstructTxDialog);
+
