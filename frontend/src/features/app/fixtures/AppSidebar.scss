@@ -53,18 +53,6 @@
   transform: translateX(50%);
 }
 
-a[data-toggle="collapse"] {
-  position: relative;
-}
-
-.dropdown-toggle::after {
-  display: block;
-  position: absolute;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
-}
-
 #content {
   width: 100%;
   min-height: 100vh;
@@ -77,14 +65,6 @@ a[data-toggle="collapse"] {
     max-width: 80px;
     text-align: center;
     margin-left: -80px !important;
-  }
-  .dropdown-toggle::after {
-    top: auto;
-    bottom: 10px;
-    right: 50%;
-    -webkit-transform: translateX(50%);
-    -ms-transform: translateX(50%);
-    transform: translateX(50%);
   }
   #sidebar.collapsed {
     margin-left: 0 !important;
