@@ -18,7 +18,7 @@ import {
 	LoadActiveDataFiltersResponse,
 } from '../proto/api_pb';
 import { TransactionDirection, TicketStatus, TicketStatusLabels } from '../constants';
-import { reverseHash } from '../helpers';
+import { reverseHash } from '../helpers/helpers';
 import _ from 'lodash';
 
 export class Agenda extends AgendasResponse.Agenda { }

@@ -10,7 +10,7 @@ import { faPaste, faClipboard, faInfoCircle, faSlidersH, faCopy, faCheck } from 
 import Fade from 'react-reveal/Fade';
 import { Button, ButtonProps, Popover, OverlayTrigger, Form } from 'react-bootstrap';
 
-import { formatTimestamp } from "../../helpers";
+import { formatTimestamp } from "../../helpers/helpers";
 import {
 	Transaction,
 	IndexedWalletAccounts,
