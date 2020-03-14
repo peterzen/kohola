@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { Button } from 'react-bootstrap';
 
 import SendTransactionModal from './SendTransaction/SendTransactionModal';
-import { WalletAccount } from '../../models';
+import { WalletAccount } from '../../api/models';
 import { IApplicationState } from '../../store/types';
 
 

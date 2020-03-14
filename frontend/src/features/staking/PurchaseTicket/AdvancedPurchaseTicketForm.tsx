@@ -6,7 +6,7 @@ import { Row, Col, Form, Button, Card, InputGroup, Alert } from 'react-bootstrap
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 
-import { WalletBalance } from '../../../models';
+import { WalletBalance } from '../../../api/models';
 import { AccountSelector } from '../../../components/Shared/shared';
 import PassphraseEntryDialog, { askPassphrase } from '../../../components/Shared/PassphraseEntryDialog';
 import { AppError, IApplicationState } from '../../../store/types';
@@ -44,7 +44,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 							</Col>
 							<Col sm={8}>
 								<AccountSelector
-									value={1}
+									defaultValue={1}
 									name="account_select"
 									onChange={_.bind(this.handleAccountChange, this)}
 								/>

@@ -8,7 +8,7 @@ import Fade from 'react-reveal/Fade';
 import RecentTransactions from '../features/transactions/RecentTransactionsContainer';
 import WalletBalanceContainer from "../features/balances/WalletBalanceContainer";
 import { IApplicationState } from "../store/types";
-import { Transaction } from "../models";
+import { Transaction } from "../api/models";
 import { loadTransactionsAttempt } from "../features/transactions/actions";
 import { getWalletTransactions } from "../features/transactions/transactionsSlice";
 

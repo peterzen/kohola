@@ -15,8 +15,8 @@ import { createTxNotificationReceivers } from "../transactions/actions";
 import { loadWalletBalance } from "../balances/walletBalanceSlice";
 import { loadTicketsAttempt } from "../staking/stakingSlice";
 import { showTransactionToast, showInfoToast, showDangerToast } from "./fixtures/Toasts";
-import { Transaction } from "../../models";
-import AppBackend from "../../datasources/appbackend";
+import { Transaction } from "../../api/models";
+import AppBackend from "../../api/appbackend";
 import { getWalletEndpoints } from "../appconfiguration/settingsSlice";
 
 const w = (window as any)

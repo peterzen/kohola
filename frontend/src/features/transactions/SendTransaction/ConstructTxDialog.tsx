@@ -1,7 +1,7 @@
 import _ from "lodash"
 import * as React from "react"
 
-import { IndexedWalletAccounts, WalletAccount } from "../../../models"
+import { IndexedWalletAccounts, WalletAccount } from "../../../api/models"
 
 import { AccountSelector } from "../../../components/Shared/shared"
 

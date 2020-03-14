@@ -8,7 +8,7 @@ import { Card } from "react-bootstrap"
 
 import { history } from '../../store/store'
 
-import { IndexedWalletAccounts, WalletAccount, WalletTotals, WalletBalance } from "../../models"
+import { IndexedWalletAccounts, WalletAccount, WalletTotals, WalletBalance } from "../../api/models"
 import { getWalletBalances, getWalletTotals } from "./walletBalanceSlice"
 import { getVisibleAccounts } from "./accountSlice"
 

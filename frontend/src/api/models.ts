@@ -16,9 +16,9 @@ import {
 	StopAutoBuyerResponse,
 	TicketBuyerConfigResponse,
 	LoadActiveDataFiltersResponse,
-} from './proto/api_pb';
-import { TransactionDirection, TicketStatus, TicketStatusLabels } from './constants';
-import { reverseHash } from './helpers';
+} from '../proto/api_pb';
+import { TransactionDirection, TicketStatus, TicketStatusLabels } from '../constants';
+import { reverseHash } from '../helpers';
 import _ from 'lodash';
 
 export class Agenda extends AgendasResponse.Agenda { }
@@ -263,3 +263,31 @@ export type WalletTotals = {
 }
 
 
+export class DecodedRawTxInput {
+	prevTxId: Buffer
+	outputIndex: number
+	outputTree: number
+	sequence: number
+	numOutputs: number
+}
+
+export class DecodedRawTxOutput {
+	value: number
+	version: number
+	script: Buffer
+}
+
+export class DecodedrawTx {
+	version: number
+	numInputs: number
+	numOutputs: number
+	inputs: DecodedRawTxInput[] = []
+	outputs: DecodedRawTxOutput[] = []
+	lockTime: number
+	expiry: number
+}
+
+export type ConstructTxOutput = {
+	destination: string
+	amount: number
+}

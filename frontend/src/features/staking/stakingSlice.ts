@@ -13,8 +13,8 @@ import {
 	RevokeTicketsRequest,
 	RevokeTicketsResponse
 } from "../../proto/api_pb";
-import LorcaBackend from "../../datasources/lorca";
-import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../models";
+import LorcaBackend from "../../api/lorca";
+import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../api/models";
 import { SteppableNumberInput } from "../../components/Shared/SteppableNumberInput";
 
 

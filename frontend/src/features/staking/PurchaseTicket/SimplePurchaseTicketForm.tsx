@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { AccountSelector } from '../../../components/Shared/shared';
 import { TxConfirmationPanel } from "../../transactions/TxConfirmationPanel";
-import { WalletBalance, TicketPrice } from '../../../models';
+import { WalletBalance, TicketPrice } from '../../../api/models';
 import { PurchaseTicketsRequest, PurchaseTicketsResponse } from '../../../proto/api_pb';
 import PassphraseEntryDialog, { askPassphrase } from '../../../components/Shared/PassphraseEntryDialog';
 import { AppError, IApplicationState } from '../../../store/types';

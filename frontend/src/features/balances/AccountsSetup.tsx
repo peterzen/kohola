@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { WalletAccount, IndexedWalletAccounts, WalletBalance } from '../../models';
+import { WalletAccount, IndexedWalletAccounts, WalletBalance } from '../../api/models';
 import { loadNextAccountAttempt, doRenameAccountAttempt } from './accountSlice';
 import PassphraseEntryDialog, { askPassphrase } from '../../components/Shared/PassphraseEntryDialog';
 import { AppError, IApplicationState } from '../../store/types';

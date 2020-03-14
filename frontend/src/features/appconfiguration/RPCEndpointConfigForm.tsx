@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import { AppError } from '../../store/types';
-import LorcaBackend from '../../datasources/lorca';
+import LorcaBackend from '../../api/lorca';
 import GenericModal, { GenericModalProps } from '../../components/Shared/GenericModal';
 import { RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
 import { Networks } from '../../constants';

@@ -2,7 +2,7 @@ import _ from "lodash";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { AppError, IApplicationState } from "../../store/types";
-import { Transaction, WalletAccount } from "../../models";
+import { Transaction, WalletAccount } from "../../api/models";
 import {
 	TransactionDetails,
 	ConstructTransactionRequest,
@@ -12,7 +12,7 @@ import {
 	ValidateAddressResponse,
 	SweepAccountResponse,
 } from "../../proto/api_pb";
-import { DecodedrawTx, ConstructTxOutput } from "../../datasources/models";
+import { DecodedrawTx, ConstructTxOutput } from "../../api/models";
 import { TransactionType, TransactionDirection } from "../../constants";
 
 // GetTransactions

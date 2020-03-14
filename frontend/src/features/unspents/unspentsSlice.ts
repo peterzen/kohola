@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
 
-import LorcaBackend from '../../datasources/lorca'
+import LorcaBackend from '../../api/lorca'
 import { AppError, AppDispatch, IGetState, AppThunk } from '../../store/types'
 import { UnspentOutputResponse } from '../../proto/api_pb'
 

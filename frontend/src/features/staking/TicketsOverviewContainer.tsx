@@ -6,7 +6,7 @@ import { Card, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
-import { Ticket } from '../../models';
+import { Ticket } from '../../api/models';
 import { getTickets } from './stakingSlice';
 import { TicketStatus } from '../../constants';
 import TicketsTable from './TicketsTable';

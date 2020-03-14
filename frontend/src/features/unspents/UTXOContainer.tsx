@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { UnspentOutputResponse } from '../../proto/api_pb';
 import UTXODetailsModal from './UTXODetailsComponent';
 import ListUTXOs from './ListUTXOs';
-import { WalletAccount } from '../../models';
+import { WalletAccount } from '../../api/models';
 import {
 	fetchUnspentsAttempt,
 	IUnspentOutputsByAccount,

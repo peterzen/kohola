@@ -1,9 +1,9 @@
 import _ from 'lodash';
 
 import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
-import { IndexedWalletAccounts, WalletAccount, NextAddress } from "../../models";
+import { IndexedWalletAccounts, WalletAccount, NextAddress } from "../../api/models";
 import { AppError, AppThunk, IApplicationState } from '../../store/types';
-import LorcaBackend from '../../datasources/lorca';
+import LorcaBackend from '../../api/lorca';
 import { AccountNotificationsResponse, NextAccountResponse, RenameAccountResponse } from '../../proto/api_pb';
 import { loadWalletBalance } from './walletBalanceSlice';
 import { getAccountPrefs } from '../appconfiguration/settingsSlice';

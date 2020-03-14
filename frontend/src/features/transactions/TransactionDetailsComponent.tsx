@@ -4,7 +4,7 @@ import { Table, Accordion, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
-import { Transaction } from "../../models";
+import { Transaction } from "../../api/models";
 import GenericModalDialog from '../../components/Shared/GenericModalDialog';
 import { Timestamp, TransactionHash } from "../../components/Shared/shared";
 import { TransactionMempoolStatusIcon } from "./TransactionTable";

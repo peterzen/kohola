@@ -4,7 +4,7 @@ import { sprintf } from "sprintf-js";
 
 import { Row, Col, ProgressBar } from 'react-bootstrap';
 
-import { WalletAccount, WalletBalance } from "../../models";
+import { WalletAccount, WalletBalance } from "../../api/models";
 import { getWalletBalances } from "./walletBalanceSlice";
 import { IApplicationState } from "../../store/types";
 import { Amount, FiatAmount } from "../../components/Shared/Amount";

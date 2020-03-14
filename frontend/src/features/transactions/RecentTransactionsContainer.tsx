@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { Card } from 'react-bootstrap';
 
-import { Transaction } from "../../models";
+import { Transaction } from "../../api/models";
 import TransactionTable from './TransactionTable';
 import TransactionDetailsModal from './TransactionDetailsComponent';
 

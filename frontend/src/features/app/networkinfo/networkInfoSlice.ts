@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 
 import { AppError, AppThunk, IApplicationState, AppDispatch, IGetState } from "../../../store/types";
-import LorcaBackend from "../../../datasources/lorca";
+import LorcaBackend from "../../../api/lorca";
 import { NetworkResponse, BestBlockResponse } from "../../../proto/api_pb";
 
 // BestBlock

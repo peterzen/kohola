@@ -10,7 +10,7 @@ import { CopyToClipboardText } from '../../components/Shared/shared';
 import { loadNextAddressAttempt } from './accountSlice';
 import { IApplicationState, AppError } from '../../store/types';
 import { ErrorAlert } from '../../components/Shared/FormStatusAlerts';
-import { WalletAccount, NextAddress, Transaction } from '../../models';
+import { WalletAccount, NextAddress, Transaction } from '../../api/models';
 import { getAddressTransactions } from '../transactions/transactionsSlice';
 import { IncomingTxPanel } from '../transactions/TxConfirmationPanel';
 

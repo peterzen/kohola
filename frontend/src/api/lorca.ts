@@ -1,10 +1,15 @@
 import _ from 'lodash';
-import * as jspb from "google-protobuf";
 
 import {
 	StakeInfoResponse,
-	AccountsResponse, BestBlockResponse, VoteChoicesResponse, PingResponse, NetworkResponse,
-	TicketPriceResponse, GetTicketsResponse, NextAddressRequest, NextAddressResponse,
+	AccountsResponse,
+	BestBlockResponse,
+	VoteChoicesResponse,
+	NetworkResponse,
+	TicketPriceResponse,
+	GetTicketsResponse,
+	NextAddressRequest,
+	NextAddressResponse,
 	BalanceResponse,
 	GetTransactionsResponse,
 	ConstructTransactionRequest,
@@ -22,11 +27,10 @@ import {
 	ValidateAddressResponse,
 	SetVoteChoicesResponse,
 	RunTicketBuyerRequest,
-	RunTicketBuyerResponse,
 	RevokeTicketsResponse,
 	RunAccountMixerRequest,
 } from '../proto/api_pb';
-import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from '../models';
+import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from './models';
 import { rawToHex } from '../helpers/byteActions';
 import { GRPCEndpoint } from '../proto/dcrwalletgui_pb';
 
@@ -258,12 +262,6 @@ const LorcaBackend = {
 			w[onDoneFnName] = onDone
 			w[onStopFnName] = onStop
 
-			const r = await w.walletrpc__RunTicketBuyer(
-				ser,
-				"window." + onErrorFnName,
-				"window." + onDoneFnName,
-				"window." + onStopFnName
-			)
 
 		} catch (e) {
 			throw e
@@ -295,12 +293,6 @@ const LorcaBackend = {
 			w[onDoneFnName] = onDone
 			w[onStopFnName] = onStop
 
-			const r = await w.walletrpc__RunAccountMixer(
-				ser,
-				"window." + onErrorFnName,
-				"window." + onDoneFnName,
-				"window." + onStopFnName
-			)
 
 		} catch (e) {
 			throw e
@@ -383,7 +375,6 @@ const LorcaBackend = {
 			if (r.error != undefined) {
 				throw r.error
 			}
-			const tix: Ticket[] = []
 			_.each(r.apayload, (s: Uint8Array) => {
 				const tr = GetTransactionsResponse.deserializeBinary(s)
 				txResponses.push(tr)

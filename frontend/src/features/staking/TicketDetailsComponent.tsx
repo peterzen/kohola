@@ -5,7 +5,7 @@ import { Table, Accordion, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
-import { Ticket } from "../../models";
+import { Ticket } from "../../api/models";
 import { TransactionHash } from "../../components/Shared/shared";
 import GenericModalDialog from '../../components/Shared/GenericModalDialog';
 import { TicketStatusIcon } from "./TicketStatusIcon";

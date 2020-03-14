@@ -2,9 +2,9 @@ import _ from 'lodash';
 
 import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
 
-import { WalletBalance, WalletTotals } from "../../models";
+import { WalletBalance, WalletTotals } from "../../api/models";
 import { AppError, AppThunk, IApplicationState } from '../../store/types';
-import LorcaBackend from '../../datasources/lorca';
+import LorcaBackend from '../../api/lorca';
 import { getAccountNumbers } from './accountSlice';
 
 

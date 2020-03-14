@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { ListGroup, Form } from "react-bootstrap";
 
-import { Agenda } from "../../../models";
+import { Agenda } from "../../../api/models";
 import { getVoteChoices, setVoteChoices } from "../stakingSlice";
 import { IApplicationState, AppError } from "../../../store/types";
 import { VoteChoicesResponse, SetVoteChoicesResponse } from "../../../proto/api_pb";

@@ -4,7 +4,7 @@ import { Dropdown } from "react-bootstrap"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 
-import { WalletAccount } from "../../models"
+import { WalletAccount } from "../../api/models"
 
 const AccountToolsDropdown = (props: { account: WalletAccount, menuHandler: any }) => {
 	return (

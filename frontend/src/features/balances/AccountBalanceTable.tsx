@@ -7,7 +7,7 @@ import { faAngleRight} from '@fortawesome/free-solid-svg-icons'
 
 import { Amount } from '../../components/Shared/Amount';
 import { MenuItems } from './AccountToolsDropdown';
-import { AccountBalance, IndexedWalletAccounts, WalletAccount, WalletBalance, WalletTotals } from '../../models';
+import { AccountBalance, IndexedWalletAccounts, WalletAccount, WalletBalance, WalletTotals } from '../../api/models';
 
 export default class AccountBalanceTable extends React.Component<OwnProps, InternalState>{
 

@@ -5,7 +5,7 @@ import { AppError, AppThunk } from "../../store/types";
 import {
 	RunAccountMixerResponse,
 	RunAccountMixerRequest} from "../../proto/api_pb";
-import LorcaBackend from "../../datasources/lorca";
+import LorcaBackend from "../../api/lorca";
 
 
 // RunAccountMixer

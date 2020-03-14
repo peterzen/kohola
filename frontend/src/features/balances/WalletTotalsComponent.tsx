@@ -3,7 +3,7 @@ import { sprintf } from "sprintf-js";
 
 import { Row, Col, ProgressBar } from 'react-bootstrap';
 
-import { WalletTotals } from "../../models";
+import { WalletTotals } from "../../api/models";
 import { Amount, FiatAmount } from "../../components/Shared/Amount";
 
 interface IWalletTotals {
