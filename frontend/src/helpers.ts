@@ -18,6 +18,6 @@ export function reverseHash(s: string) {
 	return "";
 }
 
-export function formatHash(hash: string) {
-	return Buffer.from(hash).toString("hex")
+export function formatHash(hash: Uint8Array) {
+	return reverseHash(Buffer.from(hash).toString("hex"));
 }
