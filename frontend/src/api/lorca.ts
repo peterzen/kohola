@@ -30,9 +30,9 @@ import {
 	RevokeTicketsResponse,
 	RunAccountMixerRequest,
 } from '../proto/api_pb';
-import { Ticket, WalletAccount, WalletBalance, AccountBalance, Transaction } from './models';
 import { rawToHex } from '../helpers/byteActions';
 import { GRPCEndpoint } from '../proto/dcrwalletgui_pb';
+import { Ticket, WalletAccount, WalletBalance, Transaction, AccountBalance } from './models';
 
 const w = (window as any)
 
@@ -262,6 +262,12 @@ const LorcaBackend = {
 			w[onDoneFnName] = onDone
 			w[onStopFnName] = onStop
 
+			await w.walletrpc__RunTicketBuyer(
+				ser,
+				"window." + onErrorFnName,
+				"window." + onDoneFnName,
+				"window." + onStopFnName
+			)
 
 		} catch (e) {
 			throw e
@@ -293,6 +299,12 @@ const LorcaBackend = {
 			w[onDoneFnName] = onDone
 			w[onStopFnName] = onStop
 
+			await w.walletrpc__RunAccountMixer(
+				ser,
+				"window." + onErrorFnName,
+				"window." + onDoneFnName,
+				"window." + onStopFnName
+			)
 
 		} catch (e) {
 			throw e
@@ -375,6 +387,7 @@ const LorcaBackend = {
 			if (r.error != undefined) {
 				throw r.error
 			}
+			const tix: Ticket[] = []
 			_.each(r.apayload, (s: Uint8Array) => {
 				const tr = GetTransactionsResponse.deserializeBinary(s)
 				txResponses.push(tr)
