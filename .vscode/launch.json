@@ -5,16 +5,6 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"type": "chrome",
-			"request": "launch",
-			"name": "Launch Chrome",
-			"url": "https://localhost:8080",
-			"webRoot": "${workspaceFolder}",
-			"sourceMapPathOverrides": {
-				"webpack:///src/*": "${webRoot}/*"
-			}
-		},
-		{
 			"name": "Launch main",
 			"type": "go",
 			"request": "launch",
@@ -27,22 +17,6 @@
 			"request": "launch",
 			"mode": "test",
 			"program": "${workspaceFolder}/app/feeds"
-		},
-		{
-			"name": "Debug CRA Tests",
-			"type": "node",
-			"request": "launch",
-			"runtimeExecutable": "${workspaceRoot}/frontend/node_modules/.bin/react-scripts",
-			"args": [
-				"test",
-				"--runInBand",
-				"--no-cache",
-				"--env=jsdom"
-			],
-			"cwd": "${workspaceRoot}/frontend",
-			"protocol": "inspector",
-			"console": "integratedTerminal",
-			"internalConsoleOptions": "neverOpen"
 		}
 	]
 }
