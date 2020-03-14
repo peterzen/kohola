@@ -22,7 +22,7 @@ class EditableEndpointGrid extends React.Component<Props, InternalState> {
 		super(props)
 		this.state = {
 			showModal: false,
-			editable: false,
+			editable: (props.walletEndpoints.length < 1),
 			selectedItem: null,
 			modal: null
 		}
