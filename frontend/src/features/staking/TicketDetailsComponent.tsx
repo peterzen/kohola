@@ -6,10 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 import { Ticket } from "../../models";
-import { TransactionHash, Amount } from "../../components/Shared/shared";
+import { TransactionHash } from "../../components/Shared/shared";
 import GenericModalDialog from '../../components/Shared/GenericModalDialog';
 import { TicketStatusIcon } from "./TicketStatusIcon";
 import { TransactionMempoolStatusIcon } from "../transactions/TransactionTable";
+import { Amount } from "../../components/Shared/Amount";
 
 
 export const TicketDetailsComponent = (props: OwnProps) => {
