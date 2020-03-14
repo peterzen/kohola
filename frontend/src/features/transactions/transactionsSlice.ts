@@ -18,7 +18,7 @@ import { TransactionType, TransactionDirection } from "../../constants";
 // GetTransactions
 export interface GetTransactionsState {
 	readonly txList: Transaction[]
-	readonly getTransactionsRequest: boolean
+	readonly getTransactionsAttempting: boolean
 	readonly startBlockHeight: number
 	readonly endBlockHeight: number
 	readonly targetTxCount: number
@@ -105,7 +105,7 @@ export const initialState: GetTransactionsState &
 	GUISendTransaction = {
 
 	txList: [],
-	getTransactionsRequest: false,
+	getTransactionsAttempting: false,
 	errorGetTransactions: null,
 	// The block height to begin including transactions from. 
 	// If this field is non- zero, starting_block_hash must be
@@ -164,16 +164,16 @@ const transactionsSlice = createSlice({
 		// GetTransactions
 		getTransactionsAttempt(state) {
 			state.errorGetTransactions = null
-			state.getTransactionsRequest = true
+			state.getTransactionsAttempting = true
 		},
 		getTransactionsFailed(state, action: PayloadAction<AppError>) {
 			state.errorGetTransactions = action.payload
-			state.getTransactionsRequest = false
+			state.getTransactionsAttempting = false
 		},
 		getTransactionsSuccess(state, action: PayloadAction<Transaction[]>) {
 			state.txList = action.payload
 			state.errorGetTransactions = null
-			state.getTransactionsRequest = false
+			state.getTransactionsAttempting = false
 		},
 
 		// ConstructTransaction

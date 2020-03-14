@@ -10,12 +10,10 @@ import {
 	SetVoteChoicesResponse,
 	RunTicketBuyerResponse,
 	RunTicketBuyerRequest,
-	RevokeTicketsRequest,
 	RevokeTicketsResponse
 } from "../../proto/api_pb";
 import LorcaBackend from "../../api/lorca";
 import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../api/models";
-import { SteppableNumberInput } from "../../components/Shared/SteppableNumberInput";
 
 
 // GetTickets
@@ -24,7 +22,7 @@ export interface ITicketsState {
 	readonly endBlockHeight: number
 	readonly startBlockHeight: number
 	readonly targetTicketCount: number
-	readonly getTicketsRequest: boolean
+	readonly getTicketsAttempting: boolean
 	readonly errorGetTickets: AppError | null
 }
 
@@ -32,14 +30,14 @@ export interface ITicketsState {
 export interface ITicketPriceState {
 	readonly ticketPrice: TicketPrice
 	readonly errorTicketPrice: AppError | null
-	readonly getTicketPriceRequest: boolean
+	readonly getTicketPriceAttempting: boolean
 }
 
 // Agendas
 export interface IAgendasState {
 	readonly agendas: Agendas
 	readonly errorAgendas: AppError | null
-	readonly getAgendasRequest: boolean
+	readonly getAgendasAttempting: boolean
 }
 
 // VoteChoices
@@ -67,7 +65,7 @@ export interface IStakeInfoState {
 export interface IPurchaseTicketsState {
 	readonly errorPurchaseTickets: AppError | null
 	readonly purchaseTicketResponse: PurchaseTicketsResponse | null
-	readonly isPurchaseTicketAttempting: boolean
+	readonly purchaseTicketAttempting: boolean
 }
 
 // CommittedTickets
@@ -110,17 +108,17 @@ export const initialState: ITicketsState &
 	endBlockHeight: 1,
 	startBlockHeight: -4,
 	targetTicketCount: 0,
-	getTicketsRequest: false,
+	getTicketsAttempting: false,
 	errorGetTickets: null,
 
 	// TicketPrice
 	ticketPrice: new TicketPrice(),
-	getTicketPriceRequest: false,
+	getTicketPriceAttempting: false,
 	errorTicketPrice: null,
 
 	// Agendas
 	agendas: new Agendas(),
-	getAgendasRequest: false,
+	getAgendasAttempting: false,
 	errorAgendas: null,
 
 	// VoteChoices
@@ -140,7 +138,7 @@ export const initialState: ITicketsState &
 
 	// PurchaseTickets
 	purchaseTicketResponse: null,
-	isPurchaseTicketAttempting: false,
+	purchaseTicketAttempting: false,
 	errorPurchaseTickets: null,
 
 	// CommittedTickets
@@ -167,46 +165,46 @@ const stakingSlice = createSlice({
 	reducers: {
 		// GetTickets
 		getTicketsAttempt(state) {
-			state.getTicketsRequest = true
+			state.getTicketsAttempting = true
 		},
 		getTicketsFailed(state, action: PayloadAction<AppError>) {
 			state.tickets = []
 			state.errorGetTickets = action.payload
-			state.getTicketsRequest = false
+			state.getTicketsAttempting = false
 		},
 		getTicketsSuccess(state, action: PayloadAction<Ticket[]>) {
 			state.tickets = action.payload
-			state.getTicketsRequest = false
+			state.getTicketsAttempting = false
 		},
 
 		// TicketPrice
 		getTicketPriceAttempt(state) {
 			state.errorTicketPrice = null
-			state.getTicketPriceRequest = true
+			state.getTicketPriceAttempting = true
 		},
 		getTicketPriceFailed(state, action: PayloadAction<AppError>) {
 			state.errorTicketPrice = action.payload
-			state.getTicketPriceRequest = false
+			state.getTicketPriceAttempting = false
 		},
 		getTicketPriceSuccess(state, action: PayloadAction<TicketPrice>) {
 			state.ticketPrice = action.payload
 			state.errorTicketPrice = null
-			state.getTicketPriceRequest = false
+			state.getTicketPriceAttempting = false
 		},
 
 		// Agendas
 		getAgendasAttempt(state) {
 			state.errorAgendas = null
-			state.getAgendasRequest = true
+			state.getAgendasAttempting = true
 		},
 		getAgendasFailed(state, action: PayloadAction<AppError>) {
 			state.errorAgendas = action.payload
-			state.getAgendasRequest = false
+			state.getAgendasAttempting = false
 		},
 		getAgendasSuccess(state, action: PayloadAction<Agendas>) {
 			state.agendas = action.payload
 			state.errorAgendas = null
-			state.getAgendasRequest = false
+			state.getAgendasAttempting = false
 		},
 
 		// VoteChoices
@@ -267,22 +265,22 @@ const stakingSlice = createSlice({
 		purchaseTicketAttempt(state) {
 			state.errorPurchaseTickets = null
 			state.purchaseTicketResponse = null
-			state.isPurchaseTicketAttempting = true
+			state.purchaseTicketAttempting = true
 		},
 		purchaseTicketFailed(state, action: PayloadAction<AppError>) {
 			state.errorPurchaseTickets = action.payload
 			state.purchaseTicketResponse = null
-			state.isPurchaseTicketAttempting = false
+			state.purchaseTicketAttempting = false
 		},
 		purchaseTicketSuccess(state, action: PayloadAction<PurchaseTicketsResponse>) {
 			state.errorPurchaseTickets = null
 			state.purchaseTicketResponse = action.payload
-			state.isPurchaseTicketAttempting = false
+			state.purchaseTicketAttempting = false
 		},
 		purchaseTicketCleanup(state) {
 			state.errorPurchaseTickets = null
 			state.purchaseTicketResponse = null
-			state.isPurchaseTicketAttempting = false
+			state.purchaseTicketAttempting = false
 		},
 
 		// RunTicketBuyer
@@ -414,7 +412,7 @@ export const loadTicketsAttempt: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch, getState) => {
 
 		const {
-			getTicketsRequest,
+			getTicketsAttempting: getTicketsRequest,
 			startBlockHeight,
 			endBlockHeight,
 			targetTicketCount } = getState().staking
@@ -437,7 +435,7 @@ export const loadTicketsAttempt: ActionCreator<any> = (): AppThunk => {
 
 export const loadTicketPriceAttempt: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch, getState) => {
-		const { getTicketPriceRequest } = getState().staking
+		const { getTicketPriceAttempting: getTicketPriceRequest } = getState().staking
 		if (getTicketPriceRequest) {
 			return
 		}
@@ -456,7 +454,7 @@ export const loadTicketPriceAttempt: ActionCreator<any> = (): AppThunk => {
 export const loadAgendasAttempt: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch, getState) => {
 
-		const { getAgendasRequest } = getState().staking;
+		const { getAgendasAttempting: getAgendasRequest } = getState().staking;
 		if (getAgendasRequest) {
 			return
 		}
@@ -551,7 +549,7 @@ export const loadStakeInfoAttempt: ActionCreator<any> = (): AppThunk => {
 export const purchaseTicket: ActionCreator<any> = (request: PurchaseTicketsRequest): AppThunk => {
 	return async (dispatch, getState) => {
 
-		const { isPurchaseTicketAttempting } = getState().staking;
+		const { purchaseTicketAttempting: isPurchaseTicketAttempting } = getState().staking;
 		if (isPurchaseTicketAttempting) {
 			return
 		}

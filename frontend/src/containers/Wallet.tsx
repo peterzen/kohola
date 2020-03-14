@@ -46,7 +46,7 @@ type Props = OwnProps & DispatchProps
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
-		getTransactionsRequest: state.transactions.getTransactionsRequest,
+		getTransactionsRequest: state.transactions.getTransactionsAttempting,
 		txList: getWalletTransactions(state),
 	}
 }

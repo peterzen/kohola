@@ -314,7 +314,7 @@ interface OwnProps {
 
 const mapStateToProps = (state: IApplicationState) => {
 	const request = getAppConfig(state).getRunAutoBuyerRequestDefaults() || new RunTicketBuyerRequest()
-	console.error("runTicketBuyerError", state.staking.runTicketBuyerError)
+	// console.error("runTicketBuyerError", state.staking.runTicketBuyerError)
 	return {
 		error: state.appconfiguration.setConfigError,
 		inProgress: state.appconfiguration.setConfigAttempting,

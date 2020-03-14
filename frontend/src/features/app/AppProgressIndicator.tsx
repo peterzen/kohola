@@ -43,9 +43,9 @@ const calculateProgress = (state: IApplicationState): number => {
 	const steps = [
 		state.networkinfo.getBestBlockHeightAttempting,
 		state.accounts.getAccountsAttempting,
-		state.transactions.getTransactionsRequest,
+		state.transactions.getTransactionsAttempting,
 		state.walletbalance.getBalanceAttempting,
-		state.staking.getTicketsRequest,
+		state.staking.getTicketsAttempting,
 	]
 	_.each(steps, (s, idx) => {
 		if (s) progressState[idx] = true

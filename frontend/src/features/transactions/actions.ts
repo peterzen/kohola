@@ -51,7 +51,7 @@ import { hexToRaw } from '../../helpers/byteActions';
 export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
 
-		const { getTransactionsRequest, startBlockHeight, endBlockHeight, targetTxCount } = getState().transactions
+		const { getTransactionsAttempting: getTransactionsRequest, startBlockHeight, endBlockHeight, targetTxCount } = getState().transactions
 		if (getTransactionsRequest) {
 			return
 		}
