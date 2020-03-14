@@ -17,6 +17,7 @@ import { loadTicketsAttempt } from "../staking/stakingSlice";
 import { showTransactionToast, showInfoToast, showDangerToast } from "./fixtures/Toasts";
 import { Transaction } from "../../models";
 import AppBackend from "../../datasources/appbackend";
+import { getWalletEndpoints } from "../appconfiguration/settingsSlice";
 
 const w = (window as any)
 
@@ -152,7 +153,7 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 
 export const subscribeMonitorEndpointNotifications: ActionCreator<any> = () => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
-		
+
 		w.lorcareceiver__onEndpointConnectionStatusChange = (
 			isConnected: boolean,
 			errMsg: string,
@@ -231,4 +232,8 @@ export const getConnectedEndpointId = (state: IApplicationState) => {
 
 export const isWalletConnected = (state: IApplicationState) => {
 	return state.app.isWalletConnected
+}
+
+export const getEndpointById = (state: IApplicationState, endpointId: string) => {
+	return _.find(getWalletEndpoints(state), e => e.getId() == endpointId)
 }

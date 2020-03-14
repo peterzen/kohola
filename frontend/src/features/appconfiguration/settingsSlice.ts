@@ -185,3 +185,7 @@ export const getWalletPrefs = (appConfigurationState: IAppConfigurationState, wa
 }
 
 export const getAppConfig = (state: IApplicationState) => state.appconfiguration.appConfig
+
+export const getWalletEndpoints = (state: IApplicationState) => {
+	return state.appconfiguration.appConfig.getWalletEndpointsList()
+}

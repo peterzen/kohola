@@ -5,7 +5,6 @@ import { GRPCEndpoint } from "../../proto/dcrwalletgui_pb";
 import { getConnectedEndpoint } from "../app/appSlice";
 import OnOffIndicator from "../../components/Shared/OnOffIndicator";
 import { IApplicationState } from "../../store/types";
-import BestBlockComponent from "./networkinfo/BestBlockComponent";
 
 class ConnectionStatusComponent extends React.Component<Props> {
 
@@ -14,15 +13,12 @@ class ConnectionStatusComponent extends React.Component<Props> {
 			<span>
 				{this.props.connectedEndpoint && (
 					<span>
-						<small className="ml-2 mr-2 text-muted">
+						<span className="ml-2 mr-2 text-muted">
 							{this.props.connectedEndpoint.getLabel()}{" "}
-						</small>
-						<span className="mr-2">
-							<OnOffIndicator status={this.props.isEndpointConnected} size="xs" />
 						</span>
+						<OnOffIndicator status={this.props.isEndpointConnected} size="xs" />
 					</span>
 				)}
-				{this.props.isEndpointConnected && <BestBlockComponent />}
 			</span>
 		)
 	}

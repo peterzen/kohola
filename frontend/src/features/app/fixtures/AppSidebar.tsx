@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { Button, Navbar, Container, Nav } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTicketAlt, faBlender, faExchangeAlt, faCog } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,7 +12,8 @@ import Logo from '../../../images/logo.svg'
 
 import { IApplicationState } from '../../../store/types';
 import { isWalletConnected } from '../appSlice';
-import ConnectionStatus from '../ConnectionStatus';
+import BestBlockComponent from '../networkinfo/BestBlockComponent';
+import EndpointSelectDropdown from './EndpointSelectDropdown';
 
 interface NavMenuProps {
 	isMenuOpened: boolean
@@ -59,6 +60,8 @@ class NavMenu extends React.Component<NavMenuProps> {
 	}
 }
 
+
+
 interface StatusBarProps {
 	onMenuToggle: () => void
 }
@@ -67,11 +70,11 @@ class StatusBar extends React.Component<StatusBarProps>{
 	render() {
 		return (
 			<Navbar bg="light" expand="lg" >
-				<Container fluid={true}>
-					<Button
-						onClick={()=>this.props.onMenuToggle()}
-					><FontAwesomeIcon icon={faBars} /></Button>
-					<button
+				<Nav className="">
+					<Nav.Link
+						onClick={() => this.props.onMenuToggle()}
+					><FontAwesomeIcon icon={faBars} /></Nav.Link>
+					{/* <button
 						className="btn btn-dark d-inline-block d-lg-none ml-auto"
 						type="button" data-toggle="collapse"
 						data-target="#navbarSupportedContent"
@@ -79,12 +82,15 @@ class StatusBar extends React.Component<StatusBarProps>{
 						aria-expanded="false"
 						aria-label="Toggle navigation">
 						<FontAwesomeIcon icon={faBars} />
-					</button>
-					<Nav className="ml-auto">
-						<ConnectionStatus />
-					</Nav>
-				</Container>
-			</Navbar>
+					</button> */}
+				</Nav>
+				<Nav className="ml-auto">
+					<EndpointSelectDropdown />
+					<Nav.Link>
+						<BestBlockComponent />
+					</Nav.Link>
+				</Nav>
+			</Navbar >
 		)
 	}
 }
