@@ -45,9 +45,12 @@ class TransactionTable extends React.Component<OwnProps> {
 										<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
 										<td><Amount amount={tx.getAmount()} /></td>
 										{showAccount && (
-											<td>{_.map(this.props.lookupAccounts(tx.getAccounts()), (account) => (
-												<span key={account.getAccountName()}>{account && <Badge variant="info">{account.getAccountName()}</Badge>}</span>
-											))}</td>
+											<td>{_.map(this.props.lookupAccounts(tx.getAccounts()), (account) => {
+												if(account == undefined ) return null
+												return (
+													<Badge key={account.getAccountName()} variant="info">{account.getAccountName()}</Badge>
+												)
+											})}</td>
 										)}
 										<td><TimeAgo date={tx.getTimestamp().toDate()} /></td>
 										<td>{tx.getTypeAsString()}</td>
