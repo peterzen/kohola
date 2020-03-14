@@ -4,7 +4,7 @@ import _ from "lodash";
 import { Moment } from "moment";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPaste, faClipboard, faInfoCircle, faSlidersH, faCopy } from '@fortawesome/free-solid-svg-icons'
+import { faPaste, faClipboard, faInfoCircle, faSlidersH, faCopy, faCheck } from '@fortawesome/free-solid-svg-icons'
 
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
@@ -14,7 +14,8 @@ import { formatTimestamp } from "../../helpers";
 import {
 	Transaction,
 	IndexedWalletAccounts,
-	WalletBalance} from "../../models";
+	WalletBalance
+} from "../../models";
 
 import { rawHashToHex } from "../../helpers/byteActions";
 import CopyToClipboard from "react-copy-to-clipboard";
@@ -76,7 +77,7 @@ export function NoRouteMatch() {
 	return (
 		<div>
 			No route match
-  		</div>
+		</div>
 	)
 }
 
@@ -161,7 +162,7 @@ export class CopyToClipboardText extends React.Component<ICopyToClipboardButtonP
 					onCopy={() => this.setState({ copied: true })}
 				>
 					<span className="copy-to-clipboard-inner">
-						{this.props.children} <FontAwesomeIcon icon={faCopy} className="text-muted"/>
+						{this.props.children} <FontAwesomeIcon icon={faCopy} className="text-muted" />
 					</span>
 				</CopyToClipboard>
 				{this.state.copied ? (
@@ -176,7 +177,7 @@ interface IAccountSelectProps {
 	name: string
 	tabIndex?: number
 	enableAccountCreate?: boolean
-	defaultValue:number
+	defaultValue: number
 	onChange: (e: React.FormEvent<HTMLInputElement>) => void
 }
 
@@ -226,3 +227,15 @@ const mapStateToProps = (state: IApplicationState) => {
 export const AccountSelector = connect(mapStateToProps)(_AccountSelector)
 
 
+export class SelectedDropdownItemLabel extends React.Component<{ isSelected: boolean }>{
+	render() {
+		return (
+			<span>
+				<span style={{ width: "1.5em", display: "inline-block" }}>
+					{this.props.isSelected && <FontAwesomeIcon icon={faCheck} />}
+				</span>
+				{this.props.children}
+			</span>
+		)
+	}
+}

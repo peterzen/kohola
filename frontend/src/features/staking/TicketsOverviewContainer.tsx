@@ -5,7 +5,6 @@ import _ from 'lodash';
 import { Card, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
 import { Ticket } from '../../models';
 import { getTickets } from './stakingSlice';
@@ -13,6 +12,7 @@ import { TicketStatus } from '../../constants';
 import TicketsTable from './TicketsTable';
 import TicketDetailsModal from './TicketDetailsComponent';
 import { IApplicationState } from "../../store/types";
+import { SelectedDropdownItemLabel } from '../../components/Shared/shared';
 
 
 interface ITicketsListFilterDropdownProps {
@@ -61,10 +61,9 @@ class TicketsListFilterDropdown extends React.Component<ITicketsListFilterDropdo
 					<Dropdown.Divider />
 					{_.map(menuItems, (label, status) => (
 						<Dropdown.Item eventKey={status} key={status}>
-							<span style={{ width: "1.5em" }}>
-								{status == selected.toString() && <FontAwesomeIcon icon={faCheck} />}
-							</span>
-							{label}
+							<SelectedDropdownItemLabel isSelected={status == selected.toString()}>
+								{label}
+							</SelectedDropdownItemLabel>
 						</Dropdown.Item>
 					))}
 				</Dropdown.Menu>
