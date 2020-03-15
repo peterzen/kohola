@@ -13,7 +13,7 @@ protoc  \
     -I=$PROTO_DIR $PROTO_DIR/dcrwalletgui.proto \
     --js_out=import_style=commonjs,binary:$PROTO_DIR \
     --ts_out=service=grpc-web:$PROTO_DIR \
-	--go_out=../app/dcrwalletgui
+	--go_out=../app/walletgui
 
 
 
