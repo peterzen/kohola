@@ -3,7 +3,16 @@ import { connect } from 'react-redux';
 
 import { Navbar, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTicketAlt, faExchangeAlt, faCog, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+	faBars,
+	faTicketAlt,
+	faExchangeAlt,
+	faCog,
+	faShieldAlt,
+	IconDefinition
+} from '@fortawesome/free-solid-svg-icons';
+// @ts-ignore
+import Fade from 'react-reveal/Fade';
 
 import "./AppSidebar.scss"
 
@@ -16,11 +25,39 @@ import BestBlockComponent from '../networkinfo/BestBlockComponent';
 import EndpointSelectDropdown from './EndpointSelectDropdown';
 
 interface NavMenuProps {
+	isNavigable: boolean
 	isMenuOpened: boolean
 }
 
+const menuItems: MenuItemProps[] = [
+	{
+		title: "Transactions",
+		icon: faExchangeAlt,
+		href: "/#wallet",
+	},
+	{
+		title: "Staking",
+		icon: faTicketAlt,
+		href: "/#staking",
+	},
+	{
+		title: "Privacy",
+		icon: faShieldAlt,
+		href: "/#mixing",
+	},
+	{
+		title: "",
+	},
+	{
+		title: "Settings",
+		icon: faCog,
+		href: "/#settings",
+	},
+]
+
 class NavMenu extends React.Component<NavMenuProps> {
 	render() {
+		const isNavigable = this.props.isNavigable
 		return (
 			<>
 				<Nav id="sidebar" className={this.props.isMenuOpened ? "collapsed" : ""}>
@@ -28,31 +65,16 @@ class NavMenu extends React.Component<NavMenuProps> {
 						<div className="sidebar-header">
 							<Logo height={36} width={36} />
 						</div>
-
-						<Nav.Item>
-							<Nav.Link href="/#wallet" title="Transactions">
-								<FontAwesomeIcon icon={faExchangeAlt} className="text-secondary" />
-								<span>Transactions</span>
-							</Nav.Link>
-						</Nav.Item>
-						<Nav.Item>
-							<Nav.Link href="/#staking" title="Staking">
-								<FontAwesomeIcon icon={faTicketAlt} className="text-secondary" />
-								<span>Staking</span>
-							</Nav.Link>
-						</Nav.Item>
-						<Nav.Item>
-							<Nav.Link href="/#mixing" title="Privacy">
-								<FontAwesomeIcon icon={faShieldAlt} className="text-secondary" />
-								<span>Privacy</span>
-							</Nav.Link>
-						</Nav.Item>
-						<Nav.Item className="mt-5">
-							<Nav.Link href="/#settings" title="Settings">
-								<FontAwesomeIcon icon={faCog} className="text-secondary" />
-								<span>Settings</span>
-							</Nav.Link>
-						</Nav.Item>
+						<Fade fade slide left cascade>
+							<div>
+								{menuItems.map(m => (
+									<div key={m.href} hidden={!isNavigable}>
+										{m.title == "" && <div className="mt-5" />}
+										{m.title != "" && <SidebarNavItem {...m} />}
+									</div>
+								))}
+							</div>
+						</Fade>
 					</div>
 				</Nav>
 			</>
@@ -60,6 +82,22 @@ class NavMenu extends React.Component<NavMenuProps> {
 	}
 }
 
+type MenuItemProps = {
+	title: string
+	href?: string
+	icon?: IconDefinition
+}
+
+const SidebarNavItem = (props: MenuItemProps) => {
+	return (
+		<Nav.Item>
+			<Nav.Link href={props.href} title={props.title}>
+				{props.icon && <FontAwesomeIcon icon={props.icon} className="text-secondary" />}
+				<span>{props.title}</span>
+			</Nav.Link>
+		</Nav.Item>
+	)
+}
 
 
 interface StatusBarProps {
@@ -114,7 +152,9 @@ class AppSidebar extends React.Component<AppSidebarProps, AppSidebarState>{
 	render() {
 		return (
 			<div className="wrapper">
-				{this.props.isEndpointConnected && <NavMenu isMenuOpened={this.state.isMenuOpened} />}
+				{<NavMenu
+					isNavigable={this.props.isEndpointConnected}
+					isMenuOpened={this.state.isMenuOpened} />}
 				<div id="content">
 					<StatusBar onMenuToggle={() => this.setState({ isMenuOpened: !this.state.isMenuOpened })} />
 					<div>
