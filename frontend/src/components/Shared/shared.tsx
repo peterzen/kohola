@@ -231,11 +231,11 @@ export class SelectedDropdownItemLabel extends React.Component<{ isSelected: boo
 	render() {
 		return (
 			<div>
-				<div className="float-right ml-4">
-					{this.props.children}
+				<div className="float-left" style={{ width: "1.5em", display: "block" }}>
+					{this.props.isSelected && <FontAwesomeIcon icon={faCheck} />}&nbsp;
 				</div>
-				<div style={{ width: "1.5em", display: "block" }}>
-					{this.props.isSelected && <FontAwesomeIcon icon={faCheck} />}
+				<div className="float-left">
+					{this.props.children}
 				</div>
 			</div>
 		)

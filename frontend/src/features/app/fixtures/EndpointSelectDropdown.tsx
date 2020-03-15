@@ -41,13 +41,13 @@ class EndpointSelectDropdown extends React.Component<Props>{
 										</div>
 										{isCurrent && (
 											<div className="text-muted mt-2">
-												{currentEndpoint.getIsWatchingOnly() && (
-													<small className="float-right" title="Watching only">
-														<FontAwesomeIcon icon={faEye} />
-													</small>
-												)}
 												<small>
-													{Networks[endpoint.getNetwork()]}{" "}
+													{currentEndpoint.getIsWatchingOnly() && (
+														<span title="Watching only">
+															<FontAwesomeIcon icon={faEye} />{" "}
+														</span>
+													)}
+													{Networks[endpoint.getNetwork()]}
 												</small>
 											</div>
 										)}
@@ -57,8 +57,10 @@ class EndpointSelectDropdown extends React.Component<Props>{
 						})}
 						<NavDropdown.Divider />
 						<NavDropdown.Item href="/#">
-							<FontAwesomeIcon icon={faCog} className="text-muted" /> &nbsp;
-							Manage connections...
+							<span>
+								<FontAwesomeIcon icon={faCog} className="text-muted" />&nbsp;
+								Manage connections...
+							</span>
 						</NavDropdown.Item>
 					</NavDropdown>
 				)}

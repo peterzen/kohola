@@ -295,10 +295,9 @@ export class EditEndpointModal extends React.Component<GenericModalProps & IRPCF
 
 const generateEndpointLabel = (endpoint: GRPCEndpoint | RPCEndpoint) => {
 	return sprintf(
-		"%s:%d (%s)",
+		"%s:%d",
 		endpoint.getHostname(),
-		endpoint.getPort(),
-		Networks[endpoint.getNetwork()]
+		endpoint.getPort()
 	)
 }
 
