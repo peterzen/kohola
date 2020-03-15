@@ -162,6 +162,15 @@ export class GRPCEndpoint extends jspb.Message {
   getLabel(): string;
   setLabel(value: string): void;
 
+  getIsWatchingOnly(): boolean;
+  setIsWatchingOnly(value: boolean): void;
+
+  getActiveNetwork(): number;
+  setActiveNetwork(value: number): void;
+
+  getCoinType(): number;
+  setCoinType(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GRPCEndpoint.AsObject;
   static toObject(includeInstance: boolean, msg: GRPCEndpoint): GRPCEndpoint.AsObject;
@@ -181,6 +190,9 @@ export namespace GRPCEndpoint {
     certBlob: string,
     network: NetworkMap[keyof NetworkMap],
     label: string,
+    isWatchingOnly: boolean,
+    activeNetwork: number,
+    coinType: number,
   }
 }
 

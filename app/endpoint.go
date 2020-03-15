@@ -176,17 +176,17 @@ func disconnectEndpoint() {
 	gRPCConnection = nil
 }
 
-func connectEndpoint(endpointID string, ui lorca.UI) (err error) {
+func connectEndpoint(endpointID string, ui lorca.UI) (endpoint *gui.GRPCEndpoint, err error) {
 
 	if isEndpointConnected() {
 		disconnectEndpoint()
 	}
 
 	endpoints := gui.GetConfig().GetWalletEndpoints()
-	endpoint := getEndpointByID(endpoints, endpointID)
+	endpoint = getEndpointByID(endpoints, endpointID)
 
 	if endpoint == nil {
-		return errors.New("Endpoint not found")
+		return nil, errors.New("Endpoint not found")
 	}
 	isOK, err := checkGRPCConnection(endpoint)
 	if !isOK {
@@ -195,15 +195,44 @@ func connectEndpoint(endpointID string, ui lorca.UI) (err error) {
 		} else {
 			err = fmt.Errorf("Connection check failed for %s", endpoint.Label)
 		}
-		return err
+		return nil, err
 	}
 	err = connectWallet(endpoint)
 	if err != nil {
 		err = fmt.Errorf("Cannot connect to dcrwallet: %s", err)
-		return err
+		return nil, err
+	}
+	cointType, err := getCointType()
+	if cointType != nil {
+		endpoint.CoinType = cointType.CoinType
+	}
+	if err != nil && grpc.Code(err) == 12 {
+		endpoint.IsWatchingOnly = true
+	}
+	network, err := getNetwork()
+	if network != nil {
+		endpoint.ActiveNetwork = network.ActiveNetwork
 	}
 	subscribeNotifications(ui)
-	return nil
+	return endpoint, nil
+}
+
+func getCointType() (*walletrpc.CoinTypeResponse, error) {
+	request := &walletrpc.CoinTypeRequest{}
+	coinType, err := walletServiceClient.CoinType(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+	return coinType, nil
+}
+
+func getNetwork() (*walletrpc.NetworkResponse, error) {
+	request := &walletrpc.NetworkRequest{}
+	response, err := walletServiceClient.Network(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+	return response, nil
 }
 
 func checkGRPCConnection(endpointCfg *gui.GRPCEndpoint) (bool, error) {

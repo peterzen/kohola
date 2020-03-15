@@ -16,6 +16,7 @@ require (
 	github.com/decred/dcrd/gcs v1.1.0 // indirect
 	github.com/decred/dcrd/rpc/jsonrpc/types/v2 v2.0.0
 	github.com/decred/dcrd/rpcclient/v6 v6.0.0-20200131210503-db5916e60379
+	github.com/decred/dcrwallet/errors v1.1.0
 	github.com/decred/dcrwallet/rpc/jsonrpc/types v1.3.0
 	github.com/decred/dcrwallet/rpc/walletrpc v0.3.0
 	github.com/decred/go-socks v1.1.0

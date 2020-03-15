@@ -35,10 +35,14 @@ const AppBackend = {
 		}
 	},
 
-	connectWalletEndpoint: async function (endpoint: GRPCEndpoint) {
+	connectWalletEndpoint: async function (endpointId: string) {
 
 		try {
-			const err = await w.walletgui__ConnectWalletEndpoint(endpoint.getId())
+			const r = await w.walletgui__ConnectWalletEndpoint(endpointId)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return GRPCEndpoint.deserializeBinary(r.payload)
 		}
 		catch (err) {
 			throw new AppError(0, err)

@@ -1007,7 +1007,10 @@ proto.dcrwalletgui.GRPCEndpoint.toObject = function(includeInstance, msg) {
     certFileName: jspb.Message.getFieldWithDefault(msg, 4, ""),
     certBlob: jspb.Message.getFieldWithDefault(msg, 5, ""),
     network: jspb.Message.getFieldWithDefault(msg, 6, 0),
-    label: jspb.Message.getFieldWithDefault(msg, 7, "")
+    label: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    isWatchingOnly: jspb.Message.getFieldWithDefault(msg, 8, false),
+    activeNetwork: jspb.Message.getFieldWithDefault(msg, 9, 0),
+    coinType: jspb.Message.getFieldWithDefault(msg, 10, 0)
   };
 
   if (includeInstance) {
@@ -1071,6 +1074,18 @@ proto.dcrwalletgui.GRPCEndpoint.deserializeBinaryFromReader = function(msg, read
     case 7:
       var value = /** @type {string} */ (reader.readString());
       msg.setLabel(value);
+      break;
+    case 8:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsWatchingOnly(value);
+      break;
+    case 9:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setActiveNetwork(value);
+      break;
+    case 10:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setCoinType(value);
       break;
     default:
       reader.skipField();
@@ -1146,6 +1161,27 @@ proto.dcrwalletgui.GRPCEndpoint.serializeBinaryToWriter = function(message, writ
   if (f.length > 0) {
     writer.writeString(
       7,
+      f
+    );
+  }
+  f = message.getIsWatchingOnly();
+  if (f) {
+    writer.writeBool(
+      8,
+      f
+    );
+  }
+  f = message.getActiveNetwork();
+  if (f !== 0) {
+    writer.writeUint32(
+      9,
+      f
+    );
+  }
+  f = message.getCoinType();
+  if (f !== 0) {
+    writer.writeUint32(
+      10,
       f
     );
   }
@@ -1254,6 +1290,53 @@ proto.dcrwalletgui.GRPCEndpoint.prototype.getLabel = function() {
 /** @param {string} value */
 proto.dcrwalletgui.GRPCEndpoint.prototype.setLabel = function(value) {
   jspb.Message.setField(this, 7, value);
+};
+
+
+/**
+ * optional bool is_watching_only = 8;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.dcrwalletgui.GRPCEndpoint.prototype.getIsWatchingOnly = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 8, false));
+};
+
+
+/** @param {boolean} value */
+proto.dcrwalletgui.GRPCEndpoint.prototype.setIsWatchingOnly = function(value) {
+  jspb.Message.setField(this, 8, value);
+};
+
+
+/**
+ * optional uint32 active_network = 9;
+ * @return {number}
+ */
+proto.dcrwalletgui.GRPCEndpoint.prototype.getActiveNetwork = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 9, 0));
+};
+
+
+/** @param {number} value */
+proto.dcrwalletgui.GRPCEndpoint.prototype.setActiveNetwork = function(value) {
+  jspb.Message.setField(this, 9, value);
+};
+
+
+/**
+ * optional uint32 coin_type = 10;
+ * @return {number}
+ */
+proto.dcrwalletgui.GRPCEndpoint.prototype.getCoinType = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
+};
+
+
+/** @param {number} value */
+proto.dcrwalletgui.GRPCEndpoint.prototype.setCoinType = function(value) {
+  jspb.Message.setField(this, 10, value);
 };
 
 

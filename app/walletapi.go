@@ -28,7 +28,6 @@ func ExportWalletAPI(ui lorca.UI) {
 		mixerCtxCancel context.CancelFunc
 	)
 
-	ui.Bind("walletrpc__GetNetwork", getNetwork)
 	ui.Bind("walletrpc__GetBestBlock", getBestBlock)
 	ui.Bind("walletrpc__GetVoteChoices", getVoteChoices)
 	ui.Bind("walletrpc__SetVoteChoices", setVoteChoices)
@@ -112,11 +111,17 @@ func ExportWalletAPI(ui lorca.UI) {
 		}
 	})
 
-	ui.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) error {
+	ui.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) (r gui.LorcaMessage) {
 		if !gui.HaveConfig() {
-			return errors.New("Missing dcrwallet entry in config file")
+			r.Err = errors.New("Missing dcrwallet entry in config file")
+			return r
 		}
-		return connectEndpoint(endpointID, ui)
+		endpoint, err := connectEndpoint(endpointID, ui)
+		r.Err = err
+		if err == nil {
+			r.Payload, _ = proto.Marshal(endpoint)
+		}
+		return r
 	})
 
 	ui.Bind("walletgui__CheckGRPCConnection", func(requestAsHex string) (r gui.CheckConnectionResponse) {
@@ -273,22 +278,6 @@ func setVoteChoices(agendaID string, choiceID string) (r gui.LorcaMessage) {
 func getBestBlock() (r gui.LorcaMessage) {
 	request := &walletrpc.BestBlockRequest{}
 	response, err := walletServiceClient.BestBlock(ctx, request)
-	if err != nil {
-		fmt.Println(err)
-		r.Err = err
-		return r
-	}
-	r.Payload, err = proto.Marshal(response)
-	if err != nil {
-		r.Err = err
-		return r
-	}
-	return r
-}
-
-func getNetwork() (r gui.LorcaMessage) {
-	request := &walletrpc.NetworkRequest{}
-	response, err := walletServiceClient.Network(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err

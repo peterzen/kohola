@@ -9,15 +9,16 @@ import { AppError, AppThunk, AppDispatch, IApplicationState, IGetState } from ".
 import { AccountNotificationsResponse } from "../../proto/api_pb";
 
 import { hexToRaw } from "../../helpers/byteActions";
-import { loadBestBlockHeight, loadNetworkAttempt } from "./networkinfo/networkInfoSlice";
+import { loadBestBlockHeight } from "./networkinfo/networkInfoSlice";
 import { loadAccountsAttempt, accountNotification } from "../balances/accountSlice";
-import { createTxNotificationReceivers } from "../transactions/actions";
+import { createTxNotificationReceivers, loadTransactionsAttempt } from "../transactions/actions";
 import { loadWalletBalance } from "../balances/walletBalanceSlice";
 import { loadTicketsAttempt } from "../staking/stakingSlice";
 import { showTransactionToast, showInfoToast, showDangerToast } from "./fixtures/Toasts";
 import { Transaction } from "../../middleware/models";
 import AppBackend from "../../middleware/appbackend";
 import { getWalletEndpoints } from "../appconfiguration/settingsSlice";
+import { CurrencyNet } from "../../constants";
 
 const w = (window as any)
 
@@ -126,11 +127,10 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 		}
 		dispatch(connectWalletAttempting())
 		try {
-			await AppBackend.connectWalletEndpoint(endpoint)
-			dispatch(connectWalletSuccess(endpoint))
+			const connectedEndpoint = await AppBackend.connectWalletEndpoint(endpoint.getId())
+			dispatch(connectWalletSuccess(connectedEndpoint))
 			dispatch(initializeStore())
 				.then(() => {
-					dispatch(loadNetworkAttempt())
 					setTimeout(() => {
 						history.push("/wallet")
 						setTimeout(() => {
@@ -148,6 +148,16 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 		catch (error) {
 			dispatch(connectWalletFailed(error))
 			dispatch(showProgressbar(false))
+		}
+	}
+}
+
+
+export const connectDefaultWallet: ActionCreator<any> = (): AppThunk => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
+		const firstEndpoint = _.first(getState().appconfiguration.appConfig.getWalletEndpointsList())
+		if (firstEndpoint != undefined) {
+			dispatch(connectWallet(firstEndpoint))
 		}
 	}
 }
@@ -177,22 +187,13 @@ export const subscribeMonitorEndpointNotifications: ActionCreator<any> = () => {
 	}
 }
 
-export const connectDefaultWallet: ActionCreator<any> = (): AppThunk => {
-	return async (dispatch: AppDispatch, getState: IGetState) => {
-		const firstEndpoint = _.first(getState().appconfiguration.appConfig.getWalletEndpointsList())
-		if (firstEndpoint != undefined) {
-			dispatch(connectWallet(firstEndpoint))
-		}
-	}
-}
-
 export const loadMainData: ActionCreator<any> = () => {
 	return async (dispatch: AppDispatch) => {
 		await dispatch(loadBestBlockHeight())
 		await dispatch(loadAccountsAttempt())
 
 		batch(() => {
-			// dispatch(loadTransactionsAttempt())
+			dispatch(loadTransactionsAttempt())
 			dispatch(loadWalletBalance())
 			dispatch(loadTicketsAttempt())
 		})
@@ -237,4 +238,10 @@ export const isWalletConnected = (state: IApplicationState) => {
 
 export const getEndpointById = (state: IApplicationState, endpointId: string) => {
 	return _.find(getWalletEndpoints(state), e => e.getId() == endpointId)
+}
+
+export const getCurrentNetwork = (state: IApplicationState): number => {
+	const activeNet = getConnectedEndpoint(state)?.getActiveNetwork()
+	if (activeNet == undefined) return -1
+	return CurrencyNet[activeNet]
 }

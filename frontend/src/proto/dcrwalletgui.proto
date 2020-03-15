@@ -52,6 +52,9 @@ message GRPCEndpoint {
   string cert_blob = 5;
   Network network = 6;
   string label = 7;
+  bool is_watching_only = 8;
+  uint32 active_network = 9;
+  uint32 coin_type = 10;
 }
 
 message AccountPreference {

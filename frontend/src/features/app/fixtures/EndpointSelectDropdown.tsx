@@ -4,13 +4,14 @@ import { connect } from "react-redux";
 
 import { NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faEye } from '@fortawesome/free-solid-svg-icons'
 
 import { connectWallet, getEndpointById } from '../appSlice';
 import { GRPCEndpoint } from '../../../proto/dcrwalletgui_pb';
 import { IApplicationState } from '../../../store/types';
 import { SelectedDropdownItemLabel } from '../../../components/Shared/shared';
 import ConnectionStatus from '../ConnectionStatus';
+import { Networks } from '../../../constants';
 
 
 class EndpointSelectDropdown extends React.Component<Props>{
@@ -25,19 +26,35 @@ class EndpointSelectDropdown extends React.Component<Props>{
 						title={<ConnectionStatus />}
 						id="endpoint-nav-dropdown">
 
-						{this.props.walletEndpoints.map(endpoint => (
-							<NavDropdown.Item
-								key={endpoint.getId()}
-								active={false}
-								disabled={currentEndpoint.getId() == endpoint.getId()}
-								eventKey={endpoint.getId()}>
+						{this.props.walletEndpoints.map(endpoint => {
+							const isCurrent = currentEndpoint.getId() == endpoint.getId()
+							return (
+								<NavDropdown.Item
+									key={endpoint.getId()}
+									active={false}
+									disabled={currentEndpoint.getId() == endpoint.getId()}
+									eventKey={endpoint.getId()}>
 
-								<SelectedDropdownItemLabel isSelected={currentEndpoint.getId() == endpoint.getId()}>
-									{endpoint.getLabel()}
-								</SelectedDropdownItemLabel>
-
-							</NavDropdown.Item>
-						))}
+									<SelectedDropdownItemLabel isSelected={isCurrent}>
+										<div>
+											{endpoint.getLabel()}
+										</div>
+										{isCurrent && (
+											<div className="text-muted mt-2">
+												{currentEndpoint.getIsWatchingOnly() && (
+													<small className="float-right" title="Watching only">
+														<FontAwesomeIcon icon={faEye} />
+													</small>
+												)}
+												<small>
+													{Networks[endpoint.getNetwork()]}{" "}
+												</small>
+											</div>
+										)}
+									</SelectedDropdownItemLabel>
+								</NavDropdown.Item>
+							)
+						})}
 						<NavDropdown.Divider />
 						<NavDropdown.Item href="/#">
 							<FontAwesomeIcon icon={faCog} className="text-muted" /> &nbsp;

@@ -230,12 +230,14 @@ export const AccountSelector = connect(mapStateToProps)(_AccountSelector)
 export class SelectedDropdownItemLabel extends React.Component<{ isSelected: boolean }>{
 	render() {
 		return (
-			<span>
-				<span style={{ width: "1.5em", display: "inline-block" }}>
+			<div>
+				<div className="float-right ml-4">
+					{this.props.children}
+				</div>
+				<div style={{ width: "1.5em", display: "block" }}>
 					{this.props.isSelected && <FontAwesomeIcon icon={faCheck} />}
-				</span>
-				{this.props.children}
-			</span>
+				</div>
+			</div>
 		)
 	}
 }

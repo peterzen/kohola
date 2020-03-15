@@ -2,10 +2,11 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { formatHash } from "../../../helpers/helpers";
-import { getBestBlock, getCurrentNetwork } from "./networkInfoSlice";
+import { getBestBlock } from "./networkInfoSlice";
 import { BestBlockResponse } from "../../../proto/api_pb";
 import { IApplicationState } from "../../../store/types";
 import { Networks } from "../../../constants";
+import { getCurrentNetwork } from "../appSlice";
 
 class BestBlockComponent extends React.Component<OwnProps> {
 	render() {
