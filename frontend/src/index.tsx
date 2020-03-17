@@ -11,6 +11,7 @@ import App from './features/app/App';
 import "./styles/main.scss";
 import { getConfiguration } from './features/appconfiguration/settingsSlice';
 import { connectDefaultWallet } from './features/app/appSlice';
+import { subscribeExchangeRateFeed } from './features/app/exchangerateSlice';
 
 const render = () => {
 	ReactDOM.render(
@@ -29,6 +30,9 @@ store.dispatch(getConfiguration())
 		// default flag.  
 		// @FIXME add GUI to select default endpoint
 		return store.dispatch(connectDefaultWallet())
+	})
+	.then(() => {
+		return store.dispatch(subscribeExchangeRateFeed())
 	})
 	.then(() => {
 		render()

@@ -27,6 +27,7 @@ require (
 	github.com/jessevdk/go-flags v1.4.0
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/peterzen/dcrwalletgui/dcrwalletgui v0.0.0-00010101000000-000000000000
+	github.com/peterzen/dcrwalletgui/exchangeratebot v0.0.0-00010101000000-000000000000
 	github.com/sqweek/dialog v0.0.0-20190728103509-6254ed5b0d3c
 	github.com/superoo7/go-gecko v1.0.0
 	github.com/zserge/lorca v0.1.8
@@ -39,5 +40,5 @@ replace (
 	github.com/decred/dcrd/rpc/jsonrpc/types/v2 => ../deps/dcrd/rpc/jsonrpc/types/
 	github.com/decred/dcrwallet/rpc/walletrpc v0.3.0 => ../deps/dcrwallet/rpc/walletrpc
 	github.com/peterzen/dcrwalletgui/dcrwalletgui => ./walletgui
-	github.com/peterzen/dcrwalletgui/feeds => ./feeds
+	github.com/peterzen/dcrwalletgui/exchangeratebot => ./exchangeratebot
 )

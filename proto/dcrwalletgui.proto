@@ -94,6 +94,7 @@ message AppConfiguration {
   repeated WalletPreferences wallet_preferences = 4;
   RunAccountMixerRequest account_mixer_request_defaults = 5;
   RunTicketBuyerRequest run_auto_buyer_request_defaults = 6;
+  repeated string alt_display_currencies = 7;
 }
 
 
@@ -120,6 +121,16 @@ message ConnectWalletResponse {
   bool isSuccess = 1;
   string error = 2;
   GRPCEndpoint endpoint = 3;
+}
+
+// exchange rates
+message AltCurrencyRates {
+  message AltCurrencyRate {
+	string currency_code = 1;
+	float current_rate = 2;
+  }
+  repeated AltCurrencyRate rates = 1;
+  int64 last_updated_ts = 2;
 }
 
 /*

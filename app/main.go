@@ -1,8 +1,3 @@
-// Copyright (c) 2013-2015 The btcsuite developers
-// Copyright (c) 2015-2019 The Decred developers
-// Use of this source code is governed by an ISC
-// license that can be found in the LICENSE file.
-
 package main
 
 import (
@@ -15,6 +10,7 @@ import (
 
 	proto "github.com/golang/protobuf/proto"
 	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
+	exchangeratebot "github.com/peterzen/dcrwalletgui/exchangeratebot"
 
 	"github.com/sqweek/dialog"
 	"github.com/zserge/lorca"
@@ -33,6 +29,20 @@ func main() {
 		}
 
 		bindUIAPI(ui)
+
+		// @TODO pull these values from AppConfiguration
+		altCurrencies := []string{"btc", "usd", "eur"}
+
+		go exchangeratebot.Start(altCurrencies, func(rates *gui.AltCurrencyRates) {
+			b, err := proto.Marshal(rates)
+			if err != nil {
+				log.Println("proto.Marshal", err)
+				return
+			}
+			encodedMsg := hex.EncodeToString(b)
+			js := fmt.Sprintf("window.lorcareceiver__OnExchangeRateUpdate('%s')", encodedMsg)
+			ui.Eval(js)
+		})
 	})
 }
 

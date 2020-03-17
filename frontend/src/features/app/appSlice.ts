@@ -118,7 +118,7 @@ export default appSlice.reducer
 
 export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppThunk => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
-
+		
 		dispatch(disconnectWallet())
 		dispatch(showProgressbar(true))
 
@@ -164,6 +164,8 @@ export const connectDefaultWallet: ActionCreator<any> = (): AppThunk => {
 
 export const subscribeMonitorEndpointNotifications: ActionCreator<any> = () => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
+
+
 
 		w.lorcareceiver__onEndpointConnectionStatusChange = (
 			isConnected: boolean,
