@@ -12,7 +12,7 @@ require (
 	github.com/decred/dcrd/dcrec/secp256k1 v1.0.3 // indirect
 	github.com/decred/dcrd/dcrjson/v3 v3.0.1
 	github.com/decred/dcrd/dcrutil v1.3.0
-	github.com/decred/dcrd/dcrutil/v3 v3.0.0-20200112011755-e3547d0822db
+	github.com/decred/dcrd/dcrutil/v3 v3.0.0-20200312171759-0a8cc56a776e
 	github.com/decred/dcrd/gcs v1.1.0 // indirect
 	github.com/decred/dcrd/rpc/jsonrpc/types/v2 v2.0.0
 	github.com/decred/dcrd/rpcclient/v6 v6.0.0-20200131210503-db5916e60379
