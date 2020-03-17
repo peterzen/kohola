@@ -47,6 +47,7 @@ const menuItems: MenuItemProps[] = [
 	},
 	{
 		title: "",
+		href: "",
 	},
 	{
 		title: "Settings",
