@@ -363,6 +363,11 @@ export class AppConfiguration extends jspb.Message {
   getRunAutoBuyerRequestDefaults(): RunTicketBuyerRequest | undefined;
   setRunAutoBuyerRequestDefaults(value?: RunTicketBuyerRequest): void;
 
+  clearAltDisplayCurrenciesList(): void;
+  getAltDisplayCurrenciesList(): Array<string>;
+  setAltDisplayCurrenciesList(value: Array<string>): void;
+  addAltDisplayCurrencies(value: string, index?: number): string;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AppConfiguration.AsObject;
   static toObject(includeInstance: boolean, msg: AppConfiguration): AppConfiguration.AsObject;
@@ -381,6 +386,7 @@ export namespace AppConfiguration {
     walletPreferencesList: Array<WalletPreferences.AsObject>,
     accountMixerRequestDefaults?: RunAccountMixerRequest.AsObject,
     runAutoBuyerRequestDefaults?: RunTicketBuyerRequest.AsObject,
+    altDisplayCurrenciesList: Array<string>,
   }
 }
 
@@ -483,6 +489,56 @@ export namespace ConnectWalletResponse {
     issuccess: boolean,
     error: string,
     endpoint?: GRPCEndpoint.AsObject,
+  }
+}
+
+export class AltCurrencyRates extends jspb.Message {
+  clearRatesList(): void;
+  getRatesList(): Array<AltCurrencyRates.AltCurrencyRate>;
+  setRatesList(value: Array<AltCurrencyRates.AltCurrencyRate>): void;
+  addRates(value?: AltCurrencyRates.AltCurrencyRate, index?: number): AltCurrencyRates.AltCurrencyRate;
+
+  getLastUpdatedTs(): number;
+  setLastUpdatedTs(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): AltCurrencyRates.AsObject;
+  static toObject(includeInstance: boolean, msg: AltCurrencyRates): AltCurrencyRates.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: AltCurrencyRates, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): AltCurrencyRates;
+  static deserializeBinaryFromReader(message: AltCurrencyRates, reader: jspb.BinaryReader): AltCurrencyRates;
+}
+
+export namespace AltCurrencyRates {
+  export type AsObject = {
+    ratesList: Array<AltCurrencyRates.AltCurrencyRate.AsObject>,
+    lastUpdatedTs: number,
+  }
+
+  export class AltCurrencyRate extends jspb.Message {
+    getCurrencyCode(): string;
+    setCurrencyCode(value: string): void;
+
+    getCurrentRate(): number;
+    setCurrentRate(value: number): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): AltCurrencyRate.AsObject;
+    static toObject(includeInstance: boolean, msg: AltCurrencyRate): AltCurrencyRate.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: AltCurrencyRate, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): AltCurrencyRate;
+    static deserializeBinaryFromReader(message: AltCurrencyRate, reader: jspb.BinaryReader): AltCurrencyRate;
+  }
+
+  export namespace AltCurrencyRate {
+    export type AsObject = {
+      currencyCode: string,
+      currentRate: number,
+    }
   }
 }
 
