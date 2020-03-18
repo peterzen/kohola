@@ -12,7 +12,7 @@ import { AppError, IApplicationState } from "../../../store/types";
 import DialogAlert from "./DialogAlert";
 
 import { Form, Button, InputGroup, FormControl, Row, Col } from 'react-bootstrap';
-import { getCurrentNetwork } from "../../app/networkinfo/networkInfoSlice"
+import { getCurrentNetwork } from "../../app/appSlice"
 
 class ConstructTxDialog extends React.Component<Props, ISendDialogFormData>{
 	constructor(props: Props) {
