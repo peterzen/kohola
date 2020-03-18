@@ -4,6 +4,8 @@ import (
 	"encoding/hex"
 	"fmt"
 	"log"
+	"net"
+	"net/http"
 	"os"
 	"os/signal"
 	"runtime"
@@ -12,6 +14,7 @@ import (
 	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
 	exchangeratebot "github.com/peterzen/dcrwalletgui/exchangeratebot"
 
+	"github.com/markbates/pkger"
 	"github.com/sqweek/dialog"
 	"github.com/zserge/lorca"
 )
@@ -59,7 +62,19 @@ func launchUI(callbackFn func(lorca.UI)) {
 
 	callbackFn(ui)
 
-	_ = ui.Load("http://localhost:8080")
+	f, errIndexFile := pkger.Open("/www/index.html")
+	if errIndexFile != nil {
+		_ = ui.Load("http://localhost:8080")
+	} else {
+		f.Close()
+		ln, err := net.Listen("tcp", "127.0.0.1:0")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer ln.Close()
+		go http.Serve(ln, http.FileServer(pkger.Dir("/www")))
+		ui.Load(fmt.Sprintf("http://%s", ln.Addr()))
+	}
 
 	// Wait until the interrupt signal arrives or browser window is closed
 	sigc := make(chan os.Signal)

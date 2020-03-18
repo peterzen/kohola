@@ -15,6 +15,7 @@ import (
 var (
 	appDataDir        = dcrutil.AppDataDir("dcrwalletgui", false)
 	defaultConfigFile = filepath.Join("./", "dcrwalletgui.json")
+	configFilePath    = filepath.Join(appDataDir, defaultConfigFile)
 	cfg               = newConfig()
 
 	defaultConfig = &AppConfiguration{
@@ -71,17 +72,17 @@ func GetConfigMarshaled() ([]byte, error) {
 // LoadConfig reads the config file into AppConfiguration struct
 func LoadConfig() error {
 
-	if !fileExists(defaultConfigFile) {
+	if !fileExists(configFilePath) {
 		err := WriteConfig()
 		if err != nil {
-			log.Printf("Unable to create default configuration %s: %s", defaultConfigFile, err)
+			log.Printf("Unable to create default configuration %s: %s", configFilePath, err)
 			return err
 		}
 	}
 
-	cfgFile, err := os.Open(defaultConfigFile)
+	cfgFile, err := os.Open(configFilePath)
 	if err != nil {
-		log.Printf("Unable to load config file %s: %s", defaultConfigFile, err)
+		log.Printf("Unable to load config file %s: %s", configFilePath, err)
 		return err
 	}
 	defer cfgFile.Close()
@@ -103,7 +104,7 @@ func WriteConfig() error {
 	}
 
 	// Create the destination file and write the JSON serialized configuration into it
-	dest, err := os.OpenFile(defaultConfigFile,
+	dest, err := os.OpenFile(configFilePath,
 		os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
 		return err
