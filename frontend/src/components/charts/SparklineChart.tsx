@@ -1,24 +1,26 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import {
-	LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart,
+	LineChart, Line, ResponsiveContainer,
 } from 'recharts';
-import { IApplicationState, AppDispatch } from '../../store/types';
+import { IApplicationState } from '../../store/types';
 import { getMarketChartData, fetchExchangeChartData } from '../../features/app/exchangerateSlice';
 
 class SparklineChart extends React.Component<Props>{
 	render() {
-		const data = this.props.getChartData()
-		console.log("DATA", data)
+		const normalizedDatapoints = _.map(this.props.getChartData(), (n: number) => {
+			return {
+				v: n
+			}
+		})
 		return (
-			<div style={{ width: '100%', height: '80px' }}>
+			<div style={{ width: '100%', height: '50px' }}>
 				<ResponsiveContainer width="100%" height="100%">
-					<LineChart height={150} data={data} margin={{
+					<LineChart data={normalizedDatapoints} margin={{
 						top: 0, right: 0, left: 0, bottom: 0,
 					}}>
-
 						<Line
 							type="monotone"
 							dataKey="v"
@@ -53,7 +55,7 @@ type Props = OwnProps & StateProps & DispatchProps
 const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
 	return {
 		getChartData: () => {
-			return _.map(getMarketChartData(state, ownProps.currencyCode), d => { return { v: d } })
+			return normalizeDatapoints(getMarketChartData(state, ownProps.currencyCode))
 		}
 	}
 }
@@ -63,3 +65,8 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SparklineChart)
+
+function normalizeDatapoints(datapoints: number[]) {
+	const minValue = _.min(datapoints) || 0
+	return _.map(datapoints, (n: number) => n - minValue)
+}
