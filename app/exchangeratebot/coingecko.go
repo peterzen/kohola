@@ -40,17 +40,13 @@ func initializeCgClient() *coingecko.Client {
 
 func fetchCurrentRates(altCurrencies []string) (rates *gui.AltCurrencyRates, err error) {
 
-	// simpleprice
-	fmt.Println("Simpleprice-----")
 	ids := []string{"decred"}
-	// vc := []string{"btc", "usd", "eur"}
 	sp, err := cg.SimplePrice(ids, altCurrencies)
 	if err != nil {
 		log.Printf("fetchCurrentRates: %s", err)
 		return nil, err
 	}
 	decred := (*sp)["decred"]
-	fmt.Println(fmt.Sprintf("Decred is worth %f (btc) %f usd (eur %f)", decred["btc"], decred["usd"], decred["eur"]))
 
 	rates = &gui.AltCurrencyRates{
 		Rates: make([]*gui.AltCurrencyRates_AltCurrencyRate, len(altCurrencies)),
