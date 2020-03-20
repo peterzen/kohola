@@ -30,7 +30,7 @@ require (
 	github.com/peterzen/dcrwalletgui/exchangeratebot v0.0.0-00010101000000-000000000000
 	github.com/sqweek/dialog v0.0.0-20190728103509-6254ed5b0d3c
 	github.com/superoo7/go-gecko v1.0.0
-	github.com/zserge/lorca v0.1.8
+	github.com/zserge/lorca v0.1.9
 	golang.org/x/crypto v0.0.0-20200204104054-c9f3fb736b72 // indirect
 	google.golang.org/grpc v1.28.0
 
