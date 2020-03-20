@@ -5,6 +5,7 @@ import { Row, Col, ProgressBar } from 'react-bootstrap';
 
 import { WalletTotals } from "../../middleware/models";
 import { Amount, FiatAmount } from "../../components/Shared/Amount";
+import SparklineChart from "../../components/charts/SparklineChart";
 
 interface IWalletTotals {
 	totals: WalletTotals
@@ -46,6 +47,7 @@ export default class WalletTotalsComponent extends React.PureComponent<IWalletTo
 					<h4 className="text-right text-muted">
 						<FiatAmount amount={totals.total} showCurrency currency="USD" />
 					</h4>
+						<SparklineChart currencyCode="eur" days={14} />
 				</Col>
 
 				<ValueCol

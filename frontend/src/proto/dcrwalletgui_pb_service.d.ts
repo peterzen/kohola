@@ -52,6 +52,20 @@ export class NetworkService {
   static readonly ConnectWallet: NetworkServiceConnectWallet;
 }
 
+type ExchangeRatesGetMarketChart = {
+  readonly methodName: string;
+  readonly service: typeof ExchangeRates;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof dcrwalletgui_pb.GetMarketChartRequest;
+  readonly responseType: typeof dcrwalletgui_pb.GetMarketChartResponse;
+};
+
+export class ExchangeRates {
+  static readonly serviceName: string;
+  static readonly GetMarketChart: ExchangeRatesGetMarketChart;
+}
+
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
 export type Status = { details: string, code: number; metadata: grpc.Metadata }
 
@@ -125,6 +139,21 @@ export class NetworkServiceClient {
   connectWallet(
     requestMessage: dcrwalletgui_pb.ConnectWalletRequest,
     callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.ConnectWalletResponse|null) => void
+  ): UnaryResponse;
+}
+
+export class ExchangeRatesClient {
+  readonly serviceHost: string;
+
+  constructor(serviceHost: string, options?: grpc.RpcOptions);
+  getMarketChart(
+    requestMessage: dcrwalletgui_pb.GetMarketChartRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.GetMarketChartResponse|null) => void
+  ): UnaryResponse;
+  getMarketChart(
+    requestMessage: dcrwalletgui_pb.GetMarketChartRequest,
+    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.GetMarketChartResponse|null) => void
   ): UnaryResponse;
 }
 

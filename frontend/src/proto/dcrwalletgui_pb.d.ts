@@ -542,6 +542,76 @@ export namespace AltCurrencyRates {
   }
 }
 
+export class GetMarketChartRequest extends jspb.Message {
+  getCurrencyCode(): string;
+  setCurrencyCode(value: string): void;
+
+  getDays(): number;
+  setDays(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetMarketChartRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetMarketChartRequest): GetMarketChartRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetMarketChartRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetMarketChartRequest;
+  static deserializeBinaryFromReader(message: GetMarketChartRequest, reader: jspb.BinaryReader): GetMarketChartRequest;
+}
+
+export namespace GetMarketChartRequest {
+  export type AsObject = {
+    currencyCode: string,
+    days: number,
+  }
+}
+
+export class GetMarketChartResponse extends jspb.Message {
+  clearDatapointsList(): void;
+  getDatapointsList(): Array<GetMarketChartResponse.MarketChartDataPoint>;
+  setDatapointsList(value: Array<GetMarketChartResponse.MarketChartDataPoint>): void;
+  addDatapoints(value?: GetMarketChartResponse.MarketChartDataPoint, index?: number): GetMarketChartResponse.MarketChartDataPoint;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetMarketChartResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetMarketChartResponse): GetMarketChartResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetMarketChartResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetMarketChartResponse;
+  static deserializeBinaryFromReader(message: GetMarketChartResponse, reader: jspb.BinaryReader): GetMarketChartResponse;
+}
+
+export namespace GetMarketChartResponse {
+  export type AsObject = {
+    datapointsList: Array<GetMarketChartResponse.MarketChartDataPoint.AsObject>,
+  }
+
+  export class MarketChartDataPoint extends jspb.Message {
+    getTimestamp(): number;
+    setTimestamp(value: number): void;
+
+    getExchangeRate(): number;
+    setExchangeRate(value: number): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): MarketChartDataPoint.AsObject;
+    static toObject(includeInstance: boolean, msg: MarketChartDataPoint): MarketChartDataPoint.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: MarketChartDataPoint, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): MarketChartDataPoint;
+    static deserializeBinaryFromReader(message: MarketChartDataPoint, reader: jspb.BinaryReader): MarketChartDataPoint;
+  }
+
+  export namespace MarketChartDataPoint {
+    export type AsObject = {
+      timestamp: number,
+      exchangeRate: number,
+    }
+  }
+}
+
 export interface NetworkMap {
   MAINNET: 0;
   TESTNET: 1;

@@ -133,6 +133,23 @@ message AltCurrencyRates {
   int64 last_updated_ts = 2;
 }
 
+service ExchangeRates {
+  rpc GetMarketChart(GetMarketChartRequest) returns (GetMarketChartResponse);
+}
+
+message GetMarketChartRequest {
+  string currency_code = 1;
+  uint32 days = 2;
+}
+
+message GetMarketChartResponse {
+  message MarketChartDataPoint {
+    int64 timestamp = 1;
+	float exchange_rate = 2;
+  }
+  repeated MarketChartDataPoint datapoints = 1;
+}
+
 /*
 message LorcaMessage {
   message Error { string error = 1; }

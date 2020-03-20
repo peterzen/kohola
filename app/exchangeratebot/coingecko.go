@@ -1,15 +1,20 @@
 package exchangeratebot
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net"
 	"net/http"
 	"time"
 
+	proto "github.com/golang/protobuf/proto"
 	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
 	coingecko "github.com/superoo7/go-gecko/v3"
+	"github.com/zserge/lorca"
 )
+
+var cg *coingecko.Client
 
 func initializeCgClient() *coingecko.Client {
 	transport := &http.Transport{
@@ -33,7 +38,7 @@ func initializeCgClient() *coingecko.Client {
 	return coingecko.NewClient(httpClient)
 }
 
-func fetchCurrentRates(cg *coingecko.Client, altCurrencies []string) (rates *gui.AltCurrencyRates, err error) {
+func fetchCurrentRates(altCurrencies []string) (rates *gui.AltCurrencyRates, err error) {
 
 	// simpleprice
 	fmt.Println("Simpleprice-----")
@@ -60,34 +65,59 @@ func fetchCurrentRates(cg *coingecko.Client, altCurrencies []string) (rates *gui
 	return rates, nil
 }
 
-func fetchMarketChart() {
+func fetchMarketChart(request *gui.GetMarketChartRequest) (marketChartData *gui.GetMarketChartResponse, err error) {
 
-	// m, err := cg.CoinsIDMarketChart("decred", "usd", "7")
-	// fmt.Println("Marketchart")
+	if cg == nil {
+		return nil, errors.New("fetchMarketChart: not initialized yet")
+	}
 
-	// fmt.Printf("Prices\n")
-	// for _, v := range *m.Prices {
-	// 	fmt.Printf("%s -> %.04f\n", time.Unix(int64(v[0])/1000, int64(v[0])%1000).UTC().Format(time.RFC3339), v[1])
-	// }
+	response, err := cg.CoinsIDMarketChart("decred", request.CurrencyCode, string(request.Days))
 
-	// fmt.Printf("MarketCaps\n")
-	// for _, v := range *m.MarketCaps {
-	// 	fmt.Printf("%s:%.04f\n", time.Unix(int64(v[0])/1000, int64(v[0])%1000).UTC().Format(time.RFC3339), v[1])
-	// }
+	if err != nil {
+		fmt.Printf("fetchMarketChart: %s", err)
+		return nil, err
+	}
 
-	// fmt.Printf("TotalVolumes\n")
-	// for _, v := range *m.TotalVolumes {
-	// 	fmt.Printf("%s -> %.04f\n", time.Unix(int64(v[0])/1000, int64(v[0])%1000).UTC().Format(time.RFC3339), v[1])
-	// }
+	marketChartData = &gui.GetMarketChartResponse{
+		Datapoints: make([]*gui.GetMarketChartResponse_MarketChartDataPoint, len(*response.Prices)),
+	}
+
+	for i, v := range *response.Prices {
+		marketChartData.Datapoints[i] = &gui.GetMarketChartResponse_MarketChartDataPoint{
+			Timestamp:    int64(v[0]) / 1000,
+			ExchangeRate: v[1],
+		}
+	}
+
+	return marketChartData, nil
+}
+
+// ExportExchangeRateAPI exports the exchangerateBot API functions to the UI
+func ExportExchangeRateAPI(ui lorca.UI) {
+	ui.Bind("exchangerate__GetMarketChart", func(currencyCode string, days uint32) (r gui.LorcaMessage) {
+
+		request := &gui.GetMarketChartRequest{
+			Days:         days,
+			CurrencyCode: currencyCode,
+		}
+		response, err := fetchMarketChart(request)
+		if err != nil {
+			r.Err = err
+			return r
+		}
+		r.Payload, _ = proto.Marshal(response)
+		return r
+	})
+
 }
 
 // Start initializes a Coingecko client and starts a periodic fetcher process
 func Start(altCurrencies []string, onUpdate func(rates *gui.AltCurrencyRates)) {
 
-	cg := initializeCgClient()
+	cg = initializeCgClient()
 
 	for {
-		rates, err := fetchCurrentRates(cg, altCurrencies)
+		rates, err := fetchCurrentRates(altCurrencies)
 		if err == nil {
 			rates.LastUpdatedTs = time.Now().Unix()
 			onUpdate(rates)

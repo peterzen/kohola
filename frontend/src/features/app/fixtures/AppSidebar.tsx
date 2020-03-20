@@ -9,7 +9,8 @@ import {
 	faExchangeAlt,
 	faCog,
 	faShieldAlt,
-	IconDefinition
+	IconDefinition,
+	faChartLine
 } from '@fortawesome/free-solid-svg-icons';
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
@@ -44,6 +45,11 @@ const menuItems: MenuItemProps[] = [
 		title: "Privacy",
 		icon: faShieldAlt,
 		href: "/#mixing",
+	},
+	{
+		title: "Market",
+		icon: faChartLine,
+		href: "/#market",
 	},
 	{
 		title: "",

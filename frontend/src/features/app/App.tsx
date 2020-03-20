@@ -8,6 +8,8 @@ import { ConnectedRouter } from "connected-react-router"
 import { Container } from 'react-bootstrap'
 
 import Wallet from "../../containers/Wallet"
+import Market from '../../containers/Market';
+import Mixing from '../../containers/Mixing';
 import Staking from "../../containers/Staking"
 import Settings from '../../containers/Settings';
 import AccountDetails from '../../containers/AccountDetails'
@@ -21,7 +23,6 @@ import DevTools from './fixtures/DevTools';
 import { AnimatedSwitch } from 'react-router-transition';
 import Login from '../../containers/Login';
 import { bounceTransition, mapStyles } from './routeSwitchAnimations';
-import Mixing from '../../containers/Mixing';
 import AppProgressIndicator from './AppProgressIndicator';
 import AppSidebar from './fixtures/AppSidebar';
 
@@ -55,6 +56,7 @@ class App extends React.Component<Props>{
 								<Route path="/account/:accountNumber" component={AccountDetails} />
 								<Route path="/wallet" component={Wallet} />
 								<Route path="/mixing" component={Mixing} />
+								<Route path="/market" component={Market} />
 								<Route exact path="/" component={Login} />
 								<Route component={NoRouteMatch} />
 							</AnimatedSwitch>

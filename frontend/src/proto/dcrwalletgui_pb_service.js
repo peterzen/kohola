@@ -194,3 +194,58 @@ NetworkServiceClient.prototype.connectWallet = function connectWallet(requestMes
 
 exports.NetworkServiceClient = NetworkServiceClient;
 
+var ExchangeRates = (function () {
+  function ExchangeRates() {}
+  ExchangeRates.serviceName = "dcrwalletgui.ExchangeRates";
+  return ExchangeRates;
+}());
+
+ExchangeRates.GetMarketChart = {
+  methodName: "GetMarketChart",
+  service: ExchangeRates,
+  requestStream: false,
+  responseStream: false,
+  requestType: dcrwalletgui_pb.GetMarketChartRequest,
+  responseType: dcrwalletgui_pb.GetMarketChartResponse
+};
+
+exports.ExchangeRates = ExchangeRates;
+
+function ExchangeRatesClient(serviceHost, options) {
+  this.serviceHost = serviceHost;
+  this.options = options || {};
+}
+
+ExchangeRatesClient.prototype.getMarketChart = function getMarketChart(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(ExchangeRates.GetMarketChart, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+exports.ExchangeRatesClient = ExchangeRatesClient;
+
