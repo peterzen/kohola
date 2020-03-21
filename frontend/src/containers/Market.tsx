@@ -7,10 +7,10 @@ import _ from "lodash";
 import Fade from 'react-reveal/Fade';
 import { Card, Row, Col } from "react-bootstrap";
 import { IApplicationState } from "../store/types";
-import ExchangeRateChart from "../components/charts/ExchangeRateChart";
+import ExchangeRateChart from "../features/market/charts/ExchangeRateChart";
 import { FiatAmount } from "../components/Shared/Amount";
 import { AltCurrencyRates } from "../proto/dcrwalletgui_pb";
-import { getCurrentExchangeRate } from "../features/app/exchangerateSlice";
+import { getCurrentExchangeRate } from "../features/market/marketSlice";
 
 // @TODO pull this out of AppConfig
 const altCurrencies = ["btc", "usd", "eur"]
@@ -64,7 +64,7 @@ type Props = OwnProps & DispatchProps & RouteChildrenProps<any>
 
 const mapStateToProps = (state: IApplicationState) => {
 	return {
-		currentRates: state.exchangerates.currentRates,
+		currentRates: state.market.currentRates,
 		getCurrentExchangeRate: (currencyCode: string) => {
 			const r = getCurrentExchangeRate(state, currencyCode)
 			return r

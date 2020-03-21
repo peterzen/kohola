@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 
-import { AltCurrencyRates, GetMarketChartResponse, MarketChartDataPoint } from "../../proto/dcrwalletgui_pb";
+import { AltCurrencyRates, MarketChartDataPoint } from "../../proto/dcrwalletgui_pb";
 import { AppError, AppDispatch, IGetState, IApplicationState } from "../../store/types";
 import { hexToRaw } from "../../helpers/byteActions";
 import { ExchangeRateBotBackend } from "../../middleware/exchangeratebot";
@@ -18,7 +18,7 @@ interface CachedRateChartData {
 	[currencyCode: string]: {
 		readonly getMarketChartAttempting: boolean
 		readonly getMarketChartError: AppError | null
-		readonly getMarketChartData: GetMarketChartResponse.MarketChartDataPoint[]
+		readonly getMarketChartData: MarketChartDataPoint[]
 	}
 }
 
@@ -61,7 +61,7 @@ const exchangeRateSlice = createSlice({
 			state.marketChartState[currencyCode].getMarketChartAttempting = false
 			state.marketChartState[currencyCode].getMarketChartError = action.payload.error
 		},
-		getMarketChartSuccess(state, action: PayloadAction<{ currencyCode: string, chartData: GetMarketChartResponse.MarketChartDataPoint[] }>) {
+		getMarketChartSuccess(state, action: PayloadAction<{ currencyCode: string, chartData: MarketChartDataPoint[] }>) {
 			const currencyCode = action.payload.currencyCode
 			state.marketChartState[currencyCode] = {
 				getMarketChartAttempting: false,
@@ -103,7 +103,7 @@ export const subscribeExchangeRateFeed: ActionCreator<any> = () => {
 
 export const fetchExchangeChartData: ActionCreator<any> = (currencyCode: string, days: number) => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
-		if (getState().exchangerates.marketChartState[currencyCode]?.getMarketChartAttempting) {
+		if (getState().market.marketChartState[currencyCode]?.getMarketChartAttempting) {
 			return
 		}
 		dispatch(getMarketChartAttempt(currencyCode))
@@ -125,15 +125,15 @@ export const fetchExchangeChartData: ActionCreator<any> = (currencyCode: string,
 
 // selectors
 export const getCurrentExchangeRates = (state: IApplicationState) => {
-	return state.exchangerates.currentRates
+	return state.market.currentRates
 }
 
 export const getCurrentExchangeRate = (state: IApplicationState, currencyCode: string) => {
-	return _.find(state.exchangerates.currentRates?.getRatesList(), r => r.getCurrencyCode() == currencyCode)?.getCurrentRate()
+	return _.find(state.market.currentRates?.getRatesList(), r => r.getCurrencyCode() == currencyCode)?.getCurrentRate()
 }
 
 export const getMarketChartData = (state: IApplicationState, currencyCode: string): MarketChartDataPoint[] => {
-	return state.exchangerates.marketChartState[currencyCode]?.getMarketChartData || []
+	return state.market.marketChartState[currencyCode]?.getMarketChartData || []
 }
 
 export const getExchangeSparklineData = (state: IApplicationState, currencyCode: string): MarketChartDataPoint.AsObject[] => {
@@ -141,7 +141,7 @@ export const getExchangeSparklineData = (state: IApplicationState, currencyCode:
 }
 
 export const isChartDataLoaded = (state: IApplicationState, currencyCodes: string[]) => {
-	const loadedState = _.map(currencyCodes, c => state.exchangerates.marketChartState[c]?.getMarketChartAttempting)
+	const loadedState = _.map(currencyCodes, c => state.market.marketChartState[c]?.getMarketChartAttempting)
 	return _.every(loadedState, s => s === false)
 }
 

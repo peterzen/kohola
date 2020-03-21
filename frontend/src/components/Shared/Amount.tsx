@@ -5,7 +5,7 @@ import { sprintf } from "sprintf-js";
 import "./Amount.scss"
 import { ATOMS_DIVISOR } from "../../constants";
 import { AppDispatch, IApplicationState } from "../../store/types";
-import { getCurrentExchangeRate } from "../../features/app/exchangerateSlice";
+import { getCurrentExchangeRate } from "../../features/market/marketSlice";
 import { AltCurrencyRates } from "../../proto/dcrwalletgui_pb";
 
 interface AmountProps {
@@ -72,7 +72,7 @@ interface FiatAmountDispatchProps {
 
 const mapStateToProps = (state: IApplicationState) => {
 	return {
-		currentRates: state.exchangerates.currentRates,
+		currentRates: state.market.currentRates,
 		getCurrentExchangeRate: (currencyCode: string) => {
 			const r = getCurrentExchangeRate(state, currencyCode)
 			return r

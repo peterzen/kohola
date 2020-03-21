@@ -3,11 +3,11 @@ import { connectRouter } from 'connected-react-router'
 
 import app from '../features/app/appSlice'
 import mixer from '../features/privacy/mixerSlice'
+import market from '../features/market/marketSlice'
 import staking from '../features/staking/stakingSlice'
 import accounts from '../features/balances/accountSlice'
 import networkinfo from '../features/app/networkinfo/networkInfoSlice'
 import transactions from '../features/transactions/transactionsSlice'
-import exchangerates from '../features/app/exchangerateSlice'
 import walletbalance from '../features/balances/walletBalanceSlice'
 import unspentoutputs from '../features/unspents/unspentsSlice'
 import appconfiguration from '../features/appconfiguration/settingsSlice'
@@ -18,11 +18,11 @@ export default function createRootReducer(history: History<History.PoorMansUnkno
 		router: connectRouter(history),
 		app,
 		mixer,
+		market,
 		staking,
 		accounts,
 		networkinfo,
 		transactions,
-		exchangerates,
 		walletbalance,
 		unspentoutputs,
 		appconfiguration,

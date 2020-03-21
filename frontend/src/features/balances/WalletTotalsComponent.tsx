@@ -5,7 +5,7 @@ import { Row, Col, ProgressBar } from 'react-bootstrap';
 
 import { WalletTotals } from "../../middleware/models";
 import { Amount, FiatAmount } from "../../components/Shared/Amount";
-import SparklineChart from "../../components/charts/SparklineChart";
+import SparklineChart from "../market/charts/SparklineChart";
 
 interface IWalletTotals {
 	totals: WalletTotals

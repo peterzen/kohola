@@ -2,21 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { IApplicationState } from '../../store/types';
-import { fetchExchangeChartData, getExchangeSparklineData } from '../../features/app/exchangerateSlice';
-import { MarketChartDataPoint } from '../../proto/dcrwalletgui_pb';
+import { IApplicationState } from '../../../store/types';
+import { fetchExchangeChartData, getExchangeSparklineData } from '../marketSlice';
+import { MarketChartDataPoint } from '../../../proto/dcrwalletgui_pb';
 
 class ChartdataProvider extends React.Component<Props>{
-	render() {
-		const childrenWithProps = React.Children.map(this.props.children, child =>
-			React.cloneElement(child, { data: this.props.getChartData() })
-		)
-debugger
-		return <div>{childrenWithProps}</div>
-	}
-	componentDidMount() {
-		this.props.fetchExchangeChartData(this.props.currencyCode, this.props.days)
-	}
+	// render() {
+	// 	const childrenWithProps = React.Children.map(this.props.children, child =>
+	// 		React.cloneElement(child, { data: this.props.getChartData() })
+	// 	)
+	// 	return <div>{childrenWithProps}</div>
+	// }
+	// componentDidMount() {
+	// 	this.props.fetchExchangeChartData(this.props.currencyCode, this.props.days)
+	// }
 }
 
 interface OwnProps {

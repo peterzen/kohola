@@ -11,7 +11,7 @@ import App from './features/app/App';
 import "./styles/main.scss";
 import { getConfiguration } from './features/appconfiguration/settingsSlice';
 import { connectDefaultWallet } from './features/app/appSlice';
-import { subscribeExchangeRateFeed } from './features/app/exchangerateSlice';
+import { subscribeExchangeRateFeed } from './features/market/marketSlice';
 
 const render = () => {
 	ReactDOM.render(
