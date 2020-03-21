@@ -22,8 +22,13 @@ class Market extends React.PureComponent<Props> {
 			<div>
 				<Row>
 					<Col sm={6}>
-						{altCurrencies.map(currencyCode => (
-							<div className="mb-3" key={currencyCode}>
+
+					</Col>
+				</Row>
+				<Row>
+					{altCurrencies.map(currencyCode => (
+						<Col sm={6} key={currencyCode}>
+							<div className="mb-3" >
 								<Card key={currencyCode}>
 									<Card.Header>
 										<Card.Title className="mb-0">
@@ -38,8 +43,8 @@ class Market extends React.PureComponent<Props> {
 									</Card.Body>
 								</Card>
 							</div>
-						))}
-					</Col>
+						</Col>
+					))}
 				</Row>
 			</div>
 		)
