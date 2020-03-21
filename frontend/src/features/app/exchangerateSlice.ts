@@ -1,8 +1,9 @@
-import { AltCurrencyRates } from "../../proto/dcrwalletgui_pb";
+import _ from "lodash";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
+
+import { AltCurrencyRates, GetMarketChartResponse, MarketChartDataPoint } from "../../proto/dcrwalletgui_pb";
 import { AppError, AppDispatch, IGetState, IApplicationState } from "../../store/types";
 import { hexToRaw } from "../../helpers/byteActions";
-import _ from "lodash";
 import { ExchangeRateBotBackend } from "../../middleware/exchangeratebot";
 
 
@@ -17,7 +18,7 @@ interface CachedRateChartData {
 	[currencyCode: string]: {
 		readonly getMarketChartAttempting: boolean
 		readonly getMarketChartError: AppError | null
-		readonly getMarketChartData: number[]
+		readonly getMarketChartData: GetMarketChartResponse.MarketChartDataPoint[]
 	}
 }
 
@@ -60,11 +61,13 @@ const exchangeRateSlice = createSlice({
 			state.marketChartState[currencyCode].getMarketChartAttempting = false
 			state.marketChartState[currencyCode].getMarketChartError = action.payload.error
 		},
-		getMarketChartSuccess(state, action: PayloadAction<{ currencyCode: string, chartData: number[] }>) {
+		getMarketChartSuccess(state, action: PayloadAction<{ currencyCode: string, chartData: GetMarketChartResponse.MarketChartDataPoint[] }>) {
 			const currencyCode = action.payload.currencyCode
-			state.marketChartState[currencyCode].getMarketChartAttempting = false
-			state.marketChartState[currencyCode].getMarketChartError = null
-			state.marketChartState[currencyCode].getMarketChartData = action.payload.chartData
+			state.marketChartState[currencyCode] = {
+				getMarketChartAttempting: false,
+				getMarketChartError: null,
+				getMarketChartData: action.payload.chartData,
+			}
 		},
 	}
 })
@@ -106,10 +109,9 @@ export const fetchExchangeChartData: ActionCreator<any> = (currencyCode: string,
 		dispatch(getMarketChartAttempt(currencyCode))
 		try {
 			const resp = await ExchangeRateBotBackend.getMarketChart(currencyCode, days)
-			const chartData = _.map(resp.getDatapointsList(), d => d.getExchangeRate())
 			dispatch(getMarketChartSuccess({
 				currencyCode: currencyCode,
-				chartData: chartData
+				chartData: resp.getDatapointsList()
 			}))
 		}
 		catch (error) {
@@ -130,6 +132,53 @@ export const getCurrentExchangeRate = (state: IApplicationState, currencyCode: s
 	return _.find(state.exchangerates.currentRates?.getRatesList(), r => r.getCurrencyCode() == currencyCode)?.getCurrentRate()
 }
 
-export const getMarketChartData = (state: IApplicationState, currencyCode: string) => {
-	return state.exchangerates.marketChartState[currencyCode]?.getMarketChartData
+export const getMarketChartData = (state: IApplicationState, currencyCode: string): MarketChartDataPoint[] => {
+	return state.exchangerates.marketChartState[currencyCode]?.getMarketChartData || []
+}
+
+export const getExchangeSparklineData = (state: IApplicationState, currencyCode: string): MarketChartDataPoint.AsObject[] => {
+	return normalizeDatapoints(datapointsAsPOJO(getMarketChartData(state, currencyCode)))
+}
+
+export const isChartDataLoaded = (state: IApplicationState, currencyCodes: string[]) => {
+	const loadedState = _.map(currencyCodes, c => state.exchangerates.marketChartState[c]?.getMarketChartAttempting)
+	return _.every(loadedState, s => s === false)
+}
+
+export const getCombinedMarketChartData = (state: IApplicationState, currencyCodes: string[]) => {
+	const combinedChartsData: any = []
+	const allChartdata: any = {}
+	for (let i = 0; i < currencyCodes.length; i++) {
+		const currencyCode = currencyCodes[i]
+		allChartdata[currencyCode] = normalizeDatapoints(datapointsAsPOJO(getMarketChartData(state, currencyCode)))
+	}
+	const masterChartCollection = allChartdata[_.first(currencyCodes) || ""]
+	for (let di = 0; di < masterChartCollection.length; di++) {
+		const d: any = {
+			timestamp: masterChartCollection[di].timestamp
+		}
+		for (let i = 0; i < currencyCodes.length; i++) {
+			const currencyCode = currencyCodes[i]
+			d[currencyCode] = allChartdata[currencyCode][i].exchangeRate
+			combinedChartsData.push(d)
+		}
+	}
+
+	return combinedChartsData
+}
+
+
+
+// helpers
+export function datapointsAsPOJO(datapoints: MarketChartDataPoint[]): MarketChartDataPoint.AsObject[] {
+	return _.map(datapoints, d => d.toObject())
+}
+
+export function normalizeDatapoints(datapoints: MarketChartDataPoint.AsObject[]): MarketChartDataPoint.AsObject[] {
+	const ratesColl = _.map(datapoints, d => d.exchangeRate)
+	const minValue = _.min(ratesColl) || 0
+	return _.map(datapoints, d => {
+		d.exchangeRate = d.exchangeRate - minValue
+		return d
+	})
 }

@@ -63,17 +63,16 @@ class _FiatAmount extends React.Component<FiatAmountProps>{
 
 
 interface FiatAmountOwnProps {
-
-}
-
-interface FiatAmountDispatchProps {
 	currentRates: AltCurrencyRates
 	getCurrentExchangeRate: (currencyCode: string) => number
 }
 
+interface FiatAmountDispatchProps {
+}
+
 const mapStateToProps = (state: IApplicationState) => {
 	return {
-		currentRates:state.exchangerates.currentRates,
+		currentRates: state.exchangerates.currentRates,
 		getCurrentExchangeRate: (currencyCode: string) => {
 			const r = getCurrentExchangeRate(state, currencyCode)
 			return r

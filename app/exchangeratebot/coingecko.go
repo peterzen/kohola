@@ -75,11 +75,11 @@ func fetchMarketChart(request *gui.GetMarketChartRequest) (marketChartData *gui.
 	}
 
 	marketChartData = &gui.GetMarketChartResponse{
-		Datapoints: make([]*gui.GetMarketChartResponse_MarketChartDataPoint, len(*response.Prices)),
+		Datapoints: make([]*gui.MarketChartDataPoint, len(*response.Prices)),
 	}
 
 	for i, v := range *response.Prices {
-		marketChartData.Datapoints[i] = &gui.GetMarketChartResponse_MarketChartDataPoint{
+		marketChartData.Datapoints[i] = &gui.MarketChartDataPoint{
 			Timestamp:    int64(v[0]) / 1000,
 			ExchangeRate: v[1],
 		}

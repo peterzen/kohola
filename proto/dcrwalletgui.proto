@@ -142,11 +142,12 @@ message GetMarketChartRequest {
   uint32 days = 2;
 }
 
+message MarketChartDataPoint {
+  int64 timestamp = 1;
+  float exchange_rate = 2;
+}
+
 message GetMarketChartResponse {
-  message MarketChartDataPoint {
-    int64 timestamp = 1;
-	float exchange_rate = 2;
-  }
   repeated MarketChartDataPoint datapoints = 1;
 }
 

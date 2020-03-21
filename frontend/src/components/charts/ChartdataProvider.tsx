@@ -2,32 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import {
-	LineChart, Line, ResponsiveContainer,
-} from 'recharts';
 import { IApplicationState } from '../../store/types';
-import { getMarketChartData, fetchExchangeChartData, datapointsAsPOJO, normalizeDatapoints, getExchangeSparklineData } from '../../features/app/exchangerateSlice';
+import { fetchExchangeChartData, getExchangeSparklineData } from '../../features/app/exchangerateSlice';
 import { MarketChartDataPoint } from '../../proto/dcrwalletgui_pb';
 
-class SparklineChart extends React.Component<Props>{
+class ChartdataProvider extends React.Component<Props>{
 	render() {
-		const normalizedDatapoints =this.props.getChartData()
-		return (
-			<div style={{ width: '100%', height: '50px' }}>
-				<ResponsiveContainer width="100%" height="100%">
-					<LineChart data={normalizedDatapoints} margin={{
-						top: 0, right: 0, left: 0, bottom: 0,
-					}}>
-						<Line
-							type="monotone"
-							dataKey="exchangeRate"
-							dot={false}
-							stroke="#8884d8"
-							strokeWidth={2} />
-					</LineChart>
-				</ResponsiveContainer>
-			</div>
+		const childrenWithProps = React.Children.map(this.props.children, child =>
+			React.cloneElement(child, { data: this.props.getChartData() })
 		)
+debugger
+		return <div>{childrenWithProps}</div>
 	}
 	componentDidMount() {
 		this.props.fetchExchangeChartData(this.props.currencyCode, this.props.days)
@@ -61,5 +46,5 @@ const mapDispatchToProps = {
 	fetchExchangeChartData,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SparklineChart)
+export default connect(mapStateToProps, mapDispatchToProps)(ChartdataProvider)
 

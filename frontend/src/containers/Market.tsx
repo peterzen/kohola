@@ -6,52 +6,49 @@ import _ from "lodash";
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
 import { Card, Row, Col } from "react-bootstrap";
-import SparklineChart from "../components/charts/SparklineChart";
 import { IApplicationState } from "../store/types";
+import ExchangeRateChart from "../components/charts/ExchangeRateChart";
+import { FiatAmount } from "../components/Shared/Amount";
+import { AltCurrencyRates } from "../proto/dcrwalletgui_pb";
+import { getCurrentExchangeRate } from "../features/app/exchangerateSlice";
 
+// @TODO pull this out of AppConfig
+const altCurrencies = ["btc", "usd", "eur"]
 
 class Market extends React.PureComponent<Props> {
 
 	render() {
 		return (
-			<Row>
-				<Col sm={4}>
-					<Card>
-						<Card.Header>
-							<Card.Title>DCR-BTC</Card.Title>
-						</Card.Header>
-						<Card.Body>
-							<SparklineChart currencyCode="btc" days={7} />
-						</Card.Body>
-					</Card>
-				</Col>
-				<Col sm={4}>
-					<Card>
-						<Card.Header>
-							<Card.Title>DCR-USD</Card.Title>
-						</Card.Header>
-						<Card.Body>
-							<SparklineChart currencyCode="usd" days={7} />
-						</Card.Body>
-					</Card>
-				</Col>
-				<Col sm={4}>
-					<Card>
-						<Card.Header>
-							<Card.Title>DCR-EUR</Card.Title>
-						</Card.Header>
-						<Card.Body>
-							<SparklineChart currencyCode="eur" days={7} />
-						</Card.Body>
-					</Card>
-				</Col>
-			</Row>
+			<div>
+				<Row>
+					<Col sm={6}>
+						{altCurrencies.map(currencyCode => (
+							<div className="mb-3" key={currencyCode}>
+								<Card key={currencyCode}>
+									<Card.Header>
+										<Card.Title className="mb-0">
+											<span className="float-right">
+												{this.props.getCurrentExchangeRate(currencyCode)?.toFixed(6)}
+											</span>
+											DCR-{currencyCode.toUpperCase()}
+										</Card.Title>
+									</Card.Header>
+									<Card.Body>
+										<ExchangeRateChart currencyCode={currencyCode} days={14} />
+									</Card.Body>
+								</Card>
+							</div>
+						))}
+					</Col>
+				</Row>
+			</div>
 		)
 	}
 }
 
 interface OwnProps {
-
+	currentRates: AltCurrencyRates
+	getCurrentExchangeRate: (currencyCode: string) => number
 }
 
 interface DispatchProps {
@@ -60,9 +57,13 @@ interface DispatchProps {
 type Props = OwnProps & DispatchProps & RouteChildrenProps<any>
 
 
-const mapStateToProps = (state: IApplicationState): OwnProps => {
+const mapStateToProps = (state: IApplicationState) => {
 	return {
-
+		currentRates: state.exchangerates.currentRates,
+		getCurrentExchangeRate: (currencyCode: string) => {
+			const r = getCurrentExchangeRate(state, currencyCode)
+			return r
+		}
 	}
 }
 
@@ -70,3 +71,4 @@ const mapDispatchToProps = {
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Market))
+

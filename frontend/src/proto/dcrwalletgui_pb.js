@@ -21,7 +21,7 @@ goog.exportSymbol('proto.dcrwalletgui.GRPCEndpoint', null, global);
 goog.exportSymbol('proto.dcrwalletgui.GetConfigRequest', null, global);
 goog.exportSymbol('proto.dcrwalletgui.GetMarketChartRequest', null, global);
 goog.exportSymbol('proto.dcrwalletgui.GetMarketChartResponse', null, global);
-goog.exportSymbol('proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint', null, global);
+goog.exportSymbol('proto.dcrwalletgui.MarketChartDataPoint', null, global);
 goog.exportSymbol('proto.dcrwalletgui.Network', null, global);
 goog.exportSymbol('proto.dcrwalletgui.RPCEndpoint', null, global);
 goog.exportSymbol('proto.dcrwalletgui.RunAccountMixerRequest', null, global);
@@ -4015,6 +4015,173 @@ proto.dcrwalletgui.GetMarketChartRequest.prototype.setDays = function(value) {
  * @extends {jspb.Message}
  * @constructor
  */
+proto.dcrwalletgui.MarketChartDataPoint = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dcrwalletgui.MarketChartDataPoint, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  proto.dcrwalletgui.MarketChartDataPoint.displayName = 'proto.dcrwalletgui.MarketChartDataPoint';
+}
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto suitable for use in Soy templates.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+ * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+ *     for transitional soy proto support: http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dcrwalletgui.MarketChartDataPoint.prototype.toObject = function(opt_includeInstance) {
+  return proto.dcrwalletgui.MarketChartDataPoint.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Whether to include the JSPB
+ *     instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dcrwalletgui.MarketChartDataPoint} msg The msg instance to transform.
+ * @return {!Object}
+ */
+proto.dcrwalletgui.MarketChartDataPoint.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    timestamp: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    exchangeRate: +jspb.Message.getFieldWithDefault(msg, 2, 0.0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dcrwalletgui.MarketChartDataPoint}
+ */
+proto.dcrwalletgui.MarketChartDataPoint.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dcrwalletgui.MarketChartDataPoint;
+  return proto.dcrwalletgui.MarketChartDataPoint.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dcrwalletgui.MarketChartDataPoint} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dcrwalletgui.MarketChartDataPoint}
+ */
+proto.dcrwalletgui.MarketChartDataPoint.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setTimestamp(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readFloat());
+      msg.setExchangeRate(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dcrwalletgui.MarketChartDataPoint.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dcrwalletgui.MarketChartDataPoint.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dcrwalletgui.MarketChartDataPoint} message
+ * @param {!jspb.BinaryWriter} writer
+ */
+proto.dcrwalletgui.MarketChartDataPoint.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTimestamp();
+  if (f !== 0) {
+    writer.writeInt64(
+      1,
+      f
+    );
+  }
+  f = message.getExchangeRate();
+  if (f !== 0.0) {
+    writer.writeFloat(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int64 timestamp = 1;
+ * @return {number}
+ */
+proto.dcrwalletgui.MarketChartDataPoint.prototype.getTimestamp = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/** @param {number} value */
+proto.dcrwalletgui.MarketChartDataPoint.prototype.setTimestamp = function(value) {
+  jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * optional float exchange_rate = 2;
+ * @return {number}
+ */
+proto.dcrwalletgui.MarketChartDataPoint.prototype.getExchangeRate = function() {
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 2, 0.0));
+};
+
+
+/** @param {number} value */
+proto.dcrwalletgui.MarketChartDataPoint.prototype.setExchangeRate = function(value) {
+  jspb.Message.setField(this, 2, value);
+};
+
+
+
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
 proto.dcrwalletgui.GetMarketChartResponse = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, proto.dcrwalletgui.GetMarketChartResponse.repeatedFields_, null);
 };
@@ -4058,7 +4225,7 @@ proto.dcrwalletgui.GetMarketChartResponse.prototype.toObject = function(opt_incl
 proto.dcrwalletgui.GetMarketChartResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     datapointsList: jspb.Message.toObjectList(msg.getDatapointsList(),
-    proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.toObject, includeInstance)
+    proto.dcrwalletgui.MarketChartDataPoint.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -4096,8 +4263,8 @@ proto.dcrwalletgui.GetMarketChartResponse.deserializeBinaryFromReader = function
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint;
-      reader.readMessage(value,proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.deserializeBinaryFromReader);
+      var value = new proto.dcrwalletgui.MarketChartDataPoint;
+      reader.readMessage(value,proto.dcrwalletgui.MarketChartDataPoint.deserializeBinaryFromReader);
       msg.addDatapoints(value);
       break;
     default:
@@ -4133,176 +4300,9 @@ proto.dcrwalletgui.GetMarketChartResponse.serializeBinaryToWriter = function(mes
     writer.writeRepeatedMessage(
       1,
       f,
-      proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.serializeBinaryToWriter
+      proto.dcrwalletgui.MarketChartDataPoint.serializeBinaryToWriter
     );
   }
-};
-
-
-
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
-};
-goog.inherits(proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.displayName = 'proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint';
-}
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto suitable for use in Soy templates.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
- * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
- *     for transitional soy proto support: http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.prototype.toObject = function(opt_includeInstance) {
-  return proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Whether to include the JSPB
- *     instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint} msg The msg instance to transform.
- * @return {!Object}
- */
-proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    timestamp: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    exchangeRate: +jspb.Message.getFieldWithDefault(msg, 2, 0.0)
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint}
- */
-proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint;
-  return proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint}
- */
-proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {number} */ (reader.readInt64());
-      msg.setTimestamp(value);
-      break;
-    case 2:
-      var value = /** @type {number} */ (reader.readFloat());
-      msg.setExchangeRate(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getTimestamp();
-  if (f !== 0) {
-    writer.writeInt64(
-      1,
-      f
-    );
-  }
-  f = message.getExchangeRate();
-  if (f !== 0.0) {
-    writer.writeFloat(
-      2,
-      f
-    );
-  }
-};
-
-
-/**
- * optional int64 timestamp = 1;
- * @return {number}
- */
-proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.prototype.getTimestamp = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/** @param {number} value */
-proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.prototype.setTimestamp = function(value) {
-  jspb.Message.setField(this, 1, value);
-};
-
-
-/**
- * optional float exchange_rate = 2;
- * @return {number}
- */
-proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.prototype.getExchangeRate = function() {
-  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 2, 0.0));
-};
-
-
-/** @param {number} value */
-proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.prototype.setExchangeRate = function(value) {
-  jspb.Message.setField(this, 2, value);
 };
 
 
@@ -4310,27 +4310,27 @@ proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint.prototype.setExch
  * repeated MarketChartDataPoint datapoints = 1;
  * If you change this array by adding, removing or replacing elements, or if you
  * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint>}
+ * @return {!Array.<!proto.dcrwalletgui.MarketChartDataPoint>}
  */
 proto.dcrwalletgui.GetMarketChartResponse.prototype.getDatapointsList = function() {
-  return /** @type{!Array.<!proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint, 1));
+  return /** @type{!Array.<!proto.dcrwalletgui.MarketChartDataPoint>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.dcrwalletgui.MarketChartDataPoint, 1));
 };
 
 
-/** @param {!Array.<!proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint>} value */
+/** @param {!Array.<!proto.dcrwalletgui.MarketChartDataPoint>} value */
 proto.dcrwalletgui.GetMarketChartResponse.prototype.setDatapointsList = function(value) {
   jspb.Message.setRepeatedWrapperField(this, 1, value);
 };
 
 
 /**
- * @param {!proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint=} opt_value
+ * @param {!proto.dcrwalletgui.MarketChartDataPoint=} opt_value
  * @param {number=} opt_index
- * @return {!proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint}
+ * @return {!proto.dcrwalletgui.MarketChartDataPoint}
  */
 proto.dcrwalletgui.GetMarketChartResponse.prototype.addDatapoints = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.dcrwalletgui.GetMarketChartResponse.MarketChartDataPoint, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.dcrwalletgui.MarketChartDataPoint, opt_index);
 };
 
 
