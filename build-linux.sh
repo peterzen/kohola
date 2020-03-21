@@ -16,7 +16,7 @@ cp -R frontend/dist app/www
 cd app 
 pkger -include /www
 go build -o ../$APPDIR/usr/bin/$APP
-rm pkged.go && rm -R www
+rm -rf pkged.go www
 cd ..
 
 cp app/icons/icon.png $APPDIR/usr/share/icons/hicolor/1024x1024/apps/${APP}.png
