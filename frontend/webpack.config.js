@@ -91,5 +91,10 @@ module.exports = {
 		removeAvailableModules: false,
 		removeEmptyChunks: false,
 		splitChunks: false,
-	}
+	},
+	performance: {
+		hints: false,
+		maxEntrypointSize: 600000,
+		maxAssetSize: 600000
+	},
 };
