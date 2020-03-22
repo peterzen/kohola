@@ -8,6 +8,7 @@ import { Spinner, Row, Col, Form, InputGroup, Modal, Button, Tabs, Tab, Card } f
 import { IApplicationState, AppError } from '../../../store/types';
 import { AccountSelector } from '../../../components/Shared/shared';
 import FeeChooserInput from '../FeeChooserInput';
+import { PurchaseTicketsRequest } from '../../../proto/api_pb';
 
 
 
@@ -40,7 +41,7 @@ class PurchaseTicketSettingsForm extends React.Component<Props, InternalState> {
 								</Col>
 								<Col sm={8}>
 									<AccountSelector
-										value={-1}
+										defaultValue={-1}
 										name="account_select"
 										onChange={onChange}
 									/>
@@ -86,7 +87,6 @@ class PurchaseTicketSettingsForm extends React.Component<Props, InternalState> {
 								</Col>
 								<Col sm={8}>
 									<FeeChooserInput
-										name="tx_fee"
 										defaultValue={40}
 										onChange={onChange}
 									/>
@@ -99,12 +99,10 @@ class PurchaseTicketSettingsForm extends React.Component<Props, InternalState> {
 								</Col>
 								<Col sm={8}>
 									<FeeChooserInput
-										name="ticket_fee"
 										defaultValue={40}
 										onChange={onChange}
 									/>
 								</Col>
-
 							</Form.Group>
 						</Tab>
 						<Tab eventKey="vsp" title="VSP">
@@ -131,7 +129,6 @@ class PurchaseTicketSettingsForm extends React.Component<Props, InternalState> {
 									</Col>
 									<Col sm={8}>
 										<FeeChooserInput
-											name="pool_fees"
 											defaultValue={40}
 											onChange={onChange}
 										/>
@@ -143,9 +140,6 @@ class PurchaseTicketSettingsForm extends React.Component<Props, InternalState> {
 				</Form>
 			</div>
 		)
-	}
-	onChange() {
-
 	}
 
 	handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -216,10 +210,22 @@ type Props = OwnProps
 
 const mapStateToProps = (state: IApplicationState) => {
 	return {
-		...state.accounts
+		// ...state.accounts
 	}
 }
 
 export default connect(mapStateToProps)(PurchaseTicketSettingsModal)
 
 
+const loadFormFields = (formRef: React.RefObject<any>, obj: PurchaseTicketsRequest) => {
+	const f = formRef.current
+
+	// TODO 
+	// obj.setAccount(f.account.value)
+	// obj.setPoolAddress(f.pool_address.value)
+	// obj.setVotingAccount(f.voting_account.value)
+	// obj.setVotingAddress(f.voting_address.value)
+	// obj.setBalanceToMaintain(f.balance_to_maintain.value)
+	// obj.setPassphrase("")
+	return obj
+}
