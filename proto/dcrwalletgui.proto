@@ -151,6 +151,20 @@ message GetMarketChartResponse {
   repeated MarketChartDataPoint datapoints = 1;
 }
 
+
+message StakingHistory {
+  message StakingHistoryLineItem {
+    int32 tx_type = 1;
+	int64 reward_credit = 2;
+	int64 ticket_cost_credit = 3;
+	int64 ticket_cost_debit = 4;
+	int64 fee_debit = 5;
+	int64 timestamp = 6;
+  }
+  int64 last_block = 1;
+  repeated StakingHistoryLineItem line_items = 2;
+}
+
 /*
 message LorcaMessage {
   message Error { string error = 1; }

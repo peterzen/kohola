@@ -7,6 +7,8 @@ require (
 	github.com/decred/dcrd/dcrec/secp256k1 v1.0.3 // indirect
 	github.com/decred/dcrd/dcrutil v1.3.0
 	github.com/decred/dcrd/rpcclient/v6 v6.0.0-20200131210503-db5916e60379
+	github.com/decred/dcrd/txscript v1.1.0
+	github.com/decred/dcrd/wire v1.3.0
 	github.com/decred/dcrwallet/rpc/walletrpc v0.3.0
 	github.com/getlantern/systray v0.0.0-20200109124156-9abdfb6448b3
 	github.com/golang/protobuf v1.3.5
