@@ -1,6 +1,5 @@
 #!/bin/sh
 
-./prep-repo.sh
 APP="build/dcrwalletgui.app"
 mkdir -p $APP/Contents/{MacOS,Resources}
 cp app/icons/icon.icns $APP/Contents/Resources/icon.icns

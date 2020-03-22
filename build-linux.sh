@@ -1,7 +1,5 @@
 #!/bin/sh
 
-./prep-repo.sh
-
 APP=dcrwalletgui
 APPDIR=build/${APP}
 
