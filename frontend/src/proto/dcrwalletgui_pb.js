@@ -25,8 +25,6 @@ goog.exportSymbol('proto.dcrwalletgui.GetMarketChartResponse', null, global);
 goog.exportSymbol('proto.dcrwalletgui.MarketChartDataPoint', null, global);
 goog.exportSymbol('proto.dcrwalletgui.Network', null, global);
 goog.exportSymbol('proto.dcrwalletgui.RPCEndpoint', null, global);
-goog.exportSymbol('proto.dcrwalletgui.RunAccountMixerRequest', null, global);
-goog.exportSymbol('proto.dcrwalletgui.RunTicketBuyerRequest', null, global);
 goog.exportSymbol('proto.dcrwalletgui.SetConfigRequest', null, global);
 goog.exportSymbol('proto.dcrwalletgui.SetConfigResponse', null, global);
 goog.exportSymbol('proto.dcrwalletgui.SetConfigResponse.UpdateStatus', null, global);
@@ -1750,604 +1748,6 @@ proto.dcrwalletgui.WalletPreferences.prototype.clearAccountPrefsList = function(
  * @extends {jspb.Message}
  * @constructor
  */
-proto.dcrwalletgui.RunTicketBuyerRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
-};
-goog.inherits(proto.dcrwalletgui.RunTicketBuyerRequest, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  proto.dcrwalletgui.RunTicketBuyerRequest.displayName = 'proto.dcrwalletgui.RunTicketBuyerRequest';
-}
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto suitable for use in Soy templates.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
- * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
- *     for transitional soy proto support: http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.dcrwalletgui.RunTicketBuyerRequest.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Whether to include the JSPB
- *     instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.dcrwalletgui.RunTicketBuyerRequest} msg The msg instance to transform.
- * @return {!Object}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    passphrase: msg.getPassphrase_asB64(),
-    account: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    votingAccount: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    balanceToMaintain: jspb.Message.getFieldWithDefault(msg, 4, 0),
-    votingAddress: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    poolAddress: jspb.Message.getFieldWithDefault(msg, 6, ""),
-    poolFees: +jspb.Message.getFieldWithDefault(msg, 7, 0.0)
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.dcrwalletgui.RunTicketBuyerRequest}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.dcrwalletgui.RunTicketBuyerRequest;
-  return proto.dcrwalletgui.RunTicketBuyerRequest.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.dcrwalletgui.RunTicketBuyerRequest} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.dcrwalletgui.RunTicketBuyerRequest}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {!Uint8Array} */ (reader.readBytes());
-      msg.setPassphrase(value);
-      break;
-    case 2:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setAccount(value);
-      break;
-    case 3:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setVotingAccount(value);
-      break;
-    case 4:
-      var value = /** @type {number} */ (reader.readInt64());
-      msg.setBalanceToMaintain(value);
-      break;
-    case 5:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setVotingAddress(value);
-      break;
-    case 6:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setPoolAddress(value);
-      break;
-    case 7:
-      var value = /** @type {number} */ (reader.readDouble());
-      msg.setPoolFees(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.dcrwalletgui.RunTicketBuyerRequest.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.dcrwalletgui.RunTicketBuyerRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getPassphrase_asU8();
-  if (f.length > 0) {
-    writer.writeBytes(
-      1,
-      f
-    );
-  }
-  f = message.getAccount();
-  if (f !== 0) {
-    writer.writeUint32(
-      2,
-      f
-    );
-  }
-  f = message.getVotingAccount();
-  if (f !== 0) {
-    writer.writeUint32(
-      3,
-      f
-    );
-  }
-  f = message.getBalanceToMaintain();
-  if (f !== 0) {
-    writer.writeInt64(
-      4,
-      f
-    );
-  }
-  f = message.getVotingAddress();
-  if (f.length > 0) {
-    writer.writeString(
-      5,
-      f
-    );
-  }
-  f = message.getPoolAddress();
-  if (f.length > 0) {
-    writer.writeString(
-      6,
-      f
-    );
-  }
-  f = message.getPoolFees();
-  if (f !== 0.0) {
-    writer.writeDouble(
-      7,
-      f
-    );
-  }
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * @return {!(string|Uint8Array)}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * This is a type-conversion wrapper around `getPassphrase()`
- * @return {string}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.getPassphrase_asB64 = function() {
-  return /** @type {string} */ (jspb.Message.bytesAsB64(
-      this.getPassphrase()));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * Note that Uint8Array is not supported on all browsers.
- * @see http://caniuse.com/Uint8Array
- * This is a type-conversion wrapper around `getPassphrase()`
- * @return {!Uint8Array}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.getPassphrase_asU8 = function() {
-  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
-      this.getPassphrase()));
-};
-
-
-/** @param {!(string|Uint8Array)} value */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.setPassphrase = function(value) {
-  jspb.Message.setField(this, 1, value);
-};
-
-
-/**
- * optional uint32 account = 2;
- * @return {number}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.getAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
-};
-
-
-/** @param {number} value */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.setAccount = function(value) {
-  jspb.Message.setField(this, 2, value);
-};
-
-
-/**
- * optional uint32 voting_account = 3;
- * @return {number}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.getVotingAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
-};
-
-
-/** @param {number} value */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.setVotingAccount = function(value) {
-  jspb.Message.setField(this, 3, value);
-};
-
-
-/**
- * optional int64 balance_to_maintain = 4;
- * @return {number}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.getBalanceToMaintain = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
-};
-
-
-/** @param {number} value */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.setBalanceToMaintain = function(value) {
-  jspb.Message.setField(this, 4, value);
-};
-
-
-/**
- * optional string voting_address = 5;
- * @return {string}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.getVotingAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
-};
-
-
-/** @param {string} value */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.setVotingAddress = function(value) {
-  jspb.Message.setField(this, 5, value);
-};
-
-
-/**
- * optional string pool_address = 6;
- * @return {string}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.getPoolAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
-};
-
-
-/** @param {string} value */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.setPoolAddress = function(value) {
-  jspb.Message.setField(this, 6, value);
-};
-
-
-/**
- * optional double pool_fees = 7;
- * @return {number}
- */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.getPoolFees = function() {
-  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 7, 0.0));
-};
-
-
-/** @param {number} value */
-proto.dcrwalletgui.RunTicketBuyerRequest.prototype.setPoolFees = function(value) {
-  jspb.Message.setField(this, 7, value);
-};
-
-
-
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.dcrwalletgui.RunAccountMixerRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
-};
-goog.inherits(proto.dcrwalletgui.RunAccountMixerRequest, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  proto.dcrwalletgui.RunAccountMixerRequest.displayName = 'proto.dcrwalletgui.RunAccountMixerRequest';
-}
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto suitable for use in Soy templates.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
- * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
- *     for transitional soy proto support: http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.dcrwalletgui.RunAccountMixerRequest.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Whether to include the JSPB
- *     instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.dcrwalletgui.RunAccountMixerRequest} msg The msg instance to transform.
- * @return {!Object}
- */
-proto.dcrwalletgui.RunAccountMixerRequest.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    passphrase: msg.getPassphrase_asB64(),
-    mixedAccount: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    mixedAccountBranch: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    changeAccount: jspb.Message.getFieldWithDefault(msg, 4, 0),
-    csppServer: jspb.Message.getFieldWithDefault(msg, 5, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.dcrwalletgui.RunAccountMixerRequest}
- */
-proto.dcrwalletgui.RunAccountMixerRequest.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.dcrwalletgui.RunAccountMixerRequest;
-  return proto.dcrwalletgui.RunAccountMixerRequest.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.dcrwalletgui.RunAccountMixerRequest} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.dcrwalletgui.RunAccountMixerRequest}
- */
-proto.dcrwalletgui.RunAccountMixerRequest.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {!Uint8Array} */ (reader.readBytes());
-      msg.setPassphrase(value);
-      break;
-    case 2:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setMixedAccount(value);
-      break;
-    case 3:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setMixedAccountBranch(value);
-      break;
-    case 4:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setChangeAccount(value);
-      break;
-    case 5:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setCsppServer(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.dcrwalletgui.RunAccountMixerRequest.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.dcrwalletgui.RunAccountMixerRequest} message
- * @param {!jspb.BinaryWriter} writer
- */
-proto.dcrwalletgui.RunAccountMixerRequest.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getPassphrase_asU8();
-  if (f.length > 0) {
-    writer.writeBytes(
-      1,
-      f
-    );
-  }
-  f = message.getMixedAccount();
-  if (f !== 0) {
-    writer.writeUint32(
-      2,
-      f
-    );
-  }
-  f = message.getMixedAccountBranch();
-  if (f !== 0) {
-    writer.writeUint32(
-      3,
-      f
-    );
-  }
-  f = message.getChangeAccount();
-  if (f !== 0) {
-    writer.writeUint32(
-      4,
-      f
-    );
-  }
-  f = message.getCsppServer();
-  if (f.length > 0) {
-    writer.writeString(
-      5,
-      f
-    );
-  }
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * @return {!(string|Uint8Array)}
- */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.getPassphrase = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * This is a type-conversion wrapper around `getPassphrase()`
- * @return {string}
- */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.getPassphrase_asB64 = function() {
-  return /** @type {string} */ (jspb.Message.bytesAsB64(
-      this.getPassphrase()));
-};
-
-
-/**
- * optional bytes passphrase = 1;
- * Note that Uint8Array is not supported on all browsers.
- * @see http://caniuse.com/Uint8Array
- * This is a type-conversion wrapper around `getPassphrase()`
- * @return {!Uint8Array}
- */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.getPassphrase_asU8 = function() {
-  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
-      this.getPassphrase()));
-};
-
-
-/** @param {!(string|Uint8Array)} value */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.setPassphrase = function(value) {
-  jspb.Message.setField(this, 1, value);
-};
-
-
-/**
- * optional uint32 mixed_account = 2;
- * @return {number}
- */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.getMixedAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
-};
-
-
-/** @param {number} value */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.setMixedAccount = function(value) {
-  jspb.Message.setField(this, 2, value);
-};
-
-
-/**
- * optional uint32 mixed_account_branch = 3;
- * @return {number}
- */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.getMixedAccountBranch = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
-};
-
-
-/** @param {number} value */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.setMixedAccountBranch = function(value) {
-  jspb.Message.setField(this, 3, value);
-};
-
-
-/**
- * optional uint32 change_account = 4;
- * @return {number}
- */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.getChangeAccount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
-};
-
-
-/** @param {number} value */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.setChangeAccount = function(value) {
-  jspb.Message.setField(this, 4, value);
-};
-
-
-/**
- * optional string cspp_server = 5;
- * @return {string}
- */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.getCsppServer = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
-};
-
-
-/** @param {string} value */
-proto.dcrwalletgui.RunAccountMixerRequest.prototype.setCsppServer = function(value) {
-  jspb.Message.setField(this, 5, value);
-};
-
-
-
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
 proto.dcrwalletgui.AppConfiguration = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, proto.dcrwalletgui.AppConfiguration.repeatedFields_, null);
 };
@@ -2396,8 +1796,8 @@ proto.dcrwalletgui.AppConfiguration.toObject = function(includeInstance, msg) {
     defaultWalletEndpointId: jspb.Message.getFieldWithDefault(msg, 3, ""),
     walletPreferencesList: jspb.Message.toObjectList(msg.getWalletPreferencesList(),
     proto.dcrwalletgui.WalletPreferences.toObject, includeInstance),
-    accountMixerRequestDefaults: (f = msg.getAccountMixerRequestDefaults()) && proto.dcrwalletgui.RunAccountMixerRequest.toObject(includeInstance, f),
-    runAutoBuyerRequestDefaults: (f = msg.getRunAutoBuyerRequestDefaults()) && proto.dcrwalletgui.RunTicketBuyerRequest.toObject(includeInstance, f),
+    accountMixerRequestDefaults: (f = msg.getAccountMixerRequestDefaults()) && api_pb.RunAccountMixerRequest.toObject(includeInstance, f),
+    runAutoBuyerRequestDefaults: (f = msg.getRunAutoBuyerRequestDefaults()) && api_pb.RunTicketBuyerRequest.toObject(includeInstance, f),
     altDisplayCurrenciesList: jspb.Message.getField(msg, 7)
   };
 
@@ -2455,13 +1855,13 @@ proto.dcrwalletgui.AppConfiguration.deserializeBinaryFromReader = function(msg, 
       msg.addWalletPreferences(value);
       break;
     case 5:
-      var value = new proto.dcrwalletgui.RunAccountMixerRequest;
-      reader.readMessage(value,proto.dcrwalletgui.RunAccountMixerRequest.deserializeBinaryFromReader);
+      var value = new api_pb.RunAccountMixerRequest;
+      reader.readMessage(value,api_pb.RunAccountMixerRequest.deserializeBinaryFromReader);
       msg.setAccountMixerRequestDefaults(value);
       break;
     case 6:
-      var value = new proto.dcrwalletgui.RunTicketBuyerRequest;
-      reader.readMessage(value,proto.dcrwalletgui.RunTicketBuyerRequest.deserializeBinaryFromReader);
+      var value = new api_pb.RunTicketBuyerRequest;
+      reader.readMessage(value,api_pb.RunTicketBuyerRequest.deserializeBinaryFromReader);
       msg.setRunAutoBuyerRequestDefaults(value);
       break;
     case 7:
@@ -2532,7 +1932,7 @@ proto.dcrwalletgui.AppConfiguration.serializeBinaryToWriter = function(message, 
     writer.writeMessage(
       5,
       f,
-      proto.dcrwalletgui.RunAccountMixerRequest.serializeBinaryToWriter
+      api_pb.RunAccountMixerRequest.serializeBinaryToWriter
     );
   }
   f = message.getRunAutoBuyerRequestDefaults();
@@ -2540,7 +1940,7 @@ proto.dcrwalletgui.AppConfiguration.serializeBinaryToWriter = function(message, 
     writer.writeMessage(
       6,
       f,
-      proto.dcrwalletgui.RunTicketBuyerRequest.serializeBinaryToWriter
+      api_pb.RunTicketBuyerRequest.serializeBinaryToWriter
     );
   }
   f = message.getAltDisplayCurrenciesList();
@@ -2665,16 +2065,16 @@ proto.dcrwalletgui.AppConfiguration.prototype.clearWalletPreferencesList = funct
 
 
 /**
- * optional RunAccountMixerRequest account_mixer_request_defaults = 5;
- * @return {?proto.dcrwalletgui.RunAccountMixerRequest}
+ * optional walletrpc.RunAccountMixerRequest account_mixer_request_defaults = 5;
+ * @return {?proto.walletrpc.RunAccountMixerRequest}
  */
 proto.dcrwalletgui.AppConfiguration.prototype.getAccountMixerRequestDefaults = function() {
-  return /** @type{?proto.dcrwalletgui.RunAccountMixerRequest} */ (
-    jspb.Message.getWrapperField(this, proto.dcrwalletgui.RunAccountMixerRequest, 5));
+  return /** @type{?proto.walletrpc.RunAccountMixerRequest} */ (
+    jspb.Message.getWrapperField(this, api_pb.RunAccountMixerRequest, 5));
 };
 
 
-/** @param {?proto.dcrwalletgui.RunAccountMixerRequest|undefined} value */
+/** @param {?proto.walletrpc.RunAccountMixerRequest|undefined} value */
 proto.dcrwalletgui.AppConfiguration.prototype.setAccountMixerRequestDefaults = function(value) {
   jspb.Message.setWrapperField(this, 5, value);
 };
@@ -2695,16 +2095,16 @@ proto.dcrwalletgui.AppConfiguration.prototype.hasAccountMixerRequestDefaults = f
 
 
 /**
- * optional RunTicketBuyerRequest run_auto_buyer_request_defaults = 6;
- * @return {?proto.dcrwalletgui.RunTicketBuyerRequest}
+ * optional walletrpc.RunTicketBuyerRequest run_auto_buyer_request_defaults = 6;
+ * @return {?proto.walletrpc.RunTicketBuyerRequest}
  */
 proto.dcrwalletgui.AppConfiguration.prototype.getRunAutoBuyerRequestDefaults = function() {
-  return /** @type{?proto.dcrwalletgui.RunTicketBuyerRequest} */ (
-    jspb.Message.getWrapperField(this, proto.dcrwalletgui.RunTicketBuyerRequest, 6));
+  return /** @type{?proto.walletrpc.RunTicketBuyerRequest} */ (
+    jspb.Message.getWrapperField(this, api_pb.RunTicketBuyerRequest, 6));
 };
 
 
-/** @param {?proto.dcrwalletgui.RunTicketBuyerRequest|undefined} value */
+/** @param {?proto.walletrpc.RunTicketBuyerRequest|undefined} value */
 proto.dcrwalletgui.AppConfiguration.prototype.setRunAutoBuyerRequestDefaults = function(value) {
   jspb.Message.setWrapperField(this, 6, value);
 };
