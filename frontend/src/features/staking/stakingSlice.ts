@@ -1,4 +1,6 @@
 import _ from "lodash";
+import moment from "moment";
+
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 
 import { AppError, AppThunk, IApplicationState, AppDispatch, IGetState } from "../../store/types";
@@ -657,7 +659,7 @@ export const stopTicketBuyer: ActionCreator<any> = (): AppThunk => {
 
 
 export const loadStakingHistory: ActionCreator<any> = (): AppThunk => {
-	return async (dispatch:AppDispatch, getState:IGetState) => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
 
 		const { getStakingHistoryAttempting } = getState().staking;
 		if (getStakingHistoryAttempting) {
@@ -684,3 +686,17 @@ export const getTicketPrice = (state: IApplicationState): TicketPrice => {
 	return state.staking.ticketPrice
 }
 
+export const getStakingHistory = (state: IApplicationState) => {
+	return state.staking.stakingHistory
+}
+
+export const getStakingHistorySparklineData = (state: IApplicationState, days: number = 7): StakingHistory.StakingHistoryLineItem[] => {
+	if (getStakingHistory(state) == null) {
+		return []
+	}
+	const startTimestamp = moment().subtract(days, "days").unix()
+	return _.chain(getStakingHistory(state)?.getLineItemsList())
+		.filter(item => item.getTimestamp() >= startTimestamp)
+		.orderBy(item => item.getTimestamp(), "asc")
+		.value()
+}

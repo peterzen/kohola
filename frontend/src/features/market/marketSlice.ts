@@ -5,6 +5,7 @@ import { AltCurrencyRates, MarketChartDataPoint } from "../../proto/dcrwalletgui
 import { AppError, AppDispatch, IGetState, IApplicationState } from "../../store/types";
 import { hexToRaw } from "../../helpers/byteActions";
 import { ExchangeRateBotBackend } from "../../middleware/exchangeratebot";
+import { normalizeDatapoints } from "../../helpers/helpers";
 
 
 const w = (window as any)
@@ -137,7 +138,7 @@ export const getMarketChartData = (state: IApplicationState, currencyCode: strin
 }
 
 export const getExchangeSparklineData = (state: IApplicationState, currencyCode: string): MarketChartDataPoint.AsObject[] => {
-	return normalizeDatapoints(datapointsAsPOJO(getMarketChartData(state, currencyCode)))
+	return normalizeDatapoints(datapointsAsPOJO(getMarketChartData(state, currencyCode)), "exchangeRate")
 }
 
 export const isChartDataLoaded = (state: IApplicationState, currencyCodes: string[]) => {
@@ -150,7 +151,7 @@ export const getCombinedMarketChartData = (state: IApplicationState, currencyCod
 	const allChartdata: any = {}
 	for (let i = 0; i < currencyCodes.length; i++) {
 		const currencyCode = currencyCodes[i]
-		allChartdata[currencyCode] = normalizeDatapoints(datapointsAsPOJO(getMarketChartData(state, currencyCode)))
+		allChartdata[currencyCode] = normalizeDatapoints(datapointsAsPOJO(getMarketChartData(state, currencyCode)), "exchangeRate")
 	}
 	const masterChartCollection = allChartdata[_.first(currencyCodes) || ""]
 	for (let di = 0; di < masterChartCollection.length; di++) {
@@ -172,13 +173,4 @@ export const getCombinedMarketChartData = (state: IApplicationState, currencyCod
 // helpers
 export function datapointsAsPOJO(datapoints: MarketChartDataPoint[]): MarketChartDataPoint.AsObject[] {
 	return _.map(datapoints, d => d.toObject())
-}
-
-export function normalizeDatapoints(datapoints: MarketChartDataPoint.AsObject[]): MarketChartDataPoint.AsObject[] {
-	const ratesColl = _.map(datapoints, d => d.exchangeRate)
-	const minValue = _.min(ratesColl) || 0
-	return _.map(datapoints, d => {
-		d.exchangeRate = d.exchangeRate - minValue
-		return d
-	})
 }

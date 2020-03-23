@@ -6,7 +6,7 @@ import {
 	LineChart, Line, ResponsiveContainer,
 } from 'recharts';
 import { IApplicationState } from '../../../store/types';
-import { getMarketChartData, fetchExchangeChartData, datapointsAsPOJO, normalizeDatapoints, getExchangeSparklineData } from '../marketSlice';
+import { fetchExchangeChartData, getExchangeSparklineData } from '../marketSlice';
 import { MarketChartDataPoint } from '../../../proto/dcrwalletgui_pb';
 
 class SparklineChart extends React.Component<Props>{

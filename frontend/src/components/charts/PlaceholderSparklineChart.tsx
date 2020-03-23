@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {
-	LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+	LineChart, Line, ResponsiveContainer,
 } from 'recharts';
 
 const data = [
@@ -27,7 +27,7 @@ const data = [
 	},
 ];
 
-export default class TinyChart extends PureComponent {
+export default class PlaceholderSparklineChart extends PureComponent {
 	render() {
 		return (
 			<div style={{ width: '100%', height: 40 }} className="pr-4">

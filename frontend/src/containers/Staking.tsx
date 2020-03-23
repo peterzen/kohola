@@ -13,7 +13,7 @@ import StakeInfoComponent from '../features/staking/StakeInfoComponent';
 import PurchaseTicketForm from '../features/staking/PurchaseTicket/SimplePurchaseTicketForm';
 import TicketBuyerComponent from '../features/staking/Ticketbuyer/TicketBuyerComponent';
 import TicketsOverviewContainer from '../features/staking/TicketsOverviewContainer';
-import { loadTicketsAttempt, revokeExpiredTickets } from '../features/staking/stakingSlice';
+import { loadTicketsAttempt, revokeExpiredTickets, loadStakingHistory } from '../features/staking/stakingSlice';
 import StakingToolsMenu, { StakingToolsMenuItems } from '../features/staking/StakingToolsMenu';
 import PassphraseEntryDialog, { askPassphrase } from '../components/Shared/PassphraseEntryDialog';
 import StakingHistoryTable from '../features/staking/StakingHistoryTable';
@@ -28,7 +28,7 @@ class StakingContainer extends React.Component<Props> {
 				<Tabs
 					defaultActiveKey="overview" id="purchaseticketsettings-tabs"
 					mountOnEnter={true}
-					unmountOnExit={false}
+					unmountOnExit={true}
 				>
 					<Tab eventKey="overview" title="Overview">
 						<Fade fade>
@@ -62,6 +62,7 @@ class StakingContainer extends React.Component<Props> {
 		)
 	}
 	componentDidMount() {
+		this.props.loadStakingHistory()
 		// this.props.loadTicketsAttempt()
 	}
 	menuHandler(evtKey: keyof StakingToolsMenuItems) {
@@ -79,6 +80,7 @@ class StakingContainer extends React.Component<Props> {
 }
 
 interface DispatchProps {
+	loadStakingHistory: typeof loadStakingHistory
 	loadTicketsAttempt: typeof loadTicketsAttempt
 	revokeExpiredTickets: typeof revokeExpiredTickets
 }
@@ -91,6 +93,7 @@ const mapStateToProps = () => {
 }
 
 const mapDispatchToProps = {
+	loadStakingHistory,
 	loadTicketsAttempt,
 	revokeExpiredTickets,
 }

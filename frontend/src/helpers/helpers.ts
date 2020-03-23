@@ -1,7 +1,13 @@
-import * as moment from 'moment';
+import _ from 'lodash';
 
 
-export function formatTimestamp(ts: moment.Moment): string {
+
+import * as Moment from 'moment';
+import { extendMoment } from 'moment-range';
+const moment = extendMoment(Moment);
+
+
+export function formatTimestamp(ts: Moment.Moment): string {
 	return ts.fromNow();
 }
 
@@ -20,4 +26,27 @@ export function reverseHash(s: string) {
 
 export function formatHash(hash: Uint8Array) {
 	return reverseHash(Buffer.from(hash).toString("hex"));
+}
+
+
+
+export function normalizeDatapoints<T extends any>(datapoints: T[], fieldName: string): T[] {
+	const valuesColl = _.map(datapoints, (d: T): number => d[fieldName])
+	const minValue = _.min(valuesColl) || 0
+	return _.map(datapoints, (d: T): T => {
+		d[fieldName] = d[fieldName] - minValue
+		return d
+	})
+}
+
+export interface IChartdataTimelineItem {
+	timestamp: string
+	value: number
+}
+
+export function makeTimeline(days: number, fromDate?: Moment.Moment): IChartdataTimelineItem[] {
+	fromDate = fromDate || moment.default()
+	const dateRange = moment.range(moment.default().subtract(days, "day"), fromDate)
+	const datePoints = Array.from(dateRange.by('day'))
+	return _.transform(datePoints.map(m => m.format('L')), (result: any, d: string) => result[d] = 0, {})
 }

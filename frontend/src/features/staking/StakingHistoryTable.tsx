@@ -12,6 +12,7 @@ import { AppError, IApplicationState } from '../../store/types';
 import { Table, Card } from 'react-bootstrap';
 import ReactTimeago from 'react-timeago';
 import { Amount } from '../../components/Shared/Amount';
+import { TransactionType } from '../../constants';
 
 
 class StakingHistoryTable extends React.Component<Props> {
@@ -36,7 +37,7 @@ class StakingHistoryTable extends React.Component<Props> {
 					<tbody>
 						{this.props.stakingHistory?.getLineItemsList().map(item => (
 							<tr key={item.getTimestamp()}>
-								<td>{item.getTxType()}</td>
+								<td>{TransactionType[item.getTxType()]}</td>
 								<td><ReactTimeago date={moment.unix(item.getTimestamp()).toDate()} /></td>
 								<td><Amount amount={item.getRewardCredit()} showCurrency={false} /></td>
 								<td><Amount amount={item.getTicketCostCredit()} showCurrency={false} /></td>
@@ -49,10 +50,6 @@ class StakingHistoryTable extends React.Component<Props> {
 			</Card>
 		)
 	}
-
-	componentDidMount() {
-		this.props.loadStakingHistory()
-	}
 }
 
 
@@ -64,7 +61,6 @@ interface OwnProps {
 
 
 interface DispatchProps {
-	loadStakingHistory: typeof loadStakingHistory
 }
 
 type Props = OwnProps & DispatchProps
@@ -78,7 +74,6 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 }
 
 const mapDispatchToProps = {
-	loadStakingHistory
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StakingHistoryTable))
