@@ -42,7 +42,7 @@ func Test_GetStakingHistory(t *testing.T) {
 		return
 	}
 
-	for _, lineItem := range history {
+	for _, lineItem := range history.GetLineItems() {
 		fmt.Printf("%d\t%d\t%d\t%d\t%d\n",
 			lineItem.TxType, lineItem.RewardCredit, lineItem.TicketCostCredit, lineItem.TicketCostDebit, lineItem.FeeDebit)
 	}
