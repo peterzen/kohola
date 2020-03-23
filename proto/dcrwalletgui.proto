@@ -146,6 +146,12 @@ message StakingHistory {
   repeated StakingHistoryLineItem line_items = 2;
 }
 
+message StakeDiffHistory {
+  repeated float sdiff_values = 1;
+  uint32 start_block = 2;
+  uint32 end_block = 3;
+}
+
 /*
 message LorcaMessage {
   message Error { string error = 1; }

@@ -12,7 +12,7 @@ export interface IBestBlockState {
 	readonly getBestBlockHeightAttempting: boolean
 }
 
-export const initialState: IBestBlockState  = {
+export const initialState: IBestBlockState = {
 	error: null,
 	currentBlock: null,
 	getBestBlockHeightAttempting: false,
@@ -71,7 +71,7 @@ export const getBestBlock = (state: IApplicationState) => {
 	return state.networkinfo.currentBlock
 }
 
-export const getBestBlockHeight = (state: IApplicationState) => {
+export const getBestBlockHeight = (state: IApplicationState): number => {
 	if (state.networkinfo.currentBlock == null) {
 		return 0
 	}

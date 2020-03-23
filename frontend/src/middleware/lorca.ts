@@ -31,7 +31,7 @@ import {
 	RunAccountMixerRequest,
 } from '../proto/api_pb';
 import { rawToHex } from '../helpers/byteActions';
-import { GRPCEndpoint, StakingHistory } from '../proto/dcrwalletgui_pb';
+import { GRPCEndpoint, StakingHistory, StakeDiffHistory } from '../proto/dcrwalletgui_pb';
 import { Ticket, WalletAccount, WalletBalance, Transaction, AccountBalance } from './models';
 
 const w = (window as any)
@@ -443,6 +443,20 @@ const LorcaBackend = {
 	checkGRPCEndpointConnection: async (cfg: GRPCEndpoint) => {
 		const ser = rawToHex(cfg.serializeBinary().buffer)
 		return await w.walletgui__CheckGRPCConnection(ser)
+	},
+
+	fetchStakeDiffHistory: async (startTimestamp: number, endTimestamp: number) => {
+		try {
+			const r = await w.walletgui__FetchStakeDiffHistory(startTimestamp, endTimestamp)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return StakeDiffHistory.deserializeBinary(r.payload)
+		}
+		catch (e) {
+			console.error(e)
+			throw e
+		}
 	},
 
 	fetchAgendas: endpointFactory("walletrpc__GetAgendas", AgendasResponse),

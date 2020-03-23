@@ -1,5 +1,8 @@
 import _ from "lodash";
-import moment from "moment";
+
+import * as Moment from 'moment'
+import { extendMoment } from 'moment-range'
+const moment = extendMoment(Moment)
 
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 
@@ -16,7 +19,7 @@ import {
 } from "../../proto/api_pb";
 import LorcaBackend from "../../middleware/lorca";
 import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../middleware/models";
-import { StakingHistory } from "../../proto/dcrwalletgui_pb";
+import { StakingHistory, StakeDiffHistory } from "../../proto/dcrwalletgui_pb";
 
 
 // GetTickets
@@ -94,10 +97,18 @@ export interface IRevokeTicketsState {
 	readonly errorRevokeTickets: AppError | null
 }
 
+// StakingHistory
 export interface IStakingHistoryState {
 	readonly stakingHistory: StakingHistory | null
 	readonly getStakingHistoryError: AppError | null
 	readonly getStakingHistoryAttempting: boolean
+}
+
+// StakeDiffHistory
+export interface IStakeDiffHistoryState {
+	readonly stakediffHistory: StakeDiffHistory | null
+	readonly getStakediffHistoryError: AppError | null
+	readonly getStakediffHistoryAttempting: boolean
 }
 
 export const initialState: ITicketsState &
@@ -110,7 +121,8 @@ export const initialState: ITicketsState &
 	ICommittedTicketsState &
 	IRunTicketbuyerState &
 	IRevokeTicketsState &
-	IStakingHistoryState = {
+	IStakingHistoryState &
+	IStakeDiffHistoryState = {
 
 	// GetTickets
 	tickets: [],
@@ -171,6 +183,11 @@ export const initialState: ITicketsState &
 	stakingHistory: null,
 	getStakingHistoryAttempting: false,
 	getStakingHistoryError: null,
+
+	// StakeDiffHistory
+	stakediffHistory: null,
+	getStakediffHistoryError: null,
+	getStakediffHistoryAttempting: false,
 }
 
 const stakingSlice = createSlice({
@@ -375,6 +392,23 @@ const stakingSlice = createSlice({
 			state.stakingHistory = action.payload
 			state.getStakingHistoryError = null
 		},
+
+		// GetStakingHistory
+		getStakediffHistoryAttempt(state) {
+			state.stakediffHistory = null
+			state.getStakediffHistoryError = null
+			state.getStakediffHistoryAttempting = true
+		},
+		getStakediffHistoryFailed(state, action: PayloadAction<AppError>) {
+			state.stakediffHistory = null
+			state.getStakediffHistoryError = action.payload
+			state.getStakediffHistoryAttempting = false
+		},
+		getStakediffHistorySuccess(state, action: PayloadAction<StakeDiffHistory>) {
+			state.stakediffHistory = action.payload
+			state.getStakediffHistoryError = null
+			state.getStakediffHistoryAttempting = false
+		},
 	}
 })
 
@@ -438,6 +472,11 @@ export const {
 	getStakingHistoryAttempt,
 	getStakingHistoryFailed,
 	getStakingHistorySuccess,
+
+	// GetStakediffHistory
+	getStakediffHistoryAttempt,
+	getStakediffHistoryFailed,
+	getStakediffHistorySuccess,
 
 } = stakingSlice.actions
 
@@ -676,6 +715,27 @@ export const loadStakingHistory: ActionCreator<any> = (): AppThunk => {
 	}
 }
 
+export const loadStakeDiffHistory: ActionCreator<any> =
+	(startDate: Moment.Moment, endDate?: Moment.Moment): AppThunk => {
+		return async (dispatch: AppDispatch, getState: IGetState) => {
+
+			const { getStakediffHistoryAttempting } = getState().staking;
+			if (getStakediffHistoryAttempting) {
+				return
+			}
+
+			const myEndDate = endDate || moment.default()
+
+			dispatch(getStakediffHistoryAttempt())
+			try {
+				const resp = await LorcaBackend.fetchStakeDiffHistory(startDate.unix(), myEndDate.unix())
+				dispatch(getStakediffHistorySuccess(resp))
+			} catch (error) {
+				dispatch(getStakediffHistoryFailed(error))
+			}
+		}
+	}
+
 
 // selectors
 export const getTickets = (state: IApplicationState): Ticket[] => {
@@ -694,9 +754,13 @@ export const getStakingHistorySparklineData = (state: IApplicationState, days: n
 	if (getStakingHistory(state) == null) {
 		return []
 	}
-	const startTimestamp = moment().subtract(days, "days").unix()
+	const startTimestamp = moment.default().subtract(days, "days").unix()
 	return _.chain(getStakingHistory(state)?.getLineItemsList())
 		.filter(item => item.getTimestamp() >= startTimestamp)
 		.orderBy(item => item.getTimestamp(), "asc")
 		.value()
+}
+
+export const getStakediffHistory = (state: IApplicationState) => {
+	return state.staking.stakediffHistory?.getSdiffValuesList()
 }

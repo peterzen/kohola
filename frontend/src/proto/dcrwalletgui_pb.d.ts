@@ -595,6 +595,36 @@ export namespace StakingHistory {
   }
 }
 
+export class StakeDiffHistory extends jspb.Message {
+  clearSdiffValuesList(): void;
+  getSdiffValuesList(): Array<number>;
+  setSdiffValuesList(value: Array<number>): void;
+  addSdiffValues(value: number, index?: number): number;
+
+  getStartBlock(): number;
+  setStartBlock(value: number): void;
+
+  getEndBlock(): number;
+  setEndBlock(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): StakeDiffHistory.AsObject;
+  static toObject(includeInstance: boolean, msg: StakeDiffHistory): StakeDiffHistory.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: StakeDiffHistory, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): StakeDiffHistory;
+  static deserializeBinaryFromReader(message: StakeDiffHistory, reader: jspb.BinaryReader): StakeDiffHistory;
+}
+
+export namespace StakeDiffHistory {
+  export type AsObject = {
+    sdiffValuesList: Array<number>,
+    startBlock: number,
+    endBlock: number,
+  }
+}
+
 export interface NetworkMap {
   MAINNET: 0;
   TESTNET: 1;

@@ -133,6 +133,7 @@ func bindUIAPI(ui lorca.UI) {
 	ExportWalletAPI(ui)
 	exchangeratebot.ExportExchangeRateAPI(ui)
 	ExportStakingHistoryAPI(ui)
+	ExportDcrdataAPI(ui)
 }
 
 func showDialog() {

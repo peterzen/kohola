@@ -9,27 +9,30 @@ const moment = extendMoment(Moment)
 import { Row, Col, Card } from 'react-bootstrap'
 
 import { StakeInfo, TicketPrice } from '../../middleware/models'
+import { StakingHistory } from '../../proto/dcrwalletgui_pb'
 import { TicketStatus, TransactionType } from '../../constants'
 import {
 	loadStakeInfoAttempt,
 	loadTicketPriceAttempt,
 	getTicketPrice,
 	getStakingHistorySparklineData,
+	loadStakeDiffHistory,
+	getStakediffHistory,
 } from './stakingSlice'
 
 import { TicketStatusIcon } from './TicketStatusIcon'
 import { IApplicationState } from '../../store/types'
-import { Amount } from '../../components/Shared/Amount'
-import PlaceholderSparklineChart from '../../components/charts/PlaceholderSparklineChart'
 import {
 	normalizeDatapoints,
 	makeTimeline,
 	IChartdataTimelineItem,
 } from '../../helpers/helpers'
 
-
-import { StakingHistory } from '../../proto/dcrwalletgui_pb'
+import { Amount } from '../../components/Shared/Amount'
 import { SparklineChart } from '../../components/charts/TinyCharts'
+
+// @TODO add dropdown to control this
+const days = 7
 
 
 class StakeStats extends React.Component<Props> {
@@ -56,7 +59,10 @@ class StakeStats extends React.Component<Props> {
                             </h6>
 						</Col>
 						<Col sm={6} className="pt-3">
-							<PlaceholderSparklineChart />
+							<SparklineChart
+								data={this.props.stakediffHistory}
+								dataKey="value"
+							/>
 						</Col>
 					</Row>
 				</Card.Body>
@@ -117,12 +123,14 @@ class StakeStats extends React.Component<Props> {
 	componentDidMount() {
 		this.props.loadStakeInfoAttempt()
 		this.props.loadTicketPriceAttempt()
+		this.props.loadStakeDiffHistory(moment.default().subtract(days, "day"))
 	}
 }
 
 interface OwnProps {
 	stakeinfo: StakeInfo
 	ticketPrice: TicketPrice
+	stakediffHistory: any[],
 	voteCounts: IChartdataTimelineItem[]
 	revocationCounts: IChartdataTimelineItem[]
 	purchasedCounts: IChartdataTimelineItem[]
@@ -130,17 +138,18 @@ interface OwnProps {
 
 interface DispatchProps {
 	loadStakeInfoAttempt: typeof loadStakeInfoAttempt
-	loadTicketPriceAttempt: typeof loadTicketPriceAttempt
+	loadTicketPriceAttempt: typeof loadTicketPriceAttempt,
+	loadStakeDiffHistory: typeof loadStakeDiffHistory,
 }
 
 type Props = DispatchProps & OwnProps
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
-	const days = 5
 	const stakingHistory = getStakingHistorySparklineData(state, days)
 	return {
 		ticketPrice: getTicketPrice(state),
 		stakeinfo: state.staking.stakeinfo,
+		stakediffHistory: normalizeDatapoints(_.map(getStakediffHistory(state), d => { return { value: d } }), "value"),
 		voteCounts: countFilteredEvents(
 			stakingHistory,
 			days,
@@ -162,26 +171,32 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 const mapDispatchToProps = {
 	loadTicketPriceAttempt,
 	loadStakeInfoAttempt,
+	loadStakeDiffHistory,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(StakeStats)
+
+
 
 export const countFilteredEvents = (
 	history: StakingHistory.StakingHistoryLineItem[],
 	days: number,
 	txType: TransactionType
 ): IChartdataTimelineItem[] => {
+
 	const timeline = makeTimeline(days)
-	const datapoints = _.chain(history)
-		.filter((item) => item.getTxType() == txType)
-		.map((item) => item.toObject())
-		.countBy((item) => moment.default(item.timestamp * 1000).format('L'))
-		.defaults(timeline)
-		.map((value: number, date: string) => {
-			return { timestamp: date, value: value }
-		})
-		.orderBy('timestamp', 'asc')
-		.value()
+
+	const datapoints =
+		_.chain(history)
+			.filter((item) => item.getTxType() == txType)
+			.map((item) => item.toObject())
+			.countBy((item) => moment.default(item.timestamp * 1000).format('L'))
+			.defaults(timeline)
+			.map((value: number, date: string) => {
+				return { timestamp: date, value: value }
+			})
+			.orderBy('timestamp', 'asc')
+			.value()
 
 	return normalizeDatapoints(datapoints, 'value')
 }
