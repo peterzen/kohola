@@ -2,6 +2,7 @@
 // file: dcrwalletgui.proto
 
 import * as jspb from "google-protobuf";
+import * as api_pb from "./api_pb";
 
 export class GetConfigRequest extends jspb.Message {
   getPassphrase(): Uint8Array | string;
@@ -609,6 +610,72 @@ export class GetMarketChartResponse extends jspb.Message {
 export namespace GetMarketChartResponse {
   export type AsObject = {
     datapointsList: Array<MarketChartDataPoint.AsObject>,
+  }
+}
+
+export class StakingHistory extends jspb.Message {
+  getLastBlock(): number;
+  setLastBlock(value: number): void;
+
+  clearLineItemsList(): void;
+  getLineItemsList(): Array<StakingHistory.StakingHistoryLineItem>;
+  setLineItemsList(value: Array<StakingHistory.StakingHistoryLineItem>): void;
+  addLineItems(value?: StakingHistory.StakingHistoryLineItem, index?: number): StakingHistory.StakingHistoryLineItem;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): StakingHistory.AsObject;
+  static toObject(includeInstance: boolean, msg: StakingHistory): StakingHistory.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: StakingHistory, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): StakingHistory;
+  static deserializeBinaryFromReader(message: StakingHistory, reader: jspb.BinaryReader): StakingHistory;
+}
+
+export namespace StakingHistory {
+  export type AsObject = {
+    lastBlock: number,
+    lineItemsList: Array<StakingHistory.StakingHistoryLineItem.AsObject>,
+  }
+
+  export class StakingHistoryLineItem extends jspb.Message {
+    getTxType(): api_pb.TransactionDetails.TransactionTypeMap[keyof api_pb.TransactionDetails.TransactionTypeMap];
+    setTxType(value: api_pb.TransactionDetails.TransactionTypeMap[keyof api_pb.TransactionDetails.TransactionTypeMap]): void;
+
+    getRewardCredit(): number;
+    setRewardCredit(value: number): void;
+
+    getTicketCostCredit(): number;
+    setTicketCostCredit(value: number): void;
+
+    getTicketCostDebit(): number;
+    setTicketCostDebit(value: number): void;
+
+    getFeeDebit(): number;
+    setFeeDebit(value: number): void;
+
+    getTimestamp(): number;
+    setTimestamp(value: number): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): StakingHistoryLineItem.AsObject;
+    static toObject(includeInstance: boolean, msg: StakingHistoryLineItem): StakingHistoryLineItem.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: StakingHistoryLineItem, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): StakingHistoryLineItem;
+    static deserializeBinaryFromReader(message: StakingHistoryLineItem, reader: jspb.BinaryReader): StakingHistoryLineItem;
+  }
+
+  export namespace StakingHistoryLineItem {
+    export type AsObject = {
+      txType: api_pb.TransactionDetails.TransactionTypeMap[keyof api_pb.TransactionDetails.TransactionTypeMap],
+      rewardCredit: number,
+      ticketCostCredit: number,
+      ticketCostDebit: number,
+      feeDebit: number,
+      timestamp: number,
+    }
   }
 }
 

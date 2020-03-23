@@ -16,6 +16,7 @@ import TicketsOverviewContainer from '../features/staking/TicketsOverviewContain
 import { loadTicketsAttempt, revokeExpiredTickets } from '../features/staking/stakingSlice';
 import StakingToolsMenu, { StakingToolsMenuItems } from '../features/staking/StakingToolsMenu';
 import PassphraseEntryDialog, { askPassphrase } from '../components/Shared/PassphraseEntryDialog';
+import StakingHistoryTable from '../features/staking/StakingHistoryTable';
 
 class StakingContainer extends React.Component<Props> {
 	render() {
@@ -45,6 +46,9 @@ class StakingContainer extends React.Component<Props> {
 								<PurchaseTicketForm />
 							</Col>
 						</Row>
+					</Tab>
+					<Tab eventKey="roi" title="Returns">
+						<StakingHistoryTable />
 					</Tab>
 					<Tab eventKey="ticketbuyer" title="Ticketbuyer">
 						<TicketBuyerComponent />

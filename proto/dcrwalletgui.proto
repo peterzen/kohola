@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package dcrwalletgui;
 
-//import "api.proto";
+import "api.proto";
 
 service AppConfig {
   rpc GetConfig(GetConfigRequest) returns (AppConfiguration);
@@ -154,7 +154,7 @@ message GetMarketChartResponse {
 
 message StakingHistory {
   message StakingHistoryLineItem {
-    int32 tx_type = 1;
+    walletrpc.TransactionDetails.TransactionType tx_type = 1;
 	int64 reward_credit = 2;
 	int64 ticket_cost_credit = 3;
 	int64 ticket_cost_debit = 4;

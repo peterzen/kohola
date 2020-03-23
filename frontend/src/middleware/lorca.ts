@@ -31,7 +31,7 @@ import {
 	RunAccountMixerRequest,
 } from '../proto/api_pb';
 import { rawToHex } from '../helpers/byteActions';
-import { GRPCEndpoint } from '../proto/dcrwalletgui_pb';
+import { GRPCEndpoint, StakingHistory } from '../proto/dcrwalletgui_pb';
 import { Ticket, WalletAccount, WalletBalance, Transaction, AccountBalance } from './models';
 
 const w = (window as any)
@@ -453,6 +453,7 @@ const LorcaBackend = {
 	fetchStakeInfo: endpointFactory("walletrpc__GetStakeInfo", StakeInfoResponse),
 	fetchTicketPrice: endpointFactory("walletrpc__GetTicketPrice", TicketPriceResponse),
 	fetchVoteChoices: endpointFactory("walletrpc__GetVoteChoices", VoteChoicesResponse),
+	getStakingHistory: endpointFactory("walletgui__GetStakingHistory", StakingHistory)
 }
 
 export default LorcaBackend

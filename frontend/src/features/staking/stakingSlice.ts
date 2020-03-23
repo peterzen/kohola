@@ -14,6 +14,7 @@ import {
 } from "../../proto/api_pb";
 import LorcaBackend from "../../middleware/lorca";
 import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../middleware/models";
+import { StakingHistory } from "../../proto/dcrwalletgui_pb";
 
 
 // GetTickets
@@ -91,6 +92,11 @@ export interface IRevokeTicketsState {
 	readonly errorRevokeTickets: AppError | null
 }
 
+export interface IStakingHistoryState {
+	readonly stakingHistory: StakingHistory | null
+	readonly getStakingHistoryError: AppError | null
+	readonly getStakingHistoryAttempting: boolean
+}
 
 export const initialState: ITicketsState &
 	ITicketPriceState &
@@ -101,7 +107,8 @@ export const initialState: ITicketsState &
 	IPurchaseTicketsState &
 	ICommittedTicketsState &
 	IRunTicketbuyerState &
-	IRevokeTicketsState = {
+	IRevokeTicketsState &
+	IStakingHistoryState = {
 
 	// GetTickets
 	tickets: [],
@@ -157,6 +164,11 @@ export const initialState: ITicketsState &
 	revokeTicketsAttempting: false,
 	revokeTicketsResponse: null,
 	errorRevokeTickets: null,
+
+	// StakingHistory
+	stakingHistory: null,
+	getStakingHistoryAttempting: false,
+	getStakingHistoryError: null,
 }
 
 const stakingSlice = createSlice({
@@ -344,6 +356,23 @@ const stakingSlice = createSlice({
 			state.revokeTicketsResponse = action.payload
 			state.errorRevokeTickets = null
 		},
+
+		// GetStakingHistory
+		getStakingHistoryAttempt(state) {
+			state.getStakingHistoryAttempting = true
+			state.stakingHistory = null
+			state.getStakingHistoryError = null
+		},
+		getStakingHistoryFailed(state, action: PayloadAction<AppError>) {
+			state.getStakingHistoryAttempting = false
+			state.stakingHistory = null
+			state.getStakingHistoryError = action.payload
+		},
+		getStakingHistorySuccess(state, action: PayloadAction<StakingHistory>) {
+			state.getStakingHistoryAttempting = false
+			state.stakingHistory = action.payload
+			state.getStakingHistoryError = null
+		},
 	}
 })
 
@@ -402,6 +431,11 @@ export const {
 	revokeExpiredTicketsAttempt,
 	revokeExpiredTicketsFailed,
 	revokeExpiredTicketsSuccess,
+
+	// GetStakingHistory
+	getStakingHistoryAttempt,
+	getStakingHistoryFailed,
+	getStakingHistorySuccess,
 
 } = stakingSlice.actions
 
@@ -622,6 +656,25 @@ export const stopTicketBuyer: ActionCreator<any> = (): AppThunk => {
 
 
 
+export const loadStakingHistory: ActionCreator<any> = (): AppThunk => {
+	return async (dispatch:AppDispatch, getState:IGetState) => {
+
+		const { getStakingHistoryAttempting } = getState().staking;
+		if (getStakingHistoryAttempting) {
+			return
+		}
+
+		dispatch(getStakingHistoryAttempt())
+		try {
+			const resp = await LorcaBackend.getStakingHistory()
+			dispatch(getStakingHistorySuccess(resp))
+		} catch (error) {
+			dispatch(getStakingHistoryFailed(error))
+		}
+	}
+}
+
+
 // selectors
 export const getTickets = (state: IApplicationState): Ticket[] => {
 	return _.orderBy(state.staking.tickets, (e) => e.getTx().getTimestamp(), "desc")
@@ -630,3 +683,4 @@ export const getTickets = (state: IApplicationState): Ticket[] => {
 export const getTicketPrice = (state: IApplicationState): TicketPrice => {
 	return state.staking.ticketPrice
 }
+

@@ -5,25 +5,19 @@ import (
 	"io"
 	"log"
 
+	walletrpc "decred.org/dcrwallet/rpc/walletrpc"
 	"github.com/decred/dcrd/dcrutil"
 	"github.com/decred/dcrd/txscript"
 	"github.com/decred/dcrd/wire"
-	walletrpc "github.com/decred/dcrwallet/rpc/walletrpc"
-)
+	proto "github.com/golang/protobuf/proto"
+	"github.com/zserge/lorca"
 
-// LineItem represents an item in the staking history
-type LineItem struct {
-	TxType           walletrpc.TransactionDetails_TransactionType `json:"tx_type"`
-	RewardCredit     int64                                        `json:"reward_credit"`
-	TicketCostCredit int64                                        `json:"ticket_cost_credit"`
-	TicketCostDebit  int64                                        `json:"ticket_cost_debit"`
-	FeeDebit         int64                                        `json:"fee_debit"`
-	Timestamp        int64                                        `json:"timestamp"`
-}
+	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
+)
 
 // GetStakingHistory filters staking transactions and extracts credit/debit
 // information
-func GetStakingHistory() (history []*LineItem, err error) {
+func GetStakingHistory() (stakingHistory *gui.StakingHistory, err error) {
 
 	request := &walletrpc.GetTransactionsRequest{
 		StartingBlockHeight:    -1,
@@ -35,12 +29,15 @@ func GetStakingHistory() (history []*LineItem, err error) {
 		log.Printf("GetTransactions errored: %s", err)
 		return nil, err
 	}
-	lineItems := make([]*LineItem, 0)
+
+	stakingHistory = &gui.StakingHistory{
+		LineItems: make([]*gui.StakingHistory_StakingHistoryLineItem, 0),
+	}
 
 	for {
 		getTxResponse, err := stream.Recv()
 		if err == io.EOF {
-			return lineItems, nil
+			return stakingHistory, nil
 		}
 		if err != nil {
 			log.Printf("Failed to receive a GetTransactionsResponse: %s", err)
@@ -49,20 +46,20 @@ func GetStakingHistory() (history []*LineItem, err error) {
 		if getTxResponse.MinedTransactions != nil {
 			newLineItems := calculateLineItems(getTxResponse.MinedTransactions.Transactions)
 			if len(newLineItems) > 0 {
-				extLineItems := make([]*LineItem, 0, len(lineItems)+len(newLineItems))
-				if len(lineItems) > 0 {
-					extLineItems = append(extLineItems, lineItems...)
+				extLineItems := make([]*gui.StakingHistory_StakingHistoryLineItem, 0, len(stakingHistory.LineItems)+len(newLineItems))
+				if len(stakingHistory.LineItems) > 0 {
+					extLineItems = append(extLineItems, stakingHistory.LineItems...)
 				}
 				extLineItems = append(extLineItems, newLineItems...)
-				lineItems = extLineItems
+				stakingHistory.LineItems = extLineItems
 			}
 		}
 	}
 }
 
-func calculateLineItems(allTxList []*walletrpc.TransactionDetails) (lineItemSlice []*LineItem) {
+func calculateLineItems(allTxList []*walletrpc.TransactionDetails) (lineItemSlice []*gui.StakingHistory_StakingHistoryLineItem) {
 
-	lineItemSlice = make([]*LineItem, 0, len(allTxList))
+	lineItemSlice = make([]*gui.StakingHistory_StakingHistoryLineItem, 0, len(allTxList))
 
 	for _, txd := range allTxList {
 
@@ -70,9 +67,9 @@ func calculateLineItems(allTxList []*walletrpc.TransactionDetails) (lineItemSlic
 		if err != nil {
 			fmt.Printf("NewTxFromBytes errored: %s", err)
 		}
-		// fmt.Printf("Tx: %s\n", tx.Hash().String())
+		fmt.Printf("Tx: %s\n", tx.Hash().String())
 
-		lineItem := &LineItem{
+		lineItem := &gui.StakingHistory_StakingHistoryLineItem{
 			TxType:    txd.GetTransactionType(),
 			Timestamp: txd.GetTimestamp(),
 		}
@@ -114,4 +111,16 @@ func findScript(txOutList []*wire.TxOut, scriptClass txscript.ScriptClass) *wire
 		}
 	}
 	return nil
+}
+
+// ExportStakingHistoryAPI exports functions to the UI
+func ExportStakingHistoryAPI(ui lorca.UI) {
+	ui.Bind("walletgui__GetStakingHistory", func() (r gui.LorcaMessage) {
+		history, err := GetStakingHistory()
+		r.Err = err
+		if err == nil {
+			r.Payload, _ = proto.Marshal(history)
+		}
+		return r
+	})
 }
