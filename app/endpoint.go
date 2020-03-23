@@ -12,8 +12,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
+	walletrpc "decred.org/dcrwallet/rpc/walletrpc"
 	"github.com/decred/dcrd/rpcclient/v6"
-	walletrpc "github.com/decred/dcrwallet/rpc/walletrpc"
 	proto "github.com/golang/protobuf/proto"
 	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
 
