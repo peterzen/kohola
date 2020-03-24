@@ -1,3 +1,0 @@
-[submodule "deps/dcrd"]
-	path = deps/dcrd
-	url = https://github.com/decred/dcrd
