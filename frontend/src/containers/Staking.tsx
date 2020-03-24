@@ -13,17 +13,19 @@ import StakeInfoComponent from '../features/staking/StakeInfoComponent';
 import PurchaseTicketForm from '../features/staking/PurchaseTicket/SimplePurchaseTicketForm';
 import TicketBuyerComponent from '../features/staking/Ticketbuyer/TicketBuyerComponent';
 import TicketsOverviewContainer from '../features/staking/TicketsOverviewContainer';
-import { loadTicketsAttempt, revokeExpiredTickets, loadStakingHistory } from '../features/staking/stakingSlice';
-import StakingToolsMenu, { StakingToolsMenuItems } from '../features/staking/StakingToolsMenu';
-import PassphraseEntryDialog, { askPassphrase } from '../components/Shared/PassphraseEntryDialog';
+import { loadTicketsAttempt, loadStakingHistory, loadStakeInfoAttempt } from '../features/staking/stakingSlice';
+import StakingToolsMenu from '../features/staking/StakingToolsMenu';
+import PassphraseEntryDialog from '../components/Shared/PassphraseEntryDialog';
 import StakingHistoryTable from '../features/staking/StakingHistoryTable';
+import { IApplicationState } from '../store/types';
+import { StakeInfo } from '../middleware/models';
 
 class StakingContainer extends React.Component<Props> {
 	render() {
 		return (
 			<div>
 				<div className="float-right">
-					<StakingToolsMenu menuHandler={_.bind(this.menuHandler, this)} />
+					<StakingToolsMenu  />
 				</div>
 				<Tabs
 					defaultActiveKey="overview" id="purchaseticketsettings-tabs"
@@ -62,40 +64,35 @@ class StakingContainer extends React.Component<Props> {
 		)
 	}
 	componentDidMount() {
+		this.props.loadStakeInfoAttempt()
 		this.props.loadStakingHistory()
 		// this.props.loadTicketsAttempt()
 	}
-	menuHandler(evtKey: keyof StakingToolsMenuItems) {
-		switch (evtKey) {
-			case StakingToolsMenuItems[StakingToolsMenuItems.REVOKE]:
-				askPassphrase()
-					.then((passphrase) => {
-						if (passphrase == "") {
-							throw "empty passphrase"
-						}
-						this.props.revokeExpiredTickets(passphrase)
-					})
-		}
-	}
+
+}
+
+interface OwnProps {
+	stakeinfo: StakeInfo
 }
 
 interface DispatchProps {
+	loadStakeInfoAttempt: typeof loadStakeInfoAttempt
 	loadStakingHistory: typeof loadStakingHistory
 	loadTicketsAttempt: typeof loadTicketsAttempt
-	revokeExpiredTickets: typeof revokeExpiredTickets
 }
 
-type Props = DispatchProps
+type Props = OwnProps & DispatchProps
 
-const mapStateToProps = () => {
+const mapStateToProps = (state: IApplicationState) => {
 	return {
+		stakeinfo: state.staking.stakeinfo,
 	}
 }
 
 const mapDispatchToProps = {
 	loadStakingHistory,
 	loadTicketsAttempt,
-	revokeExpiredTickets,
+	loadStakeInfoAttempt,
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StakingContainer));

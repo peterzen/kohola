@@ -121,7 +121,6 @@ class StakeStats extends React.Component<Props> {
 	}
 
 	componentDidMount() {
-		this.props.loadStakeInfoAttempt()
 		this.props.loadTicketPriceAttempt()
 		this.props.loadStakeDiffHistory(moment.default().subtract(days, "day"))
 	}
@@ -129,17 +128,16 @@ class StakeStats extends React.Component<Props> {
 
 interface OwnProps {
 	stakeinfo: StakeInfo
-	ticketPrice: TicketPrice
-	stakediffHistory: any[],
 	voteCounts: IChartdataTimelineItem[]
-	revocationCounts: IChartdataTimelineItem[]
+	ticketPrice: TicketPrice
 	purchasedCounts: IChartdataTimelineItem[]
+	stakediffHistory: any[],
+	revocationCounts: IChartdataTimelineItem[]
 }
 
 interface DispatchProps {
-	loadStakeInfoAttempt: typeof loadStakeInfoAttempt
-	loadTicketPriceAttempt: typeof loadTicketPriceAttempt,
-	loadStakeDiffHistory: typeof loadStakeDiffHistory,
+	loadStakeDiffHistory: typeof loadStakeDiffHistory
+	loadTicketPriceAttempt: typeof loadTicketPriceAttempt
 }
 
 type Props = DispatchProps & OwnProps
@@ -147,9 +145,8 @@ type Props = DispatchProps & OwnProps
 const mapStateToProps = (state: IApplicationState): OwnProps => {
 	const stakingHistory = getStakingHistorySparklineData(state, days)
 	return {
-		ticketPrice: getTicketPrice(state),
 		stakeinfo: state.staking.stakeinfo,
-		stakediffHistory: normalizeDatapoints(_.map(getStakediffHistory(state), d => { return { value: d } }), "value"),
+		ticketPrice: getTicketPrice(state),
 		voteCounts: countFilteredEvents(
 			stakingHistory,
 			days,
@@ -165,13 +162,13 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 			days,
 			TransactionType.REVOCATION
 		),
+		stakediffHistory: normalizeDatapoints(_.map(getStakediffHistory(state), d => { return { value: d } }), "value"),
 	}
 }
 
 const mapDispatchToProps = {
-	loadTicketPriceAttempt,
-	loadStakeInfoAttempt,
 	loadStakeDiffHistory,
+	loadTicketPriceAttempt,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(StakeStats)
