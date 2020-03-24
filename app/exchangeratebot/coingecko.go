@@ -9,7 +9,7 @@ import (
 	"time"
 
 	proto "github.com/golang/protobuf/proto"
-	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
+	gui "github.com/peterzen/dcrwalletgui/walletgui"
 	coingecko "github.com/superoo7/go-gecko/v3"
 	"github.com/zserge/lorca"
 )

@@ -9,7 +9,7 @@ import (
 	walletrpc "decred.org/dcrwallet/rpc/walletrpc"
 	"github.com/go-resty/resty/v2"
 	proto "github.com/golang/protobuf/proto"
-	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
+	gui "github.com/peterzen/dcrwalletgui/walletgui"
 	"github.com/zserge/lorca"
 )
 

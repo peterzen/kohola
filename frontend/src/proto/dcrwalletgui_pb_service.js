@@ -1,4 +1,4 @@
-// package: dcrwalletgui
+// package: walletgui
 // file: dcrwalletgui.proto
 
 var dcrwalletgui_pb = require("./dcrwalletgui_pb");
@@ -6,7 +6,7 @@ var grpc = require("@improbable-eng/grpc-web").grpc;
 
 var AppConfig = (function () {
   function AppConfig() {}
-  AppConfig.serviceName = "dcrwalletgui.AppConfig";
+  AppConfig.serviceName = "walletgui.AppConfig";
   return AppConfig;
 }());
 
@@ -101,7 +101,7 @@ exports.AppConfigClient = AppConfigClient;
 
 var NetworkService = (function () {
   function NetworkService() {}
-  NetworkService.serviceName = "dcrwalletgui.NetworkService";
+  NetworkService.serviceName = "walletgui.NetworkService";
   return NetworkService;
 }());
 
@@ -196,7 +196,7 @@ exports.NetworkServiceClient = NetworkServiceClient;
 
 var ExchangeRates = (function () {
   function ExchangeRates() {}
-  ExchangeRates.serviceName = "dcrwalletgui.ExchangeRates";
+  ExchangeRates.serviceName = "walletgui.ExchangeRates";
   return ExchangeRates;
 }());
 

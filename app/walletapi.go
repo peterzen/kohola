@@ -10,9 +10,9 @@ import (
 	"time"
 
 	walletrpc "decred.org/dcrwallet/rpc/walletrpc"
-	"github.com/decred/dcrd/dcrutil"
+	"github.com/decred/dcrd/dcrutil/v3"
 	proto "github.com/golang/protobuf/proto"
-	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
+	gui "github.com/peterzen/dcrwalletgui/walletgui"
 
 	"github.com/zserge/lorca"
 )

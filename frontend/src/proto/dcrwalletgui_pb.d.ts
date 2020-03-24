@@ -1,4 +1,4 @@
-// package: dcrwalletgui
+// package: walletgui
 // file: dcrwalletgui.proto
 
 import * as jspb from "google-protobuf";

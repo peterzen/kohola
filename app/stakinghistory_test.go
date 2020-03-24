@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	// proto "github.com/golang/protobuf/proto"
-	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
+	gui "github.com/peterzen/dcrwalletgui/walletgui"
 )
 
 func Test_GetStakingHistory(t *testing.T) {

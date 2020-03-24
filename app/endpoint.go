@@ -13,16 +13,14 @@ import (
 	"google.golang.org/grpc/credentials"
 
 	walletrpc "decred.org/dcrwallet/rpc/walletrpc"
-	"github.com/decred/dcrd/rpcclient/v6"
 	proto "github.com/golang/protobuf/proto"
-	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
+	gui "github.com/peterzen/dcrwalletgui/walletgui"
 
 	"github.com/zserge/lorca"
 )
 
 var (
-	gRPCConnection *grpc.ClientConn  = nil
-	rpcClient      *rpcclient.Client = nil
+	gRPCConnection *grpc.ClientConn = nil
 
 	walletServiceClient        walletrpc.WalletServiceClient
 	votingServiceClient        walletrpc.VotingServiceClient

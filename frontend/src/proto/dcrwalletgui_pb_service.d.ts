@@ -1,4 +1,4 @@
-// package: dcrwalletgui
+// package: walletgui
 // file: dcrwalletgui.proto
 
 import * as dcrwalletgui_pb from "./dcrwalletgui_pb";

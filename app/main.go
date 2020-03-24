@@ -11,8 +11,8 @@ import (
 	"runtime"
 
 	proto "github.com/golang/protobuf/proto"
-	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
 	exchangeratebot "github.com/peterzen/dcrwalletgui/exchangeratebot"
+	gui "github.com/peterzen/dcrwalletgui/walletgui"
 
 	"github.com/markbates/pkger"
 	"github.com/sqweek/dialog"

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package dcrwalletgui;
+package walletgui;
 
 import "api.proto";
 

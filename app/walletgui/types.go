@@ -1,4 +1,4 @@
-package dcrwalletgui
+package walletgui
 
 // LorcaMessage represents a message exchanged with the JS frontend
 type LorcaMessage struct {

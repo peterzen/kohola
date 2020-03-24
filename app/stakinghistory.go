@@ -6,13 +6,13 @@ import (
 	"log"
 
 	walletrpc "decred.org/dcrwallet/rpc/walletrpc"
-	"github.com/decred/dcrd/dcrutil"
+	"github.com/decred/dcrd/dcrutil/v3"
 	"github.com/decred/dcrd/txscript"
 	"github.com/decred/dcrd/wire"
 	proto "github.com/golang/protobuf/proto"
 	"github.com/zserge/lorca"
 
-	gui "github.com/peterzen/dcrwalletgui/dcrwalletgui"
+	gui "github.com/peterzen/dcrwalletgui/walletgui"
 )
 
 // GetStakingHistory filters staking transactions and extracts credit/debit
