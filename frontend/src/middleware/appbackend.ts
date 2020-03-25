@@ -14,13 +14,15 @@ const w = (window as any)
 const AppBackend = {
 	fetchAppConfig: endpointFactory("walletgui__GetConfig", AppConfiguration),
 
-	setAppConfig: async function (appConfig: AppConfiguration) {
+	setAppConfig: async function (appConfig: AppConfiguration, passphrase?: string) {
 
 		const request = new SetConfigRequest()
 		request.setAppConfig(appConfig)
 
-		// TODO implement config file encryption with passphrase 
-		// request.setPassphrase(passphrase)
+		if (passphrase != undefined) {
+			request.setPassphrase(passphrase)
+		}
+
 		const ser = rawToHex(request.serializeBinary().buffer)
 		try {
 			const r = await w.walletgui__SetConfig(ser)

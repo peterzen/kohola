@@ -2,7 +2,13 @@ package walletgui
 
 import (
 	"bytes"
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/md5"
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -17,6 +23,7 @@ var (
 	defaultConfigFile = filepath.Join("./", "dcrwalletgui.json")
 	configFilePath    = filepath.Join(appDataDir, defaultConfigFile)
 	cfg               = newConfig()
+	passphrase        = ""
 
 	defaultConfig = &AppConfiguration{
 		DcrdEndpoint: &RPCEndpoint{
@@ -63,6 +70,16 @@ func SetConfig(c *AppConfiguration) {
 	cfg = c
 }
 
+// GetPassphrase returns the current passphrease for config encryption
+func GetPassphrase() string {
+	return passphrase
+}
+
+// SetPassphrase changes the current passphrease for config encryption
+func SetPassphrase(p string) {
+	passphrase = p
+}
+
 // GetConfigMarshaled return a marshaled copy of the configuration
 func GetConfigMarshaled() ([]byte, error) {
 	b, err := proto.Marshal(cfg)
@@ -71,7 +88,6 @@ func GetConfigMarshaled() ([]byte, error) {
 
 // LoadConfig reads the config file into AppConfiguration struct
 func LoadConfig() error {
-
 	if !fileExists(configFilePath) {
 		err := WriteConfig()
 		if err != nil {
@@ -91,7 +107,18 @@ func LoadConfig() error {
 	if err != nil {
 		return err
 	}
-	json.Unmarshal(content, cfg)
+	if err = json.Unmarshal(content, cfg); err != nil {
+		if passphrase == "" {
+			return err
+		}
+		var decryptedContent, err = decrypt(content, passphrase)
+		if err != nil {
+			return err
+		}
+		if err = json.Unmarshal(decryptedContent, cfg); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -118,12 +145,16 @@ func WriteConfig() error {
 	var out bytes.Buffer
 	json.Indent(&out, content, "", "  ")
 
-	_, err = dest.Write(out.Bytes())
-	if err != nil {
-		return err
+	if passphrase == "" {
+		if _, err = dest.Write(out.Bytes()); err != nil {
+			return err
+		}
+	} else {
+		if _, err = dest.Write(encrypt(out.Bytes(), passphrase)); err != nil {
+			return err
+		}
 	}
 	return nil
-
 }
 
 // fileExists reports whether the named file or directory exists.
@@ -134,4 +165,43 @@ func fileExists(name string) bool {
 		}
 	}
 	return true
+}
+
+func createHash(key string) string {
+	hasher := md5.New()
+	hasher.Write([]byte(key))
+	return hex.EncodeToString(hasher.Sum(nil))
+}
+
+func encrypt(data []byte, passphrase string) []byte {
+	block, _ := aes.NewCipher([]byte(createHash(passphrase)))
+	gcm, err := cipher.NewGCM(block)
+	if err != nil {
+		panic(err.Error())
+	}
+	nonce := make([]byte, gcm.NonceSize())
+	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
+		panic(err.Error())
+	}
+	ciphertext := gcm.Seal(nonce, nonce, data, nil)
+	return ciphertext
+}
+
+func decrypt(data []byte, passphrase string) ([]byte, error) {
+	key := []byte(createHash(passphrase))
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+	gcm, err := cipher.NewGCM(block)
+	if err != nil {
+		return nil, err
+	}
+	nonceSize := gcm.NonceSize()
+	nonce, ciphertext := data[:nonceSize], data[nonceSize:]
+	plaintext, err := gcm.Open(nil, nonce, ciphertext, nil)
+	if err != nil {
+		return nil, err
+	}
+	return plaintext, nil
 }

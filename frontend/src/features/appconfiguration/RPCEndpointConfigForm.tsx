@@ -283,12 +283,15 @@ export class EditEndpointModal extends React.Component<GenericModalProps & IRPCF
 			<GenericModal
 				title={this.props.title}
 				show={this.props.show}
+				onEntered={() => this.onEntered()}
 				onHide={this.props.onHide}
 			>
 				<RPCEndpointConfigForm {...this.props} />
 			</GenericModal>
 		)
 	}
+	onEntered() {
+	}	
 }
 
 

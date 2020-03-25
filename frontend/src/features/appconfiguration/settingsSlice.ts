@@ -2,7 +2,8 @@ import _ from 'lodash';
 
 import { createSlice, PayloadAction, ActionCreator, Dispatch } from '@reduxjs/toolkit'
 import { AppError, IGetState, IApplicationState, AppDispatch } from '../../store/types';
-import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences } from '../../proto/dcrwalletgui_pb';
+import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences, MiscPreferences } from '../../proto/dcrwalletgui_pb';
+import { DisplayUnit } from '../../constants';
 import AppBackend from '../../middleware/appbackend';
 import { getConnectedEndpoint, getConnectedEndpointId } from '../app/appSlice';
 import { updateObjectInList, deleteObjectFromList } from '../../helpers/protobufHelpers';
@@ -55,6 +56,9 @@ const settingsSlice = createSlice({
 				updateObjectInList(state.appConfig.getWalletPreferencesList(), walletPrefs, "walletEndpointId")
 			)
 		},
+		updateMiscPreferences(state, action: PayloadAction<{ miscPreferences: MiscPreferences}>) {
+			state.appConfig.setMiscPreferences(action.payload.miscPreferences)
+		},				
 		updateEndpoint(state, action: PayloadAction<GRPCEndpoint>) {
 			const endpoint = action.payload
 			state.appConfig.setWalletEndpointsList(
@@ -88,6 +92,7 @@ export const {
 	getConfigFailed,
 
 	setAccountPreference,
+	updateMiscPreferences,
 	updateEndpoint,
 	deleteEndpoint,
 	setDefaultEndpoint,
@@ -112,7 +117,7 @@ export const getConfiguration: ActionCreator<any> = () => {
 	}
 }
 
-export const saveConfigurationAttempt: ActionCreator<any> = () => {
+export const saveConfigurationAttempt: ActionCreator<any> = (passphrase?: string) => {
 
 	return async (dispatch: Dispatch, getState: IGetState) => {
 
@@ -124,7 +129,7 @@ export const saveConfigurationAttempt: ActionCreator<any> = () => {
 		dispatch(setConfigAttempt())
 		try {
 			const cfg = getState().appconfiguration.appConfig
-			const response = await AppBackend.setAppConfig(cfg)
+			const response = await AppBackend.setAppConfig(cfg, passphrase)
 			dispatch(setConfigSuccess(response))
 			// await dispatch(getConfiguration())
 		}
@@ -188,4 +193,8 @@ export const getAppConfig = (state: IApplicationState) => state.appconfiguration
 
 export const getWalletEndpoints = (state: IApplicationState) => {
 	return state.appconfiguration.appConfig.getWalletEndpointsList()
+}
+
+export const getMiscPreferences = (appConfigurationState: IAppConfigurationState) => {
+	return appConfigurationState.appConfig.getMiscPreferences() || new MiscPreferences()
 }

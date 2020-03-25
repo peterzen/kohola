@@ -8,7 +8,7 @@ export default class GenericModal<P, S> extends React.Component<P & GenericModal
 			<Modal
 				{...this.props}
 				centered
-				onEntered={() => this.onEntered()}
+				onEntered={this.props.onEntered}
 				onExit={() => this.onExit()}
 				show={this.props.show}
 				onHide={this.props.onHide}>
@@ -26,8 +26,7 @@ export default class GenericModal<P, S> extends React.Component<P & GenericModal
 			</Modal>
 		)
 	}
-	onEntered() {
-	}
+
 	onExit() {
 	}
 }
@@ -36,5 +35,6 @@ export interface GenericModalProps {
 	title: string
 	show: boolean
 	onHide: () => void
+	onEntered: () => void
 }
 

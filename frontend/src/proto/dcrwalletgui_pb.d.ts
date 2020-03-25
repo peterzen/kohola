@@ -32,10 +32,8 @@ export class SetConfigRequest extends jspb.Message {
   getAppConfig(): AppConfiguration | undefined;
   setAppConfig(value?: AppConfiguration): void;
 
-  getPassphrase(): Uint8Array | string;
-  getPassphrase_asU8(): Uint8Array;
-  getPassphrase_asB64(): string;
-  setPassphrase(value: Uint8Array | string): void;
+  getPassphrase(): string;
+  setPassphrase(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SetConfigRequest.AsObject;
@@ -50,7 +48,7 @@ export class SetConfigRequest extends jspb.Message {
 export namespace SetConfigRequest {
   export type AsObject = {
     appConfig?: AppConfiguration.AsObject,
-    passphrase: Uint8Array | string,
+    passphrase: string,
   }
 }
 
@@ -251,6 +249,34 @@ export namespace WalletPreferences {
   }
 }
 
+export class MiscPreferences extends jspb.Message {
+  getDisplayUnit(): DisplayUnitMap[keyof DisplayUnitMap];
+  setDisplayUnit(value: DisplayUnitMap[keyof DisplayUnitMap]): void;
+
+  getFiatCurrency(): FiatCurrencyMap[keyof FiatCurrencyMap];
+  setFiatCurrency(value: FiatCurrencyMap[keyof FiatCurrencyMap]): void;
+
+  getIsConfigEncrypted(): boolean;
+  setIsConfigEncrypted(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): MiscPreferences.AsObject;
+  static toObject(includeInstance: boolean, msg: MiscPreferences): MiscPreferences.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: MiscPreferences, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): MiscPreferences;
+  static deserializeBinaryFromReader(message: MiscPreferences, reader: jspb.BinaryReader): MiscPreferences;
+}
+
+export namespace MiscPreferences {
+  export type AsObject = {
+    displayUnit: DisplayUnitMap[keyof DisplayUnitMap],
+    fiatCurrency: FiatCurrencyMap[keyof FiatCurrencyMap],
+    isConfigEncrypted: boolean,
+  }
+}
+
 export class AppConfiguration extends jspb.Message {
   hasDcrdEndpoint(): boolean;
   clearDcrdEndpoint(): void;
@@ -285,6 +311,11 @@ export class AppConfiguration extends jspb.Message {
   setAltDisplayCurrenciesList(value: Array<string>): void;
   addAltDisplayCurrencies(value: string, index?: number): string;
 
+  hasMiscPreferences(): boolean;
+  clearMiscPreferences(): void;
+  getMiscPreferences(): MiscPreferences | undefined;
+  setMiscPreferences(value?: MiscPreferences): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AppConfiguration.AsObject;
   static toObject(includeInstance: boolean, msg: AppConfiguration): AppConfiguration.AsObject;
@@ -304,6 +335,7 @@ export namespace AppConfiguration {
     accountMixerRequestDefaults?: api_pb.RunAccountMixerRequest.AsObject,
     runAutoBuyerRequestDefaults?: api_pb.RunTicketBuyerRequest.AsObject,
     altDisplayCurrenciesList: Array<string>,
+    miscPreferences?: MiscPreferences.AsObject,
   }
 }
 
@@ -632,4 +664,18 @@ export interface NetworkMap {
 }
 
 export const Network: NetworkMap;
+
+export interface DisplayUnitMap {
+  DCR: 0;
+  ATOMS: 1;
+}
+
+export const DisplayUnit: DisplayUnitMap;
+
+export interface FiatCurrencyMap {
+  USD: 0;
+  EUR: 1;
+}
+
+export const FiatCurrency: FiatCurrencyMap;
 

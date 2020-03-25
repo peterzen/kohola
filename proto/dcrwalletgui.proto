@@ -13,7 +13,7 @@ message GetConfigRequest { bytes passphrase = 1; }
 
 message SetConfigRequest {
   AppConfiguration app_config = 1;
-  bytes passphrase = 2;
+  string passphrase = 2;
 }
 
 message SetConfigResponse {
@@ -68,6 +68,22 @@ message WalletPreferences {
   repeated AccountPreference account_prefs = 2;
 }
 
+enum DisplayUnit {
+  DCR = 0;
+  ATOMS = 1;
+}
+
+enum FiatCurrency {
+  USD = 0;
+  EUR = 1;
+}
+
+message MiscPreferences {
+  DisplayUnit display_unit = 1;
+  FiatCurrency fiat_currency = 2;
+  bool is_config_encrypted = 3;
+}
+
 message AppConfiguration {
   RPCEndpoint dcrd_endpoint = 1;
   repeated GRPCEndpoint wallet_endpoints = 2;
@@ -76,6 +92,7 @@ message AppConfiguration {
   walletrpc.RunAccountMixerRequest account_mixer_request_defaults = 5;
   walletrpc.RunTicketBuyerRequest run_auto_buyer_request_defaults = 6;
   repeated string alt_display_currencies = 7;
+  MiscPreferences misc_preferences = 8;
 }
 
 

@@ -2,10 +2,12 @@ package main
 
 import (
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"log"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
 	"runtime"
@@ -26,10 +28,6 @@ func main() {
 	WalletAPIInit()
 
 	launchUI(func(ui lorca.UI) {
-		err := gui.LoadConfig()
-		if err != nil {
-			log.Fatalf("Error in LoadConfig: %#v", err)
-		}
 
 		bindUIAPI(ui)
 
@@ -60,6 +58,7 @@ func launchUI(callbackFn func(lorca.UI)) {
 	}
 	defer ui.Close()
 
+	loadConfig(ui)
 	callbackFn(ui)
 
 	f, errIndexFile := pkger.Open("/www/index.html")
@@ -113,9 +112,26 @@ func bindUIAPI(ui lorca.UI) {
 		request := &gui.SetConfigRequest{}
 		bytes, err := hex.DecodeString(requestAsHex)
 		err = proto.Unmarshal(bytes, request)
-		gui.SetConfig(request.AppConfig)
+		currentIsConfigEncrypted := gui.GetConfig().GetMiscPreferences().GetIsConfigEncrypted()
+		requestedIsConfigEncrypted := request.AppConfig.GetMiscPreferences().GetIsConfigEncrypted()
+		passphrase := request.GetPassphrase()
 
+		if !currentIsConfigEncrypted && requestedIsConfigEncrypted {
+			fmt.Println("Turning on encryption")
+			gui.SetPassphrase(passphrase)
+		} else if currentIsConfigEncrypted && !requestedIsConfigEncrypted {
+			fmt.Println("Turning off encryption")
+			if passphrase != gui.GetPassphrase() {
+				fmt.Println("Error: invalid passphrase")
+				r.Err = errors.New("invalid passphrase")
+				return r
+			}
+			gui.SetPassphrase("")
+		}
+
+		gui.SetConfig(request.AppConfig)
 		err = gui.WriteConfig()
+
 		if err != nil {
 			r.Err = err
 			return r
@@ -134,6 +150,76 @@ func bindUIAPI(ui lorca.UI) {
 	exchangeratebot.ExportExchangeRateAPI(ui)
 	ExportStakingHistoryAPI(ui)
 	ExportDcrdataAPI(ui)
+}
+
+func loadConfig(ui lorca.UI) {
+	err := gui.LoadConfig()
+	if err != nil {
+		result := make(chan bool)
+		go func() {
+			ui.Load("data:text/html," + url.PathEscape(`
+			<html lang="en">
+				<head>
+					<title>dcrwalletgui</title>
+					<meta name="viewport" content="width=device-width">
+					<link rel=icon href=data:,>
+				</head>
+				<style>
+					.password {
+						font-size: 40px;
+						margin: 50px auto;
+						display: block;
+						padding: 20px;
+						outline-width: 0;
+					}
+					::placeholder { 
+						color: lightgrey;
+					}				
+					.error {
+						color: red;
+						border: 2px solid red;
+					}
+					.success {
+						color: green;
+						border: 2px solid lightgreen;
+					}					
+				</style>
+				<script>
+					document.addEventListener('DOMContentLoaded', function(event) {
+  						var passwordInput = document.getElementById("passphrase");
+						passwordInput.addEventListener("keydown", function (e) {
+							document.getElementById('passphrase').className = 'password'
+							if (e.keyCode === 13) {
+								submitPassword();
+							}
+						});
+						passwordInput.focus();					
+					})
+					const submitPassword = () => onPassphraseSubmit(document.getElementById('passphrase').value);
+					const showError = () =>	document.getElementById('passphrase').className = 'password error';
+					const showSuccess = () => document.getElementById('passphrase').className = 'password success';
+				</script>
+				<body>
+					<input class="password" type="password" id="passphrase" placeholder="Enter your passphrase"/>
+				</body>
+			</html>
+			`))
+
+			ui.Bind("onPassphraseSubmit", func(passphrase string) {
+				gui.SetPassphrase(passphrase)
+				err := gui.LoadConfig()
+				if err != nil {
+					ui.Eval(`showError()`)
+				} else {
+					ui.Eval(`showSuccess()`)
+					result <- true
+				}
+			})
+		}()
+		<-result
+	} else if err != nil {
+		log.Fatalf("Error in LoadConfig: %#v", err)
+	}
 }
 
 func showDialog() {
