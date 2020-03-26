@@ -3,6 +3,7 @@ import { connectRouter } from 'connected-react-router'
 
 import app from '../features/app/appSlice'
 import mixer from '../features/privacy/mixerSlice'
+import trezor from '../features/trezor/trezorSlice'
 import market from '../features/market/marketSlice'
 import staking from '../features/staking/stakingSlice'
 import accounts from '../features/balances/accountSlice'
@@ -18,6 +19,7 @@ export default function createRootReducer(history: History<History.PoorMansUnkno
 		router: connectRouter(history),
 		app,
 		mixer,
+		trezor,
 		market,
 		staking,
 		accounts,

@@ -9,6 +9,7 @@ import { Alert, Tabs, Tab, Card } from 'react-bootstrap';
 import { saveConfigurationAttempt, IAppConfigurationState } from '../features/appconfiguration/settingsSlice';
 import AccountsSetup from '../features/balances/AccountsSetup';
 import Preferences from '../features/appconfiguration/Preferences';
+import TrezorSettings from '../features/trezor/TrezorSettings'
 
 class SettingsContainer extends React.Component<Props> {
 
@@ -18,7 +19,11 @@ class SettingsContainer extends React.Component<Props> {
 				{this.props.setConfigError != null && (
 					<Alert variant="danger">{this.props.setConfigError}</Alert>
 				)}
-				<Tabs defaultActiveKey="accounts" id="appconfiguration-tabs">
+				<Tabs
+					mountOnEnter={true}
+					unmountOnExit={true}
+					defaultActiveKey="accounts"
+					id="appconfiguration-tabs">
 					<Tab eventKey="accounts" title="Accounts">
 						<Card>
 							<Card.Body>
@@ -30,6 +35,13 @@ class SettingsContainer extends React.Component<Props> {
 						<Card>
 							<Card.Body>
 								<Preferences />
+							</Card.Body>
+						</Card>
+					</Tab>
+					<Tab eventKey="trezor" title="Trezor settings">
+						<Card>
+							<Card.Body>
+								<TrezorSettings />
 							</Card.Body>
 						</Card>
 					</Tab>
