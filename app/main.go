@@ -98,7 +98,8 @@ func bindUIAPI(ui lorca.UI) {
 		ui.Close()
 	})
 
-	ui.Bind("walletgui__GetConfig", func() (r gui.LorcaMessage) {
+	ui.Bind("walletgui__GetConfig", func(decryptionKey string) (r gui.LorcaMessage) {
+		log.Printf("got decryptionkey %s", decryptionKey)
 		// signal the UI that the configuration is empty, needs initial setup
 		if !gui.HaveConfig() {
 			r.Payload = nil

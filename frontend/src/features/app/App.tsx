@@ -25,6 +25,7 @@ import Login from '../../containers/Login';
 import { bounceTransition, mapStyles } from './routeSwitchAnimations';
 import AppProgressIndicator from './AppProgressIndicator';
 import AppSidebar from './fixtures/AppSidebar';
+import ConfigDecryptContainer from '../appconfiguration/ConfigDecryptDialog';
 
 
 const devMonitorEnabled = false
@@ -57,11 +58,13 @@ class App extends React.Component<Props>{
 								<Route path="/wallet" component={Wallet} />
 								<Route path="/mixing" component={Mixing} />
 								<Route path="/market" component={Market} />
-								<Route exact path="/" component={Login} />
+								<Route path="/login" component={Login} />
+								<Route exact path="/" component={NoRouteMatch} />
 								<Route component={NoRouteMatch} />
 							</AnimatedSwitch>
 						</Container>
 						{this.props.showProgress && <AppProgressIndicator />}
+						<ConfigDecryptContainer/>
 					</AppSidebar>
 				</main>
 			</ConnectedRouter>
