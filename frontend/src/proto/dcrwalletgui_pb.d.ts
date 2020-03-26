@@ -249,7 +249,7 @@ export namespace WalletPreferences {
   }
 }
 
-export class MiscPreferences extends jspb.Message {
+export class UIPreferences extends jspb.Message {
   getDisplayUnit(): DisplayUnitMap[keyof DisplayUnitMap];
   setDisplayUnit(value: DisplayUnitMap[keyof DisplayUnitMap]): void;
 
@@ -260,16 +260,16 @@ export class MiscPreferences extends jspb.Message {
   setIsConfigEncrypted(value: boolean): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): MiscPreferences.AsObject;
-  static toObject(includeInstance: boolean, msg: MiscPreferences): MiscPreferences.AsObject;
+  toObject(includeInstance?: boolean): UIPreferences.AsObject;
+  static toObject(includeInstance: boolean, msg: UIPreferences): UIPreferences.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: MiscPreferences, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): MiscPreferences;
-  static deserializeBinaryFromReader(message: MiscPreferences, reader: jspb.BinaryReader): MiscPreferences;
+  static serializeBinaryToWriter(message: UIPreferences, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UIPreferences;
+  static deserializeBinaryFromReader(message: UIPreferences, reader: jspb.BinaryReader): UIPreferences;
 }
 
-export namespace MiscPreferences {
+export namespace UIPreferences {
   export type AsObject = {
     displayUnit: DisplayUnitMap[keyof DisplayUnitMap],
     fiatCurrency: FiatCurrencyMap[keyof FiatCurrencyMap],
@@ -311,10 +311,10 @@ export class AppConfiguration extends jspb.Message {
   setAltDisplayCurrenciesList(value: Array<string>): void;
   addAltDisplayCurrencies(value: string, index?: number): string;
 
-  hasMiscPreferences(): boolean;
-  clearMiscPreferences(): void;
-  getMiscPreferences(): MiscPreferences | undefined;
-  setMiscPreferences(value?: MiscPreferences): void;
+  hasUiPreferences(): boolean;
+  clearUiPreferences(): void;
+  getUiPreferences(): UIPreferences | undefined;
+  setUiPreferences(value?: UIPreferences): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AppConfiguration.AsObject;
@@ -335,7 +335,7 @@ export namespace AppConfiguration {
     accountMixerRequestDefaults?: api_pb.RunAccountMixerRequest.AsObject,
     runAutoBuyerRequestDefaults?: api_pb.RunTicketBuyerRequest.AsObject,
     altDisplayCurrenciesList: Array<string>,
-    miscPreferences?: MiscPreferences.AsObject,
+    uiPreferences?: UIPreferences.AsObject,
   }
 }
 

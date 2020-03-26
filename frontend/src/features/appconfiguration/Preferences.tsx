@@ -2,127 +2,19 @@ import _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { Form, Row, Col, Button } from 'react-bootstrap';
-import { MiscPreferences } from '../../proto/dcrwalletgui_pb';
+import { Form, Row, Col } from 'react-bootstrap';
+import { UIPreferences } from '../../proto/dcrwalletgui_pb';
 import { AppError, IApplicationState, AppDispatch } from '../../store/types';
-import GenericModal, { GenericModalProps } from '../../components/Shared/GenericModal';
 
-import { saveConfigurationAttempt, getMiscPreferences, updateMiscPreferences } from './settingsSlice';
+import { saveConfigurationAttempt, getUiPreferences, updateUiPreferences } from './settingsSlice';
 import { DisplayUnit, FiatCurrency} from '../../constants';
-
-export class GetPassphraseForConfigEncryptionModal extends React.Component<GenericModalProps & OwnPropsModal, InternalStateModal>{
-	constructor(props: GenericModalProps & OwnPropsModal) {
-		super(props)
-		this.state = {
-			passphrasesAreNotTheSameErrorMsg: "",
-			passphraseInnerRef: React.createRef()
-		}
-	}
-
-	render() {
-		return (
-			<GenericModal
-				title={this.props.title}
-				show={this.props.show}
-				onEntered={_.bind(this.onEntered, this)}
-				onHide={this.props.onHide}
-			>
-				<Form>
-					<Form.Group>
-						<Form.Control
-							required
-							ref={this.state.passphraseInnerRef}
-							autoComplete="off"
-							name="passphrase"
-							type="password"
-							onFocus={_.bind(this.handleFocus, this)}
-							placeholder="New passphrase"
-							defaultValue="" />
-						{this.props.passphraseModalNeedVerify && 
-							<Form.Control
-								required
-								autoComplete="off"
-								name="verifyPassphrase"
-								type="password"
-								placeholder="Verify passphrase"
-								onFocus={_.bind(this.handleFocus, this)}
-								defaultValue="" />
-						}
-						<span className="help-block">{this.state.passphrasesAreNotTheSameErrorMsg}</span>
-					</Form.Group>
-					<Form.Group>
-						<div className="text-right pr-4">
-							<Button
-								variant="secondary"
-								onClick={this.props.onHide}
-							>
-								Cancel
-							</Button>
-							<Button
-								type="submit"
-								onClick={_.bind(this.handleFormSubmit, this)}
-								variant="primary">
-								Submit
-							</Button>														
-						</div>
-
-					</Form.Group>
-				</Form>
-			</GenericModal>
-		)
-	}
-	
-	handleFocus(e: React.FormEvent<HTMLFormElement>) {
-		this.setState({
-			passphrasesAreNotTheSameErrorMsg: ""
-		})		
-	}
-
-	onEntered() {
-		this.state.passphraseInnerRef.current.focus();
-	}	
-	
-	handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
-		e.stopPropagation();
-		e.preventDefault();
-
-		this.setState({
-			passphrasesAreNotTheSameErrorMsg: ""
-		})
-
-		const passphrase = e.currentTarget.form.elements.passphrase.value;
-
-		if (this.props.passphraseModalNeedVerify) {
-			const verifyPassphrase = e.currentTarget.form.elements.verifyPassphrase.value;
-
-			if (passphrase != verifyPassphrase) {
-				this.setState({
-					passphrasesAreNotTheSameErrorMsg: "Your new passphrase is not the same as the verify passphrase"
-				})
-			} else {
-				this.props.passphraseModalCallback(passphrase)
-			}
-		} else {
-			this.props.passphraseModalCallback(passphrase)
-		}
-	}
-}
-
-interface InternalStateModal {
-	passphrasesAreNotTheSameErrorMsg: string
-	passphraseInnerRef: React.RefObject<any>
-}
-
-interface OwnPropsModal {
-	passphraseModalCallback: ((result: string) => void)
-	passphraseModalNeedVerify: boolean
-}
+import { GetPassphraseForConfigEncryptionModal } from './GetPassphraseForConfigEncryptionModal';
 
 class Preferences extends React.Component<Props, InternalState>  {
 	constructor(props: Props) {
 		super(props)
 		this.state = {
-			miscPreferences: props.miscPreferences,
+			uiPreferences: props.uiPreferences,
 			showPassphraseModal: false,
 			passphraseModalCallback: (result: string) => {},
 			passphraseModalNeedVerify: false
@@ -130,10 +22,10 @@ class Preferences extends React.Component<Props, InternalState>  {
 	}
 
 	render() {
-		const miscPreferences = this.state.miscPreferences;
-		const displayUnit = miscPreferences.getDisplayUnit();
-		const fiatCurrency = miscPreferences.getFiatCurrency();
-		const isConfigEncrypted = miscPreferences.getIsConfigEncrypted();
+		const uiPreferences = this.state.uiPreferences;
+		const displayUnit = uiPreferences.getDisplayUnit();
+		const fiatCurrency = uiPreferences.getFiatCurrency();
+		const isConfigEncrypted = uiPreferences.getIsConfigEncrypted();
 
 		return (
 			<Form>
@@ -209,21 +101,21 @@ class Preferences extends React.Component<Props, InternalState>  {
 	}
 
 	updateDisplayUnit(displayUnit: DisplayUnit) {
-		const miscPreferences = this.state.miscPreferences;
-		miscPreferences?.setDisplayUnit(displayUnit);
+		const uiPreferences = this.state.uiPreferences;
+		uiPreferences?.setDisplayUnit(displayUnit);
 		this.setState({
-			miscPreferences: miscPreferences
+			uiPreferences: uiPreferences
 		})
-		this.props.updateMiscPreferences(miscPreferences);
+		this.props.updateUiPreferences(uiPreferences);
 	}
 
 	updateFiatCurrency(fiatCurrency: FiatCurrency) {
-		const miscPreferences = this.state.miscPreferences;
-		miscPreferences?.setFiatCurrency(fiatCurrency);
+		const uiPreferences = this.state.uiPreferences;
+		uiPreferences?.setFiatCurrency(fiatCurrency);
 		this.setState({
-			miscPreferences: miscPreferences
+			uiPreferences: uiPreferences
 		})
-		this.props.updateMiscPreferences(miscPreferences);
+		this.props.updateUiPreferences(uiPreferences);
 	}
 
 	updateIsConfigEncrypted(isConfigEncrypted: boolean) {
@@ -231,12 +123,12 @@ class Preferences extends React.Component<Props, InternalState>  {
 		const done = (passphrase: string) => {
 			this.hidePassphraseModal()
 		
-			const miscPreferences = this.state.miscPreferences;
-			miscPreferences?.setIsConfigEncrypted(isConfigEncrypted);
+			const uiPreferences = this.state.uiPreferences;
+			uiPreferences?.setIsConfigEncrypted(isConfigEncrypted);
 			this.setState({
-				miscPreferences: miscPreferences
+				uiPreferences: uiPreferences
 			})
-			this.props.updateMiscPreferences(miscPreferences, passphrase);
+			this.props.updateUiPreferences(uiPreferences, passphrase);
 		}
 
 		this.showPassphraseModal(done, isConfigEncrypted)
@@ -259,12 +151,12 @@ class Preferences extends React.Component<Props, InternalState>  {
 }
 
 interface OwnProps {
-	miscPreferences: MiscPreferences
+	uiPreferences: UIPreferences
 	setConfigError: AppError | null
 }
 
 interface InternalState {
-	miscPreferences: MiscPreferences,
+	uiPreferences: UIPreferences,
 	showPassphraseModal: boolean,
 	passphraseModalCallback: ((result: string) => void),
 	passphraseModalNeedVerify: boolean
@@ -272,7 +164,7 @@ interface InternalState {
 
 const mapStateToProps = function (state: IApplicationState): OwnProps {
 	return {
-		miscPreferences: getMiscPreferences(state.appconfiguration),
+		uiPreferences: getUiPreferences(state.appconfiguration),
 		setConfigError: state.appconfiguration.setConfigError,
 	}
 }
@@ -280,13 +172,13 @@ const mapStateToProps = function (state: IApplicationState): OwnProps {
 type Props = OwnProps & DispatchProps
 
 interface DispatchProps {
-	updateMiscPreferences: (miscPreferences: MiscPreferences, passphrase?: string) => void
+	updateUiPreferences: (uiPreferences: UIPreferences, passphrase?: string) => void
 }
 
 const mapDispatchToProps = (dispatch: AppDispatch) => {
 	return {
-		updateMiscPreferences: (miscPreferences: MiscPreferences, passphrase?: string) => {
-			dispatch(updateMiscPreferences({ miscPreferences: miscPreferences }))
+		updateUiPreferences: (uiPreferences: UIPreferences, passphrase?: string) => {
+			dispatch(updateUiPreferences({ uiPreferences: uiPreferences }))
 			dispatch(saveConfigurationAttempt(passphrase))
 		}
 	}

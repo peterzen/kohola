@@ -78,7 +78,7 @@ enum FiatCurrency {
   EUR = 1;
 }
 
-message MiscPreferences {
+message UIPreferences {
   DisplayUnit display_unit = 1;
   FiatCurrency fiat_currency = 2;
   bool is_config_encrypted = 3;
@@ -92,7 +92,7 @@ message AppConfiguration {
   walletrpc.RunAccountMixerRequest account_mixer_request_defaults = 5;
   walletrpc.RunTicketBuyerRequest run_auto_buyer_request_defaults = 6;
   repeated string alt_display_currencies = 7;
-  MiscPreferences misc_preferences = 8;
+  UIPreferences ui_preferences = 8;
 }
 
 

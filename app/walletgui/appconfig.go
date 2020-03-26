@@ -8,14 +8,18 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
+	"net/url"
 	"os"
 	"path/filepath"
 
 	"github.com/decred/dcrd/dcrutil/v3"
 	proto "github.com/golang/protobuf/proto"
+	"github.com/zserge/lorca"
 )
 
 var (
@@ -23,7 +27,7 @@ var (
 	defaultConfigFile = filepath.Join("./", "dcrwalletgui.json")
 	configFilePath    = filepath.Join(appDataDir, defaultConfigFile)
 	cfg               = newConfig()
-	passphrase        = ""
+	savedPassphrase   = ""
 
 	defaultConfig = &AppConfiguration{
 		DcrdEndpoint: &RPCEndpoint{
@@ -70,26 +74,87 @@ func SetConfig(c *AppConfiguration) {
 	cfg = c
 }
 
-// GetPassphrase returns the current passphrease for config encryption
-func GetPassphrase() string {
-	return passphrase
-}
-
-// SetPassphrase changes the current passphrease for config encryption
-func SetPassphrase(p string) {
-	passphrase = p
-}
-
 // GetConfigMarshaled return a marshaled copy of the configuration
 func GetConfigMarshaled() ([]byte, error) {
 	b, err := proto.Marshal(cfg)
 	return b, err
 }
 
-// LoadConfig reads the config file into AppConfiguration struct
-func LoadConfig() error {
+// LoadConfig try to load the config file into AppConfiguration struct
+// If it is secured with a passphrase, requested it from user
+func LoadConfig(ui lorca.UI) {
+	err := ReadConfig("")
+	if err != nil {
+		result := make(chan bool)
+		go func() {
+			ui.Load("data:text/html," + url.PathEscape(`
+			<html lang="en">
+				<head>
+					<title>dcrwalletgui</title>
+					<meta name="viewport" content="width=device-width">
+					<link rel=icon href=data:,>
+				</head>
+				<style>
+					.password {
+						font-size: 40px;
+						margin: 50px auto;
+						display: block;
+						padding: 20px;
+						outline-width: 0;
+					}
+					::placeholder { 
+						color: lightgrey;
+					}				
+					.error {
+						color: red;
+						border: 2px solid red;
+					}
+					.success {
+						color: green;
+						border: 2px solid lightgreen;
+					}					
+				</style>
+				<script>
+					document.addEventListener('DOMContentLoaded', function(event) {
+  						var passwordInput = document.getElementById("passphrase");
+						passwordInput.addEventListener("keydown", function (e) {
+							document.getElementById('passphrase').className = 'password'
+							if (e.keyCode === 13) {
+								submitPassword();
+							}
+						});
+						passwordInput.focus();					
+					})
+					const submitPassword = () => onPassphraseSubmit(document.getElementById('passphrase').value);
+					const showError = () =>	document.getElementById('passphrase').className = 'password error';
+					const showSuccess = () => document.getElementById('passphrase').className = 'password success';
+				</script>
+				<body>
+					<input class="password" type="password" id="passphrase" placeholder="Enter your passphrase"/>
+				</body>
+			</html>
+			`))
+
+			ui.Bind("onPassphraseSubmit", func(passphrase string) {
+				err := ReadConfig(passphrase)
+				if err != nil {
+					ui.Eval(`showError()`)
+				} else {
+					ui.Eval(`showSuccess()`)
+					result <- true
+				}
+			})
+		}()
+		<-result
+	} else if err != nil {
+		log.Fatalf("Error in LoadConfig: %#v", err)
+	}
+}
+
+// ReadConfig reads the config file into AppConfiguration struct
+func ReadConfig(passphrase string) error {
 	if !fileExists(configFilePath) {
-		err := WriteConfig()
+		err := WriteConfig("")
 		if err != nil {
 			log.Printf("Unable to create default configuration %s: %s", configFilePath, err)
 			return err
@@ -119,11 +184,12 @@ func LoadConfig() error {
 			return err
 		}
 	}
+	savedPassphrase = passphrase
 	return nil
 }
 
 // WriteConfig writes out the configuration into the config file
-func WriteConfig() error {
+func WriteConfig(passphrase string) error {
 	// Create the destination directory if it does not exist
 	err := os.MkdirAll(appDataDir, 0700)
 	if err != nil {
@@ -154,6 +220,7 @@ func WriteConfig() error {
 			return err
 		}
 	}
+	savedPassphrase = passphrase
 	return nil
 }
 
@@ -204,4 +271,60 @@ func decrypt(data []byte, passphrase string) ([]byte, error) {
 		return nil, err
 	}
 	return plaintext, nil
+}
+
+// ExportConfigAPI exports functions to the UI
+func ExportConfigAPI(ui lorca.UI) {
+	ui.Bind("walletgui__GetConfig", func() (r LorcaMessage) {
+		// signal the UI that the configuration is empty, needs initial setup
+		if !HaveConfig() {
+			r.Payload = nil
+			r.Err = nil
+			return r
+		}
+		r.Payload, r.Err = GetConfigMarshaled()
+		return r
+	})
+
+	ui.Bind("walletgui__SetConfig", func(requestAsHex string) (r LorcaMessage) {
+		request := &SetConfigRequest{}
+		bytes, err := hex.DecodeString(requestAsHex)
+		err = proto.Unmarshal(bytes, request)
+		requestedIsConfigEncrypted := request.AppConfig.GetUiPreferences().GetIsConfigEncrypted()
+
+		// if attempting to change IsConfigEncrypted flag
+		if GetConfig().GetUiPreferences().GetIsConfigEncrypted() != requestedIsConfigEncrypted {
+			passphrase := request.GetPassphrase()
+			if passphrase == "" {
+				r.Err = errors.New("missing passphrase parameter")
+				return r
+			}
+			if requestedIsConfigEncrypted {
+				fmt.Println("Turning on encryption using passphrase parameter")
+				SetConfig(request.AppConfig)
+				err = WriteConfig(passphrase)
+			} else {
+				// attempting to reload config file using the given passphrase
+				err := ReadConfig(passphrase)
+				if err != nil {
+					r.Err = errors.New("invalid passphrase")
+					return r
+				}
+				fmt.Println("Turning off encryption")
+				SetConfig(request.AppConfig)
+				err = WriteConfig("")
+			}
+		} else {
+			SetConfig(request.AppConfig)
+			err = WriteConfig(savedPassphrase)
+		}
+
+		if err != nil {
+			fmt.Println("ERROR: ", err)
+			r.Err = err
+			return r
+		}
+
+		return r
+	})
 }

@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { createSlice, PayloadAction, ActionCreator, Dispatch } from '@reduxjs/toolkit'
 import { AppError, IGetState, IApplicationState, AppDispatch } from '../../store/types';
-import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences, MiscPreferences } from '../../proto/dcrwalletgui_pb';
+import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences, UIPreferences } from '../../proto/dcrwalletgui_pb';
 import { DisplayUnit } from '../../constants';
 import AppBackend from '../../middleware/appbackend';
 import { getConnectedEndpoint, getConnectedEndpointId } from '../app/appSlice';
@@ -56,8 +56,8 @@ const settingsSlice = createSlice({
 				updateObjectInList(state.appConfig.getWalletPreferencesList(), walletPrefs, "walletEndpointId")
 			)
 		},
-		updateMiscPreferences(state, action: PayloadAction<{ miscPreferences: MiscPreferences}>) {
-			state.appConfig.setMiscPreferences(action.payload.miscPreferences)
+		updateUiPreferences(state, action: PayloadAction<{ uiPreferences: UIPreferences}>) {
+			state.appConfig.setUiPreferences(action.payload.uiPreferences)
 		},				
 		updateEndpoint(state, action: PayloadAction<GRPCEndpoint>) {
 			const endpoint = action.payload
@@ -92,7 +92,7 @@ export const {
 	getConfigFailed,
 
 	setAccountPreference,
-	updateMiscPreferences,
+	updateUiPreferences,
 	updateEndpoint,
 	deleteEndpoint,
 	setDefaultEndpoint,
@@ -195,6 +195,6 @@ export const getWalletEndpoints = (state: IApplicationState) => {
 	return state.appconfiguration.appConfig.getWalletEndpointsList()
 }
 
-export const getMiscPreferences = (appConfigurationState: IAppConfigurationState) => {
-	return appConfigurationState.appConfig.getMiscPreferences() || new MiscPreferences()
+export const getUiPreferences = (appConfigurationState: IAppConfigurationState) => {
+	return appConfigurationState.appConfig.getUiPreferences() || new UIPreferences()
 }
