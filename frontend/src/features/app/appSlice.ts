@@ -128,11 +128,11 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 		dispatch(connectWalletAttempting())
 		try {
 			const connectedEndpoint = await AppBackend.connectWalletEndpoint(endpoint.getId())
-			dispatch(connectWalletSuccess(connectedEndpoint))
+			await dispatch(connectWalletSuccess(connectedEndpoint))
 			dispatch(initializeStore())
 				.then(() => {
 					setTimeout(() => {
-						history.push("/wallet")
+						// history.push("/wallet")
 						setTimeout(() => {
 							dispatch(showProgressbar(false))
 							dispatch(setWalletOpened())
