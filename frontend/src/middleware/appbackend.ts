@@ -12,7 +12,20 @@ import { AppError } from "../store/types";
 const w = (window as any)
 
 const AppBackend = {
-	fetchAppConfig: endpointFactory("walletgui__GetConfig", AppConfiguration),
+	fetchAppConfig: async function (decryptionKey: string) {
+
+		try {
+			const r = await w.walletgui__GetConfig(decryptionKey)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return AppConfiguration.deserializeBinary(r.payload)
+		}
+		catch (e) {
+			console.error("Serialization error", e)
+			throw e
+		}
+	},
 
 	setAppConfig: async function (appConfig: AppConfiguration, passphrase?: string) {
 
