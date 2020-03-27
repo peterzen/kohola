@@ -118,7 +118,7 @@ export default appSlice.reducer
 
 export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppThunk => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
-		
+
 		dispatch(disconnectWallet())
 		dispatch(showProgressbar(true))
 
@@ -132,7 +132,7 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 			dispatch(initializeStore())
 				.then(() => {
 					setTimeout(() => {
-						history.push("/wallet")
+						history.location.pathname == "/login" && history.push("/wallet")
 						setTimeout(() => {
 							dispatch(showProgressbar(false))
 							dispatch(setWalletOpened())
@@ -146,6 +146,7 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 				})
 		}
 		catch (error) {
+			history.replace("/login")
 			dispatch(connectWalletFailed(error))
 			dispatch(showProgressbar(false))
 		}

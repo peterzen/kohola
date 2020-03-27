@@ -56,7 +56,7 @@ class EndpointSelectDropdown extends React.Component<Props>{
 							)
 						})}
 						<NavDropdown.Divider />
-						<NavDropdown.Item href="/#">
+						<NavDropdown.Item href="/#login">
 							<span>
 								<FontAwesomeIcon icon={faCog} className="text-muted" />&nbsp;
 								Manage connections...

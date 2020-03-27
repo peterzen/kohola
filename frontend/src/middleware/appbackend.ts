@@ -45,7 +45,7 @@ const AppBackend = {
 			return GRPCEndpoint.deserializeBinary(r.payload)
 		}
 		catch (err) {
-			throw new AppError(0, err)
+			throw new AppError(0, "Cannot connect to endpoint")
 		}
 	},
 }
