@@ -60,7 +60,7 @@ class App extends React.Component<Props>{
 								<Route path="/mixing" component={Mixing} />
 								<Route path="/market" component={Market} />
 								<Route path="/login" component={Login} />
-								<Route exact path="/" component={NoRouteMatch} />
+								<Route exact path="/" component={Welcome} />
 								<Route component={NoRouteMatch} />
 							</AnimatedSwitch>
 						</Container>
