@@ -3941,7 +3941,8 @@ proto.walletgui.StakingHistory.StakingHistoryLineItem.toObject = function(includ
     ticketCostCredit: jspb.Message.getFieldWithDefault(msg, 3, 0),
     ticketCostDebit: jspb.Message.getFieldWithDefault(msg, 4, 0),
     feeDebit: jspb.Message.getFieldWithDefault(msg, 5, 0),
-    timestamp: jspb.Message.getFieldWithDefault(msg, 6, 0)
+    timestamp: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    txHash: msg.getTxHash_asB64()
   };
 
   if (includeInstance) {
@@ -4001,6 +4002,10 @@ proto.walletgui.StakingHistory.StakingHistoryLineItem.deserializeBinaryFromReade
     case 6:
       var value = /** @type {number} */ (reader.readInt64());
       msg.setTimestamp(value);
+      break;
+    case 7:
+      var value = /** @type {!Uint8Array} */ (reader.readBytes());
+      msg.setTxHash(value);
       break;
     default:
       reader.skipField();
@@ -4069,6 +4074,13 @@ proto.walletgui.StakingHistory.StakingHistoryLineItem.serializeBinaryToWriter = 
   if (f !== 0) {
     writer.writeInt64(
       6,
+      f
+    );
+  }
+  f = message.getTxHash_asU8();
+  if (f.length > 0) {
+    writer.writeBytes(
+      7,
       f
     );
   }
@@ -4162,6 +4174,45 @@ proto.walletgui.StakingHistory.StakingHistoryLineItem.prototype.getTimestamp = f
 /** @param {number} value */
 proto.walletgui.StakingHistory.StakingHistoryLineItem.prototype.setTimestamp = function(value) {
   jspb.Message.setField(this, 6, value);
+};
+
+
+/**
+ * optional bytes tx_hash = 7;
+ * @return {!(string|Uint8Array)}
+ */
+proto.walletgui.StakingHistory.StakingHistoryLineItem.prototype.getTxHash = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * optional bytes tx_hash = 7;
+ * This is a type-conversion wrapper around `getTxHash()`
+ * @return {string}
+ */
+proto.walletgui.StakingHistory.StakingHistoryLineItem.prototype.getTxHash_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getTxHash()));
+};
+
+
+/**
+ * optional bytes tx_hash = 7;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getTxHash()`
+ * @return {!Uint8Array}
+ */
+proto.walletgui.StakingHistory.StakingHistoryLineItem.prototype.getTxHash_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getTxHash()));
+};
+
+
+/** @param {!(string|Uint8Array)} value */
+proto.walletgui.StakingHistory.StakingHistoryLineItem.prototype.setTxHash = function(value) {
+  jspb.Message.setField(this, 7, value);
 };
 
 
