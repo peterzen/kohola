@@ -7,62 +7,53 @@ import { faEllipsisV } from "@fortawesome/free-solid-svg-icons"
 
 import { IApplicationState } from "../../store/types"
 
-class DeviceOptionsDropdown extends React.Component<Props> {
-    render() {
-        return (
-            <Dropdown
-                alignRight
-                onSelect={(evtKey: string) => this.menuHandler(evtKey)}
-            >
-                <Dropdown.Toggle
-                    id={"trezor-device-options-dropdown"}
-                    className="no-arrow mt-3"
-                >
-                    <div className="text-muted">
-                        <FontAwesomeIcon icon={faEllipsisV} />
-                    </div>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item
-                        eventKey={
-                            StakingToolsMenuItems[StakingToolsMenuItems.REVOKE]
-                        }
-                        disabled={true}
-                    >
-                        Forget device
-                    </Dropdown.Item>
 
-                    <Dropdown.Item
-                        eventKey={
-                            StakingToolsMenuItems[StakingToolsMenuItems.REVOKE]
-                        }
-                        disabled={true}
-                    >
-                        Settings...
-                    </Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-        )
-    }
-    menuHandler(evtKey: string) {
-        // switch (evtKey) {
-        // 	case StakingToolsMenuItems[StakingToolsMenuItems.REVOKE]:
-        // 		askPassphrase()
-        // 			.then((passphrase) => {
-        // 				if (passphrase == "") {
-        // 					throw "empty passphrase"
-        // 				}
-        // 				this.props.revokeExpiredTickets(passphrase)
-        // 			})
-        // }
-    }
+class DeviceOptionsDropdown extends React.Component<Props>{
+	render() {
+		return (
+			<Dropdown
+				alignRight
+				onSelect={(evtKey: string) => this.props.menuHandler(evtKey)}>
+				<Dropdown.Toggle id={"trezor-device-options-dropdown"} className="no-arrow">
+					<div className="text-muted">
+						<FontAwesomeIcon icon={faEllipsisV} />
+					</div>
+				</Dropdown.Toggle>
+				<Dropdown.Menu
+				>
+					<Dropdown.Item
+						eventKey={MenuItems[MenuItems.CONNECT]}
+						disabled={false}>
+						Connect
+					</Dropdown.Item>
+
+					<Dropdown.Item
+						eventKey={MenuItems[MenuItems.FORGET_DEVICE]}
+						disabled={true}>
+						Forget device
+					</Dropdown.Item>
+
+					<Dropdown.Item
+						eventKey={MenuItems[MenuItems.SETTINGS]}
+						disabled={false}>
+						Settings...
+					</Dropdown.Item>
+				</Dropdown.Menu>
+			</Dropdown>
+		)
+	}
 }
 
-export enum StakingToolsMenuItems {
-    REVOKE,
+export enum MenuItems {
+	CONNECT,
+	FORGET_DEVICE,
+	SETTINGS,
+	CHANGE_LABEL,
 }
 
-interface OwnProps {}
+interface OwnProps {
+	menuHandler:(evtKey:string)=>void
+}
 
 interface DispatchProps {}
 

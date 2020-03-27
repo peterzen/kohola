@@ -10,27 +10,22 @@ import Transports from "trezor-link"
 var BridgeTransportV2 = Transports.BridgeV2
 
 // @ts-ignore
-import { messages, model1_decred_homescreen } from "./constants"
+import { model1_decred_homescreen } from './constants'
 
-import {
-    AppError,
-    AppDispatch,
-    IGetState,
-    AppThunk,
-    IApplicationState,
-} from "../../store/types"
-import { addressPath, WALLET_ACCOUNT, accountPath } from "./helpers"
-import { publishTransactionAttempt } from "../transactions/transactionsSlice"
-import {
-    hexToRaw,
-    str2utf8hex,
-    hex2b64,
-    rawHashToHex,
-    rawToHex,
-} from "../../helpers/byteActions"
-import { ConstructTransactionResponse } from "../../proto/api_pb"
+import { AppError, AppDispatch, IGetState, AppThunk, IApplicationState } from '../../store/types'
+import { addressPath, WALLET_ACCOUNT, accountPath } from './helpers';
+import { publishTransactionAttempt } from '../transactions/transactionsSlice';
+import { hexToRaw, str2utf8hex, hex2b64, rawHashToHex, rawToHex } from '../../helpers/byteActions';
+import { ConstructTransactionResponse } from '../../proto/api_pb';
 
-interface TrezorDevice {}
+// @ts-ignore
+import messages from './messages.json'
+import { Networks, getChainParams } from '../../constants';
+
+interface TrezorDevice {
+
+}
+
 
 export interface ITrezorState {
     readonly error: AppError | null
@@ -255,143 +250,113 @@ export const reloadTrezorDeviceList: ActionCreator<any> = (): AppThunk => {
     }
 }
 
-export const loadDeviceList: ActionCreator<any> = (): AppThunk => {
-    return async (dispatch: AppDispatch, getState: IGetState) => {
-        return new Promise((resolve, reject) => {
-            const { debug, getDeviceListAttempting } = getState().trezor
-            if (getDeviceListAttempting) return
-
-            dispatch(loadDeviceListAttempt())
-
-            // Convert the protocol buffers definition (i.e. the messages of the comm
-            // protocol to the bridge/device) to a string so that the transport can be
-            // configured with it.
-            const config = JSON.stringify(messages)
-
-            // BridgeTransportV2.setFetch(fetch, true)
-            const transport = new BridgeTransportV2(null, null, null)
-            const opts = {
-                debug,
-                debugInfo: debug,
-                config,
-                transport,
-            }
-            const deviceList = new trezorjs.DeviceList(opts)
-
-            console.log("DEVLIST", deviceList)
-            let resolvedTransport = false
-
-            deviceList.on("transport", (t) => {
-                debug && console.log("transport", t)
-                if (resolvedTransport) return
-                resolvedTransport = true // resolved with success
-                dispatch(loadDeviceListSuccess(deviceList))
-                resolve(t)
-            })
-
-            deviceList.on("error", (err) => {
-                debug && console.error("trezor", err)
-                if (
-                    !resolvedTransport &&
-                    err.message.includes("ECONNREFUSED")
-                ) {
-                    resolvedTransport = true // resolved with failure
-                    const appError = new AppError(
-                        50,
-                        "Failed to connect to trezor bridge."
-                    )
-                    dispatch(loadDeviceListFailed(appError))
-                    reject(appError)
-                } else if (err.message.includes("socket hang up")) {
-                    // this might happen any time throughout the app lifetime if the bridge
-                    // service is shutdown for any reason
-                    const error = new AppError(50, "trezor bridge shut down")
-                    dispatch(loadDeviceListTransportLost(error))
-                    dispatch(setTrezorError(error))
-                    // dispatch({ error: err.message, type: TRZ_DEVICELISTTRANSPORT_LOST });
-                } else {
-                    const appError = new AppError(
-                        50,
-                        "Failed to connect to trezor bridge."
-                    )
-                    dispatch(setTrezorError(appError))
-                }
-            })
-
-            deviceList.on("connect", (device) => {
-                debug &&
-                    console.log(
-                        "connect",
-                        Object.keys(deviceList.devices),
-                        device
-                    )
-                const currentDevice = getState().trezor.device
-                if (!currentDevice) {
-                    // first device connected. Use it.
-                    dispatch(selectedDeviceChanged(device))
-                    dispatch(setTrezorError(null))
-                    // dispatch({ device, type: TRZ_SELECTEDDEVICE_CHANGED });
-                    setDeviceListeners(device, dispatch)
-                }
-            })
-
-            deviceList.on("disconnect", (device) => {
-                debug &&
-                    console.log(
-                        "disconnect",
-                        Object.keys(deviceList.devices),
-                        device
-                    )
-                const currentDevice = getState().trezor.device
-                if (
-                    currentDevice &&
-                    device.originalDescriptor.path ===
-                        currentDevice.originalDescriptor.path
-                ) {
-                    const devicePaths = Object.keys(deviceList.devices)
-
-                    // we were using the device that was just disconnected. Pick a new
-                    // device to use.
-                    if (devicePaths.length === 0) {
-                        // no more devices left to use
-                        dispatch(selectedDeviceChanged(null))
-                        // dispatch({ device: null, type: TRZ_SELECTEDDEVICE_CHANGED });
-                    } else {
-                        console.log(
-                            "ondisconnect ",
-                            deviceList.devices[devicePaths[0]]
-                        )
-                        dispatch(
-                            selectedDeviceChanged(
-                                deviceList.devices[devicePaths[0]]
-                            )
-                        )
-                        // dispatch({ device: deviceList.devices[devicePaths[0]], type: TRZ_SELECTEDDEVICE_CHANGED });
-                    }
-                }
-            })
-
-            deviceList.on("connectUnacquired", (device) => {
-                debug && console.log("connect unacquired", device)
-            })
-
-            deviceList.on("disconnectUnacquired", (device) => {
-                debug &&
-                    console.log(
-                        "d.catch(error => dispatch({ error, type: SIGNTX_FAILED }));isconnect unacquired",
-                        device
-                    )
-            })
-        })
-    }
+export const connectDevice: ActionCreator<any> = (device): AppThunk => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
+		dispatch(selectedDeviceChanged(device))
+		dispatch(setTrezorError(null))
+		setDeviceListeners(device, dispatch)
+	}
 }
 
-// export const selectDevice = (path) => async (dispatch, getState) => {
-// 	const devList = getState().trezor.deviceList;
-// 	if (!devList.devices[path]) return;
-// 	dispatch({ device: devList.devices[path], type: TRZ_SELECTEDDEVICE_CHANGED });
-// 	setDeviceListeners(devList.devices[path], dispatch);
-// };
+export const loadDeviceList: ActionCreator<any> = (): AppThunk => {
+	return async (dispatch: AppDispatch, getState: IGetState) => {
+
+		return new Promise((resolve, reject) => {
+
+			const { debug, getDeviceListAttempting } = getState().trezor
+			if (getDeviceListAttempting) return
+
+			dispatch(loadDeviceListAttempt())
+
+			// Convert the protocol buffers definition (i.e. the messages of the comm
+			// protocol to the bridge/device) to a string so that the transport can be
+			// configured with it.
+			// const config = JSON.stringify(messages);
+
+			// BridgeTransportV2.setFetch(fetch, true)
+			const transport = new BridgeTransportV2(null, null, null)
+			const opts = {
+				debug,
+				debugInfo: debug,
+				messages,
+				transport
+			}
+			const deviceList = new trezorjs.DeviceList(opts)
+
+			console.log("DEVLIST", deviceList)
+			let resolvedTransport = false;
+
+			deviceList.on("transport", t => {
+				debug && console.log("transport", t);
+				if (resolvedTransport) return;
+				resolvedTransport = true; // resolved with success
+				dispatch(loadDeviceListSuccess(deviceList));
+				dispatch(setTrezorError(null))
+				resolve(t);
+			});
+
+			deviceList.on("error", err => {
+				debug && console.error("trezor", err);
+				if (!resolvedTransport && err.message.includes("ECONNREFUSED")) {
+					resolvedTransport = true; // resolved with failure
+					const appError = new AppError(50, "Failed to connect to trezor bridge.")
+					dispatch(loadDeviceListFailed(appError))
+					reject(appError)
+				} else if (err.message.includes("socket hang up")) {
+					// this might happen any time throughout the app lifetime if the bridge
+					// service is shutdown for any reason
+					const error = new AppError(50, "trezor bridge shut down")
+					dispatch(loadDeviceListTransportLost(error))
+					dispatch(setTrezorError(error))
+					// dispatch({ error: err.message, type: TRZ_DEVICELISTTRANSPORT_LOST });
+				} else {
+					const appError = new AppError(50, "Failed to connect to trezor bridge.")
+					dispatch(setTrezorError(appError))
+				}
+			});
+
+			deviceList.on("connect", device => {
+				debug && console.log("connect", Object.keys(deviceList.devices), device);
+				const currentDevice = getState().trezor.device
+				if (!currentDevice) {
+					// first device connected. Use it.
+					dispatch(setTrezorError(null))
+					connectDevice(device)
+				}
+			});
+
+			deviceList.on("disconnect", device => {
+				debug && console.log("disconnect", Object.keys(deviceList.devices), device);
+				const currentDevice = getState().trezor.device;
+				if (currentDevice && device.originalDescriptor.path === currentDevice.originalDescriptor.path) {
+					const devicePaths = Object.keys(deviceList.devices);
+
+					// we were using the device that was just disconnected. Pick a new
+					// device to use.
+					if (devicePaths.length === 0) {
+						// no more devices left to use
+						dispatch(selectedDeviceChanged(null))
+						// dispatch({ device: null, type: TRZ_SELECTEDDEVICE_CHANGED });
+					} else {
+						console.log("ondisconnect ", deviceList.devices[devicePaths[0]])
+						dispatch(selectedDeviceChanged(deviceList.devices[devicePaths[0]]))
+						// dispatch({ device: deviceList.devices[devicePaths[0]], type: TRZ_SELECTEDDEVICE_CHANGED });
+					}
+				}
+			});
+
+			deviceList.on("connectUnacquired", device => {
+				debug && console.log("connect unacquired", device);
+			})
+
+			deviceList.on("disconnectUnacquired", device => {
+				debug && console.log("d.catch(error => dispatch({ error, type: SIGNTX_FAILED }));isconnect unacquired", device);
+			})
+
+		})
+	}
+}
+
 
 // @TODO wire this up to toast notifications
 export const alertNoConnectedDevice: ActionCreator<any> = (): AppThunk => {
@@ -411,36 +376,25 @@ interface DeviceInteractionAction {
 }
 
 function setDeviceListeners(device, dispatch: AppDispatch) {
-    device.on(
-        "pin",
-        (pinMessage: string, pinCallBack: DeviceInteractionCallback) => {
-            dispatch(
-                pinRequested({
-                    message: pinMessage,
-                    callback: pinCallBack,
-                })
-            )
-            // dispatch({ pinMessage, pinCallBack, type: TRZ_PIN_REQUESTED });
-        }
-    )
 
-    device.on("passphrase", (passPhraseCallBack: DeviceInteractionCallback) => {
-        dispatch(
-            passphraseRequested({
-                callback: passPhraseCallBack,
-            })
-        )
-        // dispatch({ passPhraseCallBack, type: TRZ_PASSPHRASE_REQUESTED });
-    })
+	device.on("pin", (pinMessage: string, pinCallBack: DeviceInteractionCallback) => {
+		dispatch(pinRequested({
+			message: pinMessage,
+			callback: pinCallBack,
+		}))
+	})
 
-    device.on("word", (wordCallBack: DeviceInteractionCallback) => {
-        dispatch(
-            wordRequested({
-                callback: wordCallBack,
-            })
-        )
-        // dispatch({ wordCallBack, type: TRZ_WORD_REQUESTED });
-    })
+	device.on("passphrase", (passPhraseCallBack: DeviceInteractionCallback) => {
+		dispatch(passphraseRequested({
+			callback: passPhraseCallBack
+		}))
+	})
+
+	device.on("word", (wordCallBack: DeviceInteractionCallback) => {
+		dispatch(wordRequested({
+			callback: wordCallBack
+		}))
+	})
 }
 
 // deviceRun is the main function for executing trezor operations. This handles
@@ -449,56 +403,73 @@ function setDeviceListeners(device, dispatch: AppDispatch) {
 // In general, fn itself shouldn't handle errors, letting this function handle
 // the common cases, which are then propagated up the call stack into fn's
 // parent.
-export const deviceRun: ActionCreator<any> = (device, fn): AppThunk => {
-    return async (dispatch: AppDispatch, getState: IGetState) => {
-        const handleError = (error) => {
-            const {
-                waitingForPin,
-                waitingForPassPhrase,
-                debug,
-            } = getState().trezor
-            debug && console.log("Handle error no deviceRun", error)
-            if (waitingForPin) {
-                // dispatch({ error, type: TRZ_PIN_CANCELED });
-                dispatch(pinCompleted())
-                dispatch(setTrezorError(error))
-            }
-            if (waitingForPassPhrase) {
-                // dispatch({ error, type: TRZ_PASSPHRASE_CANCELED });
-                dispatch(passphraseCompleted())
-                dispatch(setTrezorError(error))
-            }
-            if (error instanceof Error) {
-                if (error.message.includes("Inconsistent state")) {
-                    const appError = new AppError(
-                        50,
-                        "Device returned inconsistent state. Disconnect and reconnect the device."
-                    )
-                    dispatch(setTrezorError(appError))
-                    return appError
-                    // return "Device returned inconsistent state. Disconnect and reconnect the device.";
-                }
-            }
-            dispatch(setTrezorError(error))
-            return error
-        }
+const deviceRun = async (dispatch: AppDispatch, getState: IGetState, device: any, fn) => {
 
-        try {
-            return await device.run(async (session: string) => {
-                try {
-                    return await fn(session)
-                } catch (err) {
-                    // doesn't seem to be reachable by trezor interruptions, but might be
-                    // caused by fn() failing in some other way (even though it's
-                    // recommended not to do (non-trezor) lengthy operations inside fn())
-                    throw handleError(err)
-                }
-            })
-        } catch (outerErr) {
-            throw handleError(outerErr)
-        }
-    }
+	const handleError = error => {
+		const { waitingForPin, waitingForPassPhrase, debug } = getState().trezor
+		debug && console.error("Handle error no deviceRun", error);
+		if (waitingForPin) {
+			// dispatch({ error, type: TRZ_PIN_CANCELED });
+			dispatch(pinCompleted())
+			dispatch(setTrezorError(error))
+		}
+		if (waitingForPassPhrase) {
+			// dispatch({ error, type: TRZ_PASSPHRASE_CANCELED });
+			dispatch(passphraseCompleted())
+			dispatch(setTrezorError(error))
+		}
+		if (error instanceof Error) {
+			if (error.message.includes("Inconsistent state")) {
+				const appError = new AppError(50, "Device returned inconsistent state. Disconnect and reconnect the device.")
+				dispatch(setTrezorError(appError))
+				return appError
+				// return "Device returned inconsistent state. Disconnect and reconnect the device.";
+			}
+		}
+		dispatch(setTrezorError(error))
+		return error
+	}
+
+	try {
+		return await device.run(async (session) => {
+			console.log("deviceRun:::", session)
+			try {
+				return await fn(session)
+			} catch (err) {
+				// doesn't seem to be reachable by trezor interruptions, but might be
+				// caused by fn() failing in some other way (even though it's
+				// recommended not to do (non-trezor) lengthy operations inside fn())
+				throw handleError(err);
+			}
+		})
+	} catch (outerErr) {
+		throw handleError(outerErr);
+	}
 }
+
+type InvokeeFunctionInterface = (dispatch: AppDispatch, getState: IGetState, device: any, payload?: any) => void
+
+const createDeviceRunInvoker = (invokee: InvokeeFunctionInterface) => {
+	const actionCreator: ActionCreator<any> = (payload?: any): AppThunk => {
+		return async (dispatch: AppDispatch, getState: IGetState) => {
+			const device = trezorDevice(getState())
+			if (device == undefined) {
+				dispatch(setTrezorError(new AppError(50, "Device not connected")))
+				return
+			}
+			dispatch(setPerformingOperation(true))
+			try {
+				await invokee(dispatch, getState, device, payload)
+				// @TODO add confirmation message
+				dispatch(setPerformingOperation(false))
+			} catch (error) {
+				dispatch(setTrezorError(error))
+			}
+		}
+	}
+	return actionCreator
+}
+
 
 // Note that calling this function while no pin/passphrase operation is running
 // will attempt to steal the device, cancelling operations from apps *other
@@ -531,6 +502,7 @@ export const cancelCurrentOperation: ActionCreator<any> = (): AppThunk => {
         }
     }
 }
+
 
 // Closes a device session, locking the device (if it requires a pin).
 export const clearDeviceSession: ActionCreator<any> = (): AppThunk => {
@@ -767,393 +739,130 @@ export const walletTxToBtcjsTx: ActionCreator<any> = (
     }
 }
 
-// export const TRZ_TOGGLEPINPROTECTION_ATTEMPT = "TRZ_TOGGLEPINPROTECTION_ATTEMPT";
-// export const TRZ_TOGGLEPINPROTECTION_FAILED = "TRZ_TOGGLEPINPROTECTION_FAILED";
-// export const TRZ_TOGGLEPINPROTECTION_SUCCESS = "TRZ_TOGGLEPINPROTECTION_SUCCESS";
 
-export const togglePinProtection: ActionCreator<any> = (): AppThunk => {
-    return async (dispatch: AppDispatch, getState: IGetState) => {
-        const device = trezorDevice(getState())
-        if (device == undefined) {
-            dispatch(setTrezorError(new AppError(50, "Device not connected")))
-            // dispatch({ error: "Device not connected", type: TRZ_TOGGLEPINPROTECTION_FAILED });
-            return
-        }
+export const togglePinProtection = createDeviceRunInvoker(async (dispatch, getState, device, payload) => {
+	const clearProtection = !!device.features.pin_protection;
+	await deviceRun(dispatch, getState, device, async session => {
+		await session.changePin(clearProtection);
+	})
+})
 
-        const clearProtection = !!device.features.pin_protection
-        dispatch(setPerformingOperation(true))
-        // dispatch({ clearProtection, type: TRZ_TOGGLEPINPROTECTION_ATTEMPT });
+export const togglePassPhraseProtection = createDeviceRunInvoker(async (dispatch, getState, device, payload) => {
+	const enableProtection = !device.features.passphrase_protection;
+	await deviceRun(dispatch, getState, device, async session => {
+		await session.togglePassphrase(enableProtection);
+	})
+})
 
-        try {
-            await deviceRun(dispatch, getState, device, async (session) => {
-                await session.changePin(clearProtection)
-            })
-            // @TODO add confirmation message
-            dispatch(setPerformingOperation(false))
-            // dispatch({ clearProtection, deviceLabel: device.features.label, type: TRZ_TOGGLEPINPROTECTION_SUCCESS });
-        } catch (error) {
-            dispatch(setTrezorError(error))
-            // dispatch({ error, type: TRZ_TOGGLEPINPROTECTION_FAILED });
-        }
-    }
-}
+export const changeToDecredHomeScreen = createDeviceRunInvoker(async (dispatch, getState, device, payload) => {
+	await deviceRun(dispatch, getState, device, async session => {
+		await session.changeHomescreen(model1_decred_homescreen);
+	})
+})
 
-// export const TRZ_TOGGLEPASSPHRASEPROTECTION_ATTEMPT = "TRZ_TOGGLEPASSPHRASEPROTECTION_ATTEMPT";
-// export const TRZ_TOGGLEPASSPHRASEPROTECTION_FAILED = "TRZ_TOGGLEPASSPHRASEPROTECTION_FAILED";
-// export const TRZ_TOGGLEPASSPHRASEPROTECTION_SUCCESS = "TRZ_TOGGLEPASSPHRASEPROTECTION_SUCCESS";
+export const wipeDevice = createDeviceRunInvoker(async (dispatch, getState, device, payload) => {
+	await deviceRun(dispatch, getState, device, async session => {
+		await session.wipeDevice()
+	})
 
-export const togglePassPhraseProtection: ActionCreator<any> = (): AppThunk => {
-    return async (dispatch: AppDispatch, getState: IGetState) => {
-        const device = trezorDevice(getState())
-        if (device == undefined) {
-            dispatch(setTrezorError(new AppError(50, "Device not connected")))
-            // dispatch({ error: "Device not connected", type: TRZ_TOGGLEPINPROTECTION_FAILED });
-            return
-        }
+})
 
-        const enableProtection = !device.features.passphrase_protection
-        dispatch(setPerformingOperation(true))
-        // dispatch({ enableProtection, type: TRZ_TOGGLEPASSPHRASEPROTECTION_ATTEMPT });
+export const recoverDevice = createDeviceRunInvoker(async (dispatch, getState, device, payload) => {
+	await deviceRun(dispatch, getState, device, async session => {
+		const settings = {
+			word_count: 24, // FIXED at 24 (256 bits)
+			passphrase_protection: false,
+			pin_protection: false,
+			label: "New DCR Trezor",
+			dry_run: false
+		};
 
-        try {
-            await deviceRun(dispatch, getState, device, async (session) => {
-                await session.togglePassphrase(enableProtection)
-            })
-            // @TODO add confirmation message
-            dispatch(setPerformingOperation(false))
-            // dispatch({ enableProtection, deviceLabel: device.features.label, type: TRZ_TOGGLEPASSPHRASEPROTECTION_SUCCESS });
-        } catch (error) {
-            dispatch(setTrezorError(error))
-            // dispatch({ error, type: TRZ_TOGGLEPASSPHRASEPROTECTION_FAILED });
-        }
-    }
-}
+		await session.recoverDevice(settings);
+	})
+})
 
-// export const TRZ_CHANGEHOMESCREEN_ATTEMPT = "TRZ_CHANGEHOMESCREEN_ATTEMPT";
-// export const TRZ_CHANGEHOMESCREEN_FAILED = "TRZ_CHANGEHOMESCREEN_FAILED";
-// export const TRZ_CHANGEHOMESCREEN_SUCCESS = "TRZ_CHANGEHOMESCREEN_SUCCESS";
-export const changeToDecredHomeScreen: ActionCreator<any> = (): AppThunk => {
-    return async (dispatch: AppDispatch, getState: IGetState) => {
-        const device = trezorDevice(getState())
-        if (device == undefined) {
-            dispatch(setTrezorError(new AppError(50, "Device not connected")))
-            // dispatch({ error: "Device not connected", type: TRZ_TOGGLEPINPROTECTION_FAILED });
-            return
-        }
 
-        dispatch(setPerformingOperation(true))
 
-        // dispatch({ type: TRZ_CHANGEHOMESCREEN_ATTEMPT });
 
-        try {
-            await deviceRun(dispatch, getState, device, async (session) => {
-                await session.changeHomescreen(model1_decred_homescreen)
-            })
-            // @TODO add confirmation message
-            dispatch(setPerformingOperation(false))
-            // dispatch({ enableProtection, deviceLabel: device.features.label, type: TRZ_TOGGLEPASSPHRASEPROTECTION_SUCCESS });
-        } catch (error) {
-            dispatch(setTrezorError(error))
-            // dispatch({ error, type: TRZ_TOGGLEPASSPHRASEPROTECTION_FAILED });
-        }
-    }
-}
+export const initDevice = createDeviceRunInvoker(async (dispatch, getState, device, payload) => {
+	await deviceRun(dispatch, getState, device, async session => {
+		const settings = {
+			strength: 256, // 24 words
+			passphrase_protection: false,
+			pin_protection: false,
+			label: "New DCR Trezor"
+		};
 
-// export const TRZ_CHANGELABEL_ATTEMPT = "TRZ_CHANGELABEL_ATTEMPT";
-// export const TRZ_CHANGELABEL_FAILED = "TRZ_CHANGELABEL_FAILED";
-// export const TRZ_CHANGELABEL_SUCCESS = "TRZ_CHANGELABEL_SUCCESS";
+		await session.resetDevice(settings);
+	})
+})
 
-export const changeLabel: ActionCreator<any> = (label: string): AppThunk => {
-    return async (dispatch: AppDispatch, getState: IGetState) => {
-        const device = trezorDevice(getState())
-        if (device == undefined) {
-            dispatch(setTrezorError(new AppError(50, "Device not connected")))
-            // dispatch({ error: "Device not connected", type: TRZ_TOGGLEPINPROTECTION_FAILED });
-            return
-        }
 
-        dispatch(setPerformingOperation(true))
 
-        // dispatch({ type: TRZ_CHANGEHOMESCREEN_ATTEMPT });
 
-        try {
-            await deviceRun(dispatch, getState, device, async (session) => {
-                await session.changeLabel(label)
-            })
-            // @TODO add confirmation message
-            dispatch(setPerformingOperation(false))
-            // dispatch({ enableProtection, deviceLabel: device.features.label, type: TRZ_TOGGLEPASSPHRASEPROTECTION_SUCCESS });
-        } catch (error) {
-            dispatch(setTrezorError(error))
-            // dispatch({ error, type: TRZ_TOGGLEPASSPHRASEPROTECTION_FAILED });
-        }
-    }
-}
+export const changeLabel = createDeviceRunInvoker(async (dispatch, getState, device, payload) => {
+	await deviceRun(dispatch, getState, device, async session => {
+		await session.changeLabel(payload);
+	});
+})
 
-// export const TRZ_WIPEDEVICE_ATTEMPT = "TRZ_WIPEDEVICE_ATTEMPT";
-// export const TRZ_WIPEDEVICE_FAILED = "TRZ_WIPEDEVICE_FAILED";
-// export const TRZ_WIPEDEVICE_SUCCESS = "TRZ_WIPEDEVICE_SUCCESS";
-
-export const wipeDevice: ActionCreator<any> = (): AppThunk => {
-    return async (dispatch: AppDispatch, getState: IGetState) => {
-        const device = trezorDevice(getState())
-        if (device == undefined) {
-            dispatch(setTrezorError(new AppError(50, "Device not connected")))
-            // dispatch({ error: "Device not connected", type: TRZ_TOGGLEPINPROTECTION_FAILED });
-            return
-        }
-
-        dispatch(setPerformingOperation(true))
-
-        // dispatch({ type: TRZ_CHANGEHOMESCREEN_ATTEMPT });
-
-        try {
-            await deviceRun(dispatch, getState, device, async (session) => {
-                await session.wipeDevice()
-            })
-            // @TODO add confirmation message
-            dispatch(setPerformingOperation(false))
-            // dispatch({ enableProtection, deviceLabel: device.features.label, type: TRZ_TOGGLEPASSPHRASEPROTECTION_SUCCESS });
-        } catch (error) {
-            dispatch(setTrezorError(error))
-            // dispatch({ error, type: TRZ_TOGGLEPASSPHRASEPROTECTION_FAILED });
-        }
-    }
-}
-
-// export const TRZ_RECOVERDEVICE_ATTEMPT = "TRZ_RECOVERDEVICE_ATTEMPT";
-// export const TRZ_RECOVERDEVICE_FAILED = "TRZ_RECOVERDEVICE_FAILED";
-// export const TRZ_RECOVERDEVICE_SUCCESS = "TRZ_RECOVERDEVICE_SUCCESS";
-
-export const recoverDevice: ActionCreator<any> = (): AppThunk => {
-    return async (dispatch: AppDispatch, getState: IGetState) => {
-        const device = trezorDevice(getState())
-        if (device == undefined) {
-            dispatch(setTrezorError(new AppError(50, "Device not connected")))
-            // dispatch({ error: "Device not connected", type: TRZ_TOGGLEPINPROTECTION_FAILED });
-            return
-        }
-
-        dispatch(setPerformingOperation(true))
-
-        // dispatch({ type: TRZ_CHANGEHOMESCREEN_ATTEMPT });
-
-        try {
-            await deviceRun(dispatch, getState, device, async (session) => {
-                const settings = {
-                    word_count: 24, // FIXED at 24 (256 bits)
-                    passphrase_protection: false,
-                    pin_protection: false,
-                    label: "New DCR Trezor",
-                    dry_run: false,
-                }
-
-                await session.recoverDevice(settings)
-            })
-
-            // @TODO add confirmation message
-            dispatch(setPerformingOperation(false))
-            // dispatch({ enableProtection, deviceLabel: device.features.label, type: TRZ_TOGGLEPASSPHRASEPROTECTION_SUCCESS });
-        } catch (error) {
-            dispatch(setTrezorError(error))
-            // dispatch({ error, type: TRZ_TOGGLEPASSPHRASEPROTECTION_FAILED });
-        }
-    }
-}
-
-// export const TRZ_INITDEVICE_ATTEMPT = "TRZ_INITDEVICE_ATTEMPT";
-// export const TRZ_INITDEVICE_FAILED = "TRZ_INITDEVICE_FAILED";
-// export const TRZ_INITDEVICE_SUCCESS = "TRZ_INITDEVICE_SUCCESS";
-
-export const initDevice: ActionCreator<any> = (): AppThunk => {
-    return async (dispatch: AppDispatch, getState: IGetState) => {
-        const device = trezorDevice(getState())
-        if (device == undefined) {
-            dispatch(setTrezorError(new AppError(50, "Device not connected")))
-            // dispatch({ error: "Device not connected", type: TRZ_TOGGLEPINPROTECTION_FAILED });
-            return
-        }
-
-        dispatch(setPerformingOperation(true))
-
-        // dispatch({ type: TRZ_CHANGEHOMESCREEN_ATTEMPT });
-
-        try {
-            await deviceRun(dispatch, getState, device, async (session) => {
-                const settings = {
-                    strength: 256, // 24 words
-                    passphrase_protection: false,
-                    pin_protection: false,
-                    label: "New DCR Trezor",
-                }
-
-                await session.resetDevice(settings)
-            })
-
-            // @TODO add confirmation message
-            dispatch(setPerformingOperation(false))
-            // dispatch({ enableProtection, deviceLabel: device.features.label, type: TRZ_TOGGLEPASSPHRASEPROTECTION_SUCCESS });
-        } catch (error) {
-            dispatch(setTrezorError(error))
-            // dispatch({ error, type: TRZ_TOGGLEPASSPHRASEPROTECTION_FAILED });
-        }
-    }
-}
 
 // export const TRZ_UPDATEFIRMWARE_ATTEMPT = "TRZ_UPDATEFIRMWARE_ATTEMPT";
 // export const TRZ_UPDATEFIRMWARE_FAILED = "TRZ_UPDATEFIRMWARE_FAILED";
 // export const TRZ_UPDATEFIRMWARE_SUCCESS = "TRZ_UPDATEFIRMWARE_SUCCESS";
 
-export const updateFirmware: ActionCreator<any> = (path: string): AppThunk => {
-    return async (dispatch: AppDispatch, getState: IGetState) => {
-        const device = trezorDevice(getState())
-        if (device == undefined) {
-            dispatch(setTrezorError(new AppError(50, "Device not connected")))
-            // dispatch({ error: "Device not connected", type: TRZ_TOGGLEPINPROTECTION_FAILED });
-            return
-        }
+export const updateFirmware = createDeviceRunInvoker(async (dispatch, getState, device, payload) => {
+	// @TODO  
 
-        dispatch(setPerformingOperation(true))
+	// filesystem operations must be proxied through
+	// the backend
+	// const rawFirmware = fs.readFileSync(path);
+	// const hexFirmware = rawToHex(rawFirmware);
 
-        // dispatch({ type: TRZ_CHANGEHOMESCREEN_ATTEMPT });
+	// await deviceRun(dispatch, getState, device, async session => {
+	// 	await session.updateFirmware(hexFirmware);
+	// })
+})
 
-        try {
-            // @TODO  filesystem operations must be proxied through
-            // the backend
-            // const rawFirmware = fs.readFileSync(path);
-            // const hexFirmware = rawToHex(rawFirmware);
 
-            // await deviceRun(dispatch, getState, device, async session => {
-            // 	await session.updateFirmware(hexFirmware);
-            // })
+export const getWalletCreationMasterPubKey = createDeviceRunInvoker(async (dispatch, getState, device, payload) => {
+	const chainParams = getChainParams(Networks.TESTNET)
 
-            // @TODO add confirmation message
-            dispatch(setPerformingOperation(false))
-            // dispatch({ enableProtection, deviceLabel: device.features.label, type: TRZ_TOGGLEPASSPHRASEPROTECTION_SUCCESS });
-        } catch (error) {
-            dispatch(setTrezorError(error))
-            // dispatch({ error, type: TRZ_TOGGLEPASSPHRASEPROTECTION_FAILED });
-        }
-    }
-}
+	const features = await deviceRun(dispatch, getState, device, async session => {
+		const resp = await session.getFeatures();
+		return resp.message;
+	});
+	const versionLessThan = (wantMajor, wantMinor) =>
+		(features.major_version < wantMajor) ||
+		(features.major_version == wantMajor && features.minor_version < wantMinor);
+	if (features.model == 1 && versionLessThan(1, 8)) {
+		throw new Error("Trezor Model One needs to run on firmware >= 1.8.0. Found " +
+			features.major_version + "." + features.minor_version + "." + features.patch_version);
+	} else if (features.model == "T" && versionLessThan(2, 1)) {
+		throw new Error("Trezor Model T needs to run on firmware >= 2.1.0. Found " +
+			features.major_version + "." + features.minor_version + "." + features.patch_version);
+	} else if (!features.model) {
+		throw new Error("Unknown firmware model/version");
+	}
 
-// export const TRZ_GETWALLETCREATIONMASTERPUBKEY_ATTEMPT = "TRZ_GETWALLETCREATIONMASTERPUBKEY_ATTEMPT";
-// export const TRZ_GETWALLETCREATIONMASTERPUBKEY_FAILED = "TRZ_GETWALLETCREATIONMASTERPUBKEY_FAILED";
-// export const TRZ_GETWALLETCREATIONMASTERPUBKEY_SUCCESS = "TRZ_GETWALLETCREATIONMASTERPUBKEY_SUCCESS";
-export const getWalletCreationMasterPubKey: ActionCreator<any> = (
-    path: string
-): AppThunk => {
-    return async (dispatch: AppDispatch, getState: IGetState) => {
-        const device = trezorDevice(getState())
-        if (device == undefined) {
-            dispatch(setTrezorError(new AppError(50, "Device not connected")))
-            // dispatch({ error: "Device not connected", type: TRZ_TOGGLEPINPROTECTION_FAILED });
-            return
-        }
+	const path = accountPath(WALLET_ACCOUNT, chainParams.HDCoinType);
 
-        dispatch(setPerformingOperation(true))
-        const chainParams = getChainParams(getState())
+	const masterPubKey = await deviceRun(dispatch, getState, device, async session => {
+		const res = await session.getPublicKey(path, chainParams.trezorCoinName, false);
+		return res.message.xpub;
+	})
+	console.log("masterPubKey", masterPubKey)
 
-        // dispatch({ type: TRZ_CHANGEHOMESCREEN_ATTEMPT });
+	// @TODO
+	// dispatch({ type: VALIDATEMASTERPUBKEY_SUCCESS, isWatchOnly: true, masterPubKey });
+	dispatch(getWalletCreationMasterPubkeyCompleted())
+})
 
-        try {
-            const features = await deviceRun(
-                dispatch,
-                getState,
-                device,
-                async (session) => {
-                    const resp = await session.getFeatures()
-                    return resp.message
-                }
-            )
-            const versionLessThan = (wantMajor, wantMinor) =>
-                features.major_version < wantMajor ||
-                (features.major_version == wantMajor &&
-                    features.minor_version < wantMinor)
-            if (features.model == 1 && versionLessThan(1, 8)) {
-                throw new Error(
-                    "Trezor Model One needs to run on firmware >= 1.8.0. Found " +
-                        features.major_version +
-                        "." +
-                        features.minor_version +
-                        "." +
-                        features.patch_version
-                )
-            } else if (features.model == "T" && versionLessThan(2, 1)) {
-                throw new Error(
-                    "Trezor Model T needs to run on firmware >= 2.1.0. Found " +
-                        features.major_version +
-                        "." +
-                        features.minor_version +
-                        "." +
-                        features.patch_version
-                )
-            } else if (!features.model) {
-                throw new Error("Unknown firmware model/version")
-            }
 
-            const path = accountPath(WALLET_ACCOUNT, chainParams.HDCoinType)
 
-            const masterPubKey = await deviceRun(
-                dispatch,
-                getState,
-                device,
-                async (session) => {
-                    const res = await session.getPublicKey(
-                        path,
-                        chainParams.trezorCoinName,
-                        false
-                    )
-                    return res.message.xpub
-                }
-            )
 
-            // @TODO
-            // dispatch({ type: VALIDATEMASTERPUBKEY_SUCCESS, isWatchOnly: true, masterPubKey });
-            dispatch(getWalletCreationMasterPubkeyCompleted())
-            // dispatch({ type: TRZ_GETWALLETCREATIONMASTERPUBKEY_SUCCESS });
-
-            // @TODO add confirmation message
-            dispatch(setPerformingOperation(false))
-            // dispatch({ enableProtection, deviceLabel: device.features.label, type: TRZ_TOGGLEPASSPHRASEPROTECTION_SUCCESS });
-        } catch (error) {
-            dispatch(getWalletCreationMasterPubkeyCompleted())
-            dispatch(setTrezorError(error))
-            // dispatch({ error, type: TRZ_TOGGLEPASSPHRASEPROTECTION_FAILED });
-        }
-    }
-}
-
-// export async function trezorLink() {
-
-// 	const link = new BridgeTransportV2()
-// 	link.debug = true
-// 	await link.init()
-// 	await link.configure(configBlob)
-// 	return link
-// }
-
-// export async function trezorDevices() {
-
-// 	const link = await trezorLink()
-
-// 	try {
-// 		const devices = await link.enumerate()
-// 		console.log("enum", devices)
-// 		const session = await link.acquire(devices[0])
-
-// 		const features = await link.call(session, 'GetFeatures', {})
-// 		console.log("GetFeatures", features)
-// 		// await link.release(session)
-// 	}
-// 	catch (error) {
-// 		console.error(error)
-// 	}
-// }
-
-// decrediton selectors
-export const trezorWaitingForPin = (state: IApplicationState) =>
-    state.trezor.waitingForPin
+// selectors
+export const trezorWaitingForPin = (state: IApplicationState) => state.trezor.waitingForPin
 
 export const trezorWaitingForPassPhrase = (state: IApplicationState) =>
     state.trezor.waitingForPassPhrase
@@ -1172,3 +881,4 @@ export const trezorDeviceList = (state: IApplicationState) =>
 export const trezorWalletCreationMasterPubkeyAttempting = (
     state: IApplicationState
 ) => state.trezor.walletCreationMasterPubkeyAttempting
+export const trezorIsConnected = (state: IApplicationState) => trezorDevice(state) != undefined

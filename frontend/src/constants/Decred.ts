@@ -1,4 +1,6 @@
-export const MAX_POSSIBLE_FEE_INPUT = 0.1
+import { Networks } from ".";
+
+export const MAX_POSSIBLE_FEE_INPUT = 0.1;
 
 export const MIN_RELAY_FEE = 0.0001
 
@@ -59,4 +61,9 @@ export enum ScriptClass {
     "stakegen",
     "stakerevoke",
     "sstxchange",
+}
+
+export const getChainParams = (network: Networks) => {
+    if (network == Networks.TESTNET) return TestNetParams
+    return MainNetParams
 }
