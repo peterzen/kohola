@@ -573,6 +573,11 @@ export namespace StakingHistory {
     getTimestamp(): number;
     setTimestamp(value: number): void;
 
+    getTxHash(): Uint8Array | string;
+    getTxHash_asU8(): Uint8Array;
+    getTxHash_asB64(): string;
+    setTxHash(value: Uint8Array | string): void;
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): StakingHistoryLineItem.AsObject;
     static toObject(includeInstance: boolean, msg: StakingHistoryLineItem): StakingHistoryLineItem.AsObject;
@@ -591,6 +596,7 @@ export namespace StakingHistory {
       ticketCostDebit: number,
       feeDebit: number,
       timestamp: number,
+      txHash: Uint8Array | string,
     }
   }
 }

@@ -71,6 +71,7 @@ func calculateLineItems(allTxList []*walletrpc.TransactionDetails) (lineItemSlic
 
 		lineItem := &gui.StakingHistory_StakingHistoryLineItem{
 			TxType:    txd.GetTransactionType(),
+			TxHash:    txd.GetHash(),
 			Timestamp: txd.GetTimestamp(),
 		}
 

@@ -13,6 +13,7 @@ import { Table, Card } from 'react-bootstrap';
 import ReactTimeago from 'react-timeago';
 import { Amount } from '../../components/Shared/Amount';
 import { TransactionType } from '../../constants';
+import { rawHashToHex } from '../../helpers/byteActions';
 
 
 class StakingHistoryTable extends React.Component<Props> {
@@ -36,7 +37,7 @@ class StakingHistoryTable extends React.Component<Props> {
 					</thead>
 					<tbody>
 						{this.props.stakingHistory?.getLineItemsList().map(item => (
-							<tr key={item.getTimestamp()}>
+							<tr key={rawHashToHex(item.getTxHash_asU8())}>
 								<td>{TransactionType[item.getTxType()]}</td>
 								<td><ReactTimeago date={moment.unix(item.getTimestamp()).toDate()} /></td>
 								<td><Amount amount={item.getRewardCredit()} showCurrency={false} /></td>
