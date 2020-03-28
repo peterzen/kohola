@@ -6,6 +6,7 @@ import (
 	"crypto/cipher"
 	"crypto/md5"
 	"crypto/rand"
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -104,7 +105,7 @@ func LoadConfig(passphrase string) error {
 		if passphrase == "" {
 			return err
 		}
-		var decryptedContent, err = decrypt(content, passphrase)
+		var decryptedContent, err = decrypt(passphrase, string(content))
 		if err != nil {
 			return err
 		}
@@ -144,7 +145,11 @@ func WriteConfig(passphrase string) error {
 			return err
 		}
 	} else {
-		if _, err = dest.Write(encrypt(out.Bytes(), passphrase)); err != nil {
+		encmess, err := encrypt(passphrase, string(out.Bytes()))
+		if err != nil {
+			return err
+		}
+		if _, err = dest.Write([]byte(encmess)); err != nil {
 			return err
 		}
 	}
@@ -168,37 +173,58 @@ func createHash(key string) string {
 	return hex.EncodeToString(hasher.Sum(nil))
 }
 
-func encrypt(data []byte, passphrase string) []byte {
-	block, _ := aes.NewCipher([]byte(createHash(passphrase)))
-	gcm, err := cipher.NewGCM(block)
-	if err != nil {
-		panic(err.Error())
-	}
-	nonce := make([]byte, gcm.NonceSize())
-	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
-		panic(err.Error())
-	}
-	ciphertext := gcm.Seal(nonce, nonce, data, nil)
-	return ciphertext
-}
+func encrypt(passphrase string, message string) (encmess string, err error) {
+	key, _ := hex.DecodeString(createHash(passphrase))
+	plaintext := []byte(message)
 
-func decrypt(data []byte, passphrase string) ([]byte, error) {
-	key := []byte(createHash(passphrase))
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return nil, err
+		return
 	}
-	gcm, err := cipher.NewGCM(block)
+
+	// The IV needs to be unique, but not secure. Therefore it's common to
+	// include it at the beginning of the ciphertext.
+	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
+	iv := ciphertext[:aes.BlockSize]
+	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+		panic(err)
+	}
+
+	stream := cipher.NewCFBEncrypter(block, iv)
+	stream.XORKeyStream(ciphertext[aes.BlockSize:], plaintext)
+
+	encmess = base64.URLEncoding.EncodeToString(ciphertext)
+	return
+}
+
+func decrypt(passphrase string, data string) (decodedmess []byte, err error) {
+	key, _ := hex.DecodeString(createHash(passphrase))
+	cipherText, err := base64.URLEncoding.DecodeString(data)
 	if err != nil {
-		return nil, err
+		return
 	}
-	nonceSize := gcm.NonceSize()
-	nonce, ciphertext := data[:nonceSize], data[nonceSize:]
-	plaintext, err := gcm.Open(nil, nonce, ciphertext, nil)
+
+	block, err := aes.NewCipher(key)
 	if err != nil {
-		return nil, err
+		return
 	}
-	return plaintext, nil
+
+	if len(cipherText) < aes.BlockSize {
+		err = errors.New("ciphertext block size is too short")
+		return
+	}
+
+	//IV needs to be unique, but doesn't have to be secure.
+	//It's common to put it at the beginning of the ciphertext.
+	iv := cipherText[:aes.BlockSize]
+	cipherText = cipherText[aes.BlockSize:]
+
+	stream := cipher.NewCFBDecrypter(block, iv)
+	// XORKeyStream can work in-place if the two arguments are the same.
+	stream.XORKeyStream(cipherText, cipherText)
+
+	decodedmess = cipherText
+	return
 }
 
 // ExportConfigAPI exports functions to the UI
