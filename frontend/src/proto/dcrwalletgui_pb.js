@@ -4841,9 +4841,12 @@ proto.walletgui.StakingHistory.StakingHistoryLineItem.prototype.getTxHash_asU8 =
 };
 
 
-/** @param {!(string|Uint8Array)} value */
+/**
+ * @param {!(string|Uint8Array)} value
+ * @return {!proto.walletgui.StakingHistory.StakingHistoryLineItem} returns this
+ */
 proto.walletgui.StakingHistory.StakingHistoryLineItem.prototype.setTxHash = function(value) {
-  jspb.Message.setField(this, 7, value);
+  return jspb.Message.setProto3BytesField(this, 7, value);
 };
 
 
