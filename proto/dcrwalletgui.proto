@@ -158,6 +158,7 @@ message StakingHistory {
 	int64 ticket_cost_debit = 4;
 	int64 fee_debit = 5;
 	int64 timestamp = 6;
+	bytes tx_hash = 7;
   }
   int64 last_block = 1;
   repeated StakingHistoryLineItem line_items = 2;

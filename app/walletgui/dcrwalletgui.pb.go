@@ -1201,6 +1201,7 @@ type StakingHistory_StakingHistoryLineItem struct {
 	TicketCostDebit      int64                                        `protobuf:"varint,4,opt,name=ticket_cost_debit,json=ticketCostDebit,proto3" json:"ticket_cost_debit,omitempty"`
 	FeeDebit             int64                                        `protobuf:"varint,5,opt,name=fee_debit,json=feeDebit,proto3" json:"fee_debit,omitempty"`
 	Timestamp            int64                                        `protobuf:"varint,6,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	TxHash               []byte                                       `protobuf:"bytes,7,opt,name=tx_hash,json=txHash,proto3" json:"tx_hash,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                                     `json:"-"`
 	XXX_unrecognized     []byte                                       `json:"-"`
 	XXX_sizecache        int32                                        `json:"-"`
@@ -1271,6 +1272,13 @@ func (m *StakingHistory_StakingHistoryLineItem) GetTimestamp() int64 {
 		return m.Timestamp
 	}
 	return 0
+}
+
+func (m *StakingHistory_StakingHistoryLineItem) GetTxHash() []byte {
+	if m != nil {
+		return m.TxHash
+	}
+	return nil
 }
 
 type StakeDiffHistory struct {
