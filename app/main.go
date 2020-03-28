@@ -56,7 +56,6 @@ func launchUI(callbackFn func(lorca.UI)) {
 	}
 	defer ui.Close()
 
-	gui.LoadConfig(ui)
 	callbackFn(ui)
 
 	f, errIndexFile := pkger.Open("/www/index.html")

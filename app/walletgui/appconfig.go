@@ -13,7 +13,6 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
-	"net/url"
 	"os"
 	"path/filepath"
 
@@ -80,79 +79,8 @@ func GetConfigMarshaled() ([]byte, error) {
 	return b, err
 }
 
-// LoadConfig try to load the config file into AppConfiguration struct
-// If it is secured with a passphrase, requested it from user
-func LoadConfig(ui lorca.UI) {
-	err := ReadConfig("")
-	if err != nil {
-		result := make(chan bool)
-		go func() {
-			ui.Load("data:text/html," + url.PathEscape(`
-			<html lang="en">
-				<head>
-					<title>dcrwalletgui</title>
-					<meta name="viewport" content="width=device-width">
-					<link rel=icon href=data:,>
-				</head>
-				<style>
-					.password {
-						font-size: 40px;
-						margin: 50px auto;
-						display: block;
-						padding: 20px;
-						outline-width: 0;
-					}
-					::placeholder { 
-						color: lightgrey;
-					}				
-					.error {
-						color: red;
-						border: 2px solid red;
-					}
-					.success {
-						color: green;
-						border: 2px solid lightgreen;
-					}					
-				</style>
-				<script>
-					document.addEventListener('DOMContentLoaded', function(event) {
-  						var passwordInput = document.getElementById("passphrase");
-						passwordInput.addEventListener("keydown", function (e) {
-							document.getElementById('passphrase').className = 'password'
-							if (e.keyCode === 13) {
-								submitPassword();
-							}
-						});
-						passwordInput.focus();					
-					})
-					const submitPassword = () => onPassphraseSubmit(document.getElementById('passphrase').value);
-					const showError = () =>	document.getElementById('passphrase').className = 'password error';
-					const showSuccess = () => document.getElementById('passphrase').className = 'password success';
-				</script>
-				<body>
-					<input class="password" type="password" id="passphrase" placeholder="Enter your passphrase"/>
-				</body>
-			</html>
-			`))
-
-			ui.Bind("onPassphraseSubmit", func(passphrase string) {
-				err := ReadConfig(passphrase)
-				if err != nil {
-					ui.Eval(`showError()`)
-				} else {
-					ui.Eval(`showSuccess()`)
-					result <- true
-				}
-			})
-		}()
-		<-result
-	} else if err != nil {
-		log.Fatalf("Error in LoadConfig: %#v", err)
-	}
-}
-
-// ReadConfig reads the config file into AppConfiguration struct
-func ReadConfig(passphrase string) error {
+// LoadConfig reads the config file into AppConfiguration struct
+func LoadConfig(passphrase string) error {
 	if !fileExists(configFilePath) {
 		err := WriteConfig("")
 		if err != nil {
@@ -275,8 +203,16 @@ func decrypt(data []byte, passphrase string) ([]byte, error) {
 
 // ExportConfigAPI exports functions to the UI
 func ExportConfigAPI(ui lorca.UI) {
-	ui.Bind("walletgui__GetConfig", func() (r LorcaMessage) {
+	ui.Bind("walletgui__GetConfig", func(decryptionKey string) (r LorcaMessage) {
 		// signal the UI that the configuration is empty, needs initial setup
+		err := LoadConfig(decryptionKey)
+		if err != nil {
+			fmt.Println("Could not read the config")
+			r.Payload = nil
+			r.Err = nil
+			return r
+		}
+
 		if !HaveConfig() {
 			r.Payload = nil
 			r.Err = nil
@@ -305,7 +241,7 @@ func ExportConfigAPI(ui lorca.UI) {
 				err = WriteConfig(passphrase)
 			} else {
 				// attempting to reload config file using the given passphrase
-				err := ReadConfig(passphrase)
+				err := LoadConfig(passphrase)
 				if err != nil {
 					r.Err = errors.New("invalid passphrase")
 					return r

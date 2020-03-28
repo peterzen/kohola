@@ -144,7 +144,7 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 			dispatch(initializeStore())
 				.then(() => {
 					setTimeout(() => {
-						history.location.pathname == "/login" && history.push("/wallet")
+						(history.location.pathname == "/login" || history.location.pathname == "/") && history.push("/wallet")
 						setTimeout(() => {
 							dispatch(showProgressbar(false))
 							dispatch(setWalletOpened())
@@ -171,6 +171,8 @@ export const connectDefaultWallet: ActionCreator<any> = (): AppThunk => {
 		const firstEndpoint = _.first(getState().appconfiguration.appConfig.getWalletEndpointsList())
 		if (firstEndpoint != undefined) {
 			dispatch(connectWallet(firstEndpoint))
+		}else {
+			history.replace("/login")
 		}
 	}
 }
