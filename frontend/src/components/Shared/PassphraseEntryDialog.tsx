@@ -41,7 +41,6 @@ export default class PassphraseEntryDialog extends React.Component<Props, Intern
 		return (
 			<Modal
 				centered
-				onEntered={_.bind(this.onEntered, this)}
 				onExit={_.bind(this.onExit, this)}
 				show={this.state.showModal}
 			>
@@ -88,9 +87,6 @@ export default class PassphraseEntryDialog extends React.Component<Props, Intern
 	}
 	componentDidMount() {
 		setState = this.setState
-	}
-	onEntered() {
-		this.state.inputRef.current.focus();
 	}
 	onExit() {
 		// console.log("onExit")

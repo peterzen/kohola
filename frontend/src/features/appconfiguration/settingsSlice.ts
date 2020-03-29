@@ -2,15 +2,22 @@ import _ from 'lodash';
 
 import { createSlice, PayloadAction, ActionCreator, Dispatch } from '@reduxjs/toolkit'
 import { AppError, IGetState, IApplicationState, AppDispatch } from '../../store/types';
-import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences } from '../../proto/dcrwalletgui_pb';
+import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences, UIPreferences } from '../../proto/dcrwalletgui_pb';
+import { DisplayUnit } from '../../constants';
 import AppBackend from '../../middleware/appbackend';
 import { getConnectedEndpoint, getConnectedEndpointId } from '../app/appSlice';
 import { updateObjectInList, deleteObjectFromList } from '../../helpers/protobufHelpers';
 import { RunAccountMixerRequest, RunTicketBuyerRequest } from '../../proto/api_pb';
 
 
+type PassphraseCallback = () => void
+
 export interface IAppConfigurationState {
 	appConfig: AppConfiguration
+	appConfigDecryptionKey: string 
+	appConfigDecryptionKeyRequested: boolean
+	appConfigDecryptionKeyCallback: PassphraseCallback | null
+
 	setConfigError: AppError | null
 	setConfigAttempting: boolean
 	currentWalletEndpointId: string
@@ -18,6 +25,10 @@ export interface IAppConfigurationState {
 
 export const initialState: IAppConfigurationState = {
 	appConfig: new AppConfiguration(),
+	appConfigDecryptionKey: "",
+	appConfigDecryptionKeyRequested: false,
+	appConfigDecryptionKeyCallback: null,
+
 	setConfigError: null,
 	setConfigAttempting: false,
 	currentWalletEndpointId: "",
@@ -27,6 +38,19 @@ const settingsSlice = createSlice({
 	name: "settingsSlice",
 	initialState,
 	reducers: {
+		requestConfigurationDecryptionKeyAttempt(state, action: PayloadAction<PassphraseCallback>) {
+			state.appConfigDecryptionKey = ""
+			state.appConfigDecryptionKeyRequested = true
+			state.appConfigDecryptionKeyCallback = action.payload
+		},
+		requestConfigurationDecryptionKeySuccess(state, action: PayloadAction<string>) {
+			state.appConfigDecryptionKeyRequested = false
+			state.appConfigDecryptionKey = action.payload
+			if (state.appConfigDecryptionKeyCallback != null) {
+				state.appConfigDecryptionKeyCallback()
+				state.appConfigDecryptionKeyCallback = null
+			}
+		},
 		setConfigAttempt(state) {
 			state.setConfigAttempting = true
 		},
@@ -55,6 +79,9 @@ const settingsSlice = createSlice({
 				updateObjectInList(state.appConfig.getWalletPreferencesList(), walletPrefs, "walletEndpointId")
 			)
 		},
+		updateUiPreferences(state, action: PayloadAction<{ uiPreferences: UIPreferences}>) {
+			state.appConfig.setUiPreferences(action.payload.uiPreferences)
+		},				
 		updateEndpoint(state, action: PayloadAction<GRPCEndpoint>) {
 			const endpoint = action.payload
 			state.appConfig.setWalletEndpointsList(
@@ -81,6 +108,9 @@ const settingsSlice = createSlice({
 })
 
 export const {
+	requestConfigurationDecryptionKeyAttempt,
+	requestConfigurationDecryptionKeySuccess,
+
 	setConfigAttempt,
 	setConfigFailed,
 	setConfigSuccess,
@@ -88,6 +118,7 @@ export const {
 	getConfigFailed,
 
 	setAccountPreference,
+	updateUiPreferences,
 	updateEndpoint,
 	deleteEndpoint,
 	setDefaultEndpoint,
@@ -100,19 +131,28 @@ export const {
 export default settingsSlice.reducer
 
 export const getConfiguration: ActionCreator<any> = () => {
-
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: IGetState) => {
 		try {
-			const cfg = await AppBackend.fetchAppConfig()
+			const cfg = await AppBackend.fetchAppConfig(getState().appconfiguration.appConfigDecryptionKey)
 			dispatch(getConfigSuccess(cfg))
-		}
-		catch (error) {
-			dispatch(getConfigFailed(error))
+		} catch (error) {
+			await dispatch(requestConfigurationDecryptionKey())
+			await dispatch(getConfiguration())
 		}
 	}
 }
 
-export const saveConfigurationAttempt: ActionCreator<any> = () => {
+export const requestConfigurationDecryptionKey: ActionCreator<any> = () => {
+	return async (dispatch: Dispatch) => {
+		return new Promise((resolve) => {
+			dispatch(requestConfigurationDecryptionKeyAttempt(() => {
+				resolve()
+			}))
+		})
+	}
+}
+
+export const saveConfigurationAttempt: ActionCreator<any> = (passphrase?: string) => {
 
 	return async (dispatch: Dispatch, getState: IGetState) => {
 
@@ -124,7 +164,7 @@ export const saveConfigurationAttempt: ActionCreator<any> = () => {
 		dispatch(setConfigAttempt())
 		try {
 			const cfg = getState().appconfiguration.appConfig
-			const response = await AppBackend.setAppConfig(cfg)
+			const response = await AppBackend.setAppConfig(cfg, passphrase)
 			dispatch(setConfigSuccess(response))
 			// await dispatch(getConfiguration())
 		}
@@ -188,4 +228,8 @@ export const getAppConfig = (state: IApplicationState) => state.appconfiguration
 
 export const getWalletEndpoints = (state: IApplicationState) => {
 	return state.appconfiguration.appConfig.getWalletEndpointsList()
+}
+
+export const getUiPreferences = (appConfigurationState: IAppConfigurationState) => {
+	return appConfigurationState.appConfig.getUiPreferences() || new UIPreferences()
 }
