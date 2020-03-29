@@ -37,7 +37,7 @@ class StakingHistoryTable extends React.Component<Props> {
 					</thead>
 					<tbody>
 						{this.props.stakingHistory?.getLineItemsList().map(item => (
-							<tr key={rawHashToHex(item.getTxHash_asU8())}>
+							<tr key={rawHashToHex(item.getTxHash_asU8())||""}>
 								<td>{TransactionType[item.getTxType()]}</td>
 								<td><ReactTimeago date={moment.unix(item.getTimestamp()).toDate()} /></td>
 								<td><Amount amount={item.getRewardCredit()} showCurrency={false} /></td>

@@ -102,6 +102,9 @@ func subscribeTxNotifications(ui lorca.UI) {
 		if err != nil {
 			log.Printf("Failed to receive a TransactionNotificationsResponse: %#v", err)
 		}
+		if len(ntfnResponse.GetUnminedTransactions()) < 1 {
+			continue
+		}
 		b, err := proto.Marshal(ntfnResponse)
 		if err != nil {
 			return

@@ -9,12 +9,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconDefinition, faCheck, faInfo, faExclamation } from '@fortawesome/free-solid-svg-icons';
 
 import { Transaction } from '../../../middleware/models';
-import { TransactionType } from '../../../constants';
+import { TransactionType, TransactionDirection } from '../../../constants';
 import { Amount } from '../../../components/Shared/Amount';
 
 
 export const showTransactionToast = (tx: Transaction) => {
-	
+
+	console.log("TX TOAST", tx.toObject())
 	const toastProps: IToastNotificationProps = {
 		title: "",
 		message: "",
@@ -29,7 +30,17 @@ export const showTransactionToast = (tx: Transaction) => {
 			break;
 
 		case TransactionType.REGULAR:
-			toastProps.title = "New transaction"
+			switch (tx.getDirection()) {
+				case TransactionDirection.TRANSACTION_DIR_RECEIVED:
+					toastProps.title = "Funds received"
+					break
+				case TransactionDirection.TRANSACTION_DIR_SENT:
+					toastProps.title = "Transaction sent"
+					break
+				case TransactionDirection.TRANSACTION_DIR_TRANSFERRED:
+					toastProps.title = "Transfer completed"
+					break
+			}
 			toastProps.message = <Amount amount={tx.getAmount()} showCurrency={true} />
 			break;
 
