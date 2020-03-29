@@ -36,6 +36,7 @@ class ConfigDecryptDialog extends React.Component<ConfigDecryptDialogProps, Conf
 						name="password"
 						type="password"
 						placeholder="Passphrase"
+						value={this.state.passphrase}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleChange(e.currentTarget.value)} />
 					<Form.Text className="text-muted">
 						This passphrase will be used to decrypt your application configuration.
@@ -59,6 +60,9 @@ class ConfigDecryptDialog extends React.Component<ConfigDecryptDialogProps, Conf
 	handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		e.stopPropagation();
+		this.setState({
+			passphrase: ""
+		})		
 		this.props.onCompleted(this.state.passphrase)
 		return false;
 	}

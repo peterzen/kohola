@@ -17,7 +17,6 @@ export class GetPassphraseForConfigEncryptionModal extends React.Component<Gener
             <GenericModal
                 title={this.props.title}
                 show={this.props.show}
-                onEntered={_.bind(this.onEntered, this)}
                 onHide={this.props.onHide}
             >
                 <Form>
@@ -69,10 +68,6 @@ export class GetPassphraseForConfigEncryptionModal extends React.Component<Gener
         this.setState({
             passphrasesAreNotTheSameErrorMsg: ""
         })
-    }
-
-    onEntered() {
-        this.state.passphraseInnerRef.current.focus();
     }
 
     handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {

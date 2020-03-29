@@ -131,20 +131,16 @@ export const {
 export default settingsSlice.reducer
 
 export const getConfiguration: ActionCreator<any> = () => {
-
 	return async (dispatch: Dispatch, getState: IGetState) => {
-
-		await dispatch(requestConfigurationDecryptionKey())
 		try {
 			const cfg = await AppBackend.fetchAppConfig(getState().appconfiguration.appConfigDecryptionKey)
 			dispatch(getConfigSuccess(cfg))
-		}
-		catch (error) {
-			dispatch(getConfigFailed(error))
+		} catch (error) {
+			await dispatch(requestConfigurationDecryptionKey())
+			await dispatch(getConfiguration())
 		}
 	}
 }
-
 
 export const requestConfigurationDecryptionKey: ActionCreator<any> = () => {
 	return async (dispatch: Dispatch) => {

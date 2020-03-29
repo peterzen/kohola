@@ -233,9 +233,9 @@ func ExportConfigAPI(ui lorca.UI) {
 		// signal the UI that the configuration is empty, needs initial setup
 		err := LoadConfig(decryptionKey)
 		if err != nil {
-			fmt.Println("Could not read the config")
+			fmt.Println("Could not read the config", err)
 			r.Payload = nil
-			r.Err = nil
+			r.Err = err
 			return r
 		}
 
