@@ -68,7 +68,7 @@ class EndpointSelectDropdown extends React.Component<Props>{
 		)
 	}
 	connectWallet(endpointId: string) {
-		if (endpointId == "/#") return
+		if (endpointId == "/#login") return
 		const ep = this.props.getEndpointById(endpointId)
 		this.props.connectWallet(ep)
 	}
