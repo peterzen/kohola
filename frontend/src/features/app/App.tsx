@@ -26,6 +26,7 @@ import { AppToastContainer } from './fixtures/Toasts';
 import { bounceTransition, mapStyles } from './routeSwitchAnimations';
 import AppProgressIndicator from './AppProgressIndicator';
 import AppSidebar from './fixtures/AppSidebar';
+import ConfigDecryptContainer from '../appconfiguration/ConfigDecryptDialog';
 
 
 const devMonitorEnabled = false
@@ -64,6 +65,7 @@ class App extends React.Component<Props>{
 							</AnimatedSwitch>
 						</Container>
 						{this.props.showProgress && <AppProgressIndicator />}
+						<ConfigDecryptContainer/>
 					</AppSidebar>
 				</main>
 			</ConnectedRouter>

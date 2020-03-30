@@ -2,7 +2,7 @@ import _ from "lodash";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 import { batch } from "react-redux";
 
-import { history } from '../../store/store'
+import store, { history } from '../../store/store'
 
 import { GRPCEndpoint } from "../../proto/dcrwalletgui_pb";
 import { AppError, AppThunk, AppDispatch, IApplicationState, IGetState } from "../../store/types";
@@ -17,8 +17,9 @@ import { loadTicketsAttempt } from "../staking/stakingSlice";
 import { showTransactionToast, showInfoToast, showDangerToast } from "./fixtures/Toasts";
 import { Transaction } from "../../middleware/models";
 import AppBackend from "../../middleware/appbackend";
-import { getWalletEndpoints } from "../appconfiguration/settingsSlice";
+import { getWalletEndpoints, getConfiguration } from "../appconfiguration/settingsSlice";
 import { CurrencyNet } from "../../constants";
+import { subscribeExchangeRateFeed } from "../market/marketSlice";
 
 const w = (window as any)
 
@@ -115,6 +116,17 @@ export const {
 
 export default appSlice.reducer
 
+export const launchApp: ActionCreator<any> = () => {
+	return async (dispatch: AppDispatch) => {
+		await dispatch(getConfiguration())
+		// connect to the first wallet endpoint, in lieu of a proper
+		// default flag.  
+		// @FIXME add GUI to select default endpoint
+		await store.dispatch(connectDefaultWallet())
+		await store.dispatch(subscribeExchangeRateFeed())
+	}
+}
+
 
 export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppThunk => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
@@ -132,7 +144,7 @@ export const connectWallet: ActionCreator<any> = (endpoint: GRPCEndpoint): AppTh
 			dispatch(initializeStore())
 				.then(() => {
 					setTimeout(() => {
-						history.location.pathname == "/login" && history.push("/wallet")
+						(history.location.pathname == "/login" || history.location.pathname == "/") && history.push("/wallet")
 						setTimeout(() => {
 							dispatch(showProgressbar(false))
 							dispatch(setWalletOpened())
@@ -159,6 +171,8 @@ export const connectDefaultWallet: ActionCreator<any> = (): AppThunk => {
 		const firstEndpoint = _.first(getState().appconfiguration.appConfig.getWalletEndpointsList())
 		if (firstEndpoint != undefined) {
 			dispatch(connectWallet(firstEndpoint))
+		}else {
+			history.replace("/login")
 		}
 	}
 }

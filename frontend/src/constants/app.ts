@@ -73,3 +73,13 @@ export const transitionGroupProps = {
 	enter: true,
 	exit: true,
 }
+
+export enum DisplayUnit {
+	DCR = 0,
+	ATOMS = 1,
+}
+
+export enum FiatCurrency {
+	USD = 0,
+	EUR = 1,
+}

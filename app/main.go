@@ -26,10 +26,6 @@ func main() {
 	WalletAPIInit()
 
 	launchUI(func(ui lorca.UI) {
-		err := gui.LoadConfig()
-		if err != nil {
-			log.Fatalf("Error in LoadConfig: %#v", err)
-		}
 
 		bindUIAPI(ui)
 
@@ -98,38 +94,12 @@ func bindUIAPI(ui lorca.UI) {
 		ui.Close()
 	})
 
-	ui.Bind("walletgui__GetConfig", func() (r gui.LorcaMessage) {
-		// signal the UI that the configuration is empty, needs initial setup
-		if !gui.HaveConfig() {
-			r.Payload = nil
-			r.Err = nil
-			return r
-		}
-		r.Payload, r.Err = gui.GetConfigMarshaled()
-		return r
-	})
-
-	ui.Bind("walletgui__SetConfig", func(requestAsHex string) (r gui.LorcaMessage) {
-		request := &gui.SetConfigRequest{}
-		bytes, err := hex.DecodeString(requestAsHex)
-		err = proto.Unmarshal(bytes, request)
-		gui.SetConfig(request.AppConfig)
-
-		err = gui.WriteConfig()
-		if err != nil {
-			r.Err = err
-			return r
-		}
-
-		// initializeApplication()
-		return r
-	})
-
 	ui.Bind("walletgui_FileOpenDialog", func() string {
 		file, _ := dialog.File().Title("Open").Filter("All Files", "*").Filter("Certs", "cert").Load()
 		return file
 	})
 
+	gui.ExportConfigAPI(ui)
 	ExportWalletAPI(ui)
 	exchangeratebot.ExportExchangeRateAPI(ui)
 	ExportStakingHistoryAPI(ui)
