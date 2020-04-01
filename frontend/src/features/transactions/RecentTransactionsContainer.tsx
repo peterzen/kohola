@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import * as React from 'react';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
 import { Card } from 'react-bootstrap';
 
 import { Transaction } from "../../middleware/models";
@@ -22,15 +24,16 @@ export default class RecentTransactionsComponent extends React.Component<Props, 
 		const txList = this.props.txList;
 		return (
 			<Card>
-				<Card.Body>
+				<Card.Header>
 					<Card.Title>
-						Recent transactions <small className="text-muted">({txList.length})</small>
+						Recent transactions{" "}
+						<small className="text-muted">({txList.length})</small>
 					</Card.Title>
-				</Card.Body>
+				</Card.Header>
 				<TransactionTable
 					items={txList}
 					onItemClick={_.bind(this.itemClickHandler, this)}
-					showAccount={this.props.showAccount}/>
+					showAccount={this.props.showAccount} />
 				<TransactionDetailsModal
 					tx={this.state.selectedItem}
 					modalTitle="Transaction details"
@@ -57,5 +60,5 @@ interface InternalState {
 	selectedItem: Transaction | null
 }
 
-type Props = OwnProps 
+type Props = OwnProps
 

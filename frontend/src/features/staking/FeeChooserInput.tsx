@@ -12,6 +12,7 @@ interface IFeeChooserInputProps {
 	min?: number
 	max?: number
 	step?: number
+	tabIndex?:number
 	onChange: (value: number) => void
 }
 
@@ -26,9 +27,9 @@ export default class FeeChooserInput extends React.Component<IFeeChooserInputPro
 							max={100}
 							step={1}
 							variant="secondary"
-							tooltip="on"
+							tooltip="off"
 							size="sm"
-							defaultValue={this.props.defaultValue}
+							tabIndex={this.props.tabIndex}
 							className="pr-3"
 							title="fee rate"
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

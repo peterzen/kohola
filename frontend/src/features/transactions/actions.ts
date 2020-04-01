@@ -4,19 +4,15 @@ import { batch } from 'react-redux';
 
 import {
 	CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED,
-	CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL,
-	TransactionType
-} from '../../constants';
+	CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL} from '../../constants';
 
 import {
 	ConstructTransactionRequest,
 	SignTransactionRequest, PublishTransactionRequest,
 	TransactionNotificationsResponse,
-	AccountNotificationsResponse
 } from '../../proto/api_pb';
 
 import { ConstructTxOutput } from '../../middleware/models';
-import { decodeRawTransaction } from '../../helpers/tx';
 import LorcaBackend from '../../middleware/lorca';
 import {
 	getTransactionsAttempt,
@@ -25,7 +21,7 @@ import {
 	getChangeScriptCache,
 	SendTransactionSteps,
 	constructTransactionFailed,
-	HumanreadableTxInfo,
+	AuthoredTransactionMetadata,
 	constructTransactionSuccess,
 	signTransactionCancel,
 	signTransactionSuccess,
@@ -36,17 +32,21 @@ import {
 	validateAddressFailed,
 	signTransactionAttempt,
 	constructTransactionAttempt,
-	publishTransactionAttempt
+	publishTransactionAttempt,
+	createRawTransactionAttempt,
+	createRawTransactionFailed,
+	resetSendTransaction
 } from './transactionsSlice';
 import { AppError, IGetState, AppDispatch, AppThunk } from '../../store/types';
 
 import { loadWalletBalance } from '../balances/walletBalanceSlice';
 import { loadBestBlockHeight } from '../app/networkinfo/networkInfoSlice';
-import { lookupAccount, accountNotification } from '../balances/accountSlice';
+import { lookupAccount } from '../balances/accountSlice';
 import { loadStakeInfoAttempt, loadTicketsAttempt } from '../../features/staking/stakingSlice';
 import { Transaction } from '../../middleware/models';
 import { displayTXNotification } from '../app/appSlice';
-import { hexToRaw } from '../../helpers/byteActions';
+import { hexToRaw, rawToHex } from '../../helpers/byteActions';
+import { CreateTransactionRequest } from '../../proto/dcrwalletgui_pb';
 
 export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
@@ -166,37 +166,44 @@ export const constructTransaction: ActionCreator<any> = (
 
 		dispatch(constructTransactionAttempt())
 
-		let rawTx;
-
 		try {
 			const constructTxResponse = await LorcaBackend.constructTransaction(request)
+			const decoded = await LorcaBackend.decodeRawTransaction(constructTxResponse.getUnsignedTransaction_asU8())
+			const decodedTx = decoded.getTransaction()
+			if (decodedTx == undefined) {
+				throw new AppError(0, "Constructed transaction could not be decoded.  Probably an internal error.")
+			}
 			if (!sendAllFlag) {
 				// Store the change address we just generated so that future changes to
 				// the tx being constructed will use the same address and prevent gap
 				// limit exhaustion (see above note on issue dcrwallet#1622).
 				const changeIndex = constructTxResponse.getChangeIndex();
 				if (changeIndex > -1) {
-					rawTx = Buffer.from(constructTxResponse.getUnsignedTransaction_asU8());
-					const decoded = decodeRawTransaction(rawTx);
-					changeScriptCache[account] = decoded.outputs[changeIndex].script;
+					// rawTx = Buffer.from(constructTxResponse.getUnsignedTransaction_asU8());
+					// const decoded = decodeRawTransaction(rawTx);
+					// console.log("DECODED decodeRawTransaction", decoded)
+					const changeScript = decodedTx?.getOutputsList()[changeIndex].getScript_asU8()
+					if (changeScript != undefined) {
+						changeScriptCache[account] = Buffer.from(changeScript)
+					}
 				}
 			}
 			else {
 				totalAmount = constructTxResponse.getTotalOutputAmount();
 			}
 
-			// for displaying the confirmation dialog
-			const humanreadableTxInfo: HumanreadableTxInfo = {
-				rawTx: decodeRawTransaction(Buffer.from(constructTxResponse.getUnsignedTransaction_asU8())),
-				outputs: outputs,
-				totalAmount: totalAmount,
-				sourceAccount: lookupAccount(getState(), account),
-				constructTxReq: request,
-			}
+			console.log("DECODED RAW", decodedTx)
+
+			const humanreadableTxInfo = new AuthoredTransactionMetadata(
+				constructTxResponse.getUnsignedTransaction_asU8(),
+				decodedTx,
+				lookupAccount(getState(), account),
+				request
+			)
 
 			dispatch(constructTransactionSuccess({
 				txInfo: humanreadableTxInfo,
-				response: constructTxResponse,
+				unsignedTx: constructTxResponse.getUnsignedTransaction_asU8(),
 				currentStep: SendTransactionSteps.SIGN_DIALOG,
 				changeScriptCache: changeScriptCache,
 			}))
@@ -211,6 +218,40 @@ export const constructTransaction: ActionCreator<any> = (
 
 
 
+export const createTransaction: ActionCreator<any> = (request: CreateTransactionRequest): AppThunk => {
+
+	return async (dispatch: AppDispatch, getState: IGetState) => {
+
+		if (getState().transactions.createRawTransactionAttempting) return
+
+		dispatch(createRawTransactionAttempt())
+
+		try {
+			const response = await LorcaBackend.createTransaction(request)
+			console.log("DEBUG ###", rawToHex(response.getUnsignedTransaction_asU8()))
+			const decoded = await LorcaBackend.decodeRawTransaction(response.getUnsignedTransaction_asU8())
+			const decodedTx = decoded.getTransaction()
+			if (decodedTx == undefined) {
+				throw new AppError(0, "Constructed transaction could not be decoded.  Probably an internal error.")
+			}
+
+			const humanreadableTxInfo = new AuthoredTransactionMetadata(
+				response.getUnsignedTransaction_asU8(),
+				decodedTx,
+			)
+
+			dispatch(constructTransactionSuccess({
+				txInfo: humanreadableTxInfo,
+				currentStep: SendTransactionSteps.SIGN_DIALOG,
+				unsignedTx: response.getUnsignedTransaction_asU8(),
+			}))
+		}
+		catch (error) {
+			dispatch(createRawTransactionFailed(error))
+		}
+	}
+}
+
 export const cancelSignTransaction: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch: AppDispatch) => {
 		dispatch(signTransactionCancel(SendTransactionSteps.CONSTRUCT_DIALOG))
@@ -219,22 +260,14 @@ export const cancelSignTransaction: ActionCreator<any> = (): AppThunk => {
 
 
 
-export const signTransaction: ActionCreator<any> = (passphrase: string): AppThunk => {
+export const signTransaction: ActionCreator<any> = (unsignedTx: Uint8Array, passphrase: string): AppThunk => {
 	return async (dispatch: AppDispatch, getState) => {
 
-		const { signTransactionAttempting, constructTransactionResponse } = getState().transactions;
-		if (signTransactionAttempting) {
-			return
-		}
+		if (getState().transactions.signTransactionAttempting) return
 
-		if (constructTransactionResponse == null) {
-			throw "null constructTransactionResponse"
-		}
-
-		const rawTx = constructTransactionResponse.getUnsignedTransaction_asU8()
 		const request = new SignTransactionRequest()
 		request.setPassphrase(new Uint8Array(Buffer.from(passphrase)))
-		request.setSerializedTransaction(new Uint8Array(Buffer.from(rawTx)))
+		request.setSerializedTransaction(new Uint8Array(Buffer.from(unsignedTx)))
 
 		dispatch(signTransactionAttempt())
 
@@ -244,6 +277,13 @@ export const signTransaction: ActionCreator<any> = (passphrase: string): AppThun
 				currentStep: SendTransactionSteps.PUBLISH_DIALOG,
 				response: resp
 			}))
+			const decoded = await LorcaBackend.decodeRawTransaction(resp.getTransaction_asU8())
+			const decodedTx = decoded.getTransaction()
+			if (decodedTx == undefined) {
+				throw new AppError(0, "Signed transaction could not be decoded.  Probably an internal error.")
+			}
+			console.log("DECODED SIGNED TX",decodedTx)
+
 		} catch (error) {
 			dispatch(signTransactionFailed(error))
 		}
@@ -277,6 +317,10 @@ export const publishTransaction: ActionCreator<any> = (): AppThunk => {
 				currentStep: SendTransactionSteps.PUBLISH_CONFIRM_DIALOG,
 				response: resp
 			}))
+			setTimeout(() => {
+				dispatch(resetSendTransaction())
+			}, 10 * 1000)
+
 		} catch (error) {
 			dispatch(publishTransactionFailed(error))
 		}

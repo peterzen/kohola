@@ -663,6 +663,141 @@ export namespace StakeDiffHistory {
   }
 }
 
+export class UnspentOutput extends jspb.Message {
+  getTransactionHash(): Uint8Array | string;
+  getTransactionHash_asU8(): Uint8Array;
+  getTransactionHash_asB64(): string;
+  setTransactionHash(value: Uint8Array | string): void;
+
+  getOutputIndex(): number;
+  setOutputIndex(value: number): void;
+
+  getAmount(): number;
+  setAmount(value: number): void;
+
+  getPkScript(): Uint8Array | string;
+  getPkScript_asU8(): Uint8Array;
+  getPkScript_asB64(): string;
+  setPkScript(value: Uint8Array | string): void;
+
+  getReceiveTime(): number;
+  setReceiveTime(value: number): void;
+
+  getFromCoinbase(): boolean;
+  setFromCoinbase(value: boolean): void;
+
+  getTree(): number;
+  setTree(value: number): void;
+
+  getAmountSum(): number;
+  setAmountSum(value: number): void;
+
+  getScriptClass(): number;
+  setScriptClass(value: number): void;
+
+  getSpendable(): boolean;
+  setSpendable(value: boolean): void;
+
+  getAddress(): string;
+  setAddress(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UnspentOutput.AsObject;
+  static toObject(includeInstance: boolean, msg: UnspentOutput): UnspentOutput.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UnspentOutput, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UnspentOutput;
+  static deserializeBinaryFromReader(message: UnspentOutput, reader: jspb.BinaryReader): UnspentOutput;
+}
+
+export namespace UnspentOutput {
+  export type AsObject = {
+    transactionHash: Uint8Array | string,
+    outputIndex: number,
+    amount: number,
+    pkScript: Uint8Array | string,
+    receiveTime: number,
+    fromCoinbase: boolean,
+    tree: number,
+    amountSum: number,
+    scriptClass: number,
+    spendable: boolean,
+    address: string,
+  }
+}
+
+export class CreateTransactionRequest extends jspb.Message {
+  clearSourceOutputsList(): void;
+  getSourceOutputsList(): Array<UnspentOutput>;
+  setSourceOutputsList(value: Array<UnspentOutput>): void;
+  addSourceOutputs(value?: UnspentOutput, index?: number): UnspentOutput;
+
+  getAmountsMap(): jspb.Map<string, number>;
+  clearAmountsMap(): void;
+  getLockTime(): number;
+  setLockTime(value: number): void;
+
+  getExpiry(): number;
+  setExpiry(value: number): void;
+
+  getFeeRate(): number;
+  setFeeRate(value: number): void;
+
+  getSourceAccount(): number;
+  setSourceAccount(value: number): void;
+
+  getChangeAccount(): number;
+  setChangeAccount(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateTransactionRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateTransactionRequest): CreateTransactionRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CreateTransactionRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateTransactionRequest;
+  static deserializeBinaryFromReader(message: CreateTransactionRequest, reader: jspb.BinaryReader): CreateTransactionRequest;
+}
+
+export namespace CreateTransactionRequest {
+  export type AsObject = {
+    sourceOutputsList: Array<UnspentOutput.AsObject>,
+    amountsMap: Array<[string, number]>,
+    lockTime: number,
+    expiry: number,
+    feeRate: number,
+    sourceAccount: number,
+    changeAccount: number,
+  }
+}
+
+export class CreateTransactionResponse extends jspb.Message {
+  getUnsignedTransaction(): Uint8Array | string;
+  getUnsignedTransaction_asU8(): Uint8Array;
+  getUnsignedTransaction_asB64(): string;
+  setUnsignedTransaction(value: Uint8Array | string): void;
+
+  getEstimatedSignedSize(): number;
+  setEstimatedSignedSize(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateTransactionResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateTransactionResponse): CreateTransactionResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CreateTransactionResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateTransactionResponse;
+  static deserializeBinaryFromReader(message: CreateTransactionResponse, reader: jspb.BinaryReader): CreateTransactionResponse;
+}
+
+export namespace CreateTransactionResponse {
+  export type AsObject = {
+    unsignedTransaction: Uint8Array | string,
+    estimatedSignedSize: number,
+  }
+}
+
 export interface NetworkMap {
   MAINNET: 0;
   TESTNET: 1;

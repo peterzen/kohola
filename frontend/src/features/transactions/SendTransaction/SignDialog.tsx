@@ -4,45 +4,39 @@ import * as React from "react"
 import { Form, Button, FormControl, Table, Row, Col } from 'react-bootstrap';
 
 import { AppError } from "../../../store/types";
-import { ConstructTransactionResponse } from "../../../proto/api_pb";
 import { rawToHex } from "../../../helpers/byteActions";
-import { DecodedrawTx } from "../../../middleware/models";
 import DialogAlert from "./DialogAlert";
-import { decodeRawTransaction } from "../../../helpers/tx";
-import { HumanreadableTxInfo } from "../transactionsSlice";
+import { AuthoredTransactionMetadata } from "../transactionsSlice";
 import { TxHash } from "../../../components/Shared/shared";
 import { Amount } from "../../../components/Shared/Amount";
 
-const ReviewTx = (props: {
-	txInfo: HumanreadableTxInfo,
-	constructTxResp: ConstructTransactionResponse
-}) => {
+const ReviewTx = (props: { txInfo: AuthoredTransactionMetadata }) => {
 	const txInfo = props.txInfo
-	const resp = props.constructTxResp
-	const changeAddress = txInfo.constructTxReq.getChangeDestination() ? txInfo.constructTxReq.getChangeDestination()?.getAddress() : null
 	return (
 		<div>
 			<Table>
 				<tbody>
-					<tr>
-						<th>Source account:</th>
-						<td>{txInfo.sourceAccount.getAccountName()}</td>
-					</tr>
+					{txInfo.sourceAccount && (
+						<tr>
+							<th>Source account:</th>
+							<td>{txInfo.sourceAccount.getAccountName()}</td>
+						</tr>
+					)}
 					<tr>
 						<th>Total amount:</th>
-						<td><Amount amount={txInfo.totalAmount} showCurrency /></td>
+						<td><Amount amount={txInfo.totalOutputAmount} showCurrency /></td>
 					</tr>
 					<tr>
 						<th>Fee</th>
-						<td>Fee rate: {txInfo.constructTxReq.getFeePerKb()}<br />
+						<td>Fee rate: {txInfo.feeRate}<br />
 						</td>
 
 					</tr>
 					<tr>
-						<th>Inputs ({txInfo.rawTx.numInputs}):</th>
+						<th>Inputs ({txInfo.decodedTx.getInputsList().length}):</th>
 						<td>
-							{txInfo.rawTx.inputs.map((i) => (
-								<div key={i.prevTxId.toString()}><TxHash hash={i.prevTxId} />:{i.outputIndex}</div>
+							{txInfo.decodedTx.getInputsList().map((i) => (
+								<div key={i.getPreviousTransactionHash_asB64()}><TxHash hash={i.getPreviousTransactionHash_asU8()} />:{i.getPreviousTransactionIndex()}</div>
 							))}
 						</td>
 					</tr>
@@ -51,29 +45,23 @@ const ReviewTx = (props: {
 						<td>
 							<Table>
 								<tbody>
-									{txInfo.constructTxReq.getNonChangeOutputsList().map((o) => {
-										if (o == undefined || o.getDestination() == undefined) return null
-										const address = o.getDestination()?.getAddress()
+									{txInfo.nonChangeOutputs.map((o) => {
 										return (
-											<tr key={address}>
-												<td>{address}</td>
-												<td><Amount amount={o.getAmount()} showCurrency /></td>
+											<tr key={o.address}>
+												<td>{o.address}</td>
+												<td><Amount amount={o.amount} showCurrency /></td>
 											</tr>
 										)
 									})}
 								</tbody>
 							</Table>
 
-							{changeAddress && (
+							{txInfo.changeAddress && (
 								<div>
-									Change destination: {changeAddress}
+									Change destination: {txInfo.changeAddress}
 								</div>
 							)}
 						</td>
-					</tr>
-					<tr>
-						<th>Estimated size:</th>
-						<td>{resp.getEstimatedSignedSize()}b</td>
 					</tr>
 				</tbody>
 			</Table>
@@ -85,7 +73,7 @@ const ReviewTx = (props: {
 						as="textarea"
 						cols="20"
 						rows="3"
-						value={rawToHex(resp.getUnsignedTransaction_asU8())}
+						value={rawToHex(txInfo.unsignedTx)}
 					/>
 				</Form.Group>
 			</Form>
@@ -97,7 +85,6 @@ export default class SignDialog extends React.Component<OwnProps, InternalState>
 	constructor(props: OwnProps) {
 		super(props)
 		this.state = {
-			rawTx: decodeRawTransaction(Buffer.from(this.props.constructTransactionResponse.getUnsignedTransaction_asU8())),
 			error: null,
 			formIsValidated: false,
 			passphrase: ""
@@ -109,7 +96,7 @@ export default class SignDialog extends React.Component<OwnProps, InternalState>
 			<div>
 				<h4>Review and confirm transaction</h4>
 				{this.props.txInfo != null && (
-					<ReviewTx txInfo={this.props.txInfo} constructTxResp={this.props.constructTransactionResponse} />
+					<ReviewTx txInfo={this.props.txInfo} />
 				)}
 				<Form
 					validated={this.state.formIsValidated && !this.props.error}
@@ -166,8 +153,8 @@ export default class SignDialog extends React.Component<OwnProps, InternalState>
 	handleCancel(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		e.stopPropagation();
-
 	}
+
 	handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -180,8 +167,7 @@ export default class SignDialog extends React.Component<OwnProps, InternalState>
 
 interface OwnProps {
 	error: AppError | null
-	txInfo: HumanreadableTxInfo | null,
-	constructTransactionResponse: ConstructTransactionResponse,
+	txInfo: AuthoredTransactionMetadata | null,
 	onFormComplete: (formData: ISignDialogFormData) => void
 	onCancel: () => void
 }
@@ -191,7 +177,6 @@ interface InternalState {
 	error: AppError | null
 	formIsValidated: boolean
 	passphrase: string
-	rawTx: DecodedrawTx
 }
 
 export interface ISignDialogFormData {

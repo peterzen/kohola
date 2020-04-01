@@ -5,17 +5,20 @@ import { connect } from 'react-redux';
 import { withRouter, RouteChildrenProps } from 'react-router-dom';
 
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faPaperPlane, faCashRegister, faCoins } from "@fortawesome/free-solid-svg-icons";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, Alert, Col, Row, Tabs, Tab } from 'react-bootstrap';
 
 import { WalletAccount, Transaction } from '../middleware/models';
 import AccountBalanceTotals from '../features/balances/AccountBalanceTotals';
-import GetNewAddressDialog from '../features/balances/GetNewAddressDialog';
+import ReceiveDialog from '../features/transactions/ReceiveDialog';
 import UTXOContainer from '../features/unspents/UTXOContainer';
-import SendTransaction from '../features/transactions/SendTransaction';
 import { IApplicationState } from '../store/types';
 import { getAccountTransactions } from '../features/transactions/transactionsSlice';
 import RecentTransactions from '../features/transactions/RecentTransactionsContainer';
+import SendDialogContainer from '../features/transactions/SendTransaction/SendDialogContainer';
+import { ReceiveTitle, CoinsTitle, SendTitle, RecentTxTitle } from '../features/transactions/shared';
 
 class AccountDetails extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -46,12 +49,6 @@ class AccountDetails extends React.Component<Props, InternalState> {
 									Account: {account.getAccountName()}
 								</h2>
 							</Col>
-							<Col xs={4} className="text-right">
-								<SendTransaction defaultAccount={account} />&nbsp;
-								<Button variant="primary"
-									onClick={() => this.showReceiveDialog(account)}
-								>Receive</Button>
-							</Col>
 						</Row>
 
 						<Card>
@@ -66,26 +63,22 @@ class AccountDetails extends React.Component<Props, InternalState> {
 								mountOnEnter={true}
 								unmountOnExit={false}
 							>
-								<Tab eventKey="transactions" title="Recent transactions">
+								<Tab eventKey="transactions" title={<RecentTxTitle />}>
 									<RecentTransactions
 										txList={this.props.txList(account)}
 										showAccount={false} />
 								</Tab>
-								<Tab eventKey="utxo" title="UTXOs">
-									<Card>
-										<Card.Body>
-											<Card.Title>UTXOs</Card.Title>
-										</Card.Body>
-										<UTXOContainer account={account} />
-									</Card>
+								<Tab eventKey="utxo" title={<CoinsTitle />}>
+									<UTXOContainer account={account} />
+								</Tab>
+								<Tab eventKey="send" title={<SendTitle />}>
+									<SendDialogContainer defaultFromAccount={account} />
+								</Tab>
+								<Tab eventKey="receive" title={<ReceiveTitle />}>
+									<ReceiveDialog account={account} />
 								</Tab>
 							</Tabs>
 						</div>
-						<GetNewAddressDialog
-							modalTitle="New receive address"
-							show={this.state.showNewAddressModal}
-							account={account}
-							onHide={() => this.setState({ showNewAddressModal: false })} />
 					</div>
 				)}
 				{account == null && (

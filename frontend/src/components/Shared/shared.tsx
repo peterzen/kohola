@@ -35,13 +35,16 @@ export function Timestamp(props: TimestampProps) {
 	)
 }
 
-export function TransactionHash(props: { tx: Transaction }) {
+export function TransactionHash(props: { tx: Transaction,truncate?: boolean }) {
+	let truncate = true;
+	if (props.truncate != undefined) truncate = props.truncate;
+	const truncLength = truncate ? 15 : 100
 	return (
-		<span className="tx-hash" title={props.tx.getHash()}>{_.truncate(props.tx.getHash(), { length: 15 })}</span>
+		<span className="tx-hash" title={props.tx.getHash()}>{_.truncate(props.tx.getHash(), { length: truncLength })}</span>
 	)
 }
 
-export function TxHash(props: { hash: Buffer, truncate?: boolean }) {
+export function TxHash(props: { hash: Buffer | Uint8Array, truncate?: boolean }) {
 	const h = rawHashToHex(props.hash)
 	if (h == null) {
 		console.error("rawHashToHex returned null")

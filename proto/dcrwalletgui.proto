@@ -7,6 +7,7 @@ import "api.proto";
 service AppConfig {
   rpc GetConfig(GetConfigRequest) returns (AppConfiguration);
   rpc SetConfig(SetConfigRequest) returns (SetConfigResponse);
+  rpc CreateTransaction(CreateTransactionRequest) returns (CreateTransactionResponse);
 }
 
 message GetConfigRequest { bytes passphrase = 1; }
@@ -95,7 +96,6 @@ message AppConfiguration {
   UIPreferences ui_preferences = 8;
 }
 
-
 service NetworkService {
   rpc CheckConnection(CheckConnectionRequest) returns (CheckConnectionResponse);
   rpc ConnectWallet(ConnectWalletRequest) returns (ConnectWalletResponse);
@@ -111,9 +111,7 @@ message CheckConnectionResponse {
   string error = 2;
 }
 
-message ConnectWalletRequest { 
-  string wallet_endpoint_id = 1; 
-}
+message ConnectWalletRequest { string wallet_endpoint_id = 1; }
 
 message ConnectWalletResponse {
   bool isSuccess = 1;
@@ -124,8 +122,8 @@ message ConnectWalletResponse {
 // exchange rates
 message AltCurrencyRates {
   message AltCurrencyRate {
-	string currency_code = 1;
-	float current_rate = 2;
+    string currency_code = 1;
+    float current_rate = 2;
   }
   repeated AltCurrencyRate rates = 1;
   int64 last_updated_ts = 2;
@@ -145,20 +143,17 @@ message MarketChartDataPoint {
   float exchange_rate = 2;
 }
 
-message GetMarketChartResponse {
-  repeated MarketChartDataPoint datapoints = 1;
-}
-
+message GetMarketChartResponse { repeated MarketChartDataPoint datapoints = 1; }
 
 message StakingHistory {
   message StakingHistoryLineItem {
     walletrpc.TransactionDetails.TransactionType tx_type = 1;
-	int64 reward_credit = 2;
-	int64 ticket_cost_credit = 3;
-	int64 ticket_cost_debit = 4;
-	int64 fee_debit = 5;
-	int64 timestamp = 6;
-	bytes tx_hash = 7;
+    int64 reward_credit = 2;
+    int64 ticket_cost_credit = 3;
+    int64 ticket_cost_debit = 4;
+    int64 fee_debit = 5;
+    int64 timestamp = 6;
+    bytes tx_hash = 7;
   }
   int64 last_block = 1;
   repeated StakingHistoryLineItem line_items = 2;
@@ -169,6 +164,38 @@ message StakeDiffHistory {
   uint32 start_block = 2;
   uint32 end_block = 3;
 }
+
+message UnspentOutput {
+  bytes transaction_hash = 1;
+  uint32 output_index = 2;
+  int64 amount = 3;
+  bytes pk_script = 4;
+  int64 receive_time = 5;
+  bool from_coinbase = 6;
+  int32 tree = 7;
+  int64 amount_sum = 8;
+  int32 script_class = 9;
+  bool spendable = 10;
+  string address = 11;
+}
+
+message CreateTransactionRequest {
+  repeated UnspentOutput source_outputs = 1;
+  //repeated TransactionInput inputs = 1;
+  map<string, int64> amounts = 2;
+  int64 lock_time = 3;
+  int64 expiry = 4;
+  int64 fee_rate = 5;
+  uint32 source_account = 6;
+  uint32 change_account = 7;
+}
+
+message CreateTransactionResponse {
+  bytes unsigned_transaction = 1;
+  int32 estimated_signed_size = 2;
+}
+
+
 
 /*
 message LorcaMessage {

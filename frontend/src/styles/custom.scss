@@ -28,6 +28,12 @@ body {
   }
 }
 
+.card-header {
+	& > .card-title.h5 {
+		margin-bottom: 0;
+	}
+}
+
 label {
 	user-select: none;
 	margin: 0.25em 0;

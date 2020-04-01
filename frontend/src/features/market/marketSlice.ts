@@ -141,6 +141,10 @@ export const getCurrentExchangeRate = (state: IApplicationState, currencyCode: s
 	return _.find(state.market.currentRates?.getRatesList(), r => r.getCurrencyCode() == currencyCode)?.getCurrentRate()
 }
 
+export const haveExchangeRateData = (state: IApplicationState) => {
+	return state.market.currentRates != undefined && state.market.currentRates.getRatesList().length > 0
+}
+
 export const getMarketChartData = (state: IApplicationState, currencyCode: string): MarketChartDataPoint[] => {
 	return state.market.marketChartState[currencyCode]?.getMarketChartData || []
 }
