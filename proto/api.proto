@@ -57,6 +57,7 @@ service WalletService {
 	rpc ConstructTransaction (ConstructTransactionRequest) returns (ConstructTransactionResponse);
 	rpc SignTransaction (SignTransactionRequest) returns (SignTransactionResponse);
 	rpc SignTransactions (SignTransactionsRequest) returns (SignTransactionsResponse);
+	rpc CreateRawTransaction(CreateRawTransactionRequest) returns (CreateRawTransactionResponse);
 	rpc CreateSignature (CreateSignatureRequest) returns (CreateSignatureResponse);
 	rpc PublishTransaction (PublishTransactionRequest) returns (PublishTransactionResponse);
 	rpc PublishUnminedTransactions (PublishUnminedTransactionsRequest) returns (PublishUnminedTransactionsResponse);
@@ -1122,3 +1123,21 @@ message SpenderResponse {
 	bytes spender_transaction = 1;
 	uint32 input_index = 2;
 }
+message CreateRawTransactionRequest {
+	message TransactionInput {
+		double amount = 1;
+		string txid = 2;
+		uint32 vout = 3;
+		int32 tree = 4;
+	}
+	repeated TransactionInput inputs = 1;
+	map<string, double> amounts = 2;
+	int64 lock_time = 3;
+	int64 expiry = 4;
+}
+
+message CreateRawTransactionResponse {
+	string serialized_transaction = 1;
+}
+
+

@@ -11,9 +11,10 @@ import SignDialog, { ISignDialogFormData } from "./SignDialog"
 import PublishDialog from "./PublishDialog"
 import PublishConfirmDialog from "./PublishConfirmDialog"
 import { getAccounts } from "../../balances/accountSlice"
-import { cancelSignTransaction, constructTransaction, signTransaction, publishTransaction } from "../actions"
+import { cancelSignTransaction, constructTransaction, signTransaction, publishTransaction, createRawTransaction } from "../actions"
 import { SendTransactionSteps, HumanreadableTxInfo } from "../transactionsSlice"
-import { ConstructTransactionResponse, ConstructTransactionRequest, SignTransactionResponse, PublishTransactionResponse } from "../../../proto/api_pb"
+import { ConstructTransactionResponse, ConstructTransactionRequest, SignTransactionResponse, PublishTransactionResponse, CreateRawTransactionRequest } from "../../../proto/api_pb"
+import { rawHashToHex } from "../../../helpers/byteActions"
 
 
 class SendDialogContainer extends React.Component<Props, InternalState>{
@@ -24,7 +25,6 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 				{currentStep == SendTransactionSteps.CONSTRUCT_DIALOG && (
 					<ConstructTxDialog
 						error={this.props.errorConstructTransaction}
-						accounts={this.props.accounts}
 						onFormComplete={_.bind(this.onConstructAttempt, this)}
 						onCancel={() => this.props.cancel()}
 					/>
@@ -58,16 +58,38 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 		)
 	}
 	onConstructAttempt(formData: ISendDialogFormData) {
-		const outputs: ConstructTxOutput[] = [{
-			destination: formData.destinationAddress[0],
-			amount: formData.amount * ATOMS_DIVISOR
-		}]
-		this.props.constructTransaction(
-			formData.sourceAccount.getAccountNumber(),
-			formData.requiredConfirmations,
-			outputs,
-			formData.sendAllToggle
-		)
+
+		if (formData.manualInputSelection == true) {
+			const request = new CreateRawTransactionRequest()
+			const amountsMap = request.getAmountsMap()
+			// TODO implement multiple output addresses
+			amountsMap.set(formData.destinationAddress[0], formData.amount * ATOMS_DIVISOR)
+			const inputs = _.map(formData.selectedUTXOs, (utxo) => {
+				const input = new CreateRawTransactionRequest.TransactionInput()
+				input.setAmount(utxo.getAmount())
+				const txId = rawHashToHex(utxo.getTransactionHash_asU8())
+				if (txId == null) {
+					throw new AppError(0, "Cannot create input, invalid TX ID: " + utxo.getTransactionHash_asB64())
+				}
+				input.setTxid(txId)
+				input.setVout(utxo.getOutputIndex())
+				input.setTree(utxo.getTree())
+				return input
+			})
+			request.setInputsList(inputs)
+			this.props.createRawTransaction(request)
+		} else {
+			const outputs: ConstructTxOutput[] = [{
+				destination: formData.destinationAddress[0],
+				amount: formData.amount * ATOMS_DIVISOR
+			}]
+			this.props.constructTransaction(
+				formData.sourceAccount.getAccountNumber(),
+				formData.requiredConfirmations,
+				outputs,
+				formData.sendAllToggle
+			)
+		}
 	}
 	onSignAttempt(formData: ISignDialogFormData) {
 		this.props.signTransaction(
@@ -116,16 +138,18 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 interface DispatchProps {
 	cancel: () => void
 	cancelSign(): typeof cancelSignTransaction
-	constructTransaction: typeof constructTransaction
 	signTransaction: typeof signTransaction
 	publishTransaction: typeof publishTransaction
+	createRawTransaction: typeof createRawTransaction
+	constructTransaction: typeof constructTransaction
 }
 
 const mapDispatchToProps = {
-	constructTransaction: constructTransaction,
-	signTransaction: signTransaction,
-	publishTransaction: publishTransaction,
-	cancelSign: cancelSignTransaction,
+	signTransaction,
+	publishTransaction,
+	createRawTransaction,
+	constructTransaction,
+	cancelSignTransaction,
 }
 
 

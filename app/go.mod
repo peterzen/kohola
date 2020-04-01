@@ -18,3 +18,5 @@ require (
 	github.com/zserge/lorca v0.1.9
 	google.golang.org/grpc v1.28.0
 )
+
+replace decred.org/dcrwallet => ../deps/dcrwallet

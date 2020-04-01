@@ -11,6 +11,8 @@ import {
 	PublishTransactionResponse,
 	ValidateAddressResponse,
 	SweepAccountResponse,
+	CreateRawTransactionRequest,
+	CreateRawTransactionResponse,
 } from "../../proto/api_pb";
 import { DecodedrawTx, ConstructTxOutput } from "../../middleware/models";
 import { TransactionType, TransactionDirection } from "../../constants";
@@ -28,12 +30,19 @@ export interface GetTransactionsState {
 
 // ConstructTransaction
 export interface ConstructTransactionState {
-	readonly txInfo: HumanreadableTxInfo | null
 	readonly errorConstructTransaction: AppError | null
 	readonly constructTransactionRequest: ConstructTransactionRequest | null
 	readonly constructTransactionResponse: ConstructTransactionResponse | null
 	readonly constructTransactionAttempting: boolean
 	readonly changeScriptCache: IChangeScriptByAccount
+}
+
+// CreateRawTransaction
+export interface CreateRawTransactionState {
+	readonly errorCreateRawTransaction: AppError | null
+	readonly createRawTransactionRequest: CreateRawTransactionRequest | null
+	readonly createRawTransactionResponse: CreateRawTransactionResponse | null
+	readonly createRawTransactionAttempting: boolean
 }
 
 // SignTransaction
@@ -86,7 +95,8 @@ export interface IChangeScriptByAccount {
 
 // Send transaction
 export interface GUISendTransaction {
-	sendTransactionCurrentStep: SendTransactionSteps
+	readonly txInfo: HumanreadableTxInfo | null
+	readonly sendTransactionCurrentStep: SendTransactionSteps
 }
 
 interface IConstructTransactionSuccessPayload {
@@ -96,8 +106,15 @@ interface IConstructTransactionSuccessPayload {
 	changeScriptCache: IChangeScriptByAccount
 }
 
+interface IICreateRawTransactionSuccessPayload {
+	txInfo: HumanreadableTxInfo
+	response: CreateRawTransactionResponse
+	currentStep: SendTransactionSteps
+}
+
 export const initialState: GetTransactionsState &
 	ConstructTransactionState &
+	CreateRawTransactionState &
 	SignTransactionState &
 	PublishTransactionState &
 	ValidateAddressState &
@@ -131,6 +148,12 @@ export const initialState: GetTransactionsState &
 	constructTransactionRequest: null,
 	constructTransactionResponse: null,
 	constructTransactionAttempting: false,
+
+	// CreateRawTransaction
+	errorCreateRawTransaction: null,
+	createRawTransactionRequest: null,
+	createRawTransactionResponse: null,
+	createRawTransactionAttempting: false,
 
 	// SignTransaction
 	signTransactionAttempting: false,
@@ -191,7 +214,6 @@ const transactionsSlice = createSlice({
 		},
 		constructTransactionSuccess(state, action: PayloadAction<IConstructTransactionSuccessPayload>) {
 			const { txInfo, response, changeScriptCache, currentStep } = action.payload
-			console.log("REDUCER", action.payload)
 			state.txInfo = txInfo
 			state.changeScriptCache = changeScriptCache
 			state.sendTransactionCurrentStep = currentStep
@@ -199,6 +221,28 @@ const transactionsSlice = createSlice({
 			state.errorConstructTransaction = null
 			state.constructTransactionRequest = null
 			state.constructTransactionAttempting = false
+		},
+
+		// CreateRawTransaction
+		createRawTransactionAttempt(state) {
+			state.errorCreateRawTransaction = null
+			state.createRawTransactionRequest = null
+			state.createRawTransactionResponse = null
+			state.createRawTransactionAttempting = true
+		},
+		createRawTransactionFailed(state, action: PayloadAction<AppError>) {
+			state.errorCreateRawTransaction = action.payload
+			state.createRawTransactionRequest = null
+			state.createRawTransactionResponse = null
+			state.createRawTransactionAttempting = false
+		},
+		createRawTransactionSuccess(state, action: PayloadAction<IICreateRawTransactionSuccessPayload>) {
+			const { txInfo, response, currentStep } = action.payload
+			state.txInfo = txInfo
+			state.sendTransactionCurrentStep = currentStep
+			state.createRawTransactionRequest = null
+			state.createRawTransactionResponse = response
+			state.createRawTransactionAttempting = false
 		},
 
 		// SignTransaction
@@ -287,6 +331,11 @@ export const {
 	constructTransactionAttempt,
 	constructTransactionFailed,
 	constructTransactionSuccess,
+
+	// CreateRawTransaction
+	createRawTransactionAttempt,
+	createRawTransactionFailed,
+	createRawTransactionSuccess,
 
 	// SignTransaction
 	signTransactionAttempt,

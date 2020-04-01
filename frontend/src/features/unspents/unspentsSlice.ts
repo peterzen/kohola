@@ -1,7 +1,8 @@
+import _ from 'lodash'
 import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
 
 import LorcaBackend from '../../middleware/lorca'
-import { AppError, AppDispatch, IGetState, AppThunk } from '../../store/types'
+import { AppError, AppDispatch, IGetState, AppThunk, IApplicationState } from '../../store/types'
 import { UnspentOutputResponse } from '../../proto/api_pb'
 
 export interface IUnspentOutputsByAccount {
@@ -83,4 +84,9 @@ export const fetchUnspentsAttempt: ActionCreator<any> = (
 			dispatch(getUnspentOutputsFailed(error))
 		}
 	}
+}
+
+// selectors
+export const getRegularUTXOs = (state: IApplicationState, accountNumber:number) => {
+	return _.filter(state.unspentoutputs.unspentOutputsByAccount[accountNumber], u=>u.getTree()==0)
 }

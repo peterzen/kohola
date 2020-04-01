@@ -306,6 +306,15 @@ type WalletServiceSignTransactions = {
   readonly responseType: typeof api_pb.SignTransactionsResponse;
 };
 
+type WalletServiceCreateRawTransaction = {
+  readonly methodName: string;
+  readonly service: typeof WalletService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.CreateRawTransactionRequest;
+  readonly responseType: typeof api_pb.CreateRawTransactionResponse;
+};
+
 type WalletServiceCreateSignature = {
   readonly methodName: string;
   readonly service: typeof WalletService;
@@ -448,6 +457,7 @@ export class WalletService {
   static readonly ConstructTransaction: WalletServiceConstructTransaction;
   static readonly SignTransaction: WalletServiceSignTransaction;
   static readonly SignTransactions: WalletServiceSignTransactions;
+  static readonly CreateRawTransaction: WalletServiceCreateRawTransaction;
   static readonly CreateSignature: WalletServiceCreateSignature;
   static readonly PublishTransaction: WalletServicePublishTransaction;
   static readonly PublishUnminedTransactions: WalletServicePublishUnminedTransactions;
@@ -1066,6 +1076,15 @@ export class WalletServiceClient {
   signTransactions(
     requestMessage: api_pb.SignTransactionsRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.SignTransactionsResponse|null) => void
+  ): UnaryResponse;
+  createRawTransaction(
+    requestMessage: api_pb.CreateRawTransactionRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CreateRawTransactionResponse|null) => void
+  ): UnaryResponse;
+  createRawTransaction(
+    requestMessage: api_pb.CreateRawTransactionRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CreateRawTransactionResponse|null) => void
   ): UnaryResponse;
   createSignature(
     requestMessage: api_pb.CreateSignatureRequest,

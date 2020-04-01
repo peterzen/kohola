@@ -46,6 +46,9 @@ goog.exportSymbol('proto.walletrpc.ConstructTransactionRequest.Output', null, gl
 goog.exportSymbol('proto.walletrpc.ConstructTransactionRequest.OutputDestination', null, global);
 goog.exportSymbol('proto.walletrpc.ConstructTransactionRequest.OutputSelectionAlgorithm', null, global);
 goog.exportSymbol('proto.walletrpc.ConstructTransactionResponse', null, global);
+goog.exportSymbol('proto.walletrpc.CreateRawTransactionRequest', null, global);
+goog.exportSymbol('proto.walletrpc.CreateRawTransactionRequest.TransactionInput', null, global);
+goog.exportSymbol('proto.walletrpc.CreateRawTransactionResponse', null, global);
 goog.exportSymbol('proto.walletrpc.CreateSignatureRequest', null, global);
 goog.exportSymbol('proto.walletrpc.CreateSignatureRequest.SigHashType', null, global);
 goog.exportSymbol('proto.walletrpc.CreateSignatureResponse', null, global);

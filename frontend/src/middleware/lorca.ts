@@ -29,6 +29,8 @@ import {
 	RunTicketBuyerRequest,
 	RevokeTicketsResponse,
 	RunAccountMixerRequest,
+	CreateRawTransactionRequest,
+	CreateRawTransactionResponse,
 } from '../proto/api_pb';
 import { rawToHex } from '../helpers/byteActions';
 import { GRPCEndpoint, StakingHistory, StakeDiffHistory } from '../proto/dcrwalletgui_pb';
@@ -182,6 +184,21 @@ const LorcaBackend = {
 
 		} catch (e) {
 			console.error("Serialization error", e)
+			throw e
+		}
+	},
+
+	createRawTransaction: async (request: CreateRawTransactionRequest) => {
+		try {
+			const ser = rawToHex(request.serializeBinary().buffer)
+			const r = await w.walletrpc__CreateRawTransaction(ser)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return CreateRawTransactionResponse.deserializeBinary(r.payload)
+
+		} catch (e) {
+			console.error("createRawTransaction:", e)
 			throw e
 		}
 	},

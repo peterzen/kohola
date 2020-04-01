@@ -43,6 +43,7 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__RenameAccount", renameAccount)
 	ui.Bind("walletrpc__GetTransactions", getTransactions)
 	ui.Bind("walletrpc__ConstructTransaction", constructTransaction)
+	ui.Bind("walletrpc__CreateRawTransaction", createRawTransaction)
 	ui.Bind("walletrpc__SignTransaction", signTransaction)
 	ui.Bind("walletrpc__PublishTransaction", publishTransaction)
 	ui.Bind("walletrpc__PurchaseTickets", purchaseTickets)
@@ -431,6 +432,24 @@ func constructTransaction(requestAsHex string) (r gui.LorcaMessage) {
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
 	response, err := walletServiceClient.ConstructTransaction(ctx, request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	return r
+}
+
+func createRawTransaction(requestAsHex string) (r gui.LorcaMessage) {
+	request := &walletrpc.CreateRawTransactionRequest{}
+	bytes, err := hex.DecodeString(requestAsHex)
+	err = proto.Unmarshal(bytes, request)
+	response, err := walletServiceClient.CreateRawTransaction(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
