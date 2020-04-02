@@ -18,12 +18,20 @@ interface ConfigDecryptDialogState {
 }
 
 class ConfigDecryptDialog extends React.Component<ConfigDecryptDialogProps, ConfigDecryptDialogState> {
+	private passphraseInnerRef = React.createRef<any>()
+
 	constructor(props: ConfigDecryptDialogProps) {
 		super(props)
 		this.state = {
-			passphrase: "",
+			passphrase: ""
 		}
 	}
+
+	componentDidMount(){
+		setTimeout(() => {
+			this.passphraseInnerRef.current!.focus()
+		}, 1)		
+	 }
 
 	render() {
 		return (
@@ -36,6 +44,7 @@ class ConfigDecryptDialog extends React.Component<ConfigDecryptDialogProps, Conf
 						name="password"
 						type="password"
 						placeholder="Passphrase"
+						ref={this.passphraseInnerRef as React.RefObject<any>}
 						value={this.state.passphrase}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleChange(e.currentTarget.value)} />
 					<Form.Text className="text-muted">
