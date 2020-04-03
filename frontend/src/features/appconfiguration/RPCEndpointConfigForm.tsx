@@ -15,6 +15,7 @@ import LorcaBackend from '../../middleware/lorca';
 import GenericModal, { GenericModalProps } from '../../components/Shared/GenericModal';
 import { RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
 import { Networks } from '../../constants';
+import { PasteButton } from '../../components/Shared/shared';
 
 export const NetworkSelector = (props: { name: string, defaultValue: number, onChange: any }) => {
 	return (
@@ -79,7 +80,9 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 			formRef: React.createRef(),
 			formIsValidated: false,
 			connectionCheckStatus: ConnectionCheckState.NONE,
-			connectionCheckMessage: ""
+			connectionCheckMessage: "",
+			certBlob: this.props.endPointConfig.getCertBlob(),
+			certFileName: this.props.endPointConfig.getCertFileName()
 		}
 	}
 	render() {
@@ -158,33 +161,34 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 						</Col>
 						<Col sm={9}>
 							<Form.Control
-								required
 								autoComplete="false"
 								name="cert_file_name"
 								tabIndex={-1}
 								size="sm"
-								defaultValue={endPoint.getCertFileName()} />
+								onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleCertFileChange(e.currentTarget.value)}
+								value={this.state.certFileName} />
 						</Col>
 					</Row>
-					{/* <Form.Control
-								name="cert_blob"
-								as="textarea"
-								rows={6}
-								placeholder={placeHolderCert}
-								onChange={onChange}
-								defaultValue={endPoint.getCertBlob()}
-								className="mt-3"
-							/>
-							<div className="text-right">
-								<PasteButton
-									className="pastebutton-overlaid"
-									tabIndex={-1} />
-							</div>
-							<div>
-								<small className="form-text text-muted">
-									Either select your cert file  or paste the blob into this field.  It will be saved in the configuration in encrypted form.
-								</small>
-							</div> */}
+					<Form.Control
+						name="cert_blob"
+						as="textarea"
+						rows={6}
+						placeholder="Paste the certificate content"
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleCertBlobChange(e.currentTarget.value)}
+						value={this.state.certBlob}
+						className="mt-3"
+					/>
+					<div className="text-right">
+						<PasteButton
+							onClick={_.bind(this.onPasteBlob, this)}
+							className="pastebutton-overlaid"
+						/>
+					</div>
+					<div>
+						<small className="form-text text-muted">
+							Either select your cert file  or paste the blob into this field.  It will be saved in the configuration in encrypted form.
+						</small>
+					</div>
 				</Form.Group>
 
 				<Form.Group controlId="default-checkbox">
@@ -217,13 +221,22 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 		)
 	}
 
+	onPasteBlob() {
+		navigator.clipboard.readText()
+			.then((text: string) => {
+				this.setState({ certBlob: text }, () => {
+					this.handleChange()
+				});
+			});
+	}
+
 	browseFile() {
 		const w = (window as any)
 		w.walletgui_FileOpenDialog()
 			.then((file: string) => {
-				// console.log("FILE", file)
-				this.state.formRef.current.cert_file_name.value = file
-				this.handleChange()
+				this.setState({
+					certFileName: file
+				}, () => this.handleCertFileChange(file))
 				// endPoint.setCertFileName(file)
 			})
 	}
@@ -240,12 +253,35 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 		return false;
 	}
 
+	handleCertFileChange(certFileName: string) {
+		this.setState({
+			certFileName: certFileName
+		})
+		fetchCertBlob(certFileName, _.bind((r) => {
+			this.setState({
+				certBlob: r.error ? "" : r.spayload
+			}, () => this.handleChange())
+		}, this))
+	}
+
+	handleCertBlobChange(certBlob: string) {
+		this.setState({
+			certBlob: certBlob
+		}, () => this.handleChange())
+	}
+
 	handleChange() {
 		const ep = this.props.endPointConfig
 		this.setState({
 			isDirty: true
 		})
-		if (!this.state.formRef.current.checkValidity()) {
+
+		if (!this.state.formRef.current.checkValidity() ||
+			(this.state.certBlob == "" && this.state.certFileName == "")) {
+			this.setState({
+				connectionCheckStatus: ConnectionCheckState.NONE,
+				connectionCheckMessage: ""
+			})
 			return
 		}
 		this.setState({
@@ -276,7 +312,6 @@ export default class RPCEndpointConfigForm extends React.Component<IRPCFormProps
 	}
 }
 
-
 export class EditEndpointModal extends React.Component<GenericModalProps & IRPCFormProps, IRPCFormState>{
 	render() {
 		return (
@@ -291,8 +326,6 @@ export class EditEndpointModal extends React.Component<GenericModalProps & IRPCF
 	}
 }
 
-
-
 const generateEndpointLabel = (endpoint: GRPCEndpoint | RPCEndpoint) => {
 	return sprintf(
 		"%s:%d",
@@ -300,7 +333,6 @@ const generateEndpointLabel = (endpoint: GRPCEndpoint | RPCEndpoint) => {
 		endpoint.getPort()
 	)
 }
-
 
 const loadFormFields = (formRef: React.RefObject<any>, ep: GRPCEndpoint | RPCEndpoint) => {
 	const f = formRef.current
@@ -312,6 +344,7 @@ const loadFormFields = (formRef: React.RefObject<any>, ep: GRPCEndpoint | RPCEnd
 	ep.setPort(f.port.value)
 	ep.setNetwork(f.network.value)
 	ep.setCertFileName(f.cert_file_name.value)
+	ep.setCertBlob(f.cert_blob.value)
 	ep.setLabel(generateEndpointLabel(ep))
 }
 
@@ -322,7 +355,10 @@ const checkEndpointFn = _.debounce(async (formRef, endpoint, onComplete) => {
 	onComplete(r)
 }, 1000)
 
-
+const fetchCertBlob = async (certFileName: string, onComplete: (r: any) => void) => {
+	const r = await LorcaBackend.fetchCertBlob(certFileName)
+	onComplete(r)
+}
 
 interface IRPCFormProps {
 	title: string
@@ -339,4 +375,6 @@ interface IRPCFormState {
 	error: AppError | null
 	formIsValidated: boolean
 	isDirty: boolean
+	certBlob: string
+	certFileName: string
 }

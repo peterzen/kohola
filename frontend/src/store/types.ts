@@ -35,6 +35,7 @@ export interface ILorcaMessage {
 	}
 	payload: Uint8Array
 	apayload: Uint8Array[]
+	spayload: string
 }
 
 export type AppDispatch = typeof store.dispatch

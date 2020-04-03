@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"crypto/x509"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -70,12 +71,15 @@ func connectWallet(endpointCfg *gui.GRPCEndpoint) error {
 // NewGRPCClient connects to the wallet gRPC server
 func newGRPCClient(endpointCfg *gui.GRPCEndpoint) (*grpc.ClientConn, error) {
 	// fmt.Printf("%#v", endpointCfg)
+	var creds credentials.TransportCredentials = nil
+	var err error = nil
 
-	creds, err := credentials.NewClientTLSFromFile(endpointCfg.CertFileName, "localhost")
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
+	cp := x509.NewCertPool()
+	if !cp.AppendCertsFromPEM([]byte(endpointCfg.CertBlob)) {
+		return nil, fmt.Errorf("credentials: failed to append certificates")
 	}
+	creds = credentials.NewClientTLSFromCert(cp, "localhost")
+
 	hostPort := fmt.Sprintf("%s:%d", endpointCfg.Hostname, endpointCfg.Port)
 	conn, err := grpc.Dial(hostPort, grpc.WithTransportCredentials(creds))
 	if err != nil {
