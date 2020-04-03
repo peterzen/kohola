@@ -30,16 +30,14 @@ export class GetPassphraseForConfigEncryptionModal extends React.Component<Gener
                             onFocus={_.bind(this.handleFocus, this)}
                             placeholder="New passphrase"
                             defaultValue="" />
-                        {this.props.passphraseModalNeedVerify &&
-                            <Form.Control
-                                required
-                                autoComplete="off"
-                                name="verifyPassphrase"
-                                type="password"
-                                placeholder="Verify passphrase"
-                                onFocus={_.bind(this.handleFocus, this)}
-                                defaultValue="" />
-                        }
+                        <Form.Control
+                            required
+                            autoComplete="off"
+                            name="verifyPassphrase"
+                            type="password"
+                            placeholder="Verify passphrase"
+                            onFocus={_.bind(this.handleFocus, this)}
+                            defaultValue="" />
                         <span className="help-block">{this.state.passphrasesAreNotTheSameErrorMsg}</span>
                     </Form.Group>
                     <Form.Group>
@@ -74,23 +72,17 @@ export class GetPassphraseForConfigEncryptionModal extends React.Component<Gener
         e.stopPropagation();
         e.preventDefault();
 
-        this.setState({
-            passphrasesAreNotTheSameErrorMsg: ""
-        })
-
         const passphrase = e.currentTarget.form.elements.passphrase.value;
+        const verifyPassphrase = e.currentTarget.form.elements.verifyPassphrase.value;
 
-        if (this.props.passphraseModalNeedVerify) {
-            const verifyPassphrase = e.currentTarget.form.elements.verifyPassphrase.value;
-
-            if (passphrase != verifyPassphrase) {
-                this.setState({
-                    passphrasesAreNotTheSameErrorMsg: "Your new passphrase is not the same as the verify passphrase"
-                })
-            } else {
-                this.props.passphraseModalCallback(passphrase)
-            }
+        if (passphrase != verifyPassphrase) {
+            this.setState({
+                passphrasesAreNotTheSameErrorMsg: "Your new passphrase is not the same as the verify passphrase"
+            })
         } else {
+            this.setState({
+                passphrasesAreNotTheSameErrorMsg: ""
+            })    
             this.props.passphraseModalCallback(passphrase)
         }
     }
@@ -103,7 +95,6 @@ interface InternalState {
 
 interface OwnProps {
     passphraseModalCallback: ((result: string) => void)
-    passphraseModalNeedVerify: boolean
 }
 
 export default GetPassphraseForConfigEncryptionModal
