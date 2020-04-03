@@ -266,15 +266,8 @@ func ExportConfigAPI(ui lorca.UI) {
 				SetConfig(request.AppConfig)
 				err = WriteConfig(passphrase)
 			} else {
-				// attempting to reload config file using the given passphrase
-				err := LoadConfig(passphrase)
-				if err != nil {
-					r.Err = errors.New("invalid passphrase")
-					return r
-				}
-				fmt.Println("Turning off encryption")
-				SetConfig(request.AppConfig)
-				err = WriteConfig("")
+				r.Err = errors.New("Turning off encryption is not allowed")
+				return r
 			}
 		} else {
 			SetConfig(request.AppConfig)

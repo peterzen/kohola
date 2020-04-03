@@ -2,7 +2,7 @@ import _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { UIPreferences } from '../../proto/dcrwalletgui_pb';
 import { AppError, IApplicationState, AppDispatch } from '../../store/types';
 
@@ -16,8 +16,7 @@ class Preferences extends React.Component<Props, InternalState>  {
 		this.state = {
 			uiPreferences: props.uiPreferences,
 			showPassphraseModal: false,
-			passphraseModalCallback: (result: string) => {},
-			passphraseModalNeedVerify: false
+			passphraseModalCallback: (result: string) => {}
 		}
 	}
 
@@ -81,9 +80,10 @@ class Preferences extends React.Component<Props, InternalState>  {
 				</Form.Label>
 					<Col sm={10}>
 						<Form.Check
+							disabled={isConfigEncrypted}
 							id="is-config-encrypted"
-							type="switch"
-							label=""
+							type="checkbox"
+							label={isConfigEncrypted ? "The config file is encrypted. If you need to turn off, you can manually remove the config file and create a new one without the encryption turned on." : ""}
 							checked={isConfigEncrypted}
 							onChange={(e: React.FormEvent<HTMLInputElement>) =>
 								this.updateIsConfigEncrypted(e.currentTarget.checked)}
@@ -93,7 +93,6 @@ class Preferences extends React.Component<Props, InternalState>  {
 				<GetPassphraseForConfigEncryptionModal 
 					title="Enter your passphrase"
 					onHide={() => this.hidePassphraseModal()}
-					passphraseModalNeedVerify={this.state.passphraseModalNeedVerify}
 					passphraseModalCallback={this.state.passphraseModalCallback}
 					show={this.state.showPassphraseModal}/>
 			</Form>
@@ -135,11 +134,10 @@ class Preferences extends React.Component<Props, InternalState>  {
 
 	}	
 
-	showPassphraseModal(callback: ((result: string) => void), needVerify: boolean ) {
+	showPassphraseModal(callback: ((result: string) => void) ) {
 		this.setState({ 
 			showPassphraseModal: true,
-			passphraseModalCallback: callback,
-			passphraseModalNeedVerify: needVerify
+			passphraseModalCallback: callback
 		})
 	}
 
@@ -158,8 +156,7 @@ interface OwnProps {
 interface InternalState {
 	uiPreferences: UIPreferences,
 	showPassphraseModal: boolean,
-	passphraseModalCallback: ((result: string) => void),
-	passphraseModalNeedVerify: boolean
+	passphraseModalCallback: ((result: string) => void)
 }
 
 const mapStateToProps = function (state: IApplicationState): OwnProps {
