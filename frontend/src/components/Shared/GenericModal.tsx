@@ -3,13 +3,18 @@ import * as React from 'react';
 import { Modal } from 'react-bootstrap'
 
 export default class GenericModal<P, S> extends React.Component<P & GenericModalProps, S> {
+	static defaultProps = {
+		onEntered: () => { },
+		onExit: () => { },
+	}
+
 	render() {
 		return (
 			<Modal
 				{...this.props}
 				centered
-				onEntered={() => this.onEntered()}
-				onExit={() => this.onExit()}
+				onEntered={() => this.props.onEntered()}
+				onExit={() => this.props.onExit()}
 				show={this.props.show}
 				onHide={this.props.onHide}>
 				<Modal.Header closeButton>
@@ -26,15 +31,13 @@ export default class GenericModal<P, S> extends React.Component<P & GenericModal
 			</Modal>
 		)
 	}
-	onEntered() {
-	}
-	onExit() {
-	}
 }
 
 export interface GenericModalProps {
 	title: string
 	show: boolean
+	onExit: () => void
 	onHide: () => void
+	onEntered: () => void
 }
 

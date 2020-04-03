@@ -31,7 +31,7 @@ class Preferences extends React.Component<Props, InternalState>  {
 				<Form.Group as={Row}>
 					<Form.Label column sm={2}>
 						Display unit
-						</Form.Label>
+					</Form.Label>
 					<Col sm={10}>
 						<div className="pt-2">
 							<Form.Check
@@ -62,7 +62,7 @@ class Preferences extends React.Component<Props, InternalState>  {
 				<Form.Group as={Row}>
 					<Form.Label column sm={2}>
 						Fiat currency
-				</Form.Label>
+					</Form.Label>
 					<Col sm={10}>
 						<Form.Control 
 							defaultValue={fiatCurrency}
@@ -76,14 +76,16 @@ class Preferences extends React.Component<Props, InternalState>  {
 				</Form.Group>
 				<Form.Group as={Row}>
 					<Form.Label column sm={2}>
-						Config file encryption
-				</Form.Label>
+						Encrypt configuration
+					</Form.Label>
 					<Col sm={10}>
 						<Form.Check
 							disabled={isConfigEncrypted}
 							id="is-config-encrypted"
 							type="checkbox"
-							label={isConfigEncrypted ? "The config file is encrypted. If you need to turn off, you can manually remove the config file and create a new one without the encryption turned on." : ""}
+							label={isConfigEncrypted ?
+								"The config file is encrypted. If you need to turn off, you can manually remove the config file and create a new one without the encryption turned on." :
+								"Enabling this will encrypt (AES256) the configuration file to protect your credentials and connection details. You will be asked for the decryption passphrase when starting dcrwalletgui."}
 							checked={isConfigEncrypted}
 							onChange={(e: React.FormEvent<HTMLInputElement>) =>
 								this.updateIsConfigEncrypted(e.currentTarget.checked)}
@@ -91,7 +93,6 @@ class Preferences extends React.Component<Props, InternalState>  {
 					</Col>
 				</Form.Group>				
 				<GetPassphraseForConfigEncryptionModal 
-					title="Enter your passphrase"
 					onHide={() => this.hidePassphraseModal()}
 					passphraseModalCallback={this.state.passphraseModalCallback}
 					show={this.state.showPassphraseModal}/>
@@ -129,9 +130,7 @@ class Preferences extends React.Component<Props, InternalState>  {
 			})
 			this.props.updateUiPreferences(uiPreferences, passphrase);
 		}
-
-		this.showPassphraseModal(done, isConfigEncrypted)
-
+		this.showPassphraseModal(done)
 	}	
 
 	showPassphraseModal(callback: ((result: string) => void) ) {
