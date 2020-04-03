@@ -289,4 +289,14 @@ func ExportConfigAPI(ui lorca.UI) {
 
 		return r
 	})
+
+	ui.Bind("walletgui__FetchCertBlob", func(certFileName string) (r LorcaMessage) {
+		b, err := ioutil.ReadFile(certFileName)
+		if err != nil {
+			r.Err = err
+		} else {
+			r.SPayload = string(b)
+		}
+		return r
+	})
 }

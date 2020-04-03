@@ -107,7 +107,7 @@ export const WidgetOptionsButton = (args: ButtonProps) => {
 	)
 }
 
-export const PasteButton = (args: ButtonProps) => {
+export const PasteButton = (args: any) => {
 	return (
 		<Button
 			variant="secondary" {...args}>

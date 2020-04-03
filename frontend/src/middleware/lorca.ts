@@ -445,6 +445,10 @@ const LorcaBackend = {
 		return await w.walletgui__CheckGRPCConnection(ser)
 	},
 
+	fetchCertBlob: async (certFileName: string) => {
+		return await w.walletgui__FetchCertBlob(certFileName)
+	},
+
 	fetchStakeDiffHistory: async (startTimestamp: number, endTimestamp: number) => {
 		try {
 			const r = await w.walletgui__FetchStakeDiffHistory(startTimestamp, endTimestamp)
