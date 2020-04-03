@@ -211,11 +211,8 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData>{
 	handleManualInputToggleChange(state: boolean) {
 		this.setState({
 			manualInputSelection: state,
-			selectedUTXOs:[],
-		})
-		setTimeout(() => {
-			this.handleSendAllToggle()
-		}, 0)
+			selectedUTXOs: [],
+		}, () => this.handleSendAllToggle())
 	}
 
 	handleAmountInputChange(fieldName: string, value: number) {
@@ -241,7 +238,7 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData>{
 		}
 	}
 
-	handleSendAllToggle(currentState: boolean=this.state.sendAllToggle) {
+	handleSendAllToggle(currentState: boolean = this.state.sendAllToggle) {
 		const form = this.state.formRef.current
 		form.amount.disabled = form.amountAltCurrency.disabled = currentState
 		let spendableFunds = 0
@@ -261,11 +258,7 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData>{
 	handleUTXOSelectionChange(utxos: UnspentOutputResponse[]) {
 		this.setState({
 			selectedUTXOs: utxos
-		})
-		// we have to wait for the update threads triggered by setState() to finish
-		setTimeout(() => {
-			this.handleSendAllToggle()
-		}, 0)
+		}, () => this.handleSendAllToggle())
 	}
 
 	handleDestinationAddressChange(e: React.ChangeEvent<HTMLInputElement>) {
