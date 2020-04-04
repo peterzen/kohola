@@ -67,16 +67,13 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 			const inputs = _.map(formData.selectedUTXOs, (utxo) => {
 				const input = new CreateRawTransactionRequest.TransactionInput()
 				input.setAmount(utxo.getAmount())
-				const txId = rawHashToHex(utxo.getTransactionHash_asU8())
-				if (txId == null) {
-					throw new AppError(0, "Cannot create input, invalid TX ID: " + utxo.getTransactionHash_asB64())
-				}
-				input.setTxid(txId)
-				input.setVout(utxo.getOutputIndex())
+				input.setTransactionHash(utxo.getTransactionHash_asU8())
+				input.setOutputIndex(utxo.getOutputIndex())
 				input.setTree(utxo.getTree())
 				return input
 			})
 			request.setInputsList(inputs)
+			console.log("REQUEST",request.toObject())
 			this.props.createRawTransaction(request)
 		} else {
 			const outputs: ConstructTxOutput[] = [{
@@ -131,7 +128,7 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 		constructTransactionRequest: state.transactions.constructTransactionRequest,
 		constructTransactionResponse: state.transactions.constructTransactionResponse,
 		currentStep: state.transactions.sendTransactionCurrentStep,
-	};
+	}
 }
 
 
