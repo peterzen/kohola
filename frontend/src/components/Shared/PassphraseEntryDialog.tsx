@@ -41,6 +41,7 @@ export default class PassphraseEntryDialog extends React.Component<Props, Intern
 		return (
 			<Modal
 				centered
+				onEntered={()=>this.state.inputRef.current?.focus()}
 				onExit={_.bind(this.onExit, this)}
 				show={this.state.showModal}
 			>
