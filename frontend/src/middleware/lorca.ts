@@ -31,6 +31,7 @@ import {
 	RunAccountMixerRequest,
 	CreateRawTransactionRequest,
 	CreateRawTransactionResponse,
+	DecodeRawTransactionResponse,
 } from '../proto/api_pb';
 import { rawToHex } from '../helpers/byteActions';
 import { GRPCEndpoint, StakingHistory, StakeDiffHistory } from '../proto/dcrwalletgui_pb';
@@ -464,6 +465,20 @@ const LorcaBackend = {
 
 	fetchCertBlob: async (certFileName: string) => {
 		return await w.walletgui__FetchCertBlob(certFileName)
+	},
+	
+	decodeRawTransaction: async (serializedTransaction:Uint8Array) => {
+		try {
+			const r = await w.walletrpc__DecodeRawTransaction(rawToHex(serializedTransaction))
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return DecodeRawTransactionResponse.deserializeBinary(r.payload)
+		}
+		catch (e) {
+			console.error(e)
+			throw e
+		}
 	},
 
 	fetchStakeDiffHistory: async (startTimestamp: number, endTimestamp: number) => {

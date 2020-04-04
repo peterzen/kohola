@@ -226,7 +226,9 @@ export const createRawTransaction: ActionCreator<any> = (request: CreateRawTrans
 
 		try {
 			const response = await LorcaBackend.createRawTransaction(request)
-			console.log("DEBUG ###",rawToHex( response.getUnsignedTransaction_asU8()))
+			console.log("DEBUG ###", rawToHex(response.getUnsignedTransaction_asU8()))
+			const decoded = await LorcaBackend.decodeRawTransaction(response.getUnsignedTransaction_asU8())
+			console.log("DECODED RAW", decoded)
 			// const humanreadableTxInfo: HumanreadableTxInfo = {
 			// 	rawTx: decodeRawTransaction(Buffer.from(constructTxResponse.getUnsignedTransaction_asU8())),
 			// 	outputs: outputs,

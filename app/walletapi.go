@@ -48,6 +48,7 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__PublishTransaction", publishTransaction)
 	ui.Bind("walletrpc__PurchaseTickets", purchaseTickets)
 	ui.Bind("walletrpc__RevokeTickets", revokeExpiredTickets)
+	ui.Bind("walletrpc__DecodeRawTransaction", decodeRawTransaction)
 	ui.Bind("walletrpc__RunTicketBuyer", func(requestAsHex string, onErrorFnName string, onDoneFnName string, onStopFnName string) {
 
 		onErrorFn := func(err error) {
@@ -176,6 +177,25 @@ func getBalance(accountNumber uint32, requiredConfirmations int32) (r gui.LorcaM
 func getStakeInfo() (r gui.LorcaMessage) {
 	request := &walletrpc.StakeInfoRequest{}
 	response, err := walletServiceClient.StakeInfo(ctx, request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	return r
+}
+
+func decodeRawTransaction(txAsHex string) (r gui.LorcaMessage) {
+	txBytes, err := hex.DecodeString(txAsHex)
+	request := &walletrpc.DecodeRawTransactionRequest{
+		SerializedTransaction: txBytes,
+	}
+	response, err := decodeMessageServiceClient.DecodeRawTransaction(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err

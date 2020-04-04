@@ -26,6 +26,7 @@ var (
 	walletServiceClient        walletrpc.WalletServiceClient
 	votingServiceClient        walletrpc.VotingServiceClient
 	agendaServiceClient        walletrpc.AgendaServiceClient
+	decodeMessageServiceClient walletrpc.DecodeMessageServiceClient
 	mixerServiceClient         walletrpc.AccountMixerServiceClient
 	ticketbuyerv2ServiceClient walletrpc.TicketBuyerV2ServiceClient
 
@@ -56,6 +57,7 @@ func connectWallet(endpointCfg *gui.GRPCEndpoint) error {
 	walletServiceClient = walletrpc.NewWalletServiceClient(gRPCConnection)
 	votingServiceClient = walletrpc.NewVotingServiceClient(gRPCConnection)
 	agendaServiceClient = walletrpc.NewAgendaServiceClient(gRPCConnection)
+	decodeMessageServiceClient = walletrpc.NewDecodeMessageServiceClient(gRPCConnection)
 	mixerServiceClient = walletrpc.NewAccountMixerServiceClient(gRPCConnection)
 	ticketbuyerv2ServiceClient = walletrpc.NewTicketBuyerV2ServiceClient(gRPCConnection)
 
