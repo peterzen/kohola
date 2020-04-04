@@ -1,16 +1,21 @@
 #!/bin/sh
 
+set -e
+
 APP=kohola
 APPDIR=build/${APP}
 
+mkdir -p $APPDIR
 mkdir -p $APPDIR/usr/bin
 mkdir -p $APPDIR/usr/share/applications
 mkdir -p $APPDIR/usr/share/icons/hicolor/1024x1024/apps
 mkdir -p $APPDIR/usr/share/icons/hicolor/256x256/apps
 mkdir -p $APPDIR/DEBIAN
 
-cd frontend && yarn install && yarn build && cd ..
-cp -R frontend/dist app/www 
+if [ "$NO_FRONTEND_BUILD" = "" ]; then
+	cd frontend && yarn install && yarn build && cd ..
+	cp -R frontend/dist app/www 
+fi
 cd app 
 pkger -include /www
 go build -o ../$APPDIR/usr/bin/$APP

@@ -1,10 +1,16 @@
 #!/bin/sh
 
+set -e
+
 APP="build/Kohola.app"
 mkdir -p $APP/Contents/{MacOS,Resources}
 cp app/icons/icon.icns $APP/Contents/Resources/icon.icns
-cd frontend && yarn install && yarn build && cd ..
-cp -R frontend/dist app/www 
+
+if [ "$NO_FRONTEND_BUILD" = "" ]; then
+	cd frontend && yarn install && yarn build && cd ..
+	cp -R frontend/dist app/www 
+fi
+
 cd app 
 pkger -include /www
 go build -o ../$APP/Contents/MacOS/kohola
