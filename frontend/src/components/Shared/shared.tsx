@@ -41,7 +41,7 @@ export function TransactionHash(props: { tx: Transaction }) {
 	)
 }
 
-export function TxHash(props: { hash: Buffer, truncate?: boolean }) {
+export function TxHash(props: { hash: Buffer | Uint8Array, truncate?: boolean }) {
 	const h = rawHashToHex(props.hash)
 	if (h == null) {
 		console.error("rawHashToHex returned null")

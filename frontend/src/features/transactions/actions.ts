@@ -26,7 +26,7 @@ import {
 	getChangeScriptCache,
 	SendTransactionSteps,
 	constructTransactionFailed,
-	HumanreadableTxInfo,
+	AuthoredTransactionMetadata,
 	constructTransactionSuccess,
 	signTransactionCancel,
 	signTransactionSuccess,
@@ -171,37 +171,44 @@ export const constructTransaction: ActionCreator<any> = (
 
 		dispatch(constructTransactionAttempt())
 
-		let rawTx;
-
 		try {
 			const constructTxResponse = await LorcaBackend.constructTransaction(request)
+			const decoded = await LorcaBackend.decodeRawTransaction(constructTxResponse.getUnsignedTransaction_asU8())
+			const decodedTx = decoded.getTransaction()
+			if (decodedTx == undefined) {
+				throw new AppError(0, "Constructed transaction could not be decoded.  Probably an internal error.")
+			}
 			if (!sendAllFlag) {
 				// Store the change address we just generated so that future changes to
 				// the tx being constructed will use the same address and prevent gap
 				// limit exhaustion (see above note on issue dcrwallet#1622).
 				const changeIndex = constructTxResponse.getChangeIndex();
 				if (changeIndex > -1) {
-					rawTx = Buffer.from(constructTxResponse.getUnsignedTransaction_asU8());
-					const decoded = decodeRawTransaction(rawTx);
-					changeScriptCache[account] = decoded.outputs[changeIndex].script;
+					// rawTx = Buffer.from(constructTxResponse.getUnsignedTransaction_asU8());
+					// const decoded = decodeRawTransaction(rawTx);
+					// console.log("DECODED decodeRawTransaction", decoded)
+					const changeScript = decodedTx?.getOutputsList()[changeIndex].getScript_asU8()
+					if (changeScript != undefined) {
+						changeScriptCache[account] = Buffer.from(changeScript)
+					}
 				}
 			}
 			else {
 				totalAmount = constructTxResponse.getTotalOutputAmount();
 			}
 
-			// for displaying the confirmation dialog
-			const humanreadableTxInfo: HumanreadableTxInfo = {
-				rawTx: decodeRawTransaction(Buffer.from(constructTxResponse.getUnsignedTransaction_asU8())),
-				outputs: outputs,
-				totalAmount: totalAmount,
-				sourceAccount: lookupAccount(getState(), account),
-				constructTxReq: request,
-			}
+			console.log("DECODED RAW", decodedTx)
+
+			const humanreadableTxInfo = new AuthoredTransactionMetadata(
+				constructTxResponse.getUnsignedTransaction_asU8(),
+				decodedTx,
+				lookupAccount(getState(), account),
+				request
+			)
 
 			dispatch(constructTransactionSuccess({
 				txInfo: humanreadableTxInfo,
-				response: constructTxResponse,
+				unsignedTx: constructTxResponse.getUnsignedTransaction_asU8(),
 				currentStep: SendTransactionSteps.SIGN_DIALOG,
 				changeScriptCache: changeScriptCache,
 			}))
@@ -228,7 +235,22 @@ export const createRawTransaction: ActionCreator<any> = (request: CreateRawTrans
 			const response = await LorcaBackend.createRawTransaction(request)
 			console.log("DEBUG ###", rawToHex(response.getUnsignedTransaction_asU8()))
 			const decoded = await LorcaBackend.decodeRawTransaction(response.getUnsignedTransaction_asU8())
-			console.log("DECODED RAW", decoded)
+			const decodedTx = decoded.getTransaction()
+			if (decodedTx == undefined) {
+				throw new AppError(0, "Constructed transaction could not be decoded.  Probably an internal error.")
+			}
+
+			const humanreadableTxInfo = new AuthoredTransactionMetadata(
+				response.getUnsignedTransaction_asU8(),
+				decodedTx,
+			)
+
+			dispatch(constructTransactionSuccess({
+				txInfo: humanreadableTxInfo,
+				currentStep: SendTransactionSteps.SIGN_DIALOG,
+				unsignedTx: response.getUnsignedTransaction_asU8(),
+			}))
+
 			// const humanreadableTxInfo: HumanreadableTxInfo = {
 			// 	rawTx: decodeRawTransaction(Buffer.from(constructTxResponse.getUnsignedTransaction_asU8())),
 			// 	outputs: outputs,
@@ -257,22 +279,14 @@ export const cancelSignTransaction: ActionCreator<any> = (): AppThunk => {
 
 
 
-export const signTransaction: ActionCreator<any> = (passphrase: string): AppThunk => {
+export const signTransaction: ActionCreator<any> = (unsignedTx: Uint8Array, passphrase: string): AppThunk => {
 	return async (dispatch: AppDispatch, getState) => {
 
-		const { signTransactionAttempting, constructTransactionResponse } = getState().transactions;
-		if (signTransactionAttempting) {
-			return
-		}
+		if (getState().transactions.signTransactionAttempting) return
 
-		if (constructTransactionResponse == null) {
-			throw "null constructTransactionResponse"
-		}
-
-		const rawTx = constructTransactionResponse.getUnsignedTransaction_asU8()
 		const request = new SignTransactionRequest()
 		request.setPassphrase(new Uint8Array(Buffer.from(passphrase)))
-		request.setSerializedTransaction(new Uint8Array(Buffer.from(rawTx)))
+		request.setSerializedTransaction(new Uint8Array(Buffer.from(unsignedTx)))
 
 		dispatch(signTransactionAttempt())
 

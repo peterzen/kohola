@@ -12,7 +12,7 @@ import PublishDialog from "./PublishDialog"
 import PublishConfirmDialog from "./PublishConfirmDialog"
 import { getAccounts } from "../../balances/accountSlice"
 import { cancelSignTransaction, constructTransaction, signTransaction, publishTransaction, createRawTransaction } from "../actions"
-import { SendTransactionSteps, HumanreadableTxInfo } from "../transactionsSlice"
+import { SendTransactionSteps, AuthoredTransactionMetadata } from "../transactionsSlice"
 import { ConstructTransactionResponse, ConstructTransactionRequest, SignTransactionResponse, PublishTransactionResponse, CreateRawTransactionRequest } from "../../../proto/api_pb"
 import { rawHashToHex } from "../../../helpers/byteActions"
 
@@ -30,12 +30,11 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 					/>
 				)}
 				{currentStep == SendTransactionSteps.SIGN_DIALOG &&
-					this.props.constructTransactionResponse != null && (
+					this.props.txInfo != null && (
 						<SignDialog
 							error={this.props.errorSignTransaction}
 							txInfo={this.props.txInfo}
-							constructTransactionResponse={this.props.constructTransactionResponse}
-							onCancel={() => this.props.cancelSign()}
+							onCancel={() => this.props.cancelSignTransaction()}
 							onFormComplete={_.bind(this.onSignAttempt, this)}
 						/>
 					)}
@@ -44,7 +43,7 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 						<PublishDialog
 							error={this.props.errorPublishTransaction}
 							signTransactionResponse={this.props.signTransactionResponse}
-							onCancel={() => this.props.cancelSign()}
+							onCancel={() => this.props.cancelSignTransaction()}
 							onFormComplete={() => this.props.publishTransaction()}
 						/>
 					)}
@@ -90,6 +89,7 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 	}
 	onSignAttempt(formData: ISignDialogFormData) {
 		this.props.signTransaction(
+			this.props.unsignedTransaction,
 			formData.passphrase
 		)
 	}
@@ -97,12 +97,12 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 
 
 interface OwnProps {
-	txInfo: HumanreadableTxInfo | null
+	txInfo: AuthoredTransactionMetadata | null
 	accounts: IndexedWalletAccounts
 	currentStep: SendTransactionSteps
 	constructTransactionRequest: ConstructTransactionRequest | null
+	unsignedTransaction:Uint8Array|null
 
-	constructTransactionResponse: ConstructTransactionResponse | null
 	signTransactionResponse: SignTransactionResponse | null
 	publishTransactionResponse: PublishTransactionResponse | null
 
@@ -120,13 +120,13 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 	return {
 		txInfo: state.transactions.txInfo,
 		accounts: getAccounts(state),
+		unsignedTransaction:state.transactions.unsignedTransaction,
 		errorSignTransaction: state.transactions.errorSignTransaction,
 		errorPublishTransaction: state.transactions.errorPublishTransaction,
 		errorConstructTransaction: state.transactions.errorConstructTransaction,
 		signTransactionResponse: state.transactions.signTransactionResponse,
 		publishTransactionResponse: state.transactions.publishTransactionResponse,
 		constructTransactionRequest: state.transactions.constructTransactionRequest,
-		constructTransactionResponse: state.transactions.constructTransactionResponse,
 		currentStep: state.transactions.sendTransactionCurrentStep,
 	}
 }
@@ -134,11 +134,11 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 
 interface DispatchProps {
 	cancel: () => void
-	cancelSign(): typeof cancelSignTransaction
 	signTransaction: typeof signTransaction
 	publishTransaction: typeof publishTransaction
 	createRawTransaction: typeof createRawTransaction
 	constructTransaction: typeof constructTransaction
+	cancelSignTransaction: typeof cancelSignTransaction
 }
 
 const mapDispatchToProps = {

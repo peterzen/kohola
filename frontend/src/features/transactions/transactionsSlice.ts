@@ -13,6 +13,7 @@ import {
 	SweepAccountResponse,
 	CreateRawTransactionRequest,
 	CreateRawTransactionResponse,
+	DecodedTransaction,
 } from "../../proto/api_pb";
 import { DecodedrawTx, ConstructTxOutput } from "../../middleware/models";
 import { TransactionType, TransactionDirection } from "../../constants";
@@ -32,9 +33,9 @@ export interface GetTransactionsState {
 export interface ConstructTransactionState {
 	readonly errorConstructTransaction: AppError | null
 	readonly constructTransactionRequest: ConstructTransactionRequest | null
-	readonly constructTransactionResponse: ConstructTransactionResponse | null
 	readonly constructTransactionAttempting: boolean
-	readonly changeScriptCache: IChangeScriptByAccount
+	readonly changeScriptCache: IChangeScriptByAccount | undefined
+	readonly unsignedTransaction:Uint8Array|null
 }
 
 // CreateRawTransaction
@@ -80,13 +81,50 @@ export enum SendTransactionSteps {
 	PUBLISH_CONFIRM_DIALOG
 }
 
-export type HumanreadableTxInfo = {
-	rawTx: DecodedrawTx
-	outputs: ConstructTxOutput[]
-	totalAmount: number
-	sourceAccount: WalletAccount
-	changeScript?: Buffer
-	constructTxReq: ConstructTransactionRequest
+export class AuthoredTransactionMetadata {
+	unsignedTx: Uint8Array
+	decodedTx: DecodedTransaction
+	totalInputAmount: number
+	totalOutputAmount: number
+	fee: number
+	feeRate: number | undefined
+	sourceAccount: WalletAccount | undefined
+	constructTxReq: ConstructTransactionRequest | undefined
+	changeAddress: string | undefined
+	nonChangeOutputs: { address: string, amount: number }[]
+
+	constructor(unsignedTx: Uint8Array, tx: DecodedTransaction, sourceAccount?: WalletAccount, constructTxReq?: ConstructTransactionRequest) {
+		this.unsignedTx = unsignedTx
+		this.decodedTx = tx
+		this.sourceAccount = sourceAccount
+		this.totalInputAmount = _.reduce(tx.getInputsList(), (sum, input) => sum + input.getAmountIn(), 0)
+		this.totalOutputAmount = _.reduce(tx.getOutputsList(), (sum, output) => sum + output.getValue(), 0)
+		this.fee = this.totalOutputAmount - this.totalInputAmount
+		if (constructTxReq != undefined) {
+			this.changeAddress = constructTxReq.getChangeDestination()?.getAddress()
+			this.feeRate = constructTxReq.getFeePerKb()
+			const outputs = _.map(constructTxReq.getNonChangeOutputsList(), o => {
+				if (o.getDestination() == undefined) return
+				return {
+					address: o.getDestination()?.getAddress(),
+					amount: o.getAmount()
+				}
+			})
+			// @ts-ignore
+			this.nonChangeOutputs = _.compact(outputs)
+		} else {
+			// CreateRawTransaction
+			const outputs = _.map(this.decodedTx.getOutputsList(), output => {
+				if (_.first(output.getAddressesList()) == undefined) return null
+				return {
+					address: _.first(output.getAddressesList()),
+					amount: output.getValue()
+				}
+			})
+			// @ts-ignore
+			this.nonChangeOutputs = _.compact(outputs)
+		}
+	}
 }
 
 export interface IChangeScriptByAccount {
@@ -95,19 +133,19 @@ export interface IChangeScriptByAccount {
 
 // Send transaction
 export interface GUISendTransaction {
-	readonly txInfo: HumanreadableTxInfo | null
+	readonly txInfo: AuthoredTransactionMetadata | null
 	readonly sendTransactionCurrentStep: SendTransactionSteps
 }
 
 interface IConstructTransactionSuccessPayload {
-	txInfo: HumanreadableTxInfo
-	response: ConstructTransactionResponse
+	txInfo: AuthoredTransactionMetadata
+	unsignedTx: Uint8Array
 	currentStep: SendTransactionSteps
-	changeScriptCache: IChangeScriptByAccount
+	changeScriptCache?: IChangeScriptByAccount
 }
 
 interface IICreateRawTransactionSuccessPayload {
-	txInfo: HumanreadableTxInfo
+	txInfo: AuthoredTransactionMetadata
 	response: CreateRawTransactionResponse
 	currentStep: SendTransactionSteps
 }
@@ -146,8 +184,8 @@ export const initialState: GetTransactionsState &
 	changeScriptCache: {},
 	errorConstructTransaction: null,
 	constructTransactionRequest: null,
-	constructTransactionResponse: null,
 	constructTransactionAttempting: false,
+	unsignedTransaction:null,
 
 	// CreateRawTransaction
 	errorCreateRawTransaction: null,
@@ -203,24 +241,22 @@ const transactionsSlice = createSlice({
 		constructTransactionAttempt(state) {
 			state.errorConstructTransaction = null
 			state.constructTransactionRequest = null
-			state.constructTransactionResponse = null
 			state.constructTransactionAttempting = true
 		},
 		constructTransactionFailed(state, action: PayloadAction<AppError>) {
 			state.errorConstructTransaction = action.payload
 			state.constructTransactionRequest = null
-			state.constructTransactionResponse = null
 			state.constructTransactionAttempting = false
 		},
 		constructTransactionSuccess(state, action: PayloadAction<IConstructTransactionSuccessPayload>) {
-			const { txInfo, response, changeScriptCache, currentStep } = action.payload
+			const { txInfo, currentStep, unsignedTx, changeScriptCache } = action.payload
 			state.txInfo = txInfo
 			state.changeScriptCache = changeScriptCache
 			state.sendTransactionCurrentStep = currentStep
-			state.constructTransactionResponse = response
 			state.errorConstructTransaction = null
 			state.constructTransactionRequest = null
 			state.constructTransactionAttempting = false
+			state.unsignedTransaction=unsignedTx
 		},
 
 		// CreateRawTransaction
@@ -284,7 +320,6 @@ const transactionsSlice = createSlice({
 			state.signTransactionResponse = null
 			state.sendTransactionCurrentStep = currentStep
 			state.publishTransactionResponse = response
-			state.constructTransactionResponse = null
 			state.publishTransactionAttempting = false
 		},
 
@@ -424,7 +459,7 @@ export const getTransactions = (state: IApplicationState): Transaction[] => {
 
 
 export const getChangeScriptCache = (state: IApplicationState): IChangeScriptByAccount => {
-	return state.transactions.changeScriptCache
+	return state.transactions.changeScriptCache || {}
 }
 
 function isTxLinkedToAccount(tx: Transaction, account: WalletAccount): boolean {

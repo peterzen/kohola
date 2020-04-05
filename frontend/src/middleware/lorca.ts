@@ -215,7 +215,7 @@ const LorcaBackend = {
 		}
 		catch (e) {
 			console.error("Serialization error", e)
-			return e
+			throw e
 		}
 	},
 
@@ -231,7 +231,7 @@ const LorcaBackend = {
 			return PublishTransactionResponse.deserializeBinary(r.payload)
 		} catch (e) {
 			console.error("Serialization error", e)
-			return e
+			throw e
 		}
 	},
 
