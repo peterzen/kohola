@@ -30,7 +30,6 @@ export default class FeeChooserInput extends React.Component<IFeeChooserInputPro
 							tooltip="off"
 							size="sm"
 							tabIndex={this.props.tabIndex}
-							defaultValue={this.props.defaultValue}
 							className="pr-3"
 							title="fee rate"
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
