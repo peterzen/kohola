@@ -6,7 +6,6 @@ import { Transaction, WalletAccount } from "../../middleware/models";
 import {
 	TransactionDetails,
 	ConstructTransactionRequest,
-	ConstructTransactionResponse,
 	SignTransactionResponse,
 	PublishTransactionResponse,
 	ValidateAddressResponse,
@@ -15,7 +14,6 @@ import {
 	CreateRawTransactionResponse,
 	DecodedTransaction,
 } from "../../proto/api_pb";
-import { DecodedrawTx, ConstructTxOutput } from "../../middleware/models";
 import { TransactionType, TransactionDirection } from "../../constants";
 
 // GetTransactions

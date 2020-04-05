@@ -13,8 +13,7 @@ import PublishConfirmDialog from "./PublishConfirmDialog"
 import { getAccounts } from "../../balances/accountSlice"
 import { cancelSignTransaction, constructTransaction, signTransaction, publishTransaction, createRawTransaction } from "../actions"
 import { SendTransactionSteps, AuthoredTransactionMetadata } from "../transactionsSlice"
-import { ConstructTransactionResponse, ConstructTransactionRequest, SignTransactionResponse, PublishTransactionResponse, CreateRawTransactionRequest } from "../../../proto/api_pb"
-import { rawHashToHex } from "../../../helpers/byteActions"
+import { ConstructTransactionRequest, SignTransactionResponse, PublishTransactionResponse, CreateRawTransactionRequest } from "../../../proto/api_pb"
 
 
 class SendDialogContainer extends React.Component<Props, InternalState>{

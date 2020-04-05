@@ -17,7 +17,6 @@ import {
 } from '../../proto/api_pb';
 
 import { ConstructTxOutput } from '../../middleware/models';
-import { decodeRawTransaction } from '../../helpers/tx';
 import LorcaBackend from '../../middleware/lorca';
 import {
 	getTransactionsAttempt,

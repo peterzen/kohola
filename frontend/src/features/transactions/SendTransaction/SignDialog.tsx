@@ -4,11 +4,8 @@ import * as React from "react"
 import { Form, Button, FormControl, Table, Row, Col } from 'react-bootstrap';
 
 import { AppError } from "../../../store/types";
-import { ConstructTransactionResponse } from "../../../proto/api_pb";
 import { rawToHex } from "../../../helpers/byteActions";
-import { DecodedrawTx } from "../../../middleware/models";
 import DialogAlert from "./DialogAlert";
-import { decodeRawTransaction } from "../../../helpers/tx";
 import { AuthoredTransactionMetadata } from "../transactionsSlice";
 import { TxHash } from "../../../components/Shared/shared";
 import { Amount } from "../../../components/Shared/Amount";
