@@ -4,10 +4,9 @@ import { Table } from 'react-bootstrap'
 import TimeAgo from 'react-timeago';
 
 import GenericModalDialog from "../../components/Shared/GenericModalDialog";
-import { UnspentOutputResponse } from "../../proto/api_pb";
-import { rawHashToHex } from "../../helpers/byteActions";
 import { TxHash } from "../../components/Shared/shared";
 import { Amount } from "../../components/Shared/Amount";
+import { UnspentOutput } from "../../proto/dcrwalletgui_pb";
 
 export const UTXODetailsComponent = (props: IUTXODetailsComponentProps) => {
 	const utxo = props.utxo
@@ -20,11 +19,11 @@ export const UTXODetailsComponent = (props: IUTXODetailsComponentProps) => {
 				<tbody>
 					<tr>
 						<th>OutPoint</th>
-						<td>{rawHashToHex(utxo.getTransactionHash_asU8())}:{utxo.getOutputIndex()}</td>
+						<td><TxHash hash={Buffer.from(utxo.getTransactionHash_asU8())} truncate={false}/>:{utxo.getOutputIndex()}</td>
 					</tr>
 					<tr>
-						<th>Tx ID</th>
-						<td><TxHash hash={Buffer.from(utxo.getTransactionHash_asU8())} /></td>
+						<th>Address</th>
+						<td>{utxo.getAddressList().map(a => <div>{a}</div>)}</td>
 					</tr>
 					<tr>
 						<th>Amount</th>
@@ -57,7 +56,7 @@ export default class UTXODetailsModal extends GenericModalDialog<IUTXODetailsCom
 }
 
 interface IUTXODetailsComponentProps {
-	utxo: UnspentOutputResponse | null
+	utxo: UnspentOutput | null
 }
 
 

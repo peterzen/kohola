@@ -10,7 +10,9 @@ import (
 	"time"
 
 	walletrpc "decred.org/dcrwallet/rpc/walletrpc"
+	"github.com/decred/dcrd/chaincfg/v3"
 	"github.com/decred/dcrd/dcrutil/v3"
+	"github.com/decred/dcrd/txscript/v3"
 	proto "github.com/golang/protobuf/proto"
 	gui "github.com/peterzen/dcrwalletgui/walletgui"
 
@@ -630,6 +632,7 @@ func listUnspent(
 	targetAmount int64,
 	requiredConfirmations int32,
 	includeImmature bool) (r gui.LorcaMessage) {
+
 	request := &walletrpc.UnspentOutputsRequest{
 		Account:                  accountNumber,
 		TargetAmount:             targetAmount,
@@ -639,12 +642,15 @@ func listUnspent(
 	m, err := walletServiceClient.UnspentOutputs(ctx, request)
 	if err != nil {
 		log.Printf(err.Error())
+		r.Err = err
+		return r
 	}
 
+	// @TODO @FIXME this slice must be grown dynamically
 	unspents := make([][]byte, 0, 100)
 
 	for {
-		response, err := m.Recv()
+		u, err := m.Recv()
 		if err == io.EOF {
 			break
 		}
@@ -652,7 +658,33 @@ func listUnspent(
 			r.Err = err
 			return r
 		}
-		b, err := proto.Marshal(response)
+
+		sc, addrs, _, err := txscript.ExtractPkScriptAddrs(0, u.PkScript, getChainParams())
+
+		if err != nil {
+			log.Printf("Error getting address from pkScript in %v", u.TransactionHash)
+			continue
+		}
+
+		addressStr := make([]string, len(addrs))
+		for i, addr := range addrs {
+			addressStr[i] = addr.Address()
+		}
+
+		utxo := &gui.UnspentOutput{
+			TransactionHash: u.TransactionHash,
+			OutputIndex:     u.OutputIndex,
+			Amount:          u.Amount,
+			PkScript:        u.PkScript,
+			ReceiveTime:     u.ReceiveTime,
+			FromCoinbase:    u.FromCoinbase,
+			Tree:            u.Tree,
+			AmountSum:       u.AmountSum,
+			ScriptClass:     int32(sc),
+			Address:         addressStr,
+		}
+
+		b, err := proto.Marshal(utxo)
 		if err != nil {
 			r.Err = err
 			return r
@@ -666,4 +698,17 @@ func listUnspent(
 		return r
 	}
 	return r
+}
+
+func getChainParams() *chaincfg.Params {
+	switch currentEndpoint.Network {
+	case gui.Network_TESTNET:
+		return chaincfg.TestNet3Params()
+	case gui.Network_SIMNET:
+		return chaincfg.SimNetParams()
+	case gui.Network_MAINNET:
+		return chaincfg.MainNetParams()
+	default:
+		return nil
+	}
 }

@@ -8,7 +8,6 @@ import (
 	"decred.org/dcrwallet/errors"
 	"decred.org/dcrwallet/wallet/txsizes"
 	"github.com/decred/dcrd/chaincfg/chainhash"
-	"github.com/decred/dcrd/chaincfg/v3"
 	"github.com/decred/dcrd/dcrutil/v3"
 	"github.com/decred/dcrd/txscript/v3"
 	"github.com/decred/dcrd/wire"
@@ -71,31 +70,13 @@ func getScriptSize(pkScript []byte) (int, error) {
 func CreateRawTransaction(ctx context.Context, req *walletgui.CreateRawTransactionRequest) (
 	*walletgui.CreateRawTransactionResponse, error) {
 
-	// Validate expiry, if given.
-	if req.Expiry < 0 {
-		return nil, errors.E(errors.Invalid, "Expiry out of range")
-	}
-
-	// Validate the locktime, if given.
-	if req.LockTime < 0 || req.LockTime > int64(wire.MaxTxInSequenceNum) {
+	// Validate the locktime
+	if req.LockTime > int64(wire.MaxTxInSequenceNum) {
 		return nil, errors.E(errors.Invalid, "Locktime out of range")
 	}
 
-	var chainParams *chaincfg.Params
-	switch currentEndpoint.Network {
-	case walletgui.Network_TESTNET:
-		chainParams = chaincfg.TestNet3Params()
-		break
-	case walletgui.Network_SIMNET:
-		chainParams = chaincfg.SimNetParams()
-		break
-	case walletgui.Network_MAINNET:
-		chainParams = chaincfg.MainNetParams()
-		break
-	default:
-		return nil, errors.E("Unknown network")
-	}
-
+	chainParams := getChainParams()
+	// feeRate := dcrutil.Amount(req.FeeRate)
 	tx := wire.NewMsgTx()
 
 	// Add all transaction inputs to a new transaction after performing
@@ -112,13 +93,12 @@ func CreateRawTransaction(ctx context.Context, req *walletgui.CreateRawTransacti
 			return nil, errors.E(errors.Invalid, "Tx tree must be regular or stake")
 		}
 
-		amt := dcrutil.Amount(input.Amount)
-		if amt < 0 {
+		if input.Amount < 0 {
 			return nil, errors.E(errors.Invalid, "Positive input amount is required")
 		}
 
 		prevOut := wire.NewOutPoint(txHash, input.OutputIndex, int8(input.Tree))
-		txIn := wire.NewTxIn(prevOut, int64(amt), nil)
+		txIn := wire.NewTxIn(prevOut, input.Amount, nil)
 		if req.LockTime != 0 {
 			txIn.Sequence = wire.MaxTxInSequenceNum - 1
 		}
@@ -179,3 +159,20 @@ func CreateRawTransaction(ctx context.Context, req *walletgui.CreateRawTransacti
 		UnsignedTransaction: txBuf.Bytes(),
 	}, nil
 }
+
+// func estimateTxSize(tx *wire.MsgTx) {
+
+// 	feePerKb := txrules.DefaultRelayFeePerKb
+// 	// if req.FeePerKb != 0 {
+// 	// feePerKb = dcrutil.Amount(req.FeePerKb)
+// 	// }
+
+// 	scriptSizes := []int{txsizes.RedeemP2PKHSigScriptSize}
+// 	changeScript, changeScriptVersion, err := fetchChange.Script()
+// 	if err != nil {
+// 		return nil, errors.E(op, err)
+// 	}
+// 	maxSignedSize := txsizes.EstimateSerializeSize(scriptSizes, outputs, 0)
+// 	targetFee := txrules.FeeForSerializeSize(feePerKb, maxSignedSize)
+
+// }

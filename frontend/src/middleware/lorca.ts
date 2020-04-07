@@ -34,7 +34,7 @@ import {
 	DecodeRawTransactionResponse,
 } from '../proto/api_pb';
 import { rawToHex } from '../helpers/byteActions';
-import { GRPCEndpoint, StakingHistory, StakeDiffHistory } from '../proto/dcrwalletgui_pb';
+import { GRPCEndpoint, StakingHistory, StakeDiffHistory, UnspentOutput } from '../proto/dcrwalletgui_pb';
 import { Ticket, WalletAccount, WalletBalance, Transaction, AccountBalance } from './models';
 
 const w = (window as any)
@@ -440,7 +440,7 @@ const LorcaBackend = {
 		requiredConfirmations: number,
 		includeImmature: boolean) => {
 
-		const unspents: UnspentOutputResponse[] = []
+		const unspents: UnspentOutput[] = []
 
 		const r = await w.walletrpc__ListUnspent(
 			accountNumber,
@@ -452,7 +452,7 @@ const LorcaBackend = {
 			throw r.error
 		}
 		_.each(r.apayload, (s: Uint8Array) => {
-			const tr = UnspentOutputResponse.deserializeBinary(s)
+			const tr = UnspentOutput.deserializeBinary(s)
 			unspents.push(tr)
 		})
 		return unspents
@@ -466,8 +466,8 @@ const LorcaBackend = {
 	fetchCertBlob: async (certFileName: string) => {
 		return await w.walletgui__FetchCertBlob(certFileName)
 	},
-	
-	decodeRawTransaction: async (serializedTransaction:Uint8Array) => {
+
+	decodeRawTransaction: async (serializedTransaction: Uint8Array) => {
 		try {
 			const r = await w.walletrpc__DecodeRawTransaction(rawToHex(serializedTransaction))
 			if (r.error != undefined) {
@@ -497,7 +497,7 @@ const LorcaBackend = {
 
 	fetchAgendas: endpointFactory("walletrpc__GetAgendas", AgendasResponse),
 	fetchNetwork: endpointFactory("walletrpc__GetNetwork", NetworkResponse),
-	fetchUnspent: endpointFactory("walletrpc__ListUnspent", UnspentOutputResponse),
+	fetchUnspent: endpointFactory("walletrpc__ListUnspent", UnspentOutput),
 	fetchAccounts: endpointFactory("walletrpc__GetAccounts", AccountsResponse),
 	fetchBestBlock: endpointFactory("walletrpc__GetBestBlock", BestBlockResponse),
 	fetchStakeInfo: endpointFactory("walletrpc__GetStakeInfo", StakeInfoResponse),

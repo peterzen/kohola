@@ -166,6 +166,19 @@ message StakeDiffHistory {
   uint32 end_block = 3;
 }
 
+message UnspentOutput {
+  bytes transaction_hash = 1;
+  uint32 output_index = 2;
+  int64 amount = 3;
+  bytes pk_script = 4;
+  int64 receive_time = 5;
+  bool from_coinbase = 6;
+  int32 tree = 7;
+  int64 amount_sum = 8;
+  int32 script_class = 9;
+  repeated string address = 10;
+}
+
 message CreateRawTransactionRequest {
   message TransactionInput {
     int64 amount = 1;
@@ -177,11 +190,15 @@ message CreateRawTransactionRequest {
   map<string, int64> amounts = 2;
   int64 lock_time = 3;
   int64 expiry = 4;
+  int64 fee_rate = 5;
 }
 
-message CreateRawTransactionResponse { 
-  bytes unsigned_transaction = 1; 
+message CreateRawTransactionResponse {
+  bytes unsigned_transaction = 1;
+  int32 estimated_signed_size = 2;
 }
+
+
 
 /*
 message LorcaMessage {

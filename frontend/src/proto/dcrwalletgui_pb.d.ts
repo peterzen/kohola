@@ -677,6 +677,9 @@ export class CreateRawTransactionRequest extends jspb.Message {
   getExpiry(): number;
   setExpiry(value: number): void;
 
+  getFeeRate(): number;
+  setFeeRate(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateRawTransactionRequest.AsObject;
   static toObject(includeInstance: boolean, msg: CreateRawTransactionRequest): CreateRawTransactionRequest.AsObject;
@@ -693,6 +696,7 @@ export namespace CreateRawTransactionRequest {
     amountsMap: Array<[string, number]>,
     lockTime: number,
     expiry: number,
+    feeRate: number,
   }
 
   export class TransactionInput extends jspb.Message {
@@ -736,6 +740,9 @@ export class CreateRawTransactionResponse extends jspb.Message {
   getUnsignedTransaction_asB64(): string;
   setUnsignedTransaction(value: Uint8Array | string): void;
 
+  getEstimatedSignedSize(): number;
+  setEstimatedSignedSize(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateRawTransactionResponse.AsObject;
   static toObject(includeInstance: boolean, msg: CreateRawTransactionResponse): CreateRawTransactionResponse.AsObject;
@@ -749,6 +756,69 @@ export class CreateRawTransactionResponse extends jspb.Message {
 export namespace CreateRawTransactionResponse {
   export type AsObject = {
     unsignedTransaction: Uint8Array | string,
+    estimatedSignedSize: number,
+  }
+}
+
+export class UnspentOutput extends jspb.Message {
+  getTransactionHash(): Uint8Array | string;
+  getTransactionHash_asU8(): Uint8Array;
+  getTransactionHash_asB64(): string;
+  setTransactionHash(value: Uint8Array | string): void;
+
+  getOutputIndex(): number;
+  setOutputIndex(value: number): void;
+
+  getAmount(): number;
+  setAmount(value: number): void;
+
+  getPkScript(): Uint8Array | string;
+  getPkScript_asU8(): Uint8Array;
+  getPkScript_asB64(): string;
+  setPkScript(value: Uint8Array | string): void;
+
+  getReceiveTime(): number;
+  setReceiveTime(value: number): void;
+
+  getFromCoinbase(): boolean;
+  setFromCoinbase(value: boolean): void;
+
+  getTree(): number;
+  setTree(value: number): void;
+
+  getAmountSum(): number;
+  setAmountSum(value: number): void;
+
+  getScriptClass(): number;
+  setScriptClass(value: number): void;
+
+  clearAddressList(): void;
+  getAddressList(): Array<string>;
+  setAddressList(value: Array<string>): void;
+  addAddress(value: string, index?: number): string;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UnspentOutput.AsObject;
+  static toObject(includeInstance: boolean, msg: UnspentOutput): UnspentOutput.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UnspentOutput, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UnspentOutput;
+  static deserializeBinaryFromReader(message: UnspentOutput, reader: jspb.BinaryReader): UnspentOutput;
+}
+
+export namespace UnspentOutput {
+  export type AsObject = {
+    transactionHash: Uint8Array | string,
+    outputIndex: number,
+    amount: number,
+    pkScript: Uint8Array | string,
+    receiveTime: number,
+    fromCoinbase: boolean,
+    tree: number,
+    amountSum: number,
+    scriptClass: number,
+    addressList: Array<string>,
   }
 }
 
