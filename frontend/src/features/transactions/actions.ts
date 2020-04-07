@@ -295,6 +295,13 @@ export const signTransaction: ActionCreator<any> = (unsignedTx: Uint8Array, pass
 				currentStep: SendTransactionSteps.PUBLISH_DIALOG,
 				response: resp
 			}))
+			const decoded = await LorcaBackend.decodeRawTransaction(resp.getTransaction_asU8())
+			const decodedTx = decoded.getTransaction()
+			if (decodedTx == undefined) {
+				throw new AppError(0, "Signed transaction could not be decoded.  Probably an internal error.")
+			}
+			console.log("DECODED SIGNED TX",decodedTx)
+
 		} catch (error) {
 			dispatch(signTransactionFailed(error))
 		}

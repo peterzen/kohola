@@ -4,8 +4,11 @@ go 1.13
 
 require (
 	decred.org/dcrwallet v1.2.3-0.20200322211959-ec65a80865c2
+	github.com/decred/dcrd/chaincfg/chainhash v1.0.2
+	github.com/decred/dcrd/chaincfg/v3 v3.0.0-20200311044114-143c1884e4c8
 	github.com/decred/dcrd/dcrutil/v3 v3.0.0-20200311044114-143c1884e4c8
 	github.com/decred/dcrd/txscript v1.1.0
+	github.com/decred/dcrd/txscript/v3 v3.0.0-20200311044114-143c1884e4c8
 	github.com/decred/dcrd/wire v1.3.0
 	github.com/getlantern/systray v0.0.0-20200109124156-9abdfb6448b3
 	github.com/go-resty/resty/v2 v2.2.0
@@ -19,4 +22,4 @@ require (
 	google.golang.org/grpc v1.28.0
 )
 
-replace decred.org/dcrwallet => ../deps/dcrwallet
+//replace decred.org/dcrwallet => ../deps/dcrwallet

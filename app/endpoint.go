@@ -21,7 +21,8 @@ import (
 )
 
 var (
-	gRPCConnection *grpc.ClientConn = nil
+	gRPCConnection  *grpc.ClientConn  = nil
+	currentEndpoint *gui.GRPCEndpoint = nil
 
 	walletServiceClient        walletrpc.WalletServiceClient
 	votingServiceClient        walletrpc.VotingServiceClient
@@ -52,6 +53,8 @@ func connectWallet(endpointCfg *gui.GRPCEndpoint) error {
 	if ctxCancel != nil {
 		ctxCancel()
 	}
+
+	currentEndpoint = endpointCfg
 
 	ctx, ctxCancel = context.WithCancel(context.Background())
 	walletServiceClient = walletrpc.NewWalletServiceClient(gRPCConnection)

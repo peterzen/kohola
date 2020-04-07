@@ -466,10 +466,10 @@ func constructTransaction(requestAsHex string) (r gui.LorcaMessage) {
 }
 
 func createRawTransaction(requestAsHex string) (r gui.LorcaMessage) {
-	request := &walletrpc.CreateRawTransactionRequest{}
+	request := &gui.CreateRawTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
-	response, err := walletServiceClient.CreateRawTransaction(ctx, request)
+	response, err := CreateRawTransaction(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err

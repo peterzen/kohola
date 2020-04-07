@@ -28,6 +28,15 @@ AppConfig.SetConfig = {
   responseType: dcrwalletgui_pb.SetConfigResponse
 };
 
+AppConfig.CreateRawTransaction = {
+  methodName: "CreateRawTransaction",
+  service: AppConfig,
+  requestStream: false,
+  responseStream: false,
+  requestType: dcrwalletgui_pb.CreateRawTransactionRequest,
+  responseType: dcrwalletgui_pb.CreateRawTransactionResponse
+};
+
 exports.AppConfig = AppConfig;
 
 function AppConfigClient(serviceHost, options) {
@@ -71,6 +80,37 @@ AppConfigClient.prototype.setConfig = function setConfig(requestMessage, metadat
     callback = arguments[1];
   }
   var client = grpc.unary(AppConfig.SetConfig, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AppConfigClient.prototype.createRawTransaction = function createRawTransaction(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AppConfig.CreateRawTransaction, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

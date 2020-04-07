@@ -663,6 +663,95 @@ export namespace StakeDiffHistory {
   }
 }
 
+export class CreateRawTransactionRequest extends jspb.Message {
+  clearInputsList(): void;
+  getInputsList(): Array<CreateRawTransactionRequest.TransactionInput>;
+  setInputsList(value: Array<CreateRawTransactionRequest.TransactionInput>): void;
+  addInputs(value?: CreateRawTransactionRequest.TransactionInput, index?: number): CreateRawTransactionRequest.TransactionInput;
+
+  getAmountsMap(): jspb.Map<string, number>;
+  clearAmountsMap(): void;
+  getLockTime(): number;
+  setLockTime(value: number): void;
+
+  getExpiry(): number;
+  setExpiry(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateRawTransactionRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateRawTransactionRequest): CreateRawTransactionRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CreateRawTransactionRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateRawTransactionRequest;
+  static deserializeBinaryFromReader(message: CreateRawTransactionRequest, reader: jspb.BinaryReader): CreateRawTransactionRequest;
+}
+
+export namespace CreateRawTransactionRequest {
+  export type AsObject = {
+    inputsList: Array<CreateRawTransactionRequest.TransactionInput.AsObject>,
+    amountsMap: Array<[string, number]>,
+    lockTime: number,
+    expiry: number,
+  }
+
+  export class TransactionInput extends jspb.Message {
+    getAmount(): number;
+    setAmount(value: number): void;
+
+    getTransactionHash(): Uint8Array | string;
+    getTransactionHash_asU8(): Uint8Array;
+    getTransactionHash_asB64(): string;
+    setTransactionHash(value: Uint8Array | string): void;
+
+    getOutputIndex(): number;
+    setOutputIndex(value: number): void;
+
+    getTree(): number;
+    setTree(value: number): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): TransactionInput.AsObject;
+    static toObject(includeInstance: boolean, msg: TransactionInput): TransactionInput.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: TransactionInput, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): TransactionInput;
+    static deserializeBinaryFromReader(message: TransactionInput, reader: jspb.BinaryReader): TransactionInput;
+  }
+
+  export namespace TransactionInput {
+    export type AsObject = {
+      amount: number,
+      transactionHash: Uint8Array | string,
+      outputIndex: number,
+      tree: number,
+    }
+  }
+}
+
+export class CreateRawTransactionResponse extends jspb.Message {
+  getUnsignedTransaction(): Uint8Array | string;
+  getUnsignedTransaction_asU8(): Uint8Array;
+  getUnsignedTransaction_asB64(): string;
+  setUnsignedTransaction(value: Uint8Array | string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateRawTransactionResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateRawTransactionResponse): CreateRawTransactionResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CreateRawTransactionResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateRawTransactionResponse;
+  static deserializeBinaryFromReader(message: CreateRawTransactionResponse, reader: jspb.BinaryReader): CreateRawTransactionResponse;
+}
+
+export namespace CreateRawTransactionResponse {
+  export type AsObject = {
+    unsignedTransaction: Uint8Array | string,
+  }
+}
+
 export interface NetworkMap {
   MAINNET: 0;
   TESTNET: 1;
