@@ -1,3 +1,0 @@
-[submodule "deps/dcrwallet"]
-	path = deps/dcrwallet
-	url = git://github.com/peterzen/dcrwallet.git
