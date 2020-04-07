@@ -5,7 +5,7 @@ import _ from "lodash";
 
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, Dropdown } from "react-bootstrap";
 import { IApplicationState } from "../store/types";
 import ExchangeRateChart from "../features/market/charts/ExchangeRateChart";
 import { FiatAmount } from "../components/Shared/Amount";
@@ -14,15 +14,37 @@ import { getCurrentExchangeRate } from "../features/market/marketSlice";
 
 // @TODO pull this out of AppConfig
 const altCurrencies = ["btc", "usd", "eur"]
+const altTimeFrameDays = [1, 3, 7, 31]
 
-class Market extends React.PureComponent<Props> {
+class Market extends React.PureComponent<Props, InternalState> {
+
+	constructor(props: Props) {
+		super(props)
+		this.state = {
+			days: 1
+		}
+	}
 
 	render() {
 		return (
 			<div>
 				<Row>
-					<Col sm={6}>
-
+					<Col sm={12}>
+						<div className="float-right">
+							<Dropdown>
+								<Dropdown.Toggle variant="secondary" id="timeframe-dropdown">
+									{this.state.days} day
+								</Dropdown.Toggle>
+								<Dropdown.Menu>
+									{altTimeFrameDays.map(timeFrameDays => (
+										<Dropdown.Item
+											onClick={() => this.setState({ days: timeFrameDays })}>
+											{timeFrameDays} day
+										</Dropdown.Item>
+									))}
+								</Dropdown.Menu>
+							</Dropdown>
+						</div>
 					</Col>
 				</Row>
 				<Row>
@@ -39,7 +61,7 @@ class Market extends React.PureComponent<Props> {
 										</Card.Title>
 									</Card.Header>
 									<Card.Body>
-										<ExchangeRateChart currencyCode={currencyCode} days={14} />
+										<ExchangeRateChart currencyCode={currencyCode} days={this.state.days} />
 									</Card.Body>
 								</Card>
 							</div>
@@ -49,6 +71,10 @@ class Market extends React.PureComponent<Props> {
 			</div>
 		)
 	}
+}
+
+interface InternalState {
+	days: number
 }
 
 interface OwnProps {

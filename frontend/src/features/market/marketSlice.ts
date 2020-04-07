@@ -85,6 +85,11 @@ export const {
 
 export default exchangeRateSlice.reducer
 
+export type ChartDataPoint = {
+	name: string,
+	value: number
+}
+
 export const subscribeExchangeRateFeed: ActionCreator<any> = () => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
 		w.lorcareceiver__OnExchangeRateUpdate = (
@@ -137,8 +142,14 @@ export const getMarketChartData = (state: IApplicationState, currencyCode: strin
 	return state.market.marketChartState[currencyCode]?.getMarketChartData || []
 }
 
-export const getExchangeSparklineData = (state: IApplicationState, currencyCode: string): MarketChartDataPoint.AsObject[] => {
-	return normalizeDatapoints(datapointsAsPOJO(getMarketChartData(state, currencyCode)), "exchangeRate")
+export const getExchangeSparklineData = (state: IApplicationState, currencyCode: string, days: number): ChartDataPoint[] => {
+	return _.map(datapointsAsPOJO(getMarketChartData(state, currencyCode)),
+		(point: MarketChartDataPoint.AsObject) => {
+			return {
+				name: timeConverter(point.timestamp, days),
+				value: point.exchangeRate
+			}
+		})
 }
 
 export const isChartDataLoaded = (state: IApplicationState, currencyCodes: string[]) => {
@@ -173,4 +184,24 @@ export const getCombinedMarketChartData = (state: IApplicationState, currencyCod
 // helpers
 export function datapointsAsPOJO(datapoints: MarketChartDataPoint[]): MarketChartDataPoint.AsObject[] {
 	return _.map(datapoints, d => d.toObject())
+}
+
+export function timeConverter(UNIX_timestamp: number, days: number) {
+	var now = new Date()
+	var t = new Date(UNIX_timestamp * 1000)
+
+	if (days < 7 &&
+		now.getFullYear() == t.getFullYear() &&
+		now.getMonth() == t.getMonth() &&
+		now.getDate() == t.getDate()
+	) {
+		var hour = ('0' + t.getUTCHours()).slice(-2)
+		var min = ('0' + t.getUTCMinutes()).slice(-2)
+		return hour + ':' + min;
+	} else {
+		var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+		var month = months[t.getMonth()]
+		var date = ('0' + t.getDate()).slice(-2)
+		return date + '. ' + month
+	}
 }
