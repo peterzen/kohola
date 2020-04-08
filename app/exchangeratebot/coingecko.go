@@ -67,7 +67,7 @@ func fetchMarketChart(request *gui.GetMarketChartRequest) (marketChartData *gui.
 		return nil, errors.New("fetchMarketChart: not initialized yet")
 	}
 
-	response, err := cg.CoinsIDMarketChart("decred", request.CurrencyCode, string(request.Days))
+	response, err := cg.CoinsIDMarketChart("decred", request.CurrencyCode, fmt.Sprint(request.Days))
 
 	if err != nil {
 		fmt.Printf("fetchMarketChart: %s", err)
