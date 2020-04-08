@@ -14,7 +14,12 @@ import { getCurrentExchangeRate } from "../features/market/marketSlice";
 
 // @TODO pull this out of AppConfig
 const altCurrencies = ["btc", "usd", "eur"]
-const altTimeFrameDays = [1, 3, 7, 31]
+const altTimeFrameDays = [
+	{ days: 1, name: "24 hours" },
+	{ days: 3, name: "3 days" },
+	{ days: 7, name: "1 week" },
+	{ days: 31, name: "1 month" }
+]
 
 class Market extends React.PureComponent<Props, InternalState> {
 
@@ -33,13 +38,13 @@ class Market extends React.PureComponent<Props, InternalState> {
 						<div className="float-right">
 							<Dropdown>
 								<Dropdown.Toggle variant="secondary" id="timeframe-dropdown">
-									{this.state.days} day
+									{_.find(altTimeFrameDays, { 'days': this.state.days})?.name}
 								</Dropdown.Toggle>
 								<Dropdown.Menu>
-									{altTimeFrameDays.map(timeFrameDays => (
+									{altTimeFrameDays.map(item => (
 										<Dropdown.Item
-											onClick={() => this.setState({ days: timeFrameDays })}>
-											{timeFrameDays} day
+											onClick={() => this.setState({ days: item.days })}>
+											{item.name}
 										</Dropdown.Item>
 									))}
 								</Dropdown.Menu>
