@@ -4,7 +4,6 @@ import _ from 'lodash';
 
 import TimeAgo from 'react-timeago';
 
-import { UnspentOutputResponse } from '../../proto/api_pb';
 import UTXODetailsModal from './UTXODetailsComponent';
 import ListUTXOs from './ListUTXOs';
 import { WalletAccount } from '../../middleware/models';
@@ -20,6 +19,7 @@ import { Table, Form, Alert } from 'react-bootstrap';
 import { TxHash } from '../../components/Shared/shared';
 import { Amount } from '../../components/Shared/Amount';
 import moment from 'moment';
+import { UnspentOutput } from '../../proto/dcrwalletgui_pb';
 
 class UTXOSelectorWidget extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -91,7 +91,7 @@ class UTXOSelectorWidget extends React.Component<Props, InternalState> {
 			</div>
 		)
 	}
-	toggleSelection(utxo: UnspentOutputResponse) {
+	toggleSelection(utxo: UnspentOutput) {
 		const selection = this.state.selectedItems
 		selection[getUtxoId(utxo)] = this.isItemSelected(utxo) ? undefined : utxo
 		const selectionList = _.compact(_.values(selection))
@@ -103,7 +103,7 @@ class UTXOSelectorWidget extends React.Component<Props, InternalState> {
 		this.props.onSelectionChange(selectionList)
 	}
 
-	isItemSelected(utxo: UnspentOutputResponse): boolean {
+	isItemSelected(utxo: UnspentOutput): boolean {
 		return this.state.selectedItems[getUtxoId(utxo)] != undefined
 	}
 
@@ -112,23 +112,23 @@ class UTXOSelectorWidget extends React.Component<Props, InternalState> {
 	}
 }
 
-function getUtxoId(utxo: UnspentOutputResponse) {
+function getUtxoId(utxo: UnspentOutput) {
 	return utxo.getTransactionHash_asB64() + utxo.getOutputIndex()
 }
 
 interface OwnProps {
 	account: WalletAccount
-	onSelectionChange: (utxos: UnspentOutputResponse[]) => void
+	onSelectionChange: (utxos: UnspentOutput[]) => void
 }
 
 interface StateProps {
-	utxos: UnspentOutputResponse[]
+	utxos: UnspentOutput[]
 }
 
 type Props = OwnProps & StateProps & DispatchProps
 
 type IndexedUTXOs = {
-	[utxoId: string]: UnspentOutputResponse | undefined
+	[utxoId: string]: UnspentOutput | undefined
 }
 
 interface InternalState {
@@ -153,7 +153,7 @@ const mapDispatchToProps = {
 
 export default connect(mapStateToProps, mapDispatchToProps)(UTXOSelectorWidget)
 
-export function calculateTotalUTXOAmount(utxoList: UnspentOutputResponse[]) {
+export function calculateTotalUTXOAmount(utxoList: UnspentOutput[]) {
 	return _.reduce(utxoList, (sum, u) => {
 		return sum += u?.getAmount() || 0
 	}, 0)

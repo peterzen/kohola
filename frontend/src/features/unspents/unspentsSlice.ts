@@ -3,10 +3,10 @@ import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
 
 import LorcaBackend from '../../middleware/lorca'
 import { AppError, AppDispatch, IGetState, AppThunk, IApplicationState } from '../../store/types'
-import { UnspentOutputResponse } from '../../proto/api_pb'
+import { UnspentOutput } from '../../proto/dcrwalletgui_pb'
 
 export interface IUnspentOutputsByAccount {
-	[accountNumbe: number]: UnspentOutputResponse[]
+	[accountNumbe: number]: UnspentOutput[]
 }
 
 export interface IUnspentState {
@@ -23,7 +23,7 @@ export const initialState: IUnspentState = {
 
 interface IUnspentOutputsSuccessPayload {
 	accountNumber: number
-	unspentOutputs: UnspentOutputResponse[]
+	unspentOutputs: UnspentOutput[]
 }
 
 const unspentsDisplaySlice = createSlice({

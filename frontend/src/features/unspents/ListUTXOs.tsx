@@ -6,14 +6,14 @@ import { Table, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
-import { UnspentOutputResponse } from '../../proto/api_pb';
 import { TxHash } from '../../components/Shared/shared';
 import { Amount } from '../../components/Shared/Amount';
+import { UnspentOutput } from '../../proto/dcrwalletgui_pb';
 
 
 interface ICoinToolsDropdown {
-	utxo: UnspentOutputResponse
-	menuHandler: (eventKey: string, utxo: UnspentOutputResponse) => void
+	utxo: UnspentOutput
+	menuHandler: (eventKey: string, utxo: UnspentOutput) => void
 }
 
 const CoinToolsDropdown = (props: ICoinToolsDropdown) => {
@@ -51,7 +51,7 @@ export default class ListUTXOs extends React.Component<Props> {
 		const utxos = this.props.utxos
 		return (
 			<div>
-				<Table>
+				<Table hover>
 					<thead>
 						<tr>
 							<th>Hash</th>
@@ -63,28 +63,30 @@ export default class ListUTXOs extends React.Component<Props> {
 					</thead>
 					<tbody>
 						{utxos.map((utxo) =>
-							<tr key={utxo.getTransactionHash_asB64() + utxo.getOutputIndex()}>
+							<tr key={utxo.getTransactionHash_asB64() + utxo.getOutputIndex()}
+								className="clickable"
+								onClick={() => this.props.menuHandler("default", utxo)}>
 								<td><TxHash hash={Buffer.from(utxo.getTransactionHash_asU8())} /></td>
 								<td><Amount amount={utxo.getAmount()} /></td>
 								<td>{utxo.getTree() == 1 ? 'stake' : 'regular'}</td>
 								<td><TimeAgo date={moment.unix(utxo.getReceiveTime()).toDate()} /></td>
-								<td>
+								<td onClick={(e) => e.stopPropagation()}>
 									<CoinToolsDropdown
-										utxo={utxo}
-										menuHandler={this.props.menuHandler}
-									/>
+									utxo={utxo}
+									menuHandler={this.props.menuHandler}
+								/>
 								</td>
 							</tr>
 						)}
 					</tbody>
 				</Table>
-			</div>
+			</div >
 		)
 	}
 }
 
 interface Props {
-	utxos: UnspentOutputResponse[]
-	menuHandler: (eventKey: string, utxo: UnspentOutputResponse) => void
+	utxos: UnspentOutput[]
+	menuHandler: (eventKey: string, utxo: UnspentOutput) => void
 }
 

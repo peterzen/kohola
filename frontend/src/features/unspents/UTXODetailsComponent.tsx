@@ -23,7 +23,7 @@ export const UTXODetailsComponent = (props: IUTXODetailsComponentProps) => {
 					</tr>
 					<tr>
 						<th>Address</th>
-						<td>{utxo.getAddressList().map(a => <div>{a}</div>)}</td>
+						<td>{utxo.getAddress()}</td>
 					</tr>
 					<tr>
 						<th>Amount</th>

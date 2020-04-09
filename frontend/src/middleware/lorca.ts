@@ -19,7 +19,6 @@ import {
 	PublishTransactionRequest,
 	PublishTransactionResponse,
 	AgendasResponse,
-	UnspentOutputResponse,
 	PurchaseTicketsRequest,
 	PurchaseTicketsResponse,
 	NextAccountResponse,
@@ -189,14 +188,16 @@ const LorcaBackend = {
 		}
 	},
 
-	createRawTransaction: async (request: CreateRawTransactionRequest) => {
+	createTransaction: async (request: CreateRawTransactionRequest) => {
 		try {
 			const ser = rawToHex(request.serializeBinary().buffer)
-			const r = await w.walletrpc__CreateRawTransaction(ser)
+			const r = await w.walletrpc__CreateTransaction(ser)
 			if (r.error != undefined) {
 				throw r.error
 			}
-			return CreateRawTransactionResponse.deserializeBinary(r.payload)
+			const response = ConstructTransactionResponse.deserializeBinary(r.payload)
+			console.log("RESPONSE",response.toObject())
+			return response
 
 		} catch (e) {
 			console.error("createRawTransaction:", e)

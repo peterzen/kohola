@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { UnspentOutputResponse } from '../../proto/api_pb';
 import UTXODetailsModal from './UTXODetailsComponent';
 import ListUTXOs from './ListUTXOs';
 import { WalletAccount } from '../../middleware/models';
@@ -12,6 +11,7 @@ import {
 	IUnspentState
 } from '../unspents/unspentsSlice';
 import { IApplicationState } from '../../store/types';
+import { UnspentOutput } from '../../proto/dcrwalletgui_pb';
 
 class UTXOContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -42,7 +42,7 @@ class UTXOContainer extends React.Component<Props, InternalState> {
 		)
 	}
 
-	menuHandler(evtKey: string, utxo: UnspentOutputResponse) {
+	menuHandler(evtKey: string, utxo: UnspentOutput) {
 		this.setState({
 			showModal: true,
 			selectedItem: utxo
@@ -64,7 +64,7 @@ type Props = OwnProps & DispatchProps & IUnspentState
 
 interface InternalState {
 	showModal: boolean
-	selectedItem: UnspentOutputResponse | null
+	selectedItem: UnspentOutput | null
 }
 
 const mapStateToProps = (state: IApplicationState): IUnspentState => {

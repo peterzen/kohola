@@ -4,15 +4,12 @@ import { batch } from 'react-redux';
 
 import {
 	CONSTRUCTTX_OUTPUT_SELECT_ALGO_UNSPECIFIED,
-	CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL,
-	TransactionType
-} from '../../constants';
+	CONSTRUCTTX_OUTPUT_SELECT_ALGO_ALL} from '../../constants';
 
 import {
 	ConstructTransactionRequest,
 	SignTransactionRequest, PublishTransactionRequest,
 	TransactionNotificationsResponse,
-	AccountNotificationsResponse,
 	CreateRawTransactionRequest
 } from '../../proto/api_pb';
 
@@ -39,18 +36,17 @@ import {
 	publishTransactionAttempt,
 	createRawTransactionAttempt,
 	createRawTransactionFailed,
-	createRawTransactionSuccess
+	resetSendTransaction
 } from './transactionsSlice';
 import { AppError, IGetState, AppDispatch, AppThunk } from '../../store/types';
 
 import { loadWalletBalance } from '../balances/walletBalanceSlice';
 import { loadBestBlockHeight } from '../app/networkinfo/networkInfoSlice';
-import { lookupAccount, accountNotification } from '../balances/accountSlice';
+import { lookupAccount } from '../balances/accountSlice';
 import { loadStakeInfoAttempt, loadTicketsAttempt } from '../../features/staking/stakingSlice';
 import { Transaction } from '../../middleware/models';
 import { displayTXNotification } from '../app/appSlice';
-import { hexToRaw, rawHashToHex, reverseRawHash, rawToHex } from '../../helpers/byteActions';
-import { reverseHash } from '../../helpers/helpers';
+import { hexToRaw, rawToHex } from '../../helpers/byteActions';
 
 export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
@@ -222,7 +218,7 @@ export const constructTransaction: ActionCreator<any> = (
 
 
 
-export const createRawTransaction: ActionCreator<any> = (request: CreateRawTransactionRequest): AppThunk => {
+export const createTransaction: ActionCreator<any> = (request: CreateRawTransactionRequest): AppThunk => {
 
 	return async (dispatch: AppDispatch, getState: IGetState) => {
 
@@ -231,7 +227,7 @@ export const createRawTransaction: ActionCreator<any> = (request: CreateRawTrans
 		dispatch(createRawTransactionAttempt())
 
 		try {
-			const response = await LorcaBackend.createRawTransaction(request)
+			const response = await LorcaBackend.createTransaction(request)
 			console.log("DEBUG ###", rawToHex(response.getUnsignedTransaction_asU8()))
 			const decoded = await LorcaBackend.decodeRawTransaction(response.getUnsignedTransaction_asU8())
 			const decodedTx = decoded.getTransaction()
@@ -249,20 +245,6 @@ export const createRawTransaction: ActionCreator<any> = (request: CreateRawTrans
 				currentStep: SendTransactionSteps.SIGN_DIALOG,
 				unsignedTx: response.getUnsignedTransaction_asU8(),
 			}))
-
-			// const humanreadableTxInfo: HumanreadableTxInfo = {
-			// 	rawTx: decodeRawTransaction(Buffer.from(constructTxResponse.getUnsignedTransaction_asU8())),
-			// 	outputs: outputs,
-			// 	totalAmount: totalAmount,
-			// 	sourceAccount: lookupAccount(getState(), account),
-			// 	constructTxReq: request,
-			// }
-
-			// dispatch(createRawTransactionSuccess({
-			// 	txInfo: humanreadableTxInfo,
-			// 	response: response,
-			// 	currentStep: SendTransactionSteps.SIGN_DIALOG,
-			// }))
 		}
 		catch (error) {
 			dispatch(createRawTransactionFailed(error))
@@ -335,6 +317,10 @@ export const publishTransaction: ActionCreator<any> = (): AppThunk => {
 				currentStep: SendTransactionSteps.PUBLISH_CONFIRM_DIALOG,
 				response: resp
 			}))
+			setTimeout(() => {
+				dispatch(resetSendTransaction())
+			}, 10 * 1000)
+
 		} catch (error) {
 			dispatch(publishTransactionFailed(error))
 		}

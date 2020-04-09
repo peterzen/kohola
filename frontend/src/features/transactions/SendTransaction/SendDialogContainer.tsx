@@ -11,9 +11,10 @@ import SignDialog, { ISignDialogFormData } from "./SignDialog"
 import PublishDialog from "./PublishDialog"
 import PublishConfirmDialog from "./PublishConfirmDialog"
 import { getAccounts } from "../../balances/accountSlice"
-import { cancelSignTransaction, constructTransaction, signTransaction, publishTransaction, createRawTransaction } from "../actions"
-import { SendTransactionSteps, AuthoredTransactionMetadata } from "../transactionsSlice"
-import { ConstructTransactionRequest, SignTransactionResponse, PublishTransactionResponse, CreateRawTransactionRequest } from "../../../proto/api_pb"
+import { cancelSignTransaction, constructTransaction, signTransaction, publishTransaction, createTransaction } from "../actions"
+import { SendTransactionSteps, AuthoredTransactionMetadata, resetSendTransaction } from "../transactionsSlice"
+import { ConstructTransactionRequest, SignTransactionResponse, PublishTransactionResponse } from "../../../proto/api_pb"
+import { CreateRawTransactionRequest } from "../../../proto/dcrwalletgui_pb"
 
 
 class SendDialogContainer extends React.Component<Props, InternalState>{
@@ -62,17 +63,10 @@ class SendDialogContainer extends React.Component<Props, InternalState>{
 			const amountsMap = request.getAmountsMap()
 			// TODO implement multiple output addresses
 			amountsMap.set(formData.destinationAddress[0], formData.amount * ATOMS_DIVISOR)
-			const inputs = _.map(formData.selectedUTXOs, (utxo) => {
-				const input = new CreateRawTransactionRequest.TransactionInput()
-				input.setAmount(utxo.getAmount())
-				input.setTransactionHash(utxo.getTransactionHash_asU8())
-				input.setOutputIndex(utxo.getOutputIndex())
-				input.setTree(utxo.getTree())
-				return input
-			})
-			request.setInputsList(inputs)
+			request.setFeeRate(1000)
+			request.setSourceOutputsList(formData.selectedUTXOs)
 			console.log("REQUEST",request.toObject())
-			this.props.createRawTransaction(request)
+			this.props.createTransaction(request)
 		} else {
 			const outputs: ConstructTxOutput[] = [{
 				destination: formData.destinationAddress[0],
@@ -135,16 +129,18 @@ interface DispatchProps {
 	cancel: () => void
 	signTransaction: typeof signTransaction
 	publishTransaction: typeof publishTransaction
-	createRawTransaction: typeof createRawTransaction
+	createTransaction: typeof createTransaction
 	constructTransaction: typeof constructTransaction
 	cancelSignTransaction: typeof cancelSignTransaction
+	resetSendTransaction:typeof resetSendTransaction
 }
 
 const mapDispatchToProps = {
 	signTransaction,
 	publishTransaction,
-	createRawTransaction,
+	createTransaction,
 	constructTransaction,
+	resetSendTransaction,
 	cancelSignTransaction,
 }
 

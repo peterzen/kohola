@@ -45,7 +45,7 @@ func ExportWalletAPI(ui lorca.UI) {
 	ui.Bind("walletrpc__RenameAccount", renameAccount)
 	ui.Bind("walletrpc__GetTransactions", getTransactions)
 	ui.Bind("walletrpc__ConstructTransaction", constructTransaction)
-	ui.Bind("walletrpc__CreateRawTransaction", createRawTransaction)
+	ui.Bind("walletrpc__CreateTransaction", createTransaction)
 	ui.Bind("walletrpc__SignTransaction", signTransaction)
 	ui.Bind("walletrpc__PublishTransaction", publishTransaction)
 	ui.Bind("walletrpc__PurchaseTickets", purchaseTickets)
@@ -467,11 +467,11 @@ func constructTransaction(requestAsHex string) (r gui.LorcaMessage) {
 	return r
 }
 
-func createRawTransaction(requestAsHex string) (r gui.LorcaMessage) {
+func createTransaction(requestAsHex string) (r gui.LorcaMessage) {
 	request := &gui.CreateRawTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
-	response, err := CreateRawTransaction(ctx, request)
+	response, err := CreateTransaction(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
@@ -681,7 +681,7 @@ func listUnspent(
 			Tree:            u.Tree,
 			AmountSum:       u.AmountSum,
 			ScriptClass:     int32(sc),
-			Address:         addressStr,
+			Address:         addressStr[0],
 		}
 
 		b, err := proto.Marshal(utxo)
@@ -710,5 +710,68 @@ func getChainParams() *chaincfg.Params {
 		return chaincfg.MainNetParams()
 	default:
 		return nil
+	}
+}
+
+type changeAddressCache map[string]*dcrutil.Address
+
+var accountChangeAddressCache = make(map[uint32]changeAddressCache)
+
+func getChangeAddress(accountNumber uint32) (address *dcrutil.Address, err error) {
+	accountAddresses := accountChangeAddressCache[accountNumber]
+	if accountAddresses == nil {
+		accountChangeAddressCache[accountNumber] = make(changeAddressCache)
+	}
+	for _, addr := range accountChangeAddressCache[accountNumber] {
+		if addr != nil {
+			return addr, nil
+		}
+	}
+
+	addr, err := getNewChangeAddress(accountNumber)
+	if err != nil {
+		return nil, err
+	}
+
+	addrStr := (*addr).Address()
+	accountChangeAddressCache[accountNumber][addrStr] = addr
+	return addr, nil
+}
+
+func getNewChangeAddress(accountNumber uint32) (address *dcrutil.Address, err error) {
+
+	request := &walletrpc.NextAddressRequest{
+		Account:   accountNumber,
+		Kind:      walletrpc.NextAddressRequest_BIP0044_INTERNAL,
+		GapPolicy: walletrpc.NextAddressRequest_GAP_POLICY_ERROR,
+	}
+	response, err := walletServiceClient.NextAddress(ctx, request)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	addr, err := dcrutil.DecodeAddress(response.Address, getChainParams())
+	if err != nil {
+		return nil, err
+	}
+	return &addr, nil
+}
+
+func usedAddressMonitor(ntfn *walletrpc.TransactionNotificationsResponse) {
+	// harvest credit addresses from unmined transactions
+	seenAddressList := make(map[string]bool)
+	for _, txDetails := range ntfn.UnminedTransactions {
+		for _, credit := range txDetails.Credits {
+			seenAddressList[credit.Address] = true
+		}
+	}
+
+	// set seen addresses to nil in address cache
+	for account, addressCache := range accountChangeAddressCache {
+		for address := range addressCache {
+			if seenAddressList[address] == true {
+				accountChangeAddressCache[account][address] = nil
+			}
+		}
 	}
 }

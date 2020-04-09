@@ -16,9 +16,9 @@ import { getCurrentNetwork } from "../../app/appSlice"
 import FeeChooserInput from "../../staking/FeeChooserInput"
 import UTXOSelectorWidget, { calculateTotalUTXOAmount } from "../../unspents/UTXOSelectorWidget"
 import { getVisibleAccounts } from "../../balances/accountSlice"
-import { UnspentOutputResponse } from "../../../proto/api_pb"
 import { getCurrentExchangeRate, haveExchangeRateData } from "../../market/marketSlice"
 import { getAccountBalance } from "../../balances/walletBalanceSlice"
+import { UnspentOutput } from "../../../proto/dcrwalletgui_pb"
 
 class ConstructTxDialog extends React.Component<Props, ISendDialogFormData>{
 	constructor(props: Props) {
@@ -104,7 +104,7 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData>{
 						{this.state.manualInputSelection && (
 							<div>
 								<UTXOSelectorWidget
-									onSelectionChange={(utxos: UnspentOutputResponse[]) => this.handleUTXOSelectionChange(utxos)}
+									onSelectionChange={(utxos: UnspentOutput[]) => this.handleUTXOSelectionChange(utxos)}
 									account={this.state.sourceAccount}
 								/>
 							</div>
@@ -255,7 +255,7 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData>{
 		})
 	}
 
-	handleUTXOSelectionChange(utxos: UnspentOutputResponse[]) {
+	handleUTXOSelectionChange(utxos: UnspentOutput[]) {
 		this.setState({
 			selectedUTXOs: utxos
 		}, () => this.handleSendAllToggle())
@@ -301,7 +301,7 @@ export interface ISendDialogFormData {
 	amount: number
 	formRef: React.RefObject<any>
 	sendAllToggle: boolean
-	selectedUTXOs: UnspentOutputResponse[]
+	selectedUTXOs: UnspentOutput[]
 	sourceAccount: WalletAccount
 	formIsValidated: boolean
 	amountAltCurrency: number

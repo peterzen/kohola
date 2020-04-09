@@ -33,7 +33,7 @@ export interface ConstructTransactionState {
 	readonly constructTransactionRequest: ConstructTransactionRequest | null
 	readonly constructTransactionAttempting: boolean
 	readonly changeScriptCache: IChangeScriptByAccount | undefined
-	readonly unsignedTransaction:Uint8Array|null
+	readonly unsignedTransaction: Uint8Array | null
 }
 
 // CreateRawTransaction
@@ -183,7 +183,7 @@ export const initialState: GetTransactionsState &
 	errorConstructTransaction: null,
 	constructTransactionRequest: null,
 	constructTransactionAttempting: false,
-	unsignedTransaction:null,
+	unsignedTransaction: null,
 
 	// CreateRawTransaction
 	errorCreateRawTransaction: null,
@@ -254,7 +254,7 @@ const transactionsSlice = createSlice({
 			state.errorConstructTransaction = null
 			state.constructTransactionRequest = null
 			state.constructTransactionAttempting = false
-			state.unsignedTransaction=unsignedTx
+			state.unsignedTransaction = unsignedTx
 		},
 
 		// CreateRawTransaction
@@ -314,11 +314,32 @@ const transactionsSlice = createSlice({
 			const { currentStep, response } = action.payload
 			state.txInfo = null
 			state.errorPublishTransaction = null
-			state.errorPublishTransaction = null
 			state.signTransactionResponse = null
 			state.sendTransactionCurrentStep = currentStep
 			state.publishTransactionResponse = response
 			state.publishTransactionAttempting = false
+		},
+
+		resetSendTransaction(state) {
+			state.txInfo = null
+			state.errorPublishTransaction = null
+			state.signTransactionResponse = null
+			state.sendTransactionCurrentStep = SendTransactionSteps.CONSTRUCT_DIALOG
+			state.publishTransactionResponse = null
+			state.publishTransactionAttempting = false
+
+			state.errorSignTransaction = null
+			state.signTransactionResponse = null
+			state.signTransactionAttempting = false
+
+			state.errorCreateRawTransaction = null
+			state.createRawTransactionRequest = null
+			state.createRawTransactionResponse = null
+			state.createRawTransactionAttempting = false
+			state.errorConstructTransaction = null
+			state.constructTransactionRequest = null
+			state.constructTransactionAttempting = false
+			state.unsignedTransaction = null
 		},
 
 		// ValidateAddress
@@ -380,6 +401,8 @@ export const {
 	publishTransactionAttempt,
 	publishTransactionFailed,
 	publishTransactionSuccess,
+
+	resetSendTransaction,
 
 	// ValidateAddress
 	validateAddress,

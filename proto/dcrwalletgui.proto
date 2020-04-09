@@ -176,21 +176,19 @@ message UnspentOutput {
   int32 tree = 7;
   int64 amount_sum = 8;
   int32 script_class = 9;
-  repeated string address = 10;
+  bool spendable = 10;
+  string address = 11;
 }
 
 message CreateRawTransactionRequest {
-  message TransactionInput {
-    int64 amount = 1;
-    bytes transaction_hash = 2;
-    uint32 output_index = 3;
-    int32 tree = 4;
-  }
-  repeated TransactionInput inputs = 1;
+  repeated UnspentOutput source_outputs = 1;
+  //repeated TransactionInput inputs = 1;
   map<string, int64> amounts = 2;
   int64 lock_time = 3;
   int64 expiry = 4;
   int64 fee_rate = 5;
+  uint32 source_account = 6;
+  uint32 change_account = 7;
 }
 
 message CreateRawTransactionResponse {

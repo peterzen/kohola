@@ -107,6 +107,9 @@ func subscribeTxNotifications(ui lorca.UI) {
 		if err != nil {
 			log.Printf("Failed to receive a TransactionNotificationsResponse: %#v", err)
 		}
+		// mark cached change addresses as used
+		usedAddressMonitor(ntfnResponse)
+
 		b, err := proto.Marshal(ntfnResponse)
 		if err != nil {
 			return

@@ -35,9 +35,12 @@ export function Timestamp(props: TimestampProps) {
 	)
 }
 
-export function TransactionHash(props: { tx: Transaction }) {
+export function TransactionHash(props: { tx: Transaction,truncate?: boolean }) {
+	let truncate = true;
+	if (props.truncate != undefined) truncate = props.truncate;
+	const truncLength = truncate ? 15 : 100
 	return (
-		<span className="tx-hash" title={props.tx.getHash()}>{_.truncate(props.tx.getHash(), { length: 15 })}</span>
+		<span className="tx-hash" title={props.tx.getHash()}>{_.truncate(props.tx.getHash(), { length: truncLength })}</span>
 	)
 }
 
