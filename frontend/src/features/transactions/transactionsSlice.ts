@@ -13,7 +13,7 @@ import {
 	DecodedTransaction,
 } from "../../proto/api_pb";
 import { TransactionType, TransactionDirection } from "../../constants";
-import { CreateTransactionRequest, CreateTransactionResponse } from "../../proto/dcrwalletgui_pb";
+import { CreateTransactionRequest, CreateTransactionResponse } from "../../proto/walletgui_pb";
 
 // GetTransactions
 export interface GetTransactionsState {

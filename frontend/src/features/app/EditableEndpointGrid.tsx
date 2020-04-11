@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faCheck } from '@fortawesome/free-solid-svg-icons'
 
 import { AppError, IApplicationState, AppDispatch } from '../../store/types';
-import { GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
+import { GRPCEndpoint } from '../../proto/walletgui_pb';
 import WalletEndpointGrid from './WalletEndpointGrid';
 import { EditEndpointModal } from '../appconfiguration/RPCEndpointConfigForm';
 import { updateEndpoint, saveConfigurationAttempt, deleteEndpoint } from '../appconfiguration/settingsSlice';

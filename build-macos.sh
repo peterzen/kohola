@@ -1,13 +1,13 @@
 #!/bin/sh
 
-APP="build/dcrwalletgui.app"
+APP="build/Kohola.app"
 mkdir -p $APP/Contents/{MacOS,Resources}
 cp app/icons/icon.icns $APP/Contents/Resources/icon.icns
 cd frontend && yarn install && yarn build && cd ..
 cp -R frontend/dist app/www 
 cd app 
 pkger -include /www
-go build -o ../$APP/Contents/MacOS/dcrwalletgui
+go build -o ../$APP/Contents/MacOS/kohola
 # rm pkged.go && rm -R www
 cd ..
 cat > $APP/Contents/Info.plist << EOF
@@ -16,11 +16,11 @@ cat > $APP/Contents/Info.plist << EOF
 <plist version="1.0">
 <dict>
 	<key>CFBundleExecutable</key>
-	<string>dcrwalletgui</string>
+	<string>Kohola</string>
 	<key>CFBundleIconFile</key>
 	<string>icon.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.peterzen.dcrwalletgui</string>
+	<string>com.github.peterzen.kohola</string>
 </dict>
 </plist>
 EOF

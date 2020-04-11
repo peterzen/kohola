@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { Form, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { UIPreferences } from '../../proto/dcrwalletgui_pb';
+import { UIPreferences } from '../../proto/walletgui_pb';
 import { AppError, IApplicationState, AppDispatch } from '../../store/types';
 
 import { saveConfigurationAttempt, getUiPreferences, updateUiPreferences } from './settingsSlice';
@@ -85,7 +85,7 @@ class Preferences extends React.Component<Props, InternalState>  {
 							type="checkbox"
 							label={isConfigEncrypted ?
 								"The config file is encrypted. If you need to turn off, you can manually remove the config file and create a new one without the encryption turned on." :
-								"Enabling this will encrypt (AES256) the configuration file to protect your credentials and connection details. You will be asked for the decryption passphrase when starting dcrwalletgui."}
+								"Enabling this will encrypt (using AES) the configuration file to protect your credentials and connection details. You will be asked for the decryption passphrase when starting the application."}
 							checked={isConfigEncrypted}
 							onChange={(e: React.FormEvent<HTMLInputElement>) =>
 								this.updateIsConfigEncrypted(e.currentTarget.checked)}

@@ -8,7 +8,7 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 import { TxHash } from '../../components/Shared/shared';
 import { Amount } from '../../components/Shared/Amount';
-import { UnspentOutput } from '../../proto/dcrwalletgui_pb';
+import { UnspentOutput } from '../../proto/walletgui_pb';
 
 
 interface ICoinToolsDropdown {

@@ -1,4 +1,4 @@
-// source: dcrwalletgui.proto
+// source: walletgui.proto
 /**
  * @fileoverview
  * @enhanceable

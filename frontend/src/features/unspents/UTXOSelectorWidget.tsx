@@ -19,7 +19,7 @@ import { Table, Form, Alert } from 'react-bootstrap';
 import { TxHash } from '../../components/Shared/shared';
 import { Amount } from '../../components/Shared/Amount';
 import moment from 'moment';
-import { UnspentOutput } from '../../proto/dcrwalletgui_pb';
+import { UnspentOutput } from '../../proto/walletgui_pb';
 
 class UTXOSelectorWidget extends React.Component<Props, InternalState> {
 	constructor(props: Props) {

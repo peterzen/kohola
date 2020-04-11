@@ -20,7 +20,7 @@ import UTXOSelectorWidget, { calculateTotalUTXOAmount } from "../../unspents/UTX
 import { getVisibleAccounts } from "../../balances/accountSlice"
 import { getCurrentExchangeRate, haveExchangeRateData } from "../../market/marketSlice"
 import { getAccountBalance } from "../../balances/walletBalanceSlice"
-import { UnspentOutput } from "../../../proto/dcrwalletgui_pb"
+import { UnspentOutput } from "../../../proto/walletgui_pb"
 import { resetSendTransaction } from "../transactionsSlice"
 
 class ConstructTxDialog extends React.Component<Props, ISendDialogFormData>{

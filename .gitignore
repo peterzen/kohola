@@ -1,6 +1,5 @@
 app/__debug_bin
-app/dcrwalletgui
-app/dcrwalletgui.json
+app/kohola
 build/
 app/www
 app/pkged.go

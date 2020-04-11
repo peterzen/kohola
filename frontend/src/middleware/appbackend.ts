@@ -3,7 +3,7 @@ import {
 	SetConfigResponse,
 	SetConfigRequest,
 	GRPCEndpoint
-} from "../proto/dcrwalletgui_pb"
+} from "../proto/walletgui_pb"
 import { endpointFactory } from "./lorca"
 import { rawToHex } from "../helpers/byteActions";
 import { AppError } from "../store/types";

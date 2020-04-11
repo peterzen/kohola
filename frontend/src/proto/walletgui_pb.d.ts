@@ -1,5 +1,5 @@
 // package: walletgui
-// file: dcrwalletgui.proto
+// file: walletgui.proto
 
 import * as jspb from "google-protobuf";
 import * as api_pb from "./api_pb";

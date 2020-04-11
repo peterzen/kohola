@@ -3,7 +3,7 @@ import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 
 import moment from 'moment'
 
-import { AltCurrencyRates, MarketChartDataPoint } from "../../proto/dcrwalletgui_pb";
+import { AltCurrencyRates, MarketChartDataPoint } from "../../proto/walletgui_pb";
 import { AppError, AppDispatch, IGetState, IApplicationState } from "../../store/types";
 import { hexToRaw } from "../../helpers/byteActions";
 import { ExchangeRateBotBackend } from "../../middleware/exchangeratebot";

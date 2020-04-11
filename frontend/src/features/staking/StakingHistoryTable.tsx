@@ -7,7 +7,7 @@ import moment from 'moment';
 
 
 import { loadStakingHistory } from './stakingSlice';
-import { StakingHistory } from '../../proto/dcrwalletgui_pb';
+import { StakingHistory } from '../../proto/walletgui_pb';
 import { AppError, IApplicationState } from '../../store/types';
 import { Table, Card } from 'react-bootstrap';
 import ReactTimeago from 'react-timeago';

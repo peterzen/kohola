@@ -6,7 +6,7 @@ import "./Amount.scss"
 import { ATOMS_DIVISOR } from "../../constants";
 import { AppDispatch, IApplicationState } from "../../store/types";
 import { getCurrentExchangeRate } from "../../features/market/marketSlice";
-import { AltCurrencyRates } from "../../proto/dcrwalletgui_pb";
+import { AltCurrencyRates } from "../../proto/walletgui_pb";
 
 interface AmountProps {
 	amount: number

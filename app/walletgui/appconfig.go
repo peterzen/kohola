@@ -23,8 +23,8 @@ import (
 )
 
 var (
-	appDataDir        = dcrutil.AppDataDir("dcrwalletgui", false)
-	defaultConfigFile = filepath.Join("./", "dcrwalletgui.json")
+	appDataDir        = dcrutil.AppDataDir("kohola", false)
+	defaultConfigFile = filepath.Join("./", "kohola.json")
 	configFilePath    = filepath.Join(appDataDir, defaultConfigFile)
 	cfg               = newConfig()
 	savedPassphrase   = ""

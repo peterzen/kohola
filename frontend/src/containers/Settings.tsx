@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
 import { AppError, IApplicationState } from '../store/types';
-import { AppConfiguration } from '../proto/dcrwalletgui_pb';
+import { AppConfiguration } from '../proto/walletgui_pb';
 import { Alert, Tabs, Tab, Card } from 'react-bootstrap';
 import { saveConfigurationAttempt, IAppConfigurationState } from '../features/appconfiguration/settingsSlice';
 import AccountsSetup from '../features/balances/AccountsSetup';

@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	gui "github.com/peterzen/dcrwalletgui/walletgui"
+	gui "github.com/peterzen/kohola/walletgui"
 )
 
 func Test_fetchStakeDiffHistory(t *testing.T) {

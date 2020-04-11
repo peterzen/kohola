@@ -19,7 +19,7 @@ import {
 } from "../../proto/api_pb";
 import LorcaBackend from "../../middleware/lorca";
 import { Ticket, TicketPrice, Agendas, StakeInfo } from "../../middleware/models";
-import { StakingHistory, StakeDiffHistory } from "../../proto/dcrwalletgui_pb";
+import { StakingHistory, StakeDiffHistory } from "../../proto/walletgui_pb";
 
 
 // GetTickets
