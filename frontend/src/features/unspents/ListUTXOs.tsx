@@ -54,7 +54,7 @@ export default class ListUTXOs extends React.Component<Props> {
 				<Table hover>
 					<thead>
 						<tr>
-							<th>Hash</th>
+							<th>Outpoint</th>
 							<th>Amount</th>
 							<th>Tree</th>
 							<th>Timestamp</th>
@@ -66,8 +66,11 @@ export default class ListUTXOs extends React.Component<Props> {
 							<tr key={utxo.getTransactionHash_asB64() + utxo.getOutputIndex()}
 								className="clickable"
 								onClick={() => this.props.menuHandler("default", utxo)}>
-								<td><TxHash hash={Buffer.from(utxo.getTransactionHash_asU8())} /></td>
-								<td><Amount amount={utxo.getAmount()} /></td>
+								<td>
+									<TxHash hash={Buffer.from(utxo.getTransactionHash_asU8())} />
+									:{utxo.getOutputIndex()}
+								</td>
+								<td><Amount amount={utxo.getAmount()} rounding={6}/></td>
 								<td>{utxo.getTree() == 1 ? 'stake' : 'regular'}</td>
 								<td><TimeAgo date={moment.unix(utxo.getReceiveTime()).toDate()} /></td>
 								<td onClick={(e) => e.stopPropagation()}>

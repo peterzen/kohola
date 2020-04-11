@@ -29,7 +29,7 @@ class UTXOContainer extends React.Component<Props, InternalState> {
 			<Card>
 				<Card.Header>
 					<Card.Title>
-						Unspent transaction outputs
+						Unspent transaction outputs <small className="text-muted">({this.props.utxoList.length})</small>
 					</Card.Title>
 				</Card.Header>
 
