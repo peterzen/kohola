@@ -1,11 +1,14 @@
 import _ from "lodash";
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit";
 
+import moment from 'moment'
+
 import { AltCurrencyRates, MarketChartDataPoint } from "../../proto/dcrwalletgui_pb";
 import { AppError, AppDispatch, IGetState, IApplicationState } from "../../store/types";
 import { hexToRaw } from "../../helpers/byteActions";
 import { ExchangeRateBotBackend } from "../../middleware/exchangeratebot";
 import { normalizeDatapoints } from "../../helpers/helpers";
+
 
 
 const w = (window as any)
@@ -186,22 +189,15 @@ export function datapointsAsPOJO(datapoints: MarketChartDataPoint[]): MarketChar
 	return _.map(datapoints, d => d.toObject())
 }
 
-export function timeConverter(UNIX_timestamp: number, days: number) {
-	var now = new Date()
-	var t = new Date(UNIX_timestamp * 1000)
-
-	if (days < 7 &&
-		now.getFullYear() == t.getFullYear() &&
-		now.getMonth() == t.getMonth() &&
-		now.getDate() == t.getDate()
-	) {
-		var hour = ('0' + t.getUTCHours()).slice(-2)
-		var min = ('0' + t.getUTCMinutes()).slice(-2)
-		return hour + ':' + min;
-	} else {
-		var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-		var month = months[t.getMonth()]
-		var date = ('0' + t.getDate()).slice(-2)
-		return date + '. ' + month
+export function timeConverter(timestamp: number, timeframeDays: number) {
+	const m = moment(timestamp * 1000)
+	switch (timeframeDays) {
+		case 1:
+			return m.format("HH:mm")
+		case 3:
+		case 7:
+			return m.format("D ddd")
+		default:
+			return m.format("MM/DD")
 	}
 }
