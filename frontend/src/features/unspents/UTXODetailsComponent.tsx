@@ -5,7 +5,7 @@ import TimeAgo from 'react-timeago';
 
 import { TxHash } from "../../components/Shared/shared";
 import { Amount } from "../../components/Shared/Amount";
-import { UnspentOutput } from "../../proto/dcrwalletgui_pb";
+import { UnspentOutput } from "../../proto/walletgui_pb";
 import { ScriptClass } from "../../constants";
 
 export default class UTXODetailsComponent extends React.Component<Props, {}>{

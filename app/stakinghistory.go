@@ -12,7 +12,7 @@ import (
 	proto "github.com/golang/protobuf/proto"
 	"github.com/zserge/lorca"
 
-	gui "github.com/peterzen/dcrwalletgui/walletgui"
+	gui "github.com/peterzen/kohola/walletgui"
 )
 
 // GetStakingHistory filters staking transactions and extracts credit/debit

@@ -8,8 +8,8 @@ func initSystray() {
 
 func onReady() {
 	// systray.SetIcon(icon.Data)
-	systray.SetTitle("dcrwalletgui")
-	systray.SetTooltip("dcrwalletgui")
+	systray.SetTitle("Kohola")
+	systray.SetTooltip("Kohola")
 	_ = systray.AddMenuItem("Quit", "Exit wallet")
 
 	// Sets the icon of a menu item. Only available on Mac.

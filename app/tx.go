@@ -15,7 +15,7 @@ import (
 	"github.com/decred/dcrd/wire"
 	"github.com/decred/dcrwallet/wallet/txauthor"
 
-	"github.com/peterzen/dcrwalletgui/walletgui"
+	"github.com/peterzen/kohola/walletgui"
 )
 
 func getScriptSize(pkScript []byte) (int, error) {

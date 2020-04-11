@@ -7,7 +7,7 @@ import {
 } from 'recharts';
 import { IApplicationState } from '../../../store/types';
 import { fetchExchangeChartData, getExchangeSparklineData } from '../marketSlice';
-import { MarketChartDataPoint } from '../../../proto/dcrwalletgui_pb';
+import { MarketChartDataPoint } from '../../../proto/walletgui_pb';
 
 class SparklineChart extends React.Component<Props>{
 	render() {
@@ -52,7 +52,7 @@ type Props = OwnProps & StateProps & DispatchProps
 const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
 	return {
 		getChartData: () => {
-			return getExchangeSparklineData(state, ownProps.currencyCode)
+			return getExchangeSparklineData(state, ownProps.currencyCode, 1)
 		}
 	}
 }

@@ -12,7 +12,7 @@ import {
 	getRegularUTXOs
 } from '../unspents/unspentsSlice';
 import { IApplicationState } from '../../store/types';
-import { UnspentOutput } from '../../proto/dcrwalletgui_pb';
+import { UnspentOutput } from '../../proto/walletgui_pb';
 import GenericModal from '../../components/Shared/GenericModal';
 
 class UTXOContainer extends React.Component<Props, InternalState> {

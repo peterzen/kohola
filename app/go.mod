@@ -1,4 +1,4 @@
-module github.com/peterzen/dcrwalletgui
+module github.com/peterzen/kohola
 
 go 1.13
 

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction, ActionCreator } from '@reduxjs/toolkit'
 
 import LorcaBackend from '../../middleware/lorca'
 import { AppError, AppDispatch, IGetState, AppThunk, IApplicationState } from '../../store/types'
-import { UnspentOutput } from '../../proto/dcrwalletgui_pb'
+import { UnspentOutput } from '../../proto/walletgui_pb'
 
 export interface IUnspentOutputsByAccount {
 	[accountNumbe: number]: UnspentOutput[]

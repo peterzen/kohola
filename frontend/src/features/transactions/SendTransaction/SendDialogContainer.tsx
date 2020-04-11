@@ -18,7 +18,7 @@ import { getAccounts } from "../../balances/accountSlice"
 import { cancelSignTransaction, constructTransaction, signTransaction, publishTransaction, createTransaction } from "../actions"
 import { SendTransactionSteps, AuthoredTransactionMetadata, resetSendTransaction } from "../transactionsSlice"
 import { ConstructTransactionRequest, SignTransactionResponse, PublishTransactionResponse } from "../../../proto/api_pb"
-import { CreateTransactionRequest } from "../../../proto/dcrwalletgui_pb"
+import { CreateTransactionRequest } from "../../../proto/walletgui_pb"
 
 
 class SendDialogContainer extends React.Component<Props, InternalState>{

@@ -1,10 +1,10 @@
-## dcrwalletgui 
+## Kohola Decred Wallet 
 
-This application is a multi platform Decred wallet application for power users running wallets in dedicated, secure environments.  It connects to existing `dcrwallet` instances; it is particularly tailored to expert users that are familiar with operating advanced setups.  For new users, [Decrediton](https://github.com/decred/decrediton) is a better choice.
+<abbr title="`Kohola' means `whale' in Hawaiian">Kohola</abbr> is a multi platform Decred wallet application for power users running wallets in dedicated, secure environments.  It connects to existing `dcrwallet` instances; it is particularly tailored to expert users that are familiar with operating advanced setups.  For new users, [Decrediton](https://github.com/decred/decrediton) is a better choice.
 
 ## `dcrwallet` setup
 
-`dcrwalletgui` connects to `dcrwallet` using GRPC, which can be enabled using the `grpclisten` option in `dcrwallet.conf`:
+Kohola connects to `dcrwallet` using GRPC, which can be enabled using the `grpclisten` option in `dcrwallet.conf`:
 
 ```
 grpclisten=<IP:port>
@@ -26,13 +26,13 @@ By default, `dcrwallet` listens on port 9111 (mainnet) or 19111 (testnet).  The 
 
 ### Windows
 
-TODO - [contribution welcome](https://github.com/peterzen/dcrwalletgui/issues/8)
+TODO - [contribution welcome](https://github.com/peterzen/kohola/issues/8)
 
 ## Development
 
 1. Clone repo
 
-`git clone --recurse-submodules https://github.com/peterzen/dcrwalletgui && cd dcrwalletgui`
+`git clone --recurse-submodules https://github.com/peterzen/kohola`
 
 2. Build and run React frontend 
 
@@ -43,4 +43,5 @@ yarn start
 
 3. Open another terminal, and build and run app binary
 
-`cd app && go build && ./dcrwalletgui`
+`cd app && go build && ./kohola`
+

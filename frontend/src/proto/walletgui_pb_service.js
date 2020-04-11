@@ -1,7 +1,7 @@
 // package: walletgui
-// file: dcrwalletgui.proto
+// file: walletgui.proto
 
-var dcrwalletgui_pb = require("./dcrwalletgui_pb");
+var walletgui_pb = require("./walletgui_pb");
 var grpc = require("@improbable-eng/grpc-web").grpc;
 
 var AppConfig = (function () {
@@ -15,8 +15,8 @@ AppConfig.GetConfig = {
   service: AppConfig,
   requestStream: false,
   responseStream: false,
-  requestType: dcrwalletgui_pb.GetConfigRequest,
-  responseType: dcrwalletgui_pb.AppConfiguration
+  requestType: walletgui_pb.GetConfigRequest,
+  responseType: walletgui_pb.AppConfiguration
 };
 
 AppConfig.SetConfig = {
@@ -24,8 +24,8 @@ AppConfig.SetConfig = {
   service: AppConfig,
   requestStream: false,
   responseStream: false,
-  requestType: dcrwalletgui_pb.SetConfigRequest,
-  responseType: dcrwalletgui_pb.SetConfigResponse
+  requestType: walletgui_pb.SetConfigRequest,
+  responseType: walletgui_pb.SetConfigResponse
 };
 
 AppConfig.CreateTransaction = {
@@ -33,8 +33,8 @@ AppConfig.CreateTransaction = {
   service: AppConfig,
   requestStream: false,
   responseStream: false,
-  requestType: dcrwalletgui_pb.CreateTransactionRequest,
-  responseType: dcrwalletgui_pb.CreateTransactionResponse
+  requestType: walletgui_pb.CreateTransactionRequest,
+  responseType: walletgui_pb.CreateTransactionResponse
 };
 
 exports.AppConfig = AppConfig;
@@ -150,8 +150,8 @@ NetworkService.CheckConnection = {
   service: NetworkService,
   requestStream: false,
   responseStream: false,
-  requestType: dcrwalletgui_pb.CheckConnectionRequest,
-  responseType: dcrwalletgui_pb.CheckConnectionResponse
+  requestType: walletgui_pb.CheckConnectionRequest,
+  responseType: walletgui_pb.CheckConnectionResponse
 };
 
 NetworkService.ConnectWallet = {
@@ -159,8 +159,8 @@ NetworkService.ConnectWallet = {
   service: NetworkService,
   requestStream: false,
   responseStream: false,
-  requestType: dcrwalletgui_pb.ConnectWalletRequest,
-  responseType: dcrwalletgui_pb.ConnectWalletResponse
+  requestType: walletgui_pb.ConnectWalletRequest,
+  responseType: walletgui_pb.ConnectWalletResponse
 };
 
 exports.NetworkService = NetworkService;
@@ -245,8 +245,8 @@ ExchangeRates.GetMarketChart = {
   service: ExchangeRates,
   requestStream: false,
   responseStream: false,
-  requestType: dcrwalletgui_pb.GetMarketChartRequest,
-  responseType: dcrwalletgui_pb.GetMarketChartResponse
+  requestType: walletgui_pb.GetMarketChartRequest,
+  responseType: walletgui_pb.GetMarketChartResponse
 };
 
 exports.ExchangeRates = ExchangeRates;

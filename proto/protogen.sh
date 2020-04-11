@@ -6,7 +6,7 @@ GO_OUTPUT_DIR=../app/walletgui
 
 protoc  \
     --plugin=protoc-gen-ts=../frontend/node_modules/.bin/protoc-gen-ts \
-    -I=$PROTO_DIR $PROTO_DIR/dcrwalletgui.proto \
+    -I=$PROTO_DIR $PROTO_DIR/walletgui.proto \
     --js_out=import_style=commonjs,binary:$JS_OUTPUT_DIR \
     --ts_out=service=grpc-web:$JS_OUTPUT_DIR \
 	--go_out=$GO_OUTPUT_DIR

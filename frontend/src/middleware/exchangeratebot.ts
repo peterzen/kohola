@@ -1,4 +1,4 @@
-import { GetMarketChartResponse } from "../proto/dcrwalletgui_pb"
+import { GetMarketChartResponse } from "../proto/walletgui_pb"
 
 
 const w = (window as any)

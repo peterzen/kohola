@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { GRPCEndpoint } from "../../proto/dcrwalletgui_pb";
+import { GRPCEndpoint } from "../../proto/walletgui_pb";
 import { getConnectedEndpoint } from "../app/appSlice";
 import OnOffIndicator from "../../components/Shared/OnOffIndicator";
 import { IApplicationState } from "../../store/types";

@@ -1,7 +1,7 @@
 // package: walletgui
-// file: dcrwalletgui.proto
+// file: walletgui.proto
 
-import * as dcrwalletgui_pb from "./dcrwalletgui_pb";
+import * as walletgui_pb from "./walletgui_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
 type AppConfigGetConfig = {
@@ -9,8 +9,8 @@ type AppConfigGetConfig = {
   readonly service: typeof AppConfig;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof dcrwalletgui_pb.GetConfigRequest;
-  readonly responseType: typeof dcrwalletgui_pb.AppConfiguration;
+  readonly requestType: typeof walletgui_pb.GetConfigRequest;
+  readonly responseType: typeof walletgui_pb.AppConfiguration;
 };
 
 type AppConfigSetConfig = {
@@ -18,8 +18,8 @@ type AppConfigSetConfig = {
   readonly service: typeof AppConfig;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof dcrwalletgui_pb.SetConfigRequest;
-  readonly responseType: typeof dcrwalletgui_pb.SetConfigResponse;
+  readonly requestType: typeof walletgui_pb.SetConfigRequest;
+  readonly responseType: typeof walletgui_pb.SetConfigResponse;
 };
 
 type AppConfigCreateTransaction = {
@@ -27,8 +27,8 @@ type AppConfigCreateTransaction = {
   readonly service: typeof AppConfig;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof dcrwalletgui_pb.CreateTransactionRequest;
-  readonly responseType: typeof dcrwalletgui_pb.CreateTransactionResponse;
+  readonly requestType: typeof walletgui_pb.CreateTransactionRequest;
+  readonly responseType: typeof walletgui_pb.CreateTransactionResponse;
 };
 
 export class AppConfig {
@@ -43,8 +43,8 @@ type NetworkServiceCheckConnection = {
   readonly service: typeof NetworkService;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof dcrwalletgui_pb.CheckConnectionRequest;
-  readonly responseType: typeof dcrwalletgui_pb.CheckConnectionResponse;
+  readonly requestType: typeof walletgui_pb.CheckConnectionRequest;
+  readonly responseType: typeof walletgui_pb.CheckConnectionResponse;
 };
 
 type NetworkServiceConnectWallet = {
@@ -52,8 +52,8 @@ type NetworkServiceConnectWallet = {
   readonly service: typeof NetworkService;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof dcrwalletgui_pb.ConnectWalletRequest;
-  readonly responseType: typeof dcrwalletgui_pb.ConnectWalletResponse;
+  readonly requestType: typeof walletgui_pb.ConnectWalletRequest;
+  readonly responseType: typeof walletgui_pb.ConnectWalletResponse;
 };
 
 export class NetworkService {
@@ -67,8 +67,8 @@ type ExchangeRatesGetMarketChart = {
   readonly service: typeof ExchangeRates;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof dcrwalletgui_pb.GetMarketChartRequest;
-  readonly responseType: typeof dcrwalletgui_pb.GetMarketChartResponse;
+  readonly requestType: typeof walletgui_pb.GetMarketChartRequest;
+  readonly responseType: typeof walletgui_pb.GetMarketChartResponse;
 };
 
 export class ExchangeRates {
@@ -109,31 +109,31 @@ export class AppConfigClient {
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
   getConfig(
-    requestMessage: dcrwalletgui_pb.GetConfigRequest,
+    requestMessage: walletgui_pb.GetConfigRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.AppConfiguration|null) => void
+    callback: (error: ServiceError|null, responseMessage: walletgui_pb.AppConfiguration|null) => void
   ): UnaryResponse;
   getConfig(
-    requestMessage: dcrwalletgui_pb.GetConfigRequest,
-    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.AppConfiguration|null) => void
+    requestMessage: walletgui_pb.GetConfigRequest,
+    callback: (error: ServiceError|null, responseMessage: walletgui_pb.AppConfiguration|null) => void
   ): UnaryResponse;
   setConfig(
-    requestMessage: dcrwalletgui_pb.SetConfigRequest,
+    requestMessage: walletgui_pb.SetConfigRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.SetConfigResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: walletgui_pb.SetConfigResponse|null) => void
   ): UnaryResponse;
   setConfig(
-    requestMessage: dcrwalletgui_pb.SetConfigRequest,
-    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.SetConfigResponse|null) => void
+    requestMessage: walletgui_pb.SetConfigRequest,
+    callback: (error: ServiceError|null, responseMessage: walletgui_pb.SetConfigResponse|null) => void
   ): UnaryResponse;
   createTransaction(
-    requestMessage: dcrwalletgui_pb.CreateTransactionRequest,
+    requestMessage: walletgui_pb.CreateTransactionRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.CreateTransactionResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: walletgui_pb.CreateTransactionResponse|null) => void
   ): UnaryResponse;
   createTransaction(
-    requestMessage: dcrwalletgui_pb.CreateTransactionRequest,
-    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.CreateTransactionResponse|null) => void
+    requestMessage: walletgui_pb.CreateTransactionRequest,
+    callback: (error: ServiceError|null, responseMessage: walletgui_pb.CreateTransactionResponse|null) => void
   ): UnaryResponse;
 }
 
@@ -142,22 +142,22 @@ export class NetworkServiceClient {
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
   checkConnection(
-    requestMessage: dcrwalletgui_pb.CheckConnectionRequest,
+    requestMessage: walletgui_pb.CheckConnectionRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.CheckConnectionResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: walletgui_pb.CheckConnectionResponse|null) => void
   ): UnaryResponse;
   checkConnection(
-    requestMessage: dcrwalletgui_pb.CheckConnectionRequest,
-    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.CheckConnectionResponse|null) => void
+    requestMessage: walletgui_pb.CheckConnectionRequest,
+    callback: (error: ServiceError|null, responseMessage: walletgui_pb.CheckConnectionResponse|null) => void
   ): UnaryResponse;
   connectWallet(
-    requestMessage: dcrwalletgui_pb.ConnectWalletRequest,
+    requestMessage: walletgui_pb.ConnectWalletRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.ConnectWalletResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: walletgui_pb.ConnectWalletResponse|null) => void
   ): UnaryResponse;
   connectWallet(
-    requestMessage: dcrwalletgui_pb.ConnectWalletRequest,
-    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.ConnectWalletResponse|null) => void
+    requestMessage: walletgui_pb.ConnectWalletRequest,
+    callback: (error: ServiceError|null, responseMessage: walletgui_pb.ConnectWalletResponse|null) => void
   ): UnaryResponse;
 }
 
@@ -166,13 +166,13 @@ export class ExchangeRatesClient {
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
   getMarketChart(
-    requestMessage: dcrwalletgui_pb.GetMarketChartRequest,
+    requestMessage: walletgui_pb.GetMarketChartRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.GetMarketChartResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: walletgui_pb.GetMarketChartResponse|null) => void
   ): UnaryResponse;
   getMarketChart(
-    requestMessage: dcrwalletgui_pb.GetMarketChartRequest,
-    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.GetMarketChartResponse|null) => void
+    requestMessage: walletgui_pb.GetMarketChartRequest,
+    callback: (error: ServiceError|null, responseMessage: walletgui_pb.GetMarketChartResponse|null) => void
   ): UnaryResponse;
 }
 

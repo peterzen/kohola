@@ -6,7 +6,7 @@ import { faCog, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
 
-import { GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
+import { GRPCEndpoint } from '../../proto/walletgui_pb';
 
 export default class WalletEndpointGrid extends React.Component<Props> {
 	render() {

@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"io"
 	"log"
 	"time"
 
@@ -15,7 +16,7 @@ import (
 
 	walletrpc "decred.org/dcrwallet/rpc/walletrpc"
 	proto "github.com/golang/protobuf/proto"
-	gui "github.com/peterzen/dcrwalletgui/walletgui"
+	gui "github.com/peterzen/kohola/walletgui"
 
 	"github.com/zserge/lorca"
 )
@@ -104,8 +105,13 @@ func subscribeTxNotifications(ui lorca.UI) {
 
 	for {
 		ntfnResponse, err := ntfnStream.Recv()
+		if err == io.EOF {
+			log.Printf("TransactionNotificationsResponse got io.EOF")
+			return
+		}
 		if err != nil {
 			log.Printf("Failed to receive a TransactionNotificationsResponse: %#v", err)
+			return
 		}
 		if len(ntfnResponse.GetUnminedTransactions()) < 1 {
 			continue

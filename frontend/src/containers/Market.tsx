@@ -8,7 +8,7 @@ import Fade from 'react-reveal/Fade';
 import { Card, Row, Col, Dropdown } from "react-bootstrap";
 import { IApplicationState } from "../store/types";
 import ExchangeRateChart from "../features/market/charts/ExchangeRateChart";
-import { AltCurrencyRates } from "../proto/dcrwalletgui_pb";
+import { AltCurrencyRates } from "../proto/walletgui_pb";
 import { getCurrentExchangeRate } from "../features/market/marketSlice";
 import IntervalChooser, { ChartTimeframe, timeframes } from "../features/market/IntervalChooser";
 

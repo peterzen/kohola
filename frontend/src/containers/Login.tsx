@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlug } from '@fortawesome/free-solid-svg-icons'
 
 import { IAppConfigurationState } from '../features/appconfiguration/settingsSlice';
-import { AppConfiguration } from '../proto/dcrwalletgui_pb';
+import { AppConfiguration } from '../proto/walletgui_pb';
 import EditableEndpointGrid from '../features/app/EditableEndpointGrid';
 import { connectWallet } from '../features/app/appSlice';
 import { IApplicationState, AppError } from '../store/types';

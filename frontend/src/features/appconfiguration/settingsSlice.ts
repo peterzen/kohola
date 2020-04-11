@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { createSlice, PayloadAction, ActionCreator, Dispatch } from '@reduxjs/toolkit'
 import { AppError, IGetState, IApplicationState, AppDispatch } from '../../store/types';
-import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences, UIPreferences } from '../../proto/dcrwalletgui_pb';
+import { AppConfiguration, RPCEndpoint, GRPCEndpoint, AccountPreference, WalletPreferences, UIPreferences } from '../../proto/walletgui_pb';
 import { DisplayUnit } from '../../constants';
 import AppBackend from '../../middleware/appbackend';
 import { getConnectedEndpoint, getConnectedEndpointId } from '../app/appSlice';

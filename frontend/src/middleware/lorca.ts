@@ -31,7 +31,7 @@ import {
 	DecodeRawTransactionResponse,
 } from '../proto/api_pb';
 import { rawToHex } from '../helpers/byteActions';
-import { GRPCEndpoint, StakingHistory, StakeDiffHistory, UnspentOutput, CreateTransactionRequest } from '../proto/dcrwalletgui_pb';
+import { GRPCEndpoint, StakingHistory, StakeDiffHistory, UnspentOutput, CreateTransactionRequest } from '../proto/walletgui_pb';
 import { Ticket, WalletAccount, WalletBalance, Transaction, AccountBalance } from './models';
 
 const w = (window as any)

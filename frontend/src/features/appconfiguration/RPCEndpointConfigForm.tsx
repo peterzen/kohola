@@ -13,7 +13,7 @@ import {
 import { AppError } from '../../store/types';
 import LorcaBackend from '../../middleware/lorca';
 import GenericModal, { GenericModalProps } from '../../components/Shared/GenericModal';
-import { RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
+import { RPCEndpoint, GRPCEndpoint } from '../../proto/walletgui_pb';
 import { Networks } from '../../constants';
 import { PasteButton } from '../../components/Shared/shared';
 

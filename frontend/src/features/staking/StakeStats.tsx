@@ -9,7 +9,7 @@ const moment = extendMoment(Moment)
 import { Row, Col, Card } from 'react-bootstrap'
 
 import { StakeInfo, TicketPrice } from '../../middleware/models'
-import { StakingHistory } from '../../proto/dcrwalletgui_pb'
+import { StakingHistory } from '../../proto/walletgui_pb'
 import { TicketStatus, TransactionType } from '../../constants'
 import {
 	loadStakeInfoAttempt,

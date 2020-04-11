@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import { AppError, IApplicationState, AppDispatch } from '../../store/types';
 import { Row, Col, Button } from 'react-bootstrap';
-import { RPCEndpoint, GRPCEndpoint } from '../../proto/dcrwalletgui_pb';
+import { RPCEndpoint, GRPCEndpoint } from '../../proto/walletgui_pb';
 import RPCEndpointConfigForm from './RPCEndpointConfigForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -101,7 +101,7 @@ const mapStateToProps = (state: IApplicationState) => {
 
 const mapDispatchToProps = (dispatch: AppDispatch) => {
 	return {
-		updateEndpoint: (endpoint: GRPCEndpoint | RPCEndpoint) => {
+		updateEndpoint: (endpoint: GRPCEndpoint) => {
 			dispatch(updateEndpoint(endpoint))
 			dispatch(saveConfigurationAttempt())
 		}

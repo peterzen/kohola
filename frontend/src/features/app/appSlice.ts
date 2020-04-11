@@ -4,7 +4,7 @@ import { batch } from "react-redux";
 
 import store, { history } from '../../store/store'
 
-import { GRPCEndpoint } from "../../proto/dcrwalletgui_pb";
+import { GRPCEndpoint } from "../../proto/walletgui_pb";
 import { AppError, AppThunk, AppDispatch, IApplicationState, IGetState } from "../../store/types";
 import { AccountNotificationsResponse } from "../../proto/api_pb";
 

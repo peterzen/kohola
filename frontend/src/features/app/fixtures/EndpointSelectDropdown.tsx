@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faEye } from '@fortawesome/free-solid-svg-icons'
 
 import { connectWallet, getEndpointById } from '../appSlice';
-import { GRPCEndpoint } from '../../../proto/dcrwalletgui_pb';
+import { GRPCEndpoint } from '../../../proto/walletgui_pb';
 import { IApplicationState } from '../../../store/types';
 import { SelectedDropdownItemLabel } from '../../../components/Shared/shared';
 import ConnectionStatus from '../ConnectionStatus';

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-APP=dcrwalletgui
+APP=kohola
 APPDIR=build/${APP}
 
 mkdir -p $APPDIR/usr/bin
@@ -39,7 +39,7 @@ Version: 1.0-0
 Section: base
 Priority: optional
 Architecture: amd64
-Maintainer: peterzen <peterzen@gmail.com>
+Maintainer: peter@froggle.org
 Description: This application is a multi platform Decred wallet application for power users having existing wallets running in secure environments.
 EOF
 

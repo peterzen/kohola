@@ -14,7 +14,7 @@ import (
 	"github.com/decred/dcrd/dcrutil/v3"
 	"github.com/decred/dcrd/txscript/v3"
 	proto "github.com/golang/protobuf/proto"
-	gui "github.com/peterzen/dcrwalletgui/walletgui"
+	gui "github.com/peterzen/kohola/walletgui"
 
 	"github.com/zserge/lorca"
 )

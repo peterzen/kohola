@@ -46,7 +46,7 @@ import { loadStakeInfoAttempt, loadTicketsAttempt } from '../../features/staking
 import { Transaction } from '../../middleware/models';
 import { displayTXNotification } from '../app/appSlice';
 import { hexToRaw, rawToHex } from '../../helpers/byteActions';
-import { CreateTransactionRequest } from '../../proto/dcrwalletgui_pb';
+import { CreateTransactionRequest } from '../../proto/walletgui_pb';
 
 export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {
 	return async (dispatch: AppDispatch, getState: IGetState) => {
