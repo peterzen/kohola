@@ -19,7 +19,6 @@ import {
 	PublishTransactionRequest,
 	PublishTransactionResponse,
 	AgendasResponse,
-	UnspentOutputResponse,
 	PurchaseTicketsRequest,
 	PurchaseTicketsResponse,
 	NextAccountResponse,
@@ -29,9 +28,10 @@ import {
 	RunTicketBuyerRequest,
 	RevokeTicketsResponse,
 	RunAccountMixerRequest,
+	DecodeRawTransactionResponse,
 } from '../proto/api_pb';
 import { rawToHex } from '../helpers/byteActions';
-import { GRPCEndpoint, StakingHistory, StakeDiffHistory } from '../proto/dcrwalletgui_pb';
+import { GRPCEndpoint, StakingHistory, StakeDiffHistory, UnspentOutput, CreateTransactionRequest } from '../proto/dcrwalletgui_pb';
 import { Ticket, WalletAccount, WalletBalance, Transaction, AccountBalance } from './models';
 
 const w = (window as any)
@@ -186,6 +186,23 @@ const LorcaBackend = {
 		}
 	},
 
+	createTransaction: async (request: CreateTransactionRequest) => {
+		try {
+			const ser = rawToHex(request.serializeBinary().buffer)
+			const r = await w.walletrpc__CreateTransaction(ser)
+			if (r.error != undefined) {
+				throw r.error
+			}
+			const response = ConstructTransactionResponse.deserializeBinary(r.payload)
+			console.log("RESPONSE",response.toObject())
+			return response
+
+		} catch (e) {
+			console.error("createRawTransaction:", e)
+			throw e
+		}
+	},
+
 	signTransaction: async (request: SignTransactionRequest) => {
 		try {
 			const ser = rawToHex(request.serializeBinary().buffer)
@@ -197,7 +214,7 @@ const LorcaBackend = {
 		}
 		catch (e) {
 			console.error("Serialization error", e)
-			return e
+			throw e
 		}
 	},
 
@@ -213,7 +230,7 @@ const LorcaBackend = {
 			return PublishTransactionResponse.deserializeBinary(r.payload)
 		} catch (e) {
 			console.error("Serialization error", e)
-			return e
+			throw e
 		}
 	},
 
@@ -422,7 +439,7 @@ const LorcaBackend = {
 		requiredConfirmations: number,
 		includeImmature: boolean) => {
 
-		const unspents: UnspentOutputResponse[] = []
+		const unspents: UnspentOutput[] = []
 
 		const r = await w.walletrpc__ListUnspent(
 			accountNumber,
@@ -434,7 +451,7 @@ const LorcaBackend = {
 			throw r.error
 		}
 		_.each(r.apayload, (s: Uint8Array) => {
-			const tr = UnspentOutputResponse.deserializeBinary(s)
+			const tr = UnspentOutput.deserializeBinary(s)
 			unspents.push(tr)
 		})
 		return unspents
@@ -447,6 +464,20 @@ const LorcaBackend = {
 
 	fetchCertBlob: async (certFileName: string) => {
 		return await w.walletgui__FetchCertBlob(certFileName)
+	},
+
+	decodeRawTransaction: async (serializedTransaction: Uint8Array) => {
+		try {
+			const r = await w.walletrpc__DecodeRawTransaction(rawToHex(serializedTransaction))
+			if (r.error != undefined) {
+				throw r.error
+			}
+			return DecodeRawTransactionResponse.deserializeBinary(r.payload)
+		}
+		catch (e) {
+			console.error(e)
+			throw e
+		}
 	},
 
 	fetchStakeDiffHistory: async (startTimestamp: number, endTimestamp: number) => {
@@ -465,7 +496,7 @@ const LorcaBackend = {
 
 	fetchAgendas: endpointFactory("walletrpc__GetAgendas", AgendasResponse),
 	fetchNetwork: endpointFactory("walletrpc__GetNetwork", NetworkResponse),
-	fetchUnspent: endpointFactory("walletrpc__ListUnspent", UnspentOutputResponse),
+	fetchUnspent: endpointFactory("walletrpc__ListUnspent", UnspentOutput),
 	fetchAccounts: endpointFactory("walletrpc__GetAccounts", AccountsResponse),
 	fetchBestBlock: endpointFactory("walletrpc__GetBestBlock", BestBlockResponse),
 	fetchStakeInfo: endpointFactory("walletrpc__GetStakeInfo", StakeInfoResponse),

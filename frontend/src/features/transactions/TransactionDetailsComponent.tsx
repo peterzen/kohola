@@ -33,7 +33,7 @@ export const TransactionDetailsComponent = (props: OwnProps) => {
 					</tr>
 					<tr>
 						<th>Hash</th>
-						<td><TransactionHash tx={tx} /></td>
+						<td><TransactionHash tx={tx} truncate={false} /></td>
 					</tr>
 					<tr>
 						<th>Timestamp</th>

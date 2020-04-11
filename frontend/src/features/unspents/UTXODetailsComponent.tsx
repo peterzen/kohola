@@ -3,40 +3,42 @@ import moment from 'moment'
 import { Table } from 'react-bootstrap'
 import TimeAgo from 'react-timeago';
 
-import GenericModalDialog from "../../components/Shared/GenericModalDialog";
-import { UnspentOutputResponse } from "../../proto/api_pb";
-import { rawHashToHex } from "../../helpers/byteActions";
 import { TxHash } from "../../components/Shared/shared";
 import { Amount } from "../../components/Shared/Amount";
+import { UnspentOutput } from "../../proto/dcrwalletgui_pb";
+import { ScriptClass } from "../../constants";
 
-export const UTXODetailsComponent = (props: IUTXODetailsComponentProps) => {
-	const utxo = props.utxo
-	if (utxo == null) {
-		return null
-	}
-	return (
-		<div>
-			<Table borderless>
-				<tbody>
-					<tr>
-						<th>OutPoint</th>
-						<td>{rawHashToHex(utxo.getTransactionHash_asU8())}:{utxo.getOutputIndex()}</td>
-					</tr>
-					<tr>
-						<th>Tx ID</th>
-						<td><TxHash hash={Buffer.from(utxo.getTransactionHash_asU8())} /></td>
-					</tr>
-					<tr>
-						<th>Amount</th>
-						<td><Amount amount={utxo.getAmount()} /></td>
-					</tr>
-					<tr>
-						<th>Timestamp</th>
-						<td><TimeAgo date={moment.unix(utxo.getReceiveTime()).toDate()} /></td>
-					</tr>
-				</tbody>
-			</Table>
-			{/* <Accordion >
+export default class UTXODetailsComponent extends React.Component<Props, {}>{
+	render() {
+		const utxo = this.props.utxo
+		if (utxo == null) return null
+		return (
+			<div>
+				<Table borderless>
+					<tbody>
+						<tr>
+							<th>OutPoint</th>
+							<td><TxHash hash={Buffer.from(utxo.getTransactionHash_asU8())} truncate={false} />:{utxo.getOutputIndex()}</td>
+						</tr>
+						<tr>
+							<th>Address</th>
+							<td>{utxo.getAddress()}</td>
+						</tr>
+						<tr>
+							<th>Amount</th>
+							<td><Amount amount={utxo.getAmount()} showCurrency/></td>
+						</tr>
+						<tr>
+							<th>Timestamp</th>
+							<td><TimeAgo date={moment.unix(utxo.getReceiveTime()).toDate()} /></td>
+						</tr>
+						<tr>
+							<th>ScriptClass</th>
+							<td>{ScriptClass[utxo.getScriptClass()]}</td>
+						</tr>
+					</tbody>
+				</Table>
+				{/* <Accordion >
 				<Accordion.Toggle as={Button} variant="link" size="sm" eventKey="0">
 					Raw JSON <FontAwesomeIcon icon={faCaretDown} />
 				</Accordion.Toggle>
@@ -44,20 +46,14 @@ export const UTXODetailsComponent = (props: IUTXODetailsComponentProps) => {
 					<pre>{JSON.stringify(tx.toObject(), undefined, "  ")}</pre>
 				</Accordion.Collapse>
 			</Accordion> */}
-		</div>
-	)
-}
-
-export default class UTXODetailsModal extends GenericModalDialog<IUTXODetailsComponentProps, {}> {
-	DialogContent() {
-		return (
-			<UTXODetailsComponent utxo={this.props.utxo} />
+			</div>
 		)
 	}
 }
 
-interface IUTXODetailsComponentProps {
-	utxo: UnspentOutputResponse | null
+
+interface Props {
+	utxo: UnspentOutput | null
 }
 
 

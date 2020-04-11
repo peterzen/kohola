@@ -2,16 +2,18 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { UnspentOutputResponse } from '../../proto/api_pb';
-import UTXODetailsModal from './UTXODetailsComponent';
+import { Card } from 'react-bootstrap';
+
+import UTXODetailsComponent from './UTXODetailsComponent';
 import ListUTXOs from './ListUTXOs';
 import { WalletAccount } from '../../middleware/models';
 import {
 	fetchUnspentsAttempt,
-	IUnspentOutputsByAccount,
-	IUnspentState
+	getRegularUTXOs
 } from '../unspents/unspentsSlice';
 import { IApplicationState } from '../../store/types';
+import { UnspentOutput } from '../../proto/dcrwalletgui_pb';
+import GenericModal from '../../components/Shared/GenericModal';
 
 class UTXOContainer extends React.Component<Props, InternalState> {
 	constructor(props: Props) {
@@ -23,26 +25,31 @@ class UTXOContainer extends React.Component<Props, InternalState> {
 	}
 
 	render() {
-		const utxos = this.props.unspentOutputsByAccount[this.props.account.getAccountNumber()]
-		if (utxos == undefined) {
-			return null
-		}
 		return (
-			<div>
+			<Card>
+				<Card.Header>
+					<Card.Title>
+						Unspent transaction outputs
+					</Card.Title>
+				</Card.Header>
+
 				<ListUTXOs
-					utxos={utxos}
+					utxos={this.props.utxoList}
 					menuHandler={_.bind(this.menuHandler, this)} />
 
-				<UTXODetailsModal
-					utxo={this.state.selectedItem}
-					modalTitle="Coin details"
+				<GenericModal
+					size="lg"
+					footer={true}
+					title="UTXO details"
 					show={this.state.showModal}
-					onHide={() => this.setState({ showModal: false })} />
-			</div>
+					onHide={() => this.setState({ showModal: false })}>
+					<UTXODetailsComponent utxo={this.state.selectedItem} />
+				</GenericModal>
+			</Card>
 		)
 	}
 
-	menuHandler(evtKey: string, utxo: UnspentOutputResponse) {
+	menuHandler(evtKey: string, utxo: UnspentOutput) {
 		this.setState({
 			showModal: true,
 			selectedItem: utxo
@@ -57,20 +64,23 @@ class UTXOContainer extends React.Component<Props, InternalState> {
 
 interface OwnProps {
 	account: WalletAccount
-	unspentOutputsByAccount: IUnspentOutputsByAccount
 }
 
-type Props = OwnProps & DispatchProps & IUnspentState
+interface StateProps {
+	utxoList: UnspentOutput[]
+}
+
+type Props = OwnProps & StateProps & DispatchProps
 
 interface InternalState {
 	showModal: boolean
-	selectedItem: UnspentOutputResponse | null
+	selectedItem: UnspentOutput | null
 }
 
-const mapStateToProps = (state: IApplicationState): IUnspentState => {
+const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): StateProps => {
 	return {
-		...state.unspentoutputs,
-	};
+		utxoList: getRegularUTXOs(state, ownProps.account.getAccountNumber())
+	}
 }
 
 interface DispatchProps {

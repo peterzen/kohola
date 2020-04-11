@@ -211,6 +211,11 @@ export class BlockDetails extends jspb.Message {
   setTransactionsList(value: Array<TransactionDetails>): void;
   addTransactions(value?: TransactionDetails, index?: number): TransactionDetails;
 
+  getPrevBlock(): Uint8Array | string;
+  getPrevBlock_asU8(): Uint8Array;
+  getPrevBlock_asB64(): string;
+  setPrevBlock(value: Uint8Array | string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): BlockDetails.AsObject;
   static toObject(includeInstance: boolean, msg: BlockDetails): BlockDetails.AsObject;
@@ -228,6 +233,43 @@ export namespace BlockDetails {
     timestamp: number,
     approvesParent: boolean,
     transactionsList: Array<TransactionDetails.AsObject>,
+    prevBlock: Uint8Array | string,
+  }
+}
+
+export class DetachedBlockDetails extends jspb.Message {
+  getHash(): Uint8Array | string;
+  getHash_asU8(): Uint8Array;
+  getHash_asB64(): string;
+  setHash(value: Uint8Array | string): void;
+
+  getHeight(): number;
+  setHeight(value: number): void;
+
+  getPrevBlock(): Uint8Array | string;
+  getPrevBlock_asU8(): Uint8Array;
+  getPrevBlock_asB64(): string;
+  setPrevBlock(value: Uint8Array | string): void;
+
+  getTimestamp(): number;
+  setTimestamp(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DetachedBlockDetails.AsObject;
+  static toObject(includeInstance: boolean, msg: DetachedBlockDetails): DetachedBlockDetails.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: DetachedBlockDetails, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DetachedBlockDetails;
+  static deserializeBinaryFromReader(message: DetachedBlockDetails, reader: jspb.BinaryReader): DetachedBlockDetails;
+}
+
+export namespace DetachedBlockDetails {
+  export type AsObject = {
+    hash: Uint8Array | string,
+    height: number,
+    prevBlock: Uint8Array | string,
+    timestamp: number,
   }
 }
 
@@ -2522,6 +2564,11 @@ export class TransactionNotificationsResponse extends jspb.Message {
   setUnminedTransactionHashesList(value: Array<Uint8Array | string>): void;
   addUnminedTransactionHashes(value: Uint8Array | string, index?: number): Uint8Array | string;
 
+  clearDetachedBlockHeadersList(): void;
+  getDetachedBlockHeadersList(): Array<DetachedBlockDetails>;
+  setDetachedBlockHeadersList(value: Array<DetachedBlockDetails>): void;
+  addDetachedBlockHeaders(value?: DetachedBlockDetails, index?: number): DetachedBlockDetails;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): TransactionNotificationsResponse.AsObject;
   static toObject(includeInstance: boolean, msg: TransactionNotificationsResponse): TransactionNotificationsResponse.AsObject;
@@ -2538,6 +2585,7 @@ export namespace TransactionNotificationsResponse {
     detachedBlocksList: Array<Uint8Array | string>,
     unminedTransactionsList: Array<TransactionDetails.AsObject>,
     unminedTransactionHashesList: Array<Uint8Array | string>,
+    detachedBlockHeadersList: Array<DetachedBlockDetails.AsObject>,
   }
 }
 

@@ -45,3 +45,18 @@ export const MAX_DCR_AMOUNT = 21e14;
 
 // UNIT_DIVISOR represents the minimum value one decred can have in atoms.
 export const UNIT_DIVISOR = 100000000;
+
+export enum ScriptClass {
+	"nonstandard",
+	"pubkey",
+	"pubkeyalt",
+	"pubkeyhash",
+	"pubkeyhashalt",
+	"scripthash",
+	"multisig",
+	"nulldata",
+	"stakesubmission",
+	"stakegen",
+	"stakerevoke",
+	"sstxchange",
+}

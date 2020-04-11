@@ -22,10 +22,20 @@ type AppConfigSetConfig = {
   readonly responseType: typeof dcrwalletgui_pb.SetConfigResponse;
 };
 
+type AppConfigCreateTransaction = {
+  readonly methodName: string;
+  readonly service: typeof AppConfig;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof dcrwalletgui_pb.CreateTransactionRequest;
+  readonly responseType: typeof dcrwalletgui_pb.CreateTransactionResponse;
+};
+
 export class AppConfig {
   static readonly serviceName: string;
   static readonly GetConfig: AppConfigGetConfig;
   static readonly SetConfig: AppConfigSetConfig;
+  static readonly CreateTransaction: AppConfigCreateTransaction;
 }
 
 type NetworkServiceCheckConnection = {
@@ -115,6 +125,15 @@ export class AppConfigClient {
   setConfig(
     requestMessage: dcrwalletgui_pb.SetConfigRequest,
     callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.SetConfigResponse|null) => void
+  ): UnaryResponse;
+  createTransaction(
+    requestMessage: dcrwalletgui_pb.CreateTransactionRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.CreateTransactionResponse|null) => void
+  ): UnaryResponse;
+  createTransaction(
+    requestMessage: dcrwalletgui_pb.CreateTransactionRequest,
+    callback: (error: ServiceError|null, responseMessage: dcrwalletgui_pb.CreateTransactionResponse|null) => void
   ): UnaryResponse;
 }
 

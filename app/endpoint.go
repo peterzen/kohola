@@ -21,11 +21,13 @@ import (
 )
 
 var (
-	gRPCConnection *grpc.ClientConn = nil
+	gRPCConnection  *grpc.ClientConn  = nil
+	currentEndpoint *gui.GRPCEndpoint = nil
 
 	walletServiceClient        walletrpc.WalletServiceClient
 	votingServiceClient        walletrpc.VotingServiceClient
 	agendaServiceClient        walletrpc.AgendaServiceClient
+	decodeMessageServiceClient walletrpc.DecodeMessageServiceClient
 	mixerServiceClient         walletrpc.AccountMixerServiceClient
 	ticketbuyerv2ServiceClient walletrpc.TicketBuyerV2ServiceClient
 
@@ -52,10 +54,13 @@ func connectWallet(endpointCfg *gui.GRPCEndpoint) error {
 		ctxCancel()
 	}
 
+	currentEndpoint = endpointCfg
+
 	ctx, ctxCancel = context.WithCancel(context.Background())
 	walletServiceClient = walletrpc.NewWalletServiceClient(gRPCConnection)
 	votingServiceClient = walletrpc.NewVotingServiceClient(gRPCConnection)
 	agendaServiceClient = walletrpc.NewAgendaServiceClient(gRPCConnection)
+	decodeMessageServiceClient = walletrpc.NewDecodeMessageServiceClient(gRPCConnection)
 	mixerServiceClient = walletrpc.NewAccountMixerServiceClient(gRPCConnection)
 	ticketbuyerv2ServiceClient = walletrpc.NewTicketBuyerV2ServiceClient(gRPCConnection)
 
@@ -105,6 +110,9 @@ func subscribeTxNotifications(ui lorca.UI) {
 		if len(ntfnResponse.GetUnminedTransactions()) < 1 {
 			continue
 		}
+		// mark cached change addresses as used
+		usedAddressMonitor(ntfnResponse)
+
 		b, err := proto.Marshal(ntfnResponse)
 		if err != nil {
 			return

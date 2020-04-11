@@ -18,7 +18,7 @@ func Test_GetStakingHistory(t *testing.T) {
 	_ = tests
 
 	WalletAPIInit()
-	err := gui.LoadConfig()
+	err := gui.LoadConfig("")
 
 	if err != nil {
 		fmt.Printf("err loadconfig")
