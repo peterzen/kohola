@@ -8,50 +8,32 @@ import Fade from 'react-reveal/Fade';
 import { Card, Row, Col, Dropdown } from "react-bootstrap";
 import { IApplicationState } from "../store/types";
 import ExchangeRateChart from "../features/market/charts/ExchangeRateChart";
-import { FiatAmount } from "../components/Shared/Amount";
 import { AltCurrencyRates } from "../proto/dcrwalletgui_pb";
 import { getCurrentExchangeRate } from "../features/market/marketSlice";
+import IntervalChooser, { ChartTimeframe, timeframes } from "../features/market/IntervalChooser";
 
 // @TODO pull this out of AppConfig
 const altCurrencies = ["btc", "usd", "eur"]
-const altTimeFrameDays = [
-	{ days: 1, name: "24 hours" },
-	{ days: 3, name: "3 days" },
-	{ days: 7, name: "1 week" },
-	{ days: 31, name: "1 month" }
-]
+
+const defaultTimeframe = timeframes[0]
 
 class Market extends React.PureComponent<Props, InternalState> {
 
 	constructor(props: Props) {
 		super(props)
 		this.state = {
-			days: 1
+			selectedTimeframe: defaultTimeframe
 		}
 	}
 
 	render() {
 		return (
 			<div>
-				<Row>
-					<Col sm={12}>
-						<div className="float-right">
-							<Dropdown>
-								<Dropdown.Toggle variant="secondary" id="timeframe-dropdown">
-									{_.find(altTimeFrameDays, { 'days': this.state.days})?.name}
-								</Dropdown.Toggle>
-								<Dropdown.Menu>
-									{altTimeFrameDays.map(item => (
-										<Dropdown.Item
-											onClick={() => this.setState({ days: item.days })}>
-											{item.name}
-										</Dropdown.Item>
-									))}
-								</Dropdown.Menu>
-							</Dropdown>
-						</div>
-					</Col>
-				</Row>
+				<div className="text-right">
+					<IntervalChooser
+						onChange={(timeframe: ChartTimeframe) => this.setState({ selectedTimeframe: timeframe })}
+						selectedValue={this.state.selectedTimeframe} />
+				</div>
 				<Row>
 					{altCurrencies.map(currencyCode => (
 						<Col sm={6} key={currencyCode}>
@@ -59,14 +41,14 @@ class Market extends React.PureComponent<Props, InternalState> {
 								<Card key={currencyCode}>
 									<Card.Header>
 										<Card.Title className="mb-0">
-											<span className="float-right">
+											<small className="float-right text-muted">
 												{this.props.getCurrentExchangeRate(currencyCode)?.toFixed(6)}
-											</span>
+											</small>
 											DCR-{currencyCode.toUpperCase()}
 										</Card.Title>
 									</Card.Header>
 									<Card.Body>
-										<ExchangeRateChart currencyCode={currencyCode} days={this.state.days} />
+										<ExchangeRateChart currencyCode={currencyCode} days={this.state.selectedTimeframe.days} />
 									</Card.Body>
 								</Card>
 							</div>
@@ -79,7 +61,7 @@ class Market extends React.PureComponent<Props, InternalState> {
 }
 
 interface InternalState {
-	days: number
+	selectedTimeframe: ChartTimeframe
 }
 
 interface OwnProps {
@@ -87,11 +69,7 @@ interface OwnProps {
 	getCurrentExchangeRate: (currencyCode: string) => number
 }
 
-interface DispatchProps {
-}
-
-type Props = OwnProps & DispatchProps & RouteChildrenProps<any>
-
+type Props = OwnProps & RouteChildrenProps<any>
 
 const mapStateToProps = (state: IApplicationState) => {
 	return {
@@ -103,8 +81,6 @@ const mapStateToProps = (state: IApplicationState) => {
 	}
 }
 
-const mapDispatchToProps = {
-}
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Market))
+export default withRouter(connect(mapStateToProps)(Market))
 
