@@ -108,7 +108,7 @@ export type ChartDataPoint = {
 }
 
 export const subscribeExchangeRateFeed: ActionCreator<any> = () => {
-    return async (dispatch: AppDispatch, getState: IGetState) => {
+    return async (dispatch: AppDispatch) => {
         w.lorcareceiver__OnExchangeRateUpdate = (serializedMsg: string) => {
             if (serializedMsg != "") {
                 const rates = AltCurrencyRates.deserializeBinary(
@@ -191,12 +191,23 @@ export const getExchangeSparklineData = (
     state: IApplicationState,
     currencyCode: string,
     days: number
+): MarketChartDataPoint.AsObject[] => {
+    return normalizeDatapoints(
+        datapointsAsPOJO(getMarketChartData(state, currencyCode)),
+        "exchangeRate"
+    )
+}
+
+export const getExchangeChartData = (
+    state: IApplicationState,
+    currencyCode: string,
+    days: number
 ): ChartDataPoint[] => {
     return _.map(
         datapointsAsPOJO(getMarketChartData(state, currencyCode)),
         (point: MarketChartDataPoint.AsObject) => {
             return {
-                name: timeConverter(point.timestamp, days),
+                name: xAxisTimeFormatter(point.timestamp, days),
                 value: point.exchangeRate,
             }
         }
@@ -249,7 +260,7 @@ export function datapointsAsPOJO(
     return _.map(datapoints, (d) => d.toObject())
 }
 
-export function timeConverter(timestamp: number, timeframeDays: number) {
+export function xAxisTimeFormatter(timestamp: number, timeframeDays: number) {
     const m = moment(timestamp * 1000)
     switch (timeframeDays) {
         case 1:
