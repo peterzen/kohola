@@ -70,7 +70,7 @@ class StakingContainer extends React.Component<Props> {
     }
     componentDidMount() {
         this.props.loadStakeInfoAttempt()
-        this.props.loadStakingHistory()
+        // this.props.loadStakingHistory()
         // this.props.loadTicketsAttempt()
     }
 }
@@ -87,7 +87,7 @@ interface DispatchProps {
 
 type Props = OwnProps & DispatchProps
 
-const mapStateToProps = (state: IApplicationState) => {
+const mapStateToProps = (state: IApplicationState): OwnProps => {
     return {
         stakeinfo: state.staking.stakeinfo,
     }
