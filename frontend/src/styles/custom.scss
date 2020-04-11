@@ -1,31 +1,32 @@
 $body-bg: #e5e5e5;
 
 body {
-  background-color: #e5e5e5 !important;
+	background-color: #e5e5e5 !important;
 }
 
 .footer {
-  position: -webkit-sticky;
-  position: sticky;
-  bottom: 0px;
-  background-color: #f0f0f0;
-  font-size: 90%;
+	position: -webkit-sticky;
+	position: sticky;
+	bottom: 0px;
+	background-color: #f0f0f0;
+	font-size: 90%;
 }
 
 .status-icon {
-  opacity: 0.4;
+	opacity: 0.4;
 }
 
 .clickable {
-  cursor: pointer;
-  user-select: none;
-  &.card {
-    &:hover {
-	  background-color:#efefef;
-	  transform: translate(2px,2px);
-	  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 2px 2px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
-    }
-  }
+	cursor: pointer;
+	user-select: none;
+	&.card {
+		&:hover {
+			background-color: #efefef;
+			transform: translate(2px, 2px);
+			box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px -2px rgba(0, 0, 0, 0.2),
+				0 1px 5px 0 rgba(0, 0, 0, 0.12);
+		}
+	}
 }
 
 .card-header {
@@ -40,57 +41,56 @@ label {
 }
 
 .pastebutton-overlaid {
-  position: relative;
-  margin-top: -2em;
+	position: relative;
+	margin-top: -2em;
 }
 
 .certificate-input textarea {
-  font-size: 75%;
-  font-family: "Courier New", Courier, monospace;
+	font-size: 75%;
+	font-family: "Courier New", Courier, monospace;
 }
 
 .copy-to-clipboard {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .spendable-total .progress-bar {
-  background-color: #00c49f;
+	background-color: #00c49f;
 }
 .spendable-spendable .progress-bar {
-  background-color: #0088fe;
+	background-color: #0088fe;
 }
 .spendable-immature .progress-bar {
-  background-color: #ffbb28;
+	background-color: #ffbb28;
 }
 .spendable-locked .progress-bar {
-  background-color: #ff8042;
+	background-color: #ff8042;
 }
 
 main.devmonitor {
-	&, .navbar {
+	&,
+	.navbar {
 		width: 70%;
 	}
 }
 
 // animations
 .switch-wrapper {
-  position: relative;
+	position: relative;
 }
 
 .switch-wrapper > div {
-  position: absolute;
-  width: 100%;
+	position: absolute;
+	width: 100%;
 }
-
 
 fieldset[disabled] {
 	opacity: 0.6;
 }
 
-
 .list-group.tight {
 	.list-group-item {
-		padding:0.5rem;
+		padding: 0.5rem;
 	}
 }
 
@@ -98,3 +98,36 @@ form.in-progress {
 	opacity: 0.5;
 }
 
+.fade-enter {
+	opacity: 0.01;
+}
+.fade-enter-active {
+	opacity: 1;
+	transition: opacity 500ms ease-in;
+}
+.fade-exit {
+	opacity: 1;
+}
+.fade-exit-active {
+	opacity: 0.01;
+	transition: opacity 500ms ease-in;
+}
+
+.shrink-enter {
+	transform: scaleY(0);
+	transform-origin: 50% 0%;
+}
+.shrink-enter-active {
+	transform: scale(1);
+	transition: transform 500ms ease-in;
+	transform-origin: 50% 0%;
+}
+.shrink-exit {
+	transform: scaleY(1);
+	transform-origin: 50% 0%;
+}
+.shrink-exit-active {
+	transform: scaleY(0);
+	transform-origin: 50% 0%;
+	transition: transform 500ms ease-in;
+}
