@@ -1,75 +1,80 @@
-import _ from 'lodash';
-import * as React from 'react';
-import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom';
+import _ from "lodash"
+import * as React from "react"
+import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
 
-import { AppError, IApplicationState } from '../store/types';
-import { AppConfiguration } from '../proto/walletgui_pb';
-import { Alert, Tabs, Tab, Card } from 'react-bootstrap';
-import { saveConfigurationAttempt, IAppConfigurationState } from '../features/appconfiguration/settingsSlice';
-import AccountsSetup from '../features/balances/AccountsSetup';
-import Preferences from '../features/appconfiguration/Preferences';
-import TrezorSettings from '../features/trezor/TrezorSettings'
+import { AppError, IApplicationState } from "../store/types"
+import { AppConfiguration } from "../proto/walletgui_pb"
+import { Alert, Tabs, Tab, Card } from "react-bootstrap"
+import {
+    saveConfigurationAttempt,
+    IAppConfigurationState,
+} from "../features/appconfiguration/settingsSlice"
+import AccountsSetup from "../features/balances/AccountsSetup"
+import Preferences from "../features/appconfiguration/Preferences"
+import TrezorSettings from "../features/trezor/TrezorSettings"
 
 class SettingsContainer extends React.Component<Props> {
-
-	render() {
-		return (
-			<div>
-				{this.props.setConfigError != null && (
-					<Alert variant="danger">{this.props.setConfigError}</Alert>
-				)}
-				<Tabs
-					mountOnEnter={true}
-					unmountOnExit={true}
-					defaultActiveKey="accounts"
-					id="appconfiguration-tabs">
-					<Tab eventKey="accounts" title="Accounts">
-						<Card>
-							<Card.Body>
-								<AccountsSetup />
-							</Card.Body>
-						</Card>
-					</Tab>
-					<Tab eventKey="preferences" title="Preferences">
-						<Card>
-							<Card.Body>
-								<Preferences />
-							</Card.Body>
-						</Card>
-					</Tab>
-					<Tab eventKey="trezor" title="Trezor settings">
-						<Card>
-							<Card.Body>
-								<TrezorSettings />
-							</Card.Body>
-						</Card>
-					</Tab>
-				</Tabs>
-			</div>
-		)
-	}
+    render() {
+        return (
+            <div>
+                {this.props.setConfigError != null && (
+                    <Alert variant="danger">{this.props.setConfigError}</Alert>
+                )}
+                <Tabs
+                    mountOnEnter={true}
+                    unmountOnExit={true}
+                    defaultActiveKey="accounts"
+                    id="appconfiguration-tabs"
+                >
+                    <Tab eventKey="accounts" title="Accounts">
+                        <Card>
+                            <Card.Body>
+                                <AccountsSetup />
+                            </Card.Body>
+                        </Card>
+                    </Tab>
+                    <Tab eventKey="preferences" title="Preferences">
+                        <Card>
+                            <Card.Body>
+                                <Preferences />
+                            </Card.Body>
+                        </Card>
+                    </Tab>
+                    <Tab eventKey="trezor" title="Trezor settings">
+                        <Card>
+                            <Card.Body>
+                                <TrezorSettings />
+                            </Card.Body>
+                        </Card>
+                    </Tab>
+                </Tabs>
+            </div>
+        )
+    }
 }
 
 interface OwnProps {
-	appConfig: AppConfiguration
-	setConfigError: AppError | null
+    appConfig: AppConfiguration
+    setConfigError: AppError | null
 }
 
 type Props = OwnProps & DispatchProps
 
 const mapStateToProps = (state: IApplicationState): IAppConfigurationState => {
-	return {
-		...state.appconfiguration
-	}
+    return {
+        ...state.appconfiguration,
+    }
 }
 
 interface DispatchProps {
-	saveConfigurationAttempt: typeof saveConfigurationAttempt
+    saveConfigurationAttempt: typeof saveConfigurationAttempt
 }
 
 const mapDispatchToProps = {
-	saveConfigurationAttempt,
+    saveConfigurationAttempt,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SettingsContainer))
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(SettingsContainer)
+)

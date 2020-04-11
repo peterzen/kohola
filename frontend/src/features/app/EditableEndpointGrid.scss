@@ -1,23 +1,23 @@
 .endpoint-grid {
-  .card {
-    .card-body h6 {
-      height: 5em;
-      vertical-align: middle;
-      line-height: 5em;
+    .card {
+        .card-body h6 {
+            height: 5em;
+            vertical-align: middle;
+            line-height: 5em;
+        }
+        .card-footer {
+            button {
+                margin-bottom: 0;
+            }
+        }
+        &.add-item-card {
+            .card-body {
+                height: 13.5em;
+                margin: 0;
+                vertical-align: middle;
+                opacity: 0.5;
+                padding-top: 3em;
+            }
+        }
     }
-    .card-footer {
-      button {
-        margin-bottom: 0;
-      }
-	}
-	&.add-item-card {
-		.card-body {
-			height: 13.5em;
-			margin: 0;
-			vertical-align: middle;
-			opacity: 0.5;
-			padding-top: 3em;
-		}
-	}
-  }
 }

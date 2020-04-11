@@ -1,87 +1,110 @@
-import * as React from 'react';
-import _ from 'lodash';
-import { connect } from 'react-redux';
+import * as React from "react"
+import _ from "lodash"
+import { connect } from "react-redux"
 
-import { Row, Col, Form, Button, Card, InputGroup, Alert } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import {
+    Row,
+    Col,
+    Form,
+    Button,
+    Card,
+    InputGroup,
+    Alert,
+} from "react-bootstrap"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons"
 
-import { WalletBalance } from '../../../middleware/models';
-import { AccountSelector } from '../../../components/Shared/shared';
-import PassphraseEntryDialog, { askPassphrase } from '../../../components/Shared/PassphraseEntryDialog';
-import { AppError, IApplicationState } from '../../../store/types';
-import { PurchaseTicketsRequest } from '../../../proto/api_pb';
-import { getWalletBalances } from '../../balances/walletBalanceSlice';
-import { purchaseTicket } from '../stakingSlice';
+import { WalletBalance } from "../../../middleware/models"
+import { AccountSelector } from "../../../components/Shared/shared"
+import PassphraseEntryDialog, {
+    askPassphrase,
+} from "../../../components/Shared/PassphraseEntryDialog"
+import { AppError, IApplicationState } from "../../../store/types"
+import { PurchaseTicketsRequest } from "../../../proto/api_pb"
+import { getWalletBalances } from "../../balances/walletBalanceSlice"
+import { purchaseTicket } from "../stakingSlice"
 
 // import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
 class PurchaseTicketForm extends React.Component<Props, InternalState> {
-	constructor(props: Props) {
-		super(props)
-		this.state = {
-			error: null,
-			isDirty: false,
-			formRef: React.createRef(),
-			formIsValidated: false,
-			purchaseTicketRequest: new PurchaseTicketsRequest(),
-		}
-	}
-	render() {
-		return (
-			<Card >
-				<Card.Body>
-					<Card.Title>Purchase tickets</Card.Title>
-					<Form
-						ref={this.state.formRef}
-						validated={this.state.formIsValidated && !this.props.error}
-						onSubmit={_.bind(this.handleFormSubmit, this)}
-						className="m-0"
-					>
-						<Form.Group as={Row}>
-							<Col sm={4}>
-								<Form.Label>From account</Form.Label>
-							</Col>
-							<Col sm={8}>
-								<AccountSelector
-									defaultValue={1}
-									name="account_select"
-									onChange={_.bind(this.handleAccountChange, this)}
-								/>
-							</Col>
-						</Form.Group>
-						<Form.Group as={Row}>
-							<Col sm={4}>
-								<Form.Label >
-									# of tickets
-								</Form.Label>
-							</Col>
-							<InputGroup as={Col} sm={6}>
-								<InputGroup.Prepend>
-									<Button variant="secondary"
-										onClick={() => { this.state.formRef.current.num_tickets.value > 0 && this.state.formRef.current.num_tickets.stepDown() }}>
-										<FontAwesomeIcon icon={faMinus} />
-									</Button>
-								</InputGroup.Prepend>
-								<Form.Control
-									required
-									name="num_tickets"
-									type="number"
-									className="ml-3 mr-3"
-									// tabIndex={-1}
-									onChange={_.bind(this.handleChange, this)}
-									defaultValue="1" />
-								<InputGroup.Append>
-									<Button
-										variant="secondary"
-										onClick={() => { this.state.formRef.current.num_tickets.stepUp() }}
-									><FontAwesomeIcon icon={faPlus} />
-									</Button>
-								</InputGroup.Append>
-							</InputGroup>
-						</Form.Group>
+    constructor(props: Props) {
+        super(props)
+        this.state = {
+            error: null,
+            isDirty: false,
+            formRef: React.createRef(),
+            formIsValidated: false,
+            purchaseTicketRequest: new PurchaseTicketsRequest(),
+        }
+    }
+    render() {
+        return (
+            <Card>
+                <Card.Body>
+                    <Card.Title>Purchase tickets</Card.Title>
+                    <Form
+                        ref={this.state.formRef}
+                        validated={
+                            this.state.formIsValidated && !this.props.error
+                        }
+                        onSubmit={_.bind(this.handleFormSubmit, this)}
+                        className="m-0"
+                    >
+                        <Form.Group as={Row}>
+                            <Col sm={4}>
+                                <Form.Label>From account</Form.Label>
+                            </Col>
+                            <Col sm={8}>
+                                <AccountSelector
+                                    defaultValue={1}
+                                    name="account_select"
+                                    onChange={_.bind(
+                                        this.handleAccountChange,
+                                        this
+                                    )}
+                                />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row}>
+                            <Col sm={4}>
+                                <Form.Label># of tickets</Form.Label>
+                            </Col>
+                            <InputGroup as={Col} sm={6}>
+                                <InputGroup.Prepend>
+                                    <Button
+                                        variant="secondary"
+                                        onClick={() => {
+                                            this.state.formRef.current
+                                                .num_tickets.value > 0 &&
+                                                this.state.formRef.current.num_tickets.stepDown()
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faMinus} />
+                                    </Button>
+                                </InputGroup.Prepend>
+                                <Form.Control
+                                    required
+                                    name="num_tickets"
+                                    type="number"
+                                    className="ml-3 mr-3"
+                                    // tabIndex={-1}
+                                    onChange={_.bind(this.handleChange, this)}
+                                    defaultValue="1"
+                                />
+                                <InputGroup.Append>
+                                    <Button
+                                        variant="secondary"
+                                        onClick={() => {
+                                            this.state.formRef.current.num_tickets.stepUp()
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faPlus} />
+                                    </Button>
+                                </InputGroup.Append>
+                            </InputGroup>
+                        </Form.Group>
 
-						{/* <Form.Group as={Row} className="p-2">
+                        {/* <Form.Group as={Row} className="p-2">
 							<Col sm={4}>
 								<Form.Label>Fee</Form.Label>
 							</Col>
@@ -102,120 +125,126 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
 								40 atoms/B
 							</Col>
 						</Form.Group> */}
-					</Form>
-					<PassphraseEntryDialog show={false} />
-				</Card.Body>
-				<Card.Footer className="text-right">
-					{this.props.error != null && (
-						<Alert variant="danger">{this.props.error.message}</Alert>
-					)}
+                    </Form>
+                    <PassphraseEntryDialog show={false} />
+                </Card.Body>
+                <Card.Footer className="text-right">
+                    {this.props.error != null && (
+                        <Alert variant="danger">
+                            {this.props.error.message}
+                        </Alert>
+                    )}
 
-					<Button
-						type="submit"
-						onClick={_.bind(this.handleFormSubmit, this)}
-						variant="primary">
-						Purchase
-						</Button>
-				</Card.Footer>
-			</Card >
-		)
-	}
+                    <Button
+                        type="submit"
+                        onClick={_.bind(this.handleFormSubmit, this)}
+                        variant="primary"
+                    >
+                        Purchase
+                    </Button>
+                </Card.Footer>
+            </Card>
+        )
+    }
 
-	handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
-		e.preventDefault();
-		e.stopPropagation();
-		this.setState({
-			formIsValidated: true,
-			isDirty: false,
-		})
-		const request = new PurchaseTicketsRequest()
-		loadFormFields(this.state.formRef, request)
-		this.setState({
-			purchaseTicketRequest: request
-		})
-		console.log("formSubmit", request.toObject())
-		const cancelError = new Error()
-		askPassphrase()
-			.then((passphrase) => {
-				if (passphrase == "") {
-					throw cancelError
-				}
-				return request.setPassphrase(new Uint8Array(Buffer.from(passphrase)))
-			})
-			.then((r) => {
-				console.log("askPassphrase", request.toObject())
-				return this.props.purchaseTicket(request)
-			})
-			.then((r) => {
-				// this.setState({ error: err })
-				console.log("response", r)
-			})
-			.catch((err) => {
-				this.setState({ error: err })
-				console.error(err)
-				console.log("askPassphrase", request.toObject())
-				// debugger
-			})
-		return false;
-	}
+    handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+        e.stopPropagation()
+        this.setState({
+            formIsValidated: true,
+            isDirty: false,
+        })
+        const request = new PurchaseTicketsRequest()
+        loadFormFields(this.state.formRef, request)
+        this.setState({
+            purchaseTicketRequest: request,
+        })
+        console.log("formSubmit", request.toObject())
+        const cancelError = new Error()
+        askPassphrase()
+            .then((passphrase) => {
+                if (passphrase == "") {
+                    throw cancelError
+                }
+                return request.setPassphrase(
+                    new Uint8Array(Buffer.from(passphrase))
+                )
+            })
+            .then((r) => {
+                console.log("askPassphrase", request.toObject())
+                return this.props.purchaseTicket(request)
+            })
+            .then((r) => {
+                // this.setState({ error: err })
+                console.log("response", r)
+            })
+            .catch((err) => {
+                this.setState({ error: err })
+                console.error(err)
+                console.log("askPassphrase", request.toObject())
+                // debugger
+            })
+        return false
+    }
 
-	handleChange() {
-		console.log("handleChange")
-		if (!this.state.formRef.current.checkValidity()) {
-			return
-		}
-	}
+    handleChange() {
+        console.log("handleChange")
+        if (!this.state.formRef.current.checkValidity()) {
+            return
+        }
+    }
 
-	handleAccountChange() {
-		console.log("handleChange")
-		if (!this.state.formRef.current.checkValidity()) {
-			return
-		}
-	}
+    handleAccountChange() {
+        console.log("handleChange")
+        if (!this.state.formRef.current.checkValidity()) {
+            return
+        }
+    }
 }
 
-
-
-const loadFormFields = (formRef: React.RefObject<any>, r: PurchaseTicketsRequest) => {
-	const f = formRef.current
-	r.setNumTickets(f.num_tickets.value)
-	r.setAccount(f.account_select.value)
-	r.setRequiredConfirmations(1)
+const loadFormFields = (
+    formRef: React.RefObject<any>,
+    r: PurchaseTicketsRequest
+) => {
+    const f = formRef.current
+    r.setNumTickets(f.num_tickets.value)
+    r.setAccount(f.account_select.value)
+    r.setRequiredConfirmations(1)
 }
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
-	return {
-		...state.staking,
-		error: state.staking.errorPurchaseTickets,
-		balances: getWalletBalances(state)
-	};
+    return {
+        ...state.staking,
+        error: state.staking.errorPurchaseTickets,
+        balances: getWalletBalances(state),
+    }
 }
 
 interface OwnProps {
-	error: AppError | null,
-	balances: WalletBalance
+    error: AppError | null
+    balances: WalletBalance
 }
 
 interface IPurchaseTicketFormProps {
-	error: AppError | null
+    error: AppError | null
 }
 
 interface InternalState {
-	formRef: React.RefObject<any>
-	error: AppError | null
-	formIsValidated: boolean
-	isDirty: boolean
-	purchaseTicketRequest: PurchaseTicketsRequest
+    formRef: React.RefObject<any>
+    error: AppError | null
+    formIsValidated: boolean
+    isDirty: boolean
+    purchaseTicketRequest: PurchaseTicketsRequest
 }
 
 interface DispatchProps {
-	purchaseTicket: typeof purchaseTicket
+    purchaseTicket: typeof purchaseTicket
 }
 
 const mapDispatchToProps = {
-	purchaseTicket
+    purchaseTicket,
 }
 
 type Props = DispatchProps & OwnProps & IPurchaseTicketFormProps
 
-export default connect(mapStateToProps, mapDispatchToProps)(PurchaseTicketForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PurchaseTicketForm)

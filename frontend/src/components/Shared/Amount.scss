@@ -1,13 +1,13 @@
 .amount {
-  white-space: nowrap;
-  .currency {
-    font-size: 80%;
-    opacity: 50%;
-  }
-  .fractions {
-    font-size: 80%;
-    opacity: 50%;
-  }
+    white-space: nowrap;
+    .currency {
+        font-size: 80%;
+        opacity: 50%;
+    }
+    .fractions {
+        font-size: 80%;
+        opacity: 50%;
+    }
 }
 h1,
 h2,
@@ -15,9 +15,9 @@ h3,
 h4,
 h5,
 h6 {
-  > .amount {
-    .currency {
-      font-size: 67.5%;
+    > .amount {
+        .currency {
+            font-size: 67.5%;
+        }
     }
-  }
 }

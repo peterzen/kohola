@@ -1,34 +1,24 @@
-import _ from 'lodash';
-import * as React from 'react';
-import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom';
-
+import _ from "lodash"
+import * as React from "react"
+import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
 
 class Welcome extends React.Component<Props> {
-	render() {
-		return (
-			<div>
-			</div>
-		)
-	}
+    render() {
+        return <div></div>
+    }
 }
 
-interface OwnProps {
-}
+interface OwnProps {}
 
 type Props = OwnProps & DispatchProps
 
 const mapStateToProps = () => {
-	return {
-	}
+    return {}
 }
 
-interface DispatchProps {
-}
+interface DispatchProps {}
 
-const mapDispatchToProps = {
-}
+const mapDispatchToProps = {}
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Welcome));
-
-
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Welcome))
