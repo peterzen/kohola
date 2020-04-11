@@ -19,7 +19,6 @@ import (
 
 	"github.com/decred/dcrd/dcrutil/v3"
 	proto "github.com/golang/protobuf/proto"
-	"github.com/zserge/lorca"
 )
 
 var (
@@ -228,7 +227,7 @@ func decrypt(passphrase string, data string) (decodedmess []byte, err error) {
 }
 
 // ExportConfigAPI exports functions to the UI
-func ExportConfigAPI(ui lorca.UI) {
+func ExportConfigAPI(ui WebViewInterface) {
 	ui.Bind("walletgui__GetConfig", func(decryptionKey string) (r LorcaMessage) {
 		// signal the UI that the configuration is empty, needs initial setup
 		err := LoadConfig(decryptionKey)

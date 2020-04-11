@@ -14,13 +14,11 @@ import (
 	"github.com/decred/dcrd/dcrutil/v3"
 	"github.com/decred/dcrd/txscript/v3"
 	proto "github.com/golang/protobuf/proto"
-	gui "github.com/peterzen/kohola/walletgui"
-
-	"github.com/zserge/lorca"
+	"github.com/peterzen/kohola/walletgui"
 )
 
 // ExportWalletAPI exports the RPC API functions to the UI
-func ExportWalletAPI(ui lorca.UI) {
+func ExportWalletAPI(ui walletgui.WebViewInterface) {
 
 	var (
 		tbCtx       context.Context
@@ -55,15 +53,15 @@ func ExportWalletAPI(ui lorca.UI) {
 
 		onErrorFn := func(err error) {
 			js := fmt.Sprintf("%s('%s')", onErrorFnName, err.Error())
-			ui.Eval(js)
+			walletgui.ExecuteJS(js)
 		}
 		onDoneFn := func() {
 			js := fmt.Sprintf("%s()", onDoneFnName)
-			ui.Eval(js)
+			walletgui.ExecuteJS(js)
 		}
 		onStopFn := func() {
 			js := fmt.Sprintf("%s()", onStopFnName)
-			ui.Eval(js)
+			walletgui.ExecuteJS(js)
 		}
 
 		request := &walletrpc.RunTicketBuyerRequest{}
@@ -87,15 +85,15 @@ func ExportWalletAPI(ui lorca.UI) {
 
 		onErrorFn := func(err error) {
 			js := fmt.Sprintf("%s('%s')", onErrorFnName, err.Error())
-			ui.Eval(js)
+			walletgui.ExecuteJS(js)
 		}
 		onDoneFn := func() {
 			js := fmt.Sprintf("%s()", onDoneFnName)
-			ui.Eval(js)
+			walletgui.ExecuteJS(js)
 		}
 		onStopFn := func() {
 			js := fmt.Sprintf("%s()", onStopFnName)
-			ui.Eval(js)
+			walletgui.ExecuteJS(js)
 		}
 
 		request := &walletrpc.RunAccountMixerRequest{}
@@ -115,8 +113,8 @@ func ExportWalletAPI(ui lorca.UI) {
 		}
 	})
 
-	ui.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) (r gui.LorcaMessage) {
-		if !gui.HaveConfig() {
+	ui.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) (r walletgui.LorcaMessage) {
+		if !walletgui.HaveConfig() {
 			r.Err = errors.New("Missing dcrwallet entry in config file")
 			return r
 		}
@@ -128,8 +126,8 @@ func ExportWalletAPI(ui lorca.UI) {
 		return r
 	})
 
-	ui.Bind("walletgui__CheckGRPCConnection", func(requestAsHex string) (r gui.CheckConnectionResponse) {
-		cfg := &gui.GRPCEndpoint{}
+	ui.Bind("walletgui__CheckGRPCConnection", func(requestAsHex string) (r walletgui.CheckConnectionResponse) {
+		cfg := &walletgui.GRPCEndpoint{}
 		bytes, err := hex.DecodeString(requestAsHex)
 		err = proto.Unmarshal(bytes, cfg)
 
@@ -150,11 +148,11 @@ func ExportWalletAPI(ui lorca.UI) {
 		js := fmt.Sprintf(
 			"window.lorcareceiver__onEndpointConnectionStatusChange(%t, '%s', %d)",
 			isConnected, errMsg, lastCheckTimestamp)
-		ui.Eval(js)
+		walletgui.ExecuteJS(js)
 	}
 }
 
-func getBalance(accountNumber uint32, requiredConfirmations int32) (r gui.LorcaMessage) {
+func getBalance(accountNumber uint32, requiredConfirmations int32) (r walletgui.LorcaMessage) {
 
 	request := &walletrpc.BalanceRequest{
 		AccountNumber:         accountNumber,
@@ -176,7 +174,7 @@ func getBalance(accountNumber uint32, requiredConfirmations int32) (r gui.LorcaM
 	return r
 }
 
-func getStakeInfo() (r gui.LorcaMessage) {
+func getStakeInfo() (r walletgui.LorcaMessage) {
 	request := &walletrpc.StakeInfoRequest{}
 	response, err := walletServiceClient.StakeInfo(ctx, request)
 	if err != nil {
@@ -192,7 +190,7 @@ func getStakeInfo() (r gui.LorcaMessage) {
 	return r
 }
 
-func decodeRawTransaction(txAsHex string) (r gui.LorcaMessage) {
+func decodeRawTransaction(txAsHex string) (r walletgui.LorcaMessage) {
 	txBytes, err := hex.DecodeString(txAsHex)
 	request := &walletrpc.DecodeRawTransactionRequest{
 		SerializedTransaction: txBytes,
@@ -211,7 +209,7 @@ func decodeRawTransaction(txAsHex string) (r gui.LorcaMessage) {
 	return r
 }
 
-func getAccounts() (r gui.LorcaMessage) {
+func getAccounts() (r walletgui.LorcaMessage) {
 	request := &walletrpc.AccountsRequest{}
 	response, err := walletServiceClient.Accounts(ctx, request)
 	if err != nil {
@@ -227,7 +225,7 @@ func getAccounts() (r gui.LorcaMessage) {
 	return r
 }
 
-func getTicketPrice() (r gui.LorcaMessage) {
+func getTicketPrice() (r walletgui.LorcaMessage) {
 	request := &walletrpc.TicketPriceRequest{}
 	response, err := walletServiceClient.TicketPrice(ctx, request)
 	if err != nil {
@@ -243,7 +241,7 @@ func getTicketPrice() (r gui.LorcaMessage) {
 	return r
 }
 
-func getAgendas() (r gui.LorcaMessage) {
+func getAgendas() (r walletgui.LorcaMessage) {
 	request := &walletrpc.AgendasRequest{}
 	response, err := agendaServiceClient.Agendas(ctx, request)
 	if err != nil {
@@ -259,7 +257,7 @@ func getAgendas() (r gui.LorcaMessage) {
 	return r
 }
 
-func getVoteChoices() (r gui.LorcaMessage) {
+func getVoteChoices() (r walletgui.LorcaMessage) {
 	request := &walletrpc.VoteChoicesRequest{}
 	response, err := votingServiceClient.VoteChoices(ctx, request)
 	if err != nil {
@@ -275,7 +273,7 @@ func getVoteChoices() (r gui.LorcaMessage) {
 	return r
 }
 
-func setVoteChoices(agendaID string, choiceID string) (r gui.LorcaMessage) {
+func setVoteChoices(agendaID string, choiceID string) (r walletgui.LorcaMessage) {
 	request := &walletrpc.SetVoteChoicesRequest{
 		Choices: []*walletrpc.SetVoteChoicesRequest_Choice{
 			&walletrpc.SetVoteChoicesRequest_Choice{
@@ -298,7 +296,7 @@ func setVoteChoices(agendaID string, choiceID string) (r gui.LorcaMessage) {
 	return r
 }
 
-func getBestBlock() (r gui.LorcaMessage) {
+func getBestBlock() (r walletgui.LorcaMessage) {
 	request := &walletrpc.BestBlockRequest{}
 	response, err := walletServiceClient.BestBlock(ctx, request)
 	if err != nil {
@@ -317,7 +315,7 @@ func getBestBlock() (r gui.LorcaMessage) {
 func getTickets(
 	StartingBlockHeight int32,
 	EndingBlockHeight int32,
-	TargetTicketCount int32) (r gui.LorcaMessage) {
+	TargetTicketCount int32) (r walletgui.LorcaMessage) {
 	request := &walletrpc.GetTicketsRequest{
 		StartingBlockHeight: StartingBlockHeight,
 		EndingBlockHeight:   EndingBlockHeight,
@@ -350,7 +348,7 @@ func getTickets(
 func getTransactions(
 	startingBlockHeight int32,
 	endingBlockHeight int32,
-	targetTransactionCount int32) (r gui.LorcaMessage) {
+	targetTransactionCount int32) (r walletgui.LorcaMessage) {
 	request := &walletrpc.GetTransactionsRequest{
 		StartingBlockHeight:    startingBlockHeight,
 		EndingBlockHeight:      endingBlockHeight,
@@ -383,7 +381,7 @@ func getTransactions(
 func getNextAddress(
 	account uint32,
 	kind walletrpc.NextAddressRequest_Kind,
-	gapPolicy walletrpc.NextAddressRequest_GapPolicy) (r gui.LorcaMessage) {
+	gapPolicy walletrpc.NextAddressRequest_GapPolicy) (r walletgui.LorcaMessage) {
 	request := &walletrpc.NextAddressRequest{
 		Account:   account,
 		Kind:      kind,
@@ -405,7 +403,7 @@ func getNextAddress(
 
 func getNextAccount(
 	accountName string,
-	passphrase string) (r gui.LorcaMessage) {
+	passphrase string) (r walletgui.LorcaMessage) {
 	pp := []byte(passphrase)
 
 	request := &walletrpc.NextAccountRequest{
@@ -428,7 +426,7 @@ func getNextAccount(
 
 func renameAccount(
 	accountNumber uint32,
-	newName string) (r gui.LorcaMessage) {
+	newName string) (r walletgui.LorcaMessage) {
 
 	request := &walletrpc.RenameAccountRequest{
 		AccountNumber: accountNumber,
@@ -449,7 +447,7 @@ func renameAccount(
 	return r
 }
 
-func constructTransaction(requestAsHex string) (r gui.LorcaMessage) {
+func constructTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
 	request := &walletrpc.ConstructTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
@@ -467,8 +465,8 @@ func constructTransaction(requestAsHex string) (r gui.LorcaMessage) {
 	return r
 }
 
-func createTransaction(requestAsHex string) (r gui.LorcaMessage) {
-	request := &gui.CreateTransactionRequest{}
+func createTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
+	request := &walletgui.CreateTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
 	response, err := CreateTransaction(ctx, request)
@@ -485,7 +483,7 @@ func createTransaction(requestAsHex string) (r gui.LorcaMessage) {
 	return r
 }
 
-func signTransaction(requestAsHex string) (r gui.LorcaMessage) {
+func signTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
 	request := &walletrpc.SignTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
@@ -503,7 +501,7 @@ func signTransaction(requestAsHex string) (r gui.LorcaMessage) {
 	return r
 }
 
-func publishTransaction(requestAsHex string) (r gui.LorcaMessage) {
+func publishTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
 	request := &walletrpc.PublishTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
@@ -521,7 +519,7 @@ func publishTransaction(requestAsHex string) (r gui.LorcaMessage) {
 	return r
 }
 
-func purchaseTickets(requestAsHex string) (r gui.LorcaMessage) {
+func purchaseTickets(requestAsHex string) (r walletgui.LorcaMessage) {
 	request := &walletrpc.PurchaseTicketsRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
@@ -539,7 +537,7 @@ func purchaseTickets(requestAsHex string) (r gui.LorcaMessage) {
 	return r
 }
 
-func revokeExpiredTickets(passphrase string) (r gui.LorcaMessage) {
+func revokeExpiredTickets(passphrase string) (r walletgui.LorcaMessage) {
 	request := &walletrpc.RevokeTicketsRequest{}
 	request.Passphrase = []byte(passphrase)
 	response, err := walletServiceClient.RevokeTickets(ctx, request)
@@ -631,7 +629,7 @@ func listUnspent(
 	accountNumber uint32,
 	targetAmount int64,
 	requiredConfirmations int32,
-	includeImmature bool) (r gui.LorcaMessage) {
+	includeImmature bool) (r walletgui.LorcaMessage) {
 
 	request := &walletrpc.UnspentOutputsRequest{
 		Account:                  accountNumber,
@@ -671,7 +669,7 @@ func listUnspent(
 			addressStr[i] = addr.Address()
 		}
 
-		utxo := &gui.UnspentOutput{
+		utxo := &walletgui.UnspentOutput{
 			TransactionHash: u.TransactionHash,
 			OutputIndex:     u.OutputIndex,
 			Amount:          u.Amount,
@@ -702,11 +700,11 @@ func listUnspent(
 
 func getChainParams() *chaincfg.Params {
 	switch currentEndpoint.Network {
-	case gui.Network_TESTNET:
+	case walletgui.Network_TESTNET:
 		return chaincfg.TestNet3Params()
-	case gui.Network_SIMNET:
+	case walletgui.Network_SIMNET:
 		return chaincfg.SimNetParams()
-	case gui.Network_MAINNET:
+	case walletgui.Network_MAINNET:
 		return chaincfg.MainNetParams()
 	default:
 		return nil

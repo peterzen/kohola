@@ -1,4 +1,4 @@
-package main
+package walletgui
 
 import "github.com/getlantern/systray"
 

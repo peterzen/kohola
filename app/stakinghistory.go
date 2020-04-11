@@ -10,14 +10,13 @@ import (
 	"github.com/decred/dcrd/txscript"
 	"github.com/decred/dcrd/wire"
 	proto "github.com/golang/protobuf/proto"
-	"github.com/zserge/lorca"
 
-	gui "github.com/peterzen/kohola/walletgui"
+	"github.com/peterzen/kohola/walletgui"
 )
 
 // GetStakingHistory filters staking transactions and extracts credit/debit
 // information
-func GetStakingHistory() (stakingHistory *gui.StakingHistory, err error) {
+func GetStakingHistory() (stakingHistory *walletgui.StakingHistory, err error) {
 
 	request := &walletrpc.GetTransactionsRequest{
 		StartingBlockHeight:    -1,
@@ -30,8 +29,8 @@ func GetStakingHistory() (stakingHistory *gui.StakingHistory, err error) {
 		return nil, err
 	}
 
-	stakingHistory = &gui.StakingHistory{
-		LineItems: make([]*gui.StakingHistory_StakingHistoryLineItem, 0),
+	stakingHistory = &walletgui.StakingHistory{
+		LineItems: make([]*walletgui.StakingHistory_StakingHistoryLineItem, 0),
 	}
 
 	for {
@@ -46,7 +45,7 @@ func GetStakingHistory() (stakingHistory *gui.StakingHistory, err error) {
 		if getTxResponse.MinedTransactions != nil {
 			newLineItems := calculateLineItems(getTxResponse.MinedTransactions.Transactions)
 			if len(newLineItems) > 0 {
-				extLineItems := make([]*gui.StakingHistory_StakingHistoryLineItem, 0, len(stakingHistory.LineItems)+len(newLineItems))
+				extLineItems := make([]*walletgui.StakingHistory_StakingHistoryLineItem, 0, len(stakingHistory.LineItems)+len(newLineItems))
 				if len(stakingHistory.LineItems) > 0 {
 					extLineItems = append(extLineItems, stakingHistory.LineItems...)
 				}
@@ -57,9 +56,9 @@ func GetStakingHistory() (stakingHistory *gui.StakingHistory, err error) {
 	}
 }
 
-func calculateLineItems(allTxList []*walletrpc.TransactionDetails) (lineItemSlice []*gui.StakingHistory_StakingHistoryLineItem) {
+func calculateLineItems(allTxList []*walletrpc.TransactionDetails) (lineItemSlice []*walletgui.StakingHistory_StakingHistoryLineItem) {
 
-	lineItemSlice = make([]*gui.StakingHistory_StakingHistoryLineItem, 0, len(allTxList))
+	lineItemSlice = make([]*walletgui.StakingHistory_StakingHistoryLineItem, 0, len(allTxList))
 
 	for _, txd := range allTxList {
 
@@ -69,7 +68,7 @@ func calculateLineItems(allTxList []*walletrpc.TransactionDetails) (lineItemSlic
 		}
 		fmt.Printf("Tx: %s\n", tx.Hash().String())
 
-		lineItem := &gui.StakingHistory_StakingHistoryLineItem{
+		lineItem := &walletgui.StakingHistory_StakingHistoryLineItem{
 			TxType:    txd.GetTransactionType(),
 			TxHash:    txd.GetHash(),
 			Timestamp: txd.GetTimestamp(),
@@ -115,8 +114,8 @@ func findScript(txOutList []*wire.TxOut, scriptClass txscript.ScriptClass) *wire
 }
 
 // ExportStakingHistoryAPI exports functions to the UI
-func ExportStakingHistoryAPI(ui lorca.UI) {
-	ui.Bind("walletgui__GetStakingHistory", func() (r gui.LorcaMessage) {
+func ExportStakingHistoryAPI(ui walletgui.WebViewInterface) {
+	ui.Bind("walletgui__GetStakingHistory", func() (r walletgui.LorcaMessage) {
 		history, err := GetStakingHistory()
 		r.Err = err
 		if err == nil {
