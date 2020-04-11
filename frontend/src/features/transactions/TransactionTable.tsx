@@ -38,12 +38,21 @@ class TransactionTable extends React.Component<OwnProps> {
 			<div>
 				{this.props.items.length > 0 && (
 					<Table hover>
+						<thead>
+							<tr>
+								<th></th>
+								<th>Amount</th>
+								<th>Timestamp</th>
+								<th>Tx type</th>
+								<th>Hash</th>
+							</tr>
+						</thead>
 						<TransitionGroup {...transitionGroupProps} component="tbody">
 							{this.props.items.map((tx: Transaction) =>
 								<Fade slide cascade key={tx.getHash()}>
 									<tr className="clickable" onClick={() => this.props.onItemClick(tx)}>
 										<td><TransactionMempoolStatusIcon isMined={tx.isMined()} /></td>
-										<td><Amount amount={tx.getAmount()} /></td>
+										<td><Amount amount={tx.getAmount()} rounding={6} /></td>
 										{showAccount && (
 											<td>{_.map(this.props.lookupAccounts(tx.getAccounts()), (account) => {
 												if (account == undefined) return null
