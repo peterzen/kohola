@@ -33,7 +33,7 @@ export default class UTXODetailsComponent extends React.Component<Props, {}>{
 							<td><TimeAgo date={moment.unix(utxo.getReceiveTime()).toDate()} /></td>
 						</tr>
 						<tr>
-							<th>ScriptClass</th>
+							<th>Script class</th>
 							<td>{ScriptClass[utxo.getScriptClass()]}</td>
 						</tr>
 					</tbody>
