@@ -6,8 +6,8 @@ import { LineChart, Line, ResponsiveContainer, XAxis, YAxis } from "recharts"
 import { IApplicationState } from "../../../store/types"
 import {
     fetchExchangeChartData,
-    getExchangeSparklineData,
     ChartDataPoint,
+    getExchangeChartData,
 } from "../marketSlice"
 
 class ExchangeRateChart extends React.Component<Props> {
@@ -20,7 +20,7 @@ class ExchangeRateChart extends React.Component<Props> {
                         margin={{
                             top: 0,
                             right: 0,
-                            left: 10,
+                            left: 0,
                             bottom: 0,
                         }}
                     >
@@ -73,7 +73,7 @@ type Props = OwnProps & StateProps & DispatchProps
 const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
     return {
         getChartData: () => {
-            return getExchangeSparklineData(
+            return getExchangeChartData(
                 state,
                 ownProps.currencyCode,
                 ownProps.days
