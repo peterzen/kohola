@@ -7,12 +7,14 @@ import { IApplicationState } from "../../../store/types"
 import {
     fetchExchangeChartData,
     getExchangeSparklineData,
+    ChartDataPoint,
 } from "../marketSlice"
 import { MarketChartDataPoint } from "../../../proto/walletgui_pb"
 
 class SparklineChart extends React.Component<Props> {
     render() {
         const normalizedDatapoints = this.props.getChartData()
+        console.log("#####", normalizedDatapoints)
         return (
             <div style={{ width: "100%", height: "50px" }}>
                 <ResponsiveContainer width="100%" height="100%">
@@ -27,7 +29,7 @@ class SparklineChart extends React.Component<Props> {
                     >
                         <Line
                             type="monotone"
-                            dataKey="exchangeRate"
+                            dataKey="value"
                             dot={false}
                             stroke="#8884d8"
                             strokeWidth={2}
@@ -51,7 +53,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-    getChartData: () => MarketChartDataPoint.AsObject[]
+    getChartData: () => ChartDataPoint[]
 }
 
 interface DispatchProps {
