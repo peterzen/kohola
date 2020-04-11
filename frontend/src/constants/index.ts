@@ -1,2 +1,2 @@
-export * from './Decred'
-export * from './app'
+export * from "./Decred"
+export * from "./app"

@@ -1,98 +1,104 @@
-import * as React from 'react';
-import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom';
-import _ from 'lodash';
+import * as React from "react"
+import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
+import _ from "lodash"
 
-import { Row, Col, Tabs, Tab } from 'react-bootstrap';
+import { Row, Col, Tabs, Tab } from "react-bootstrap"
 // @ts-ignore
-import Fade from 'react-reveal/Fade';
+import Fade from "react-reveal/Fade"
 
-import StakeStats from '../features/staking/StakeStats';
-import AgendasComponent from '../features/staking/Voting/AgendasComponent';
-import StakeInfoComponent from '../features/staking/StakeInfoComponent';
-import PurchaseTicketForm from '../features/staking/PurchaseTicket/SimplePurchaseTicketForm';
-import TicketBuyerComponent from '../features/staking/Ticketbuyer/TicketBuyerComponent';
-import TicketsOverviewContainer from '../features/staking/TicketsOverviewContainer';
-import { loadTicketsAttempt, loadStakingHistory, loadStakeInfoAttempt } from '../features/staking/stakingSlice';
-import StakingToolsMenu from '../features/staking/StakingToolsMenu';
-import PassphraseEntryDialog from '../components/Shared/PassphraseEntryDialog';
-import StakingHistoryTable from '../features/staking/StakingHistoryTable';
-import { IApplicationState } from '../store/types';
-import { StakeInfo } from '../middleware/models';
+import StakeStats from "../features/staking/StakeStats"
+import AgendasComponent from "../features/staking/Voting/AgendasComponent"
+import StakeInfoComponent from "../features/staking/StakeInfoComponent"
+import PurchaseTicketForm from "../features/staking/PurchaseTicket/SimplePurchaseTicketForm"
+import TicketBuyerComponent from "../features/staking/Ticketbuyer/TicketBuyerComponent"
+import TicketsOverviewContainer from "../features/staking/TicketsOverviewContainer"
+import {
+    loadTicketsAttempt,
+    loadStakingHistory,
+    loadStakeInfoAttempt,
+} from "../features/staking/stakingSlice"
+import StakingToolsMenu from "../features/staking/StakingToolsMenu"
+import PassphraseEntryDialog from "../components/Shared/PassphraseEntryDialog"
+import StakingHistoryTable from "../features/staking/StakingHistoryTable"
+import { IApplicationState } from "../store/types"
+import { StakeInfo } from "../middleware/models"
 
 class StakingContainer extends React.Component<Props> {
-	render() {
-		return (
-			<div>
-				<div className="float-right">
-					<StakingToolsMenu  />
-				</div>
-				<Tabs
-					defaultActiveKey="overview" id="purchaseticketsettings-tabs"
-					mountOnEnter={true}
-					unmountOnExit={true}
-				>
-					<Tab eventKey="overview" title="Overview">
-						<Fade fade>
-							<StakeInfoComponent />
-						</Fade>
-						<Row className="mt-3">
-							<Col>
-								<Fade fade>
-									<TicketsOverviewContainer />
-								</Fade>
-							</Col>
-							<Col>
-								<StakeStats />
-								<div className="mt-3" />
-								<PurchaseTicketForm />
-							</Col>
-						</Row>
-					</Tab>
-					<Tab eventKey="roi" title="Returns">
-						<StakingHistoryTable />
-					</Tab>
-					<Tab eventKey="ticketbuyer" title="Ticketbuyer">
-						<TicketBuyerComponent />
-					</Tab>
-					<Tab eventKey="voting" title="Voting">
-						<AgendasComponent />
-					</Tab>
-				</Tabs>
-				<PassphraseEntryDialog show={false} />
-			</div>
-		)
-	}
-	componentDidMount() {
-		this.props.loadStakeInfoAttempt()
-		this.props.loadStakingHistory()
-		// this.props.loadTicketsAttempt()
-	}
-
+    render() {
+        return (
+            <div>
+                <div className="float-right">
+                    <StakingToolsMenu />
+                </div>
+                <Tabs
+                    defaultActiveKey="overview"
+                    id="purchaseticketsettings-tabs"
+                    mountOnEnter={true}
+                    unmountOnExit={true}
+                >
+                    <Tab eventKey="overview" title="Overview">
+                        <Fade fade>
+                            <StakeInfoComponent />
+                        </Fade>
+                        <Row className="mt-3">
+                            <Col>
+                                <Fade fade>
+                                    <TicketsOverviewContainer />
+                                </Fade>
+                            </Col>
+                            <Col>
+                                <StakeStats />
+                                <div className="mt-3" />
+                                <PurchaseTicketForm />
+                            </Col>
+                        </Row>
+                    </Tab>
+                    <Tab eventKey="roi" title="Returns">
+                        <StakingHistoryTable />
+                    </Tab>
+                    <Tab eventKey="ticketbuyer" title="Ticketbuyer">
+                        <TicketBuyerComponent />
+                    </Tab>
+                    <Tab eventKey="voting" title="Voting">
+                        <AgendasComponent />
+                    </Tab>
+                </Tabs>
+                <PassphraseEntryDialog show={false} />
+            </div>
+        )
+    }
+    componentDidMount() {
+        this.props.loadStakeInfoAttempt()
+        this.props.loadStakingHistory()
+        // this.props.loadTicketsAttempt()
+    }
 }
 
 interface OwnProps {
-	stakeinfo: StakeInfo
+    stakeinfo: StakeInfo
 }
 
 interface DispatchProps {
-	loadStakeInfoAttempt: typeof loadStakeInfoAttempt
-	loadStakingHistory: typeof loadStakingHistory
-	loadTicketsAttempt: typeof loadTicketsAttempt
+    loadStakeInfoAttempt: typeof loadStakeInfoAttempt
+    loadStakingHistory: typeof loadStakingHistory
+    loadTicketsAttempt: typeof loadTicketsAttempt
 }
 
 type Props = OwnProps & DispatchProps
 
 const mapStateToProps = (state: IApplicationState) => {
-	return {
-		stakeinfo: state.staking.stakeinfo,
-	}
+    return {
+        stakeinfo: state.staking.stakeinfo,
+    }
 }
 
 const mapDispatchToProps = {
-	loadStakingHistory,
-	loadTicketsAttempt,
-	loadStakeInfoAttempt,
+    loadStakingHistory,
+    loadTicketsAttempt,
+    loadStakeInfoAttempt,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StakingContainer));
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(StakingContainer)
+)
