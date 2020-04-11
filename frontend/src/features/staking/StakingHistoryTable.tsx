@@ -80,6 +80,9 @@ class StakingHistoryTable extends React.Component<Props> {
             </Card>
         )
     }
+    componentDidMount() {
+        this.props.loadStakingHistory()
+    }
 }
 
 interface OwnProps {
@@ -88,7 +91,9 @@ interface OwnProps {
     getStakingHistoryAttempting: boolean
 }
 
-interface DispatchProps {}
+interface DispatchProps {
+    loadStakingHistory: typeof loadStakingHistory
+}
 
 type Props = OwnProps & DispatchProps
 
@@ -100,7 +105,9 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
     }
 }
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+    loadStakingHistory,
+}
 
 export default withRouter(
     connect(mapStateToProps, mapDispatchToProps)(StakingHistoryTable)
