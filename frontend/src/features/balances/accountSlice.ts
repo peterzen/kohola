@@ -318,6 +318,12 @@ export const getAccountNumbers = (state: IApplicationState): number[] => {
         .value()
 }
 
+export const getVisibleAccountNumbers = (state: IApplicationState): number[] => {
+	return _.filter(getAccountNumbers(state), (accountNumber) => {
+		return isAccountVisible(state, accountNumber)
+	})
+}
+
 export const lookupAccount = (
     state: IApplicationState,
     accountNumber: number
