@@ -1,6 +1,7 @@
 package exchangeratebot
 
 import (
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"log"
@@ -8,9 +9,9 @@ import (
 	"net/http"
 	"time"
 
-	proto "github.com/golang/protobuf/proto"
-	coingecko "github.com/superoo7/go-gecko/v3"
+	"github.com/golang/protobuf/proto"
 	"github.com/peterzen/kohola/walletgui"
+	coingecko "github.com/superoo7/go-gecko/v3"
 )
 
 var cg *coingecko.Client
@@ -105,8 +106,19 @@ func ExportExchangeRateAPI(ui walletgui.WebViewInterface) {
 
 }
 
+func onUpdate(rates *walletgui.AltCurrencyRates) {
+	b, err := proto.Marshal(rates)
+	if err != nil {
+		log.Println("proto.Marshal", err)
+		return
+	}
+	encodedMsg := hex.EncodeToString(b)
+	js := fmt.Sprintf("window.lorcareceiver__OnExchangeRateUpdate('%s')", encodedMsg)
+	walletgui.ExecuteJS(js)
+}
+
 // Start initializes a Coingecko client and starts a periodic fetcher process
-func Start(altCurrencies []string, onUpdate func(rates *walletgui.AltCurrencyRates)) {
+func Start(altCurrencies []string) {
 
 	cg = initializeCgClient()
 
