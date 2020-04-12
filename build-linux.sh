@@ -36,7 +36,7 @@ EOF
 cat > $APPDIR/DEBIAN/control << EOF
 Package: ${APP}
 Version: 1.0-0
-Depends: webkit2gtk-4.0 (<= 2.28.0)
+Depends: libwebkit2gtk-4.0-37
 Section: base
 Priority: optional
 Architecture: amd64

@@ -20,4 +20,12 @@ ReactDOM.render(
     document.getElementById("app")
 )
 
+// @TODO pass down a flag to identify dev/production mode and
+// enable the below function to disable the context menu in production
+// builds.
+const w = window as any
+w.document.addEventListener("contextmenu", function (e: any) {
+    // e.preventDefault();
+})
+
 store.dispatch(launchApp())

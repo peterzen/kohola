@@ -18,7 +18,7 @@ import (
 	"path/filepath"
 
 	"github.com/decred/dcrd/dcrutil/v3"
-	proto "github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 )
 
 var (
