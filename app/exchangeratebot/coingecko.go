@@ -89,6 +89,9 @@ func fetchMarketChart(request *walletgui.GetMarketChartRequest) (marketChartData
 
 // ExportExchangeRateAPI exports the exchangerateBot API functions to the UI
 func ExportExchangeRateAPI(ui walletgui.WebViewInterface) {
+
+	cg = initializeCgClient()
+
 	ui.Bind("exchangerate__GetMarketChart", func(currencyCode string, days uint32) (r walletgui.LorcaMessage) {
 
 		request := &walletgui.GetMarketChartRequest{
@@ -119,8 +122,6 @@ func onUpdate(rates *walletgui.AltCurrencyRates) {
 
 // Start initializes a Coingecko client and starts a periodic fetcher process
 func Start(altCurrencies []string) {
-
-	cg = initializeCgClient()
 
 	for {
 		rates, err := fetchCurrentRates(altCurrencies)
