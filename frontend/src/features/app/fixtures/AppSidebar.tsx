@@ -163,7 +163,7 @@ class AppSidebar extends React.Component<AppSidebarProps, AppSidebarState> {
     constructor(props: AppSidebarProps) {
         super(props)
         this.state = {
-            isMenuOpened: false,
+            isMenuOpened: true,
         }
     }
 
