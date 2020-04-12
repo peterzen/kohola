@@ -20,7 +20,7 @@ require (
 	github.com/markbates/pkger v0.15.0
 	github.com/sqweek/dialog v0.0.0-20190728103509-6254ed5b0d3c
 	github.com/superoo7/go-gecko v1.0.0
-	github.com/zserge/lorca v0.1.9
+	github.com/zserge/webview v0.0.0-20200410160118-50e4bcc420ab
 	google.golang.org/grpc v1.28.0
 )
 

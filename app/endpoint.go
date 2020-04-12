@@ -16,14 +16,12 @@ import (
 
 	walletrpc "decred.org/dcrwallet/rpc/walletrpc"
 	proto "github.com/golang/protobuf/proto"
-	gui "github.com/peterzen/kohola/walletgui"
-
-	"github.com/zserge/lorca"
+	"github.com/peterzen/kohola/walletgui"
 )
 
 var (
-	gRPCConnection  *grpc.ClientConn  = nil
-	currentEndpoint *gui.GRPCEndpoint = nil
+	gRPCConnection  *grpc.ClientConn        = nil
+	currentEndpoint *walletgui.GRPCEndpoint = nil
 
 	walletServiceClient        walletrpc.WalletServiceClient
 	votingServiceClient        walletrpc.VotingServiceClient
@@ -42,7 +40,7 @@ func WalletAPIInit() {
 }
 
 // connectWallet creates a gRPC client connection
-func connectWallet(endpointCfg *gui.GRPCEndpoint) error {
+func connectWallet(endpointCfg *walletgui.GRPCEndpoint) error {
 
 	var err error = nil
 	gRPCConnection, err = newGRPCClient(endpointCfg)
@@ -75,7 +73,7 @@ func connectWallet(endpointCfg *gui.GRPCEndpoint) error {
 }
 
 // NewGRPCClient connects to the wallet gRPC server
-func newGRPCClient(endpointCfg *gui.GRPCEndpoint) (*grpc.ClientConn, error) {
+func newGRPCClient(endpointCfg *walletgui.GRPCEndpoint) (*grpc.ClientConn, error) {
 	// fmt.Printf("%#v", endpointCfg)
 	var creds credentials.TransportCredentials = nil
 	var err error = nil
@@ -95,7 +93,7 @@ func newGRPCClient(endpointCfg *gui.GRPCEndpoint) (*grpc.ClientConn, error) {
 	return conn, nil
 }
 
-func subscribeTxNotifications(ui lorca.UI) {
+func subscribeTxNotifications(ui walletgui.WebViewInterface) {
 	request := &walletrpc.TransactionNotificationsRequest{}
 	ntfnStream, err := walletServiceClient.TransactionNotifications(ctx, request)
 	if err != nil {
@@ -125,11 +123,11 @@ func subscribeTxNotifications(ui lorca.UI) {
 		}
 		encodedMsg := hex.EncodeToString(b)
 		js := fmt.Sprintf("window.lorcareceiver__OnTxNotification('%s')", encodedMsg)
-		ui.Eval(js)
+		walletgui.ExecuteJS(js)
 	}
 }
 
-// func subscribeConfirmNotifications(ui lorca.UI) {
+// func subscribeConfirmNotifications(ui walletgui.WebViewInterface) {
 // 	request := &walletrpc.ConfirmationNotificationsRequest{}
 // 	ntfnStream, err := walletServiceClient.ConfirmationNotifications(ctx, request)
 // 	if err != nil {
@@ -152,7 +150,7 @@ func subscribeTxNotifications(ui lorca.UI) {
 // 	}
 // }
 
-func subscribeAccountNotifications(ui lorca.UI) {
+func subscribeAccountNotifications(ui walletgui.WebViewInterface) {
 
 	request := &walletrpc.AccountNotificationsRequest{}
 	ntfnStream, err := walletServiceClient.AccountNotifications(ctx, request)
@@ -173,12 +171,12 @@ func subscribeAccountNotifications(ui lorca.UI) {
 		}
 		encodedMsg := hex.EncodeToString(b)
 		js := fmt.Sprintf("window.lorcareceiver__OnAccountNotification('%s')", encodedMsg)
-		ui.Eval(js)
+		walletgui.ExecuteJS(js)
 	}
 }
 
 // SetupNotifications creates subscriptions
-func subscribeNotifications(ui lorca.UI) {
+func subscribeNotifications(ui walletgui.WebViewInterface) {
 	go subscribeTxNotifications(ui)
 	go subscribeAccountNotifications(ui)
 	// go subscribeConfirmNotifications(ui)
@@ -195,13 +193,13 @@ func disconnectEndpoint() {
 	gRPCConnection = nil
 }
 
-func connectEndpoint(endpointID string, ui lorca.UI) (endpoint *gui.GRPCEndpoint, err error) {
+func connectEndpoint(endpointID string, ui walletgui.WebViewInterface) (endpoint *walletgui.GRPCEndpoint, err error) {
 
 	if isEndpointConnected() {
 		disconnectEndpoint()
 	}
 
-	endpoints := gui.GetConfig().GetWalletEndpoints()
+	endpoints := walletgui.GetConfig().GetWalletEndpoints()
 	endpoint = getEndpointByID(endpoints, endpointID)
 
 	if endpoint == nil {
@@ -254,7 +252,7 @@ func getNetwork() (*walletrpc.NetworkResponse, error) {
 	return response, nil
 }
 
-func checkGRPCConnection(endpointCfg *gui.GRPCEndpoint) (bool, error) {
+func checkGRPCConnection(endpointCfg *walletgui.GRPCEndpoint) (bool, error) {
 	gRPCConnection, err := newGRPCClient(endpointCfg)
 	if err != nil {
 		return false, err
@@ -312,7 +310,7 @@ func monitorEndpoint(ctx context.Context, cc walletrpc.WalletServiceClient) {
 	}
 }
 
-func getEndpointByID(endpoints []*gui.GRPCEndpoint, id string) *gui.GRPCEndpoint {
+func getEndpointByID(endpoints []*walletgui.GRPCEndpoint, id string) *walletgui.GRPCEndpoint {
 	for _, endpoint := range endpoints {
 		if endpoint.Id == id {
 			return endpoint
@@ -327,8 +325,8 @@ func getEndpointByID(endpoints []*gui.GRPCEndpoint, id string) *gui.GRPCEndpoint
 
 type apiInterface func(context.Context, *struct{}, ...grpc.CallOption) (proto.Message, error)
 
-func makeAPIEndpoint(requestClass *struct{}, method apiInterface) func() gui.LorcaMessage {
-	return func() (r gui.LorcaMessage) {
+func makeAPIEndpoint(requestClass *struct{}, method apiInterface) func() walletgui.LorcaMessage {
+	return func() (r walletgui.LorcaMessage) {
 		request := requestClass
 		response, err := method(ctx, request)
 		if err != nil {
