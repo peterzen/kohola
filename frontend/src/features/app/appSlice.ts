@@ -139,7 +139,8 @@ export const launchApp: ActionCreator<any> = () => {
         // default flag.
         // @FIXME add GUI to select default endpoint
         await store.dispatch(connectDefaultWallet())
-        await store.dispatch(subscribeExchangeRateFeed())
+		await store.dispatch(subscribeExchangeRateFeed())
+		w.walletgui_onAppOpen()
     }
 }
 
