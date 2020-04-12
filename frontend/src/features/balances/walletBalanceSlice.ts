@@ -5,7 +5,7 @@ import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit"
 import { WalletBalance, WalletTotals } from "../../middleware/models"
 import { AppError, AppThunk, IApplicationState } from "../../store/types"
 import LorcaBackend from "../../middleware/lorca"
-import { getAccountNumbers } from "./accountSlice"
+import { getVisibleAccountNumbers } from "./accountSlice"
 
 export interface IWalletBalanceState {
     readonly balances: WalletBalance
@@ -53,7 +53,7 @@ export const loadWalletBalance: ActionCreator<any> = (): AppThunk => {
         }
 
         dispatch(getBalanceAttempt())
-        const accountNumbers = getAccountNumbers(getState())
+        const accountNumbers = getVisibleAccountNumbers(getState())
         try {
             const resp = (await LorcaBackend.fetchWalletBalance(
                 accountNumbers
