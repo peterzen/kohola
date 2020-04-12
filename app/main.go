@@ -10,9 +10,15 @@ import (
 
 	"github.com/peterzen/kohola/exchangeratebot"
 	"github.com/peterzen/kohola/walletgui"
+
+	_ "net/http/pprof"
 )
 
 func main() {
+
+	// go func() {
+	// 	log.Println(http.ListenAndServe("localhost:6060", nil))
+	// }()
 
 	WalletAPIInit()
 
@@ -20,11 +26,6 @@ func main() {
 	defer w.Destroy()
 
 	bindUIAPI(w)
-
-	// @TODO pull these values from AppConfiguration
-	altCurrencies := []string{"btc", "usd", "eur"}
-
-	go exchangeratebot.Start(altCurrencies)
 
 	startUI(w)
 
@@ -53,16 +54,24 @@ func startUI(w walletgui.WebViewInterface) {
 
 func bindUIAPI(w walletgui.WebViewInterface) {
 
+	walletgui.ExportConfigAPI(w)
+	ExportWalletAPI(w)
+	ExportStakingHistoryAPI(w)
+	ExportDcrdataAPI(w)
+	exchangeratebot.ExportExchangeRateAPI(w)
+
+	// @TODO pull these values from AppConfiguration
+	altCurrencies := []string{"btc", "usd", "eur"}
+
+	w.Bind("walletgui_onAppOpen", func() {
+		fmt.Println("App booted")
+		go exchangeratebot.Start(altCurrencies)
+	})
+
 	w.Bind("walletgui_CloseApp", func() {
 		fmt.Println("Closing the Chrome UI")
 		w.Destroy()
 	})
 
 	w.Bind("walletgui_FileOpenDialog", walletgui.FileOpenDialog)
-
-	walletgui.ExportConfigAPI(w)
-	ExportWalletAPI(w)
-	exchangeratebot.ExportExchangeRateAPI(w)
-	ExportStakingHistoryAPI(w)
-	ExportDcrdataAPI(w)
 }

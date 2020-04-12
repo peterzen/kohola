@@ -12,12 +12,12 @@ import "./styles/main.scss"
 import { launchApp } from "./features/app/appSlice"
 
 ReactDOM.render(
-    <AppContainer>
-        <Provider store={store}>
-            <App history={history} />
-        </Provider>
-    </AppContainer>,
-    document.getElementById("app")
+	<AppContainer>
+		<Provider store={store}>
+			<App history={history} />
+		</Provider>
+	</AppContainer>,
+	document.getElementById("app")
 )
 
 // @TODO pass down a flag to identify dev/production mode and
@@ -25,7 +25,10 @@ ReactDOM.render(
 // builds.
 const w = window as any
 w.document.addEventListener("contextmenu", function (e: any) {
-    // e.preventDefault();
+	// e.preventDefault();
 })
 
 store.dispatch(launchApp())
+	.then(() => {
+		w.walletgui_onAppOpen()
+	})
