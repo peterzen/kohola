@@ -195,94 +195,7 @@ export namespace GRPCEndpoint {
   }
 }
 
-export class AccountPreference extends jspb.Message {
-  getAccountNumber(): number;
-  setAccountNumber(value: number): void;
-
-  getIsHidden(): boolean;
-  setIsHidden(value: boolean): void;
-
-  getDisplayOrder(): number;
-  setDisplayOrder(value: number): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): AccountPreference.AsObject;
-  static toObject(includeInstance: boolean, msg: AccountPreference): AccountPreference.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: AccountPreference, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): AccountPreference;
-  static deserializeBinaryFromReader(message: AccountPreference, reader: jspb.BinaryReader): AccountPreference;
-}
-
-export namespace AccountPreference {
-  export type AsObject = {
-    accountNumber: number,
-    isHidden: boolean,
-    displayOrder: number,
-  }
-}
-
-export class WalletPreferences extends jspb.Message {
-  getWalletEndpointId(): string;
-  setWalletEndpointId(value: string): void;
-
-  clearAccountPrefsList(): void;
-  getAccountPrefsList(): Array<AccountPreference>;
-  setAccountPrefsList(value: Array<AccountPreference>): void;
-  addAccountPrefs(value?: AccountPreference, index?: number): AccountPreference;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): WalletPreferences.AsObject;
-  static toObject(includeInstance: boolean, msg: WalletPreferences): WalletPreferences.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: WalletPreferences, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): WalletPreferences;
-  static deserializeBinaryFromReader(message: WalletPreferences, reader: jspb.BinaryReader): WalletPreferences;
-}
-
-export namespace WalletPreferences {
-  export type AsObject = {
-    walletEndpointId: string,
-    accountPrefsList: Array<AccountPreference.AsObject>,
-  }
-}
-
-export class UIPreferences extends jspb.Message {
-  getDisplayUnit(): DisplayUnitMap[keyof DisplayUnitMap];
-  setDisplayUnit(value: DisplayUnitMap[keyof DisplayUnitMap]): void;
-
-  getFiatCurrency(): FiatCurrencyMap[keyof FiatCurrencyMap];
-  setFiatCurrency(value: FiatCurrencyMap[keyof FiatCurrencyMap]): void;
-
-  getIsConfigEncrypted(): boolean;
-  setIsConfigEncrypted(value: boolean): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): UIPreferences.AsObject;
-  static toObject(includeInstance: boolean, msg: UIPreferences): UIPreferences.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: UIPreferences, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): UIPreferences;
-  static deserializeBinaryFromReader(message: UIPreferences, reader: jspb.BinaryReader): UIPreferences;
-}
-
-export namespace UIPreferences {
-  export type AsObject = {
-    displayUnit: DisplayUnitMap[keyof DisplayUnitMap],
-    fiatCurrency: FiatCurrencyMap[keyof FiatCurrencyMap],
-    isConfigEncrypted: boolean,
-  }
-}
-
 export class AppConfiguration extends jspb.Message {
-  hasDcrdEndpoint(): boolean;
-  clearDcrdEndpoint(): void;
-  getDcrdEndpoint(): RPCEndpoint | undefined;
-  setDcrdEndpoint(value?: RPCEndpoint): void;
-
   clearWalletEndpointsList(): void;
   getWalletEndpointsList(): Array<GRPCEndpoint>;
   setWalletEndpointsList(value: Array<GRPCEndpoint>): void;
@@ -291,21 +204,8 @@ export class AppConfiguration extends jspb.Message {
   getDefaultWalletEndpointId(): string;
   setDefaultWalletEndpointId(value: string): void;
 
-  clearWalletPreferencesList(): void;
-  getWalletPreferencesList(): Array<WalletPreferences>;
-  setWalletPreferencesList(value: Array<WalletPreferences>): void;
-  addWalletPreferences(value?: WalletPreferences, index?: number): WalletPreferences;
-
-  hasAccountMixerRequestDefaults(): boolean;
-  clearAccountMixerRequestDefaults(): void;
-  getAccountMixerRequestDefaults(): api_pb.RunAccountMixerRequest | undefined;
-  setAccountMixerRequestDefaults(value?: api_pb.RunAccountMixerRequest): void;
-
-  hasRunAutoBuyerRequestDefaults(): boolean;
-  clearRunAutoBuyerRequestDefaults(): void;
-  getRunAutoBuyerRequestDefaults(): api_pb.RunTicketBuyerRequest | undefined;
-  setRunAutoBuyerRequestDefaults(value?: api_pb.RunTicketBuyerRequest): void;
-
+  getWalletPreferencesMap(): jspb.Map<string, AppConfiguration.WalletPreferences>;
+  clearWalletPreferencesMap(): void;
   clearAltDisplayCurrenciesList(): void;
   getAltDisplayCurrenciesList(): Array<string>;
   setAltDisplayCurrenciesList(value: Array<string>): void;
@@ -313,8 +213,8 @@ export class AppConfiguration extends jspb.Message {
 
   hasUiPreferences(): boolean;
   clearUiPreferences(): void;
-  getUiPreferences(): UIPreferences | undefined;
-  setUiPreferences(value?: UIPreferences): void;
+  getUiPreferences(): AppConfiguration.UIPreferences | undefined;
+  setUiPreferences(value?: AppConfiguration.UIPreferences): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AppConfiguration.AsObject;
@@ -328,14 +228,94 @@ export class AppConfiguration extends jspb.Message {
 
 export namespace AppConfiguration {
   export type AsObject = {
-    dcrdEndpoint?: RPCEndpoint.AsObject,
     walletEndpointsList: Array<GRPCEndpoint.AsObject>,
     defaultWalletEndpointId: string,
-    walletPreferencesList: Array<WalletPreferences.AsObject>,
-    accountMixerRequestDefaults?: api_pb.RunAccountMixerRequest.AsObject,
-    runAutoBuyerRequestDefaults?: api_pb.RunTicketBuyerRequest.AsObject,
+    walletPreferencesMap: Array<[string, AppConfiguration.WalletPreferences.AsObject]>,
     altDisplayCurrenciesList: Array<string>,
-    uiPreferences?: UIPreferences.AsObject,
+    uiPreferences?: AppConfiguration.UIPreferences.AsObject,
+  }
+
+  export class UIPreferences extends jspb.Message {
+    getDisplayUnit(): DisplayUnitMap[keyof DisplayUnitMap];
+    setDisplayUnit(value: DisplayUnitMap[keyof DisplayUnitMap]): void;
+
+    getFiatCurrency(): FiatCurrencyMap[keyof FiatCurrencyMap];
+    setFiatCurrency(value: FiatCurrencyMap[keyof FiatCurrencyMap]): void;
+
+    getIsConfigEncrypted(): boolean;
+    setIsConfigEncrypted(value: boolean): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): UIPreferences.AsObject;
+    static toObject(includeInstance: boolean, msg: UIPreferences): UIPreferences.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: UIPreferences, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): UIPreferences;
+    static deserializeBinaryFromReader(message: UIPreferences, reader: jspb.BinaryReader): UIPreferences;
+  }
+
+  export namespace UIPreferences {
+    export type AsObject = {
+      displayUnit: DisplayUnitMap[keyof DisplayUnitMap],
+      fiatCurrency: FiatCurrencyMap[keyof FiatCurrencyMap],
+      isConfigEncrypted: boolean,
+    }
+  }
+
+  export class AccountPreference extends jspb.Message {
+    getIsHidden(): boolean;
+    setIsHidden(value: boolean): void;
+
+    getDisplayOrder(): number;
+    setDisplayOrder(value: number): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): AccountPreference.AsObject;
+    static toObject(includeInstance: boolean, msg: AccountPreference): AccountPreference.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: AccountPreference, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): AccountPreference;
+    static deserializeBinaryFromReader(message: AccountPreference, reader: jspb.BinaryReader): AccountPreference;
+  }
+
+  export namespace AccountPreference {
+    export type AsObject = {
+      isHidden: boolean,
+      displayOrder: number,
+    }
+  }
+
+  export class WalletPreferences extends jspb.Message {
+    getAccountPrefsMap(): jspb.Map<number, AppConfiguration.AccountPreference>;
+    clearAccountPrefsMap(): void;
+    hasAccountMixerRequestDefaults(): boolean;
+    clearAccountMixerRequestDefaults(): void;
+    getAccountMixerRequestDefaults(): api_pb.RunAccountMixerRequest | undefined;
+    setAccountMixerRequestDefaults(value?: api_pb.RunAccountMixerRequest): void;
+
+    hasRunAutoBuyerRequestDefaults(): boolean;
+    clearRunAutoBuyerRequestDefaults(): void;
+    getRunAutoBuyerRequestDefaults(): api_pb.RunTicketBuyerRequest | undefined;
+    setRunAutoBuyerRequestDefaults(value?: api_pb.RunTicketBuyerRequest): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): WalletPreferences.AsObject;
+    static toObject(includeInstance: boolean, msg: WalletPreferences): WalletPreferences.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: WalletPreferences, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): WalletPreferences;
+    static deserializeBinaryFromReader(message: WalletPreferences, reader: jspb.BinaryReader): WalletPreferences;
+  }
+
+  export namespace WalletPreferences {
+    export type AsObject = {
+      accountPrefsMap: Array<[number, AppConfiguration.AccountPreference.AsObject]>,
+      accountMixerRequestDefaults?: api_pb.RunAccountMixerRequest.AsObject,
+      runAutoBuyerRequestDefaults?: api_pb.RunTicketBuyerRequest.AsObject,
+    }
   }
 }
 

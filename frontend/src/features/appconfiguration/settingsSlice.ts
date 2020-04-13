@@ -1,4 +1,5 @@
 import _ from "lodash"
+import * as jspb from "google-protobuf"
 
 import {
     createSlice,
@@ -16,9 +17,6 @@ import {
     AppConfiguration,
     RPCEndpoint,
     GRPCEndpoint,
-    AccountPreference,
-    WalletPreferences,
-    UIPreferences,
 } from "../../proto/walletgui_pb"
 import { DisplayUnit } from "../../constants"
 import AppBackend from "../../middleware/appbackend"
@@ -93,31 +91,22 @@ const settingsSlice = createSlice({
         getConfigSuccess(state, action: PayloadAction<AppConfiguration>) {
             state.appConfig = action.payload
         },
-        getConfigFailed(state, action) {},
+        getConfigFailed(state, action) { },
         setAccountPreference(
             state,
             action: PayloadAction<{
-                preference: AccountPreference
+                preference: AppConfiguration.AccountPreference
+                accountNumber: number
                 walletEndpointId: string
             }>
         ) {
-            const { preference, walletEndpointId } = action.payload
-            const walletPrefs = getWalletPrefs(state, walletEndpointId)
-            const accountPrefs = walletPrefs.getAccountPrefsList()
-            walletPrefs.setAccountPrefsList(
-                updateObjectInList(accountPrefs, preference, "accountNumber")
-            )
-            state.appConfig.setWalletPreferencesList(
-                updateObjectInList(
-                    state.appConfig.getWalletPreferencesList(),
-                    walletPrefs,
-                    "walletEndpointId"
-                )
-            )
+            const { preference, accountNumber, walletEndpointId } = action.payload
+            const walletPrefs = state.appConfig.getWalletPreferencesMap().get(walletEndpointId) || new AppConfiguration.WalletPreferences()
+            walletPrefs.getAccountPrefsMap().set(accountNumber, preference)
         },
         updateUiPreferences(
             state,
-            action: PayloadAction<{ uiPreferences: UIPreferences }>
+            action: PayloadAction<{ uiPreferences: AppConfiguration.UIPreferences }>
         ) {
             state.appConfig.setUiPreferences(action.payload.uiPreferences)
         },
@@ -147,15 +136,23 @@ const settingsSlice = createSlice({
         },
         setMixerRequestDefaults(
             state,
-            action: PayloadAction<RunAccountMixerRequest>
+            action: PayloadAction<{
+                accountMixerDefaults: RunAccountMixerRequest,
+                walletEndpointId: string
+            }>
         ) {
-            state.appConfig.setAccountMixerRequestDefaults(action.payload)
+            const { accountMixerDefaults, walletEndpointId } = action.payload
+            state.appConfig.getWalletPreferencesMap().get(walletEndpointId)?.setAccountMixerRequestDefaults(accountMixerDefaults)
         },
         setAutobuyerRequestDefaults(
             state,
-            action: PayloadAction<RunTicketBuyerRequest>
+            action: PayloadAction<{
+                ticketBuyerDefaults: RunTicketBuyerRequest
+                walletEndpointId: string
+            }>
         ) {
-            state.appConfig.setRunAutoBuyerRequestDefaults(action.payload)
+            const { ticketBuyerDefaults, walletEndpointId } = action.payload
+            state.appConfig.getWalletPreferencesMap().get(walletEndpointId)?.setRunAutoBuyerRequestDefaults(ticketBuyerDefaults)
         },
     },
 })
@@ -235,13 +232,13 @@ export const updateAccountPreference: ActionCreator<any> = (
     isHidden: boolean
 ) => {
     return async (dispatch: Dispatch) => {
-        const pref = new AccountPreference()
-        pref.setAccountNumber(accountNumber)
+        const pref = new AppConfiguration.AccountPreference()
         pref.setIsHidden(isHidden)
         dispatch(
             setAccountPreference({
-                walletEndpointId: walletEndpointId,
                 preference: pref,
+                accountNumber: accountNumber,
+                walletEndpointId: walletEndpointId,
             })
         )
         dispatch(saveConfigurationAttempt())
@@ -249,56 +246,46 @@ export const updateAccountPreference: ActionCreator<any> = (
 }
 
 export const saveTicketbuyerRequestDefaults: ActionCreator<any> = (
+    walletEndpointId: string,
     request: RunTicketBuyerRequest
 ) => {
     return async (dispatch: Dispatch) => {
-        dispatch(setAutobuyerRequestDefaults(request))
+        dispatch(setAutobuyerRequestDefaults({
+            walletEndpointId: walletEndpointId,
+            ticketBuyerDefaults: request,
+        }))
         dispatch(saveConfigurationAttempt())
     }
 }
 
 export const saveAccountMixerRequestDefaults: ActionCreator<any> = (
+    walletEndpointId: string,
     request: RunAccountMixerRequest
 ) => {
     return async (dispatch: Dispatch) => {
-        dispatch(setMixerRequestDefaults(request))
+        dispatch(setMixerRequestDefaults({
+            walletEndpointId: walletEndpointId,
+            accountMixerDefaults: request,
+        }))
         dispatch(saveConfigurationAttempt())
     }
 }
 
 // selectors
-export interface IIndexedAccountPrefs {
-    [accountNumber: number]: AccountPreference
-}
-
-export const getAccountPrefs = (
-    state: IApplicationState
-): IIndexedAccountPrefs => {
-    const indexedAccountPrefs: IIndexedAccountPrefs = {}
+export const getAccountPrefs = (state: IApplicationState): jspb.Map<number, AppConfiguration.AccountPreference> => {
     const walletEndpointId = getConnectedEndpointId(state)
-    const prefs = getWalletPrefs(state.appconfiguration, walletEndpointId)
-    _.each(
-        prefs.getAccountPrefsList(),
-        (p) => (indexedAccountPrefs[p.getAccountNumber()] = p)
-    )
-    return indexedAccountPrefs
+    const walletPrefs = state.appconfiguration.appConfig.getWalletPreferencesMap().get(walletEndpointId)
+    if (walletPrefs == undefined) {
+        state.appconfiguration.appConfig.getWalletPreferencesMap().set(walletEndpointId, new AppConfiguration.WalletPreferences())
+    }
+    return state.appconfiguration.appConfig.getWalletPreferencesMap().get(walletEndpointId)!.getAccountPrefsMap()
 }
 
 export const getWalletPrefs = (
     appConfigurationState: IAppConfigurationState,
     walletEndpointId: string
-): WalletPreferences => {
-    const walletPrefs =
-        appConfigurationState.appConfig.getWalletPreferencesList() || []
-    let pref = _.find(
-        walletPrefs,
-        (p) => p.getWalletEndpointId() == walletEndpointId
-    )
-    if (pref == undefined) {
-        pref = new WalletPreferences()
-        pref.setWalletEndpointId(walletEndpointId)
-    }
-    return pref
+): AppConfiguration.WalletPreferences | undefined => {
+    return appConfigurationState.appConfig.getWalletPreferencesMap().get(walletEndpointId)
 }
 
 export const getAppConfig = (state: IApplicationState) =>
@@ -313,6 +300,6 @@ export const getUiPreferences = (
 ) => {
     return (
         appConfigurationState.appConfig.getUiPreferences() ||
-        new UIPreferences()
+        new AppConfiguration.UIPreferences()
     )
 }

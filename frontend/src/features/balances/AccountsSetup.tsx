@@ -1,6 +1,7 @@
 import _ from "lodash"
 import * as React from "react"
 import { connect } from "react-redux"
+import * as jspb from "google-protobuf"
 
 import { Button, Form, Row, Col, InputGroup, Alert } from "react-bootstrap"
 
@@ -12,7 +13,7 @@ import {
     IndexedWalletAccounts,
     WalletBalance,
 } from "../../middleware/models"
-import { loadNextAccountAttempt, doRenameAccountAttempt } from "./accountSlice"
+import { loadNextAccountAttempt, doRenameAccountAttempt, isAccountVisible } from "./accountSlice"
 import PassphraseEntryDialog, {
     askPassphrase,
 } from "../../components/Shared/PassphraseEntryDialog"
@@ -21,11 +22,11 @@ import { NextAccountResponse, RenameAccountResponse } from "../../proto/api_pb"
 import {
     getAccountPrefs,
     updateAccountPreference,
-    IIndexedAccountPrefs,
 } from "../appconfiguration/settingsSlice"
 import { getWalletBalances } from "./walletBalanceSlice"
 import { getConnectedEndpointId } from "../app/appSlice"
 import { Amount } from "../../components/Shared/Amount"
+import { AppConfiguration } from "../../proto/walletgui_pb"
 
 function enterHandler(
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -70,10 +71,7 @@ interface IAddAccountProps {
     onEditComplete: (value: string) => void
 }
 
-class AddAccountComponent extends React.Component<
-    IAddAccountProps,
-    { visible: boolean }
-> {
+class AddAccountComponent extends React.Component<IAddAccountProps, { visible: boolean }> {
     constructor(props: IAddAccountProps) {
         super(props)
         this.state = {
@@ -166,23 +164,13 @@ class AccountsSetup extends React.Component<Props, InternalState> {
 
                 {accounts.map((account) => {
                     const accountNumber = account.getAccountNumber()
-                    const hiddenPrefValue = this.props.accountPrefs[
-                        accountNumber
-                    ]
-                        ? this.props.accountPrefs[accountNumber].getIsHidden()
-                        : false
-                    const totalBalance = this.props.accountBalances[
-                        accountNumber
-                    ]
-                        ? this.props.accountBalances[accountNumber].getTotal()
-                        : 0
-                    const votingAuthBalance = this.props.accountBalances[
-                        accountNumber
-                    ]
-                        ? this.props.accountBalances[
-                              accountNumber
-                          ].getVotingAuthority()
-                        : 0
+
+                    const totalBalance = this.props.accountBalances[accountNumber] ?
+                        this.props.accountBalances[accountNumber].getTotal() : 0
+
+                    const votingAuthBalance = this.props.accountBalances[accountNumber] ?
+                        this.props.accountBalances[accountNumber].getVotingAuthority() : 0
+
                     return (
                         <Row key={`account-row-${accountNumber}`}>
                             <Col xs={6}>
@@ -226,19 +214,17 @@ class AccountsSetup extends React.Component<Props, InternalState> {
                             </Col>
                             <Col xs={2}>
                                 <Form.Check
-                                    checked={hiddenPrefValue}
+                                    checked={!this.props.isAccountVisible(accountNumber)}
                                     type="switch"
                                     id={`account-visibility-${accountNumber}`}
-                                    onChange={(
-                                        e: React.FormEvent<HTMLInputElement>
-                                    ) =>
+                                    label=""
+                                    onChange={(e: React.FormEvent<HTMLInputElement>) =>
                                         this.props.updateAccountPreference(
                                             this.props.walletEndpointId,
                                             accountNumber,
                                             e.currentTarget.checked
                                         )
                                     }
-                                    label=""
                                 />
                             </Col>
                         </Row>
@@ -261,13 +247,14 @@ class AccountsSetup extends React.Component<Props, InternalState> {
 
 interface OwnProps {
     accounts: IndexedWalletAccounts
-    accountPrefs: IIndexedAccountPrefs
+    accountPrefs: jspb.Map<number, AppConfiguration.AccountPreference>
     accountBalances: WalletBalance
     walletEndpointId: string
     renameAccountResponse: RenameAccountResponse | null
     errorRenameAccount: AppError | null
     nextAccountResponse: NextAccountResponse | null
     errorNextAccount: AppError | null
+    isAccountVisible: (accountNumber: number) => boolean
 }
 
 const mapStateToProps = function (state: IApplicationState): OwnProps {
@@ -281,6 +268,9 @@ const mapStateToProps = function (state: IApplicationState): OwnProps {
         errorRenameAccount: state.accounts.errorRenameAccount,
         nextAccountResponse: state.accounts.nextAccountResponse,
         errorNextAccount: state.accounts.errorNextAccount,
+        isAccountVisible: (accountNumber: number) => {
+            return isAccountVisible(state, accountNumber)
+        }
     }
 }
 
