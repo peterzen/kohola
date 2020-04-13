@@ -1,8 +1,26 @@
 ## Kohola Decred Wallet 
 
-<abbr title="`Kohola' means `whale' in Hawaiian">Kohola</abbr> is a multi platform Decred wallet application for power users running wallets in dedicated, secure environments.  It connects to existing `dcrwallet` instances; it is particularly tailored to expert users that are familiar with operating advanced setups.  For new users, [Decrediton](https://github.com/decred/decrediton) is a better choice.
+<abbr title="'Kohola' means 'whale' in Hawaiian">Kohola</abbr> is a multi platform Decred wallet application for power users running wallets in dedicated, secure environments.  It connects to existing `dcrwallet` instances; it is particularly tailored to expert users that are familiar with operating advanced setups.  For new users, [Decrediton](https://github.com/decred/decrediton) is a better choice.
 
-## `dcrwallet` setup
+## Features
+
+### Coin control
+
+### Security and privacy
+
+Kohola protects connection credentials (RPC certificate) and all other connection information by storing its configuration in encrypted form (using AES).  This is optional, but highly recommended, along with a choosing a long, strong passphrase.  The passphrase is prompted when the application is started.
+
+### UTXO and transaction metadata
+
+Unspent transaction outputs (spendable coins) can be labelled individually in order to keep tabs on the observers associated with a transaction.
+
+## Implementation
+
+Kohola is a hybrid, cross platform application.  Its core that interacts with `dcrwallet` via gRPC is coded in Golang, while the user interface frontend is implemented in TypeScript, using the React and Redux frameworks.  The frontend and the backend communicate over a JSON RPC interface.
+
+## Installation
+
+### `dcrwallet` setup
 
 Kohola connects to `dcrwallet` using GRPC, which can be enabled using the `grpclisten` option in `dcrwallet.conf`:
 
