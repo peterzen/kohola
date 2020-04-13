@@ -1,8 +1,6 @@
 import _ from "lodash"
 import * as React from "react"
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBook } from "@fortawesome/free-solid-svg-icons"
 import { Card } from "react-bootstrap"
 
 import { Transaction } from "../../middleware/models"

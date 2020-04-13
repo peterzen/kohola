@@ -188,13 +188,15 @@ const LorcaBackend = {
             const ser = rawToHex(request.serializeBinary().buffer)
             // XXX we shouldn't have to serialize to hex but the built-in
             // lorca JSON serializer fails on this object.
+            console.log("RESPONSE ser", request.toObject())
             const r = await w.walletrpc__ConstructTransaction(ser)
+            console.log("RESPONSE r", r)
             if (r.error != undefined) {
                 throw r.error
             }
             return ConstructTransactionResponse.deserializeBinary(r.payload)
         } catch (e) {
-            console.error("Serialization error", e)
+            console.error("constructTransaction", e)
             throw e
         }
     },
@@ -203,12 +205,11 @@ const LorcaBackend = {
         try {
             const ser = rawToHex(request.serializeBinary().buffer)
             const r = await w.walletrpc__CreateTransaction(ser)
+
             if (r.error != undefined) {
                 throw r.error
             }
-            const response = ConstructTransactionResponse.deserializeBinary(
-                r.payload
-            )
+            const response = ConstructTransactionResponse.deserializeBinary(r.payload)
             console.log("RESPONSE", response.toObject())
             return response
         } catch (e) {

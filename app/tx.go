@@ -5,6 +5,8 @@ import (
 	"context"
 	"fmt"
 
+	"google.golang.org/grpc/status"
+
 	"decred.org/dcrwallet/errors"
 	"decred.org/dcrwallet/rpc/walletrpc"
 	"decred.org/dcrwallet/wallet/txsizes"
@@ -14,6 +16,7 @@ import (
 	"github.com/decred/dcrd/txscript/v3"
 	"github.com/decred/dcrd/wire"
 	"github.com/decred/dcrwallet/wallet/txauthor"
+	"github.com/decred/dcrwallet/wallet/txrules"
 
 	"github.com/peterzen/kohola/walletgui"
 )
@@ -50,100 +53,6 @@ func getScriptSize(pkScript []byte) (int, error) {
 	}
 }
 
-// _CreateRawTransaction creates a new raw transaction.
-func _CreateRawTransaction(ctx context.Context, req *walletgui.CreateTransactionRequest) (
-	*walletgui.CreateTransactionResponse, error) {
-
-	// Validate the locktime
-	if req.LockTime > int64(wire.MaxTxInSequenceNum) {
-		return nil, errors.E(errors.Invalid, "Locktime out of range")
-	}
-
-	chainParams := getChainParams()
-	// feeRate := dcrutil.Amount(req.FeeRate)
-	tx := wire.NewMsgTx()
-
-	// Add all transaction inputs to a new transaction after performing
-	// some validity checks.
-	for _, input := range req.SourceOutputs {
-		txHash, err := chainhash.NewHash(input.TransactionHash)
-		if err != nil {
-			return nil, errors.E(errors.Invalid, err)
-		}
-
-		switch int8(input.Tree) {
-		case wire.TxTreeRegular, wire.TxTreeStake:
-		default:
-			return nil, errors.E(errors.Invalid, "Tx tree must be regular or stake")
-		}
-
-		if input.Amount < 0 {
-			return nil, errors.E(errors.Invalid, "Positive input amount is required")
-		}
-
-		prevOut := wire.NewOutPoint(txHash, input.OutputIndex, int8(input.Tree))
-		txIn := wire.NewTxIn(prevOut, input.Amount, nil)
-		if req.LockTime != 0 {
-			txIn.Sequence = wire.MaxTxInSequenceNum - 1
-		}
-		tx.AddTxIn(txIn)
-	}
-
-	// Add all transaction outputs to the transaction after performing
-	// some validity checks.
-	for encodedAddr, amount := range req.Amounts {
-		// Ensure amount is in the valid range for monetary amounts.
-		if amount <= 0 || amount > dcrutil.MaxAmount {
-			return nil, errors.E(errors.Invalid, "Invalid amount: 0 >= %v > %v", amount, dcrutil.MaxAmount)
-		}
-
-		// Decode the provided address.  This also ensures the network encoded
-		// with the address matches the network the server is currently on.
-		addr, err := dcrutil.DecodeAddress(encodedAddr, chainParams)
-		if err != nil {
-			return nil, errors.E(errors.Invalid, "Address %q: %v", encodedAddr, err)
-		}
-
-		// Ensure the address is one of the supported types.
-		switch addr.(type) {
-		case *dcrutil.AddressPubKeyHash:
-		case *dcrutil.AddressScriptHash:
-		default:
-			return nil, errors.E(errors.Invalid, "Invalid type: %T", addr)
-		}
-
-		// Create a new script which pays to the provided address.
-		pkScript, err := txscript.PayToAddrScript(addr)
-		if err != nil {
-			return nil, errors.E(errors.Bug, "Pay to address script: %v", err)
-		}
-
-		txOut := wire.NewTxOut(amount, pkScript)
-		tx.AddTxOut(txOut)
-	}
-
-	// Set the Locktime, if given.
-	if req.LockTime != -1 {
-		tx.LockTime = uint32(req.LockTime)
-	}
-
-	// Set the Expiry, if given.
-	if req.Expiry != -1 {
-		tx.Expiry = uint32(req.Expiry)
-	}
-
-	var txBuf bytes.Buffer
-	txBuf.Grow(tx.SerializeSize())
-	err := tx.Serialize(&txBuf)
-	if err != nil {
-		return nil, err
-	}
-
-	return &walletgui.CreateTransactionResponse{
-		UnsignedTransaction: txBuf.Bytes(),
-	}, nil
-}
-
 // noInputValue describes an error returned by the input source when no inputs
 // were selected because each previous output value was zero.  Callers of
 // txauthor.NewUnsignedTransaction need not report these errors to the user.
@@ -155,7 +64,7 @@ func (noInputValue) Error() string { return "no input value" }
 // makeInputSource creates an InputSource that creates inputs for every unspent
 // output with non-zero output values.  The target amount is ignored since every
 // output is consumed.  The InputSource does not return any previous output
-// scripts as they are not needed for creating the unsinged transaction and are
+// scripts as they are not needed for creating the signed transaction and are
 // looked up again by the wallet during the call to signrawtransaction.
 func makeInputSource(outputs []*walletgui.UnspentOutput) txauthor.InputSource {
 	var (
@@ -246,6 +155,14 @@ func CreateTransaction(ctx context.Context, req *walletgui.CreateTransactionRequ
 	// 	sourceOutputs[unspentOutput.Address] = append(sourceAddressOutputs, unspentOutput)
 	// }
 
+	if len(req.SourceOutputs) < 1 {
+		return nil, status.Error(10, "No inputs provided")
+	}
+
+	if req.SendAllFlag && len(req.Amounts) != 1 {
+		return nil, status.Errorf(10, "There should be only 1 output when sending Max amount")
+	}
+
 	chainParams := getChainParams()
 	feeRate := dcrutilv2.Amount(req.FeeRate)
 	inputSource := makeInputSource(req.SourceOutputs)
@@ -253,16 +170,16 @@ func CreateTransaction(ctx context.Context, req *walletgui.CreateTransactionRequ
 
 	for encodedAddr, amount := range req.Amounts {
 
-		// Ensure amount is in the valid range for monetary amounts.
+		// Ensure amount is in the valid range
 		if amount <= 0 || amount > dcrutil.MaxAmount {
-			return nil, errors.E(errors.Invalid, "Invalid amount: 0 >= %v > %v", amount, dcrutil.MaxAmount)
+			return nil, status.Errorf(10, "Invalid amount: 0 >= %v > %v", amount, dcrutil.MaxAmount)
 		}
 
-		// Decode the provided address.  This also ensures the network encoded
-		// with the address matches the network the server is currently on.
+		// Decode the provided address and validate the network encoded
+		// with the address
 		addr, err := dcrutil.DecodeAddress(encodedAddr, chainParams)
 		if err != nil {
-			return nil, errors.E(errors.Invalid, "Address %q: %v", encodedAddr, err)
+			return nil, status.Errorf(10, "Address %s: %s", encodedAddr, err)
 		}
 
 		// Ensure the address is one of the supported types.
@@ -270,15 +187,23 @@ func CreateTransaction(ctx context.Context, req *walletgui.CreateTransactionRequ
 		case *dcrutil.AddressPubKeyHash:
 		case *dcrutil.AddressScriptHash:
 		default:
-			return nil, errors.E(errors.Invalid, "Invalid type: %T", addr)
+			return nil, status.Errorf(10, "Invalid type: %T", addr)
 		}
 
 		// Create a new script which pays to the provided address.
 		pkScript, err := txscript.PayToAddrScript(addr)
 		if err != nil {
-			return nil, errors.E(errors.Bug, "Pay to address script: %v", err)
+			return nil, status.Errorf(10, "Pay to address script: %v", err)
 		}
 
+		// When sending all available funds, substract the estimated fee from the amount
+		if req.SendAllFlag {
+			tmpTxOutputs := []*wire.TxOut{
+				wire.NewTxOut(amount, pkScript),
+			}
+			feeEstimate := estimateFee(tmpTxOutputs, feeRate)
+			amount = int64(amount) - feeEstimate
+		}
 		txOut := wire.NewTxOut(amount, pkScript)
 		txOutputs = append(txOutputs, txOut)
 	}
@@ -288,14 +213,14 @@ func CreateTransaction(ctx context.Context, req *walletgui.CreateTransactionRequ
 	}
 	atx, err := txauthor.NewUnsignedTransaction(txOutputs, feeRate, inputSource, destinationSourceToAccount)
 	if err != nil {
-		return nil, err
+		return nil, status.Error(10, err.Error())
 	}
 
 	var txBuf bytes.Buffer
 	txBuf.Grow(atx.Tx.SerializeSize())
 	err = atx.Tx.Serialize(&txBuf)
 	if err != nil {
-		return nil, err
+		return nil, status.Errorf(10, "Serialize: %s", err)
 	}
 
 	response := &walletrpc.ConstructTransactionResponse{
@@ -303,7 +228,69 @@ func CreateTransaction(ctx context.Context, req *walletgui.CreateTransactionRequ
 		TotalPreviousOutputAmount: int64(atx.TotalInput),
 		TotalOutputAmount:         int64(sumOutputValues(atx.Tx.TxOut)),
 		EstimatedSignedSize:       uint32(atx.EstimatedSignedSerializeSize),
-		ChangeIndex:               -1,
+		ChangeIndex:               int32(atx.ChangeIndex),
+	}
+	return response, nil
+}
+
+// ConstructTransaction constructs a new tx using auto utxo selection
+func ConstructTransaction(ctx context.Context, req *walletgui.CreateTransactionRequest) (
+	*walletrpc.ConstructTransactionResponse, error) {
+
+	request := &walletrpc.ConstructTransactionRequest{
+		SourceAccount:         req.SourceAccount,
+		RequiredConfirmations: req.RequiredConfirmations,
+		FeePerKb:              req.FeeRate,
+	}
+
+	if req.SendAllFlag == true {
+		if len(req.Amounts) > 1 {
+			return nil, status.Errorf(10, "Too many outputs provided for a send all request")
+		} else if len(req.Amounts) == 0 {
+			return nil, status.Errorf(10, "No destination specified for send all request")
+		}
+
+		request.OutputSelectionAlgorithm = walletrpc.ConstructTransactionRequest_ALL
+		outputDst := &walletrpc.ConstructTransactionRequest_OutputDestination{}
+		for address := range req.Amounts {
+			outputDst.Address = address
+		}
+		request.ChangeDestination = outputDst
+	} else {
+		request.OutputSelectionAlgorithm = walletrpc.ConstructTransactionRequest_UNSPECIFIED
+		request.NonChangeOutputs = make([]*walletrpc.ConstructTransactionRequest_Output, len(req.Amounts))
+
+		i := 0
+		totalAmount := int64(0)
+		for address, amount := range req.Amounts {
+			outputDst := &walletrpc.ConstructTransactionRequest_OutputDestination{
+				Address: address,
+			}
+			output := &walletrpc.ConstructTransactionRequest_Output{
+				Destination: outputDst,
+				Amount:      amount,
+			}
+			request.NonChangeOutputs[i] = output
+			totalAmount += amount
+			i++
+		}
+		changeAddress, err := getChangeAddress(req.ChangeAccount)
+		if err != nil {
+			return nil, status.Errorf(10, "Unable to obtain change address: %s", err)
+		}
+		changeScript, err := txscript.PayToAddrScript(*changeAddress)
+		if err != nil {
+			return nil, status.Errorf(10, "Unable to obtain change script: %s", err)
+		}
+
+		changeDest := &walletrpc.ConstructTransactionRequest_OutputDestination{
+			Script: changeScript,
+		}
+		request.ChangeDestination = changeDest
+	}
+	response, err := walletServiceClient.ConstructTransaction(ctx, request)
+	if err != nil {
+		return nil, status.Errorf(10, "ConstructTransaction: %s", err)
 	}
 	return response, nil
 }
@@ -329,4 +316,11 @@ func parseOutPoint(input *walletgui.UnspentOutput) (wire.OutPoint, error) {
 		Index: input.OutputIndex,
 		Tree:  int8(input.Tree),
 	}, nil
+}
+
+func estimateFee(outputs []*wire.TxOut, relayFeePerKb dcrutilv2.Amount) int64 {
+	scriptSizes := []int{txsizes.RedeemP2PKHSigScriptSize}
+	changeScriptSize := 25 // P2PKHPkScriptSize
+	maxSignedSize := txsizes.EstimateSerializeSize(scriptSizes, outputs, changeScriptSize)
+	return int64(txrules.FeeForSerializeSize(relayFeePerKb, maxSignedSize))
 }

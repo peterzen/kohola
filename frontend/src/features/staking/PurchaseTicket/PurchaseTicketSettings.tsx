@@ -17,7 +17,7 @@ import {
 
 import { IApplicationState, AppError } from "../../../store/types"
 import { AccountSelector } from "../../../components/Shared/shared"
-import FeeChooserInput from "../FeeChooserInput"
+import FeeChooserInput from "../../transactions/FeeChooserInput"
 import { PurchaseTicketsRequest } from "../../../proto/api_pb"
 
 class PurchaseTicketSettingsForm extends React.Component<Props, InternalState> {

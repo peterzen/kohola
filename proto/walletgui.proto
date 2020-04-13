@@ -175,18 +175,20 @@ message UnspentOutput {
 
 message CreateTransactionRequest {
   repeated UnspentOutput source_outputs = 1;
-  //repeated TransactionInput inputs = 1;
   map<string, int64> amounts = 2;
   int64 lock_time = 3;
   int64 expiry = 4;
-  int64 fee_rate = 5;
+  int32 fee_rate = 5;
   uint32 source_account = 6;
   uint32 change_account = 7;
+  int32 required_confirmations = 8;
+  bool send_all_flag = 9;
 }
 
 message CreateTransactionResponse {
   bytes unsigned_transaction = 1;
   int32 estimated_signed_size = 2;
+  int64 estimated_fee = 3;
 }
 
 

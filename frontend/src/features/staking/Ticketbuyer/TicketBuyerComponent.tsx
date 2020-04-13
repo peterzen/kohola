@@ -15,7 +15,7 @@ import {
 } from "react-bootstrap"
 
 import { AccountSelector } from "../../../components/Shared/shared"
-import FeeChooserInput from "../FeeChooserInput"
+import FeeChooserInput from "../../transactions/FeeChooserInput"
 import { AppError, IApplicationState } from "../../../store/types"
 import OnOffIndicator from "../../../components/Shared/OnOffIndicator"
 import {

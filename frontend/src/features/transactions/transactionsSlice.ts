@@ -10,13 +10,10 @@ import {
     PublishTransactionResponse,
     ValidateAddressResponse,
     SweepAccountResponse,
-    DecodedTransaction,
 } from "../../proto/api_pb"
 import { TransactionType, TransactionDirection } from "../../constants"
-import {
-    CreateTransactionRequest,
-    CreateTransactionResponse,
-} from "../../proto/walletgui_pb"
+import { AuthoredTransactionMetadata } from "./models"
+
 
 // GetTransactions
 export interface GetTransactionsState {
@@ -26,26 +23,18 @@ export interface GetTransactionsState {
     readonly endBlockHeight: number
     readonly targetTxCount: number
     readonly activeTypeFilter:
-        | TransactionDetails.TransactionTypeMap[keyof TransactionDetails.TransactionTypeMap]
-        | null
+    | TransactionDetails.TransactionTypeMap[keyof TransactionDetails.TransactionTypeMap]
+    | null
     readonly errorGetTransactions: AppError | null
 }
 
-// ConstructTransaction
-export interface ConstructTransactionState {
-    readonly errorConstructTransaction: AppError | null
-    readonly constructTransactionRequest: ConstructTransactionRequest | null
-    readonly constructTransactionAttempting: boolean
-    readonly changeScriptCache: IChangeScriptByAccount | undefined
+// CreateTransaction
+export interface CreateTransactionState {
+    readonly errorCreateTransaction: AppError | null
+    readonly createTransactionRequest: ConstructTransactionRequest | null
+    readonly createTransactionAttempting: boolean
     readonly unsignedTransaction: Uint8Array | null
-}
-
-// CreateRawTransaction
-export interface CreateRawTransactionState {
-    readonly errorCreateRawTransaction: AppError | null
-    readonly createRawTransactionRequest: CreateTransactionRequest | null
-    readonly createRawTransactionResponse: CreateTransactionResponse | null
-    readonly createRawTransactionAttempting: boolean
+    readonly txInfo: AuthoredTransactionMetadata | null
 }
 
 // SignTransaction
@@ -76,108 +65,17 @@ export interface SweepAccountState {
     readonly errorSweepAccount: AppError | null
 }
 
-export enum SendTransactionSteps {
-    CONSTRUCT_DIALOG,
-    SIGN_DIALOG,
-    PUBLISH_DIALOG,
-    PUBLISH_CONFIRM_DIALOG,
-}
-
-export class AuthoredTransactionMetadata {
-    unsignedTx: Uint8Array
-    decodedTx: DecodedTransaction
-    totalInputAmount: number
-    totalOutputAmount: number
-    fee: number
-    feeRate: number | undefined
-    sourceAccount: WalletAccount | undefined
-    constructTxReq: ConstructTransactionRequest | undefined
-    changeAddress: string | undefined
-    nonChangeOutputs: { address: string; amount: number }[]
-
-    constructor(
-        unsignedTx: Uint8Array,
-        tx: DecodedTransaction,
-        sourceAccount?: WalletAccount,
-        constructTxReq?: ConstructTransactionRequest
-    ) {
-        this.unsignedTx = unsignedTx
-        this.decodedTx = tx
-        this.sourceAccount = sourceAccount
-        this.totalInputAmount = _.reduce(
-            tx.getInputsList(),
-            (sum, input) => sum + input.getAmountIn(),
-            0
-        )
-        this.totalOutputAmount = _.reduce(
-            tx.getOutputsList(),
-            (sum, output) => sum + output.getValue(),
-            0
-        )
-        this.fee = this.totalOutputAmount - this.totalInputAmount
-        if (constructTxReq != undefined) {
-            this.changeAddress = constructTxReq
-                .getChangeDestination()
-                ?.getAddress()
-            this.feeRate = constructTxReq.getFeePerKb()
-            const outputs = _.map(
-                constructTxReq.getNonChangeOutputsList(),
-                (o) => {
-                    if (o.getDestination() == undefined) return
-                    return {
-                        address: o.getDestination()?.getAddress(),
-                        amount: o.getAmount(),
-                    }
-                }
-            )
-            // @ts-ignore
-            this.nonChangeOutputs = _.compact(outputs)
-        } else {
-            // CreateRawTransaction
-            const outputs = _.map(this.decodedTx.getOutputsList(), (output) => {
-                if (_.first(output.getAddressesList()) == undefined) return null
-                return {
-                    address: _.first(output.getAddressesList()),
-                    amount: output.getValue(),
-                }
-            })
-            // @ts-ignore
-            this.nonChangeOutputs = _.compact(outputs)
-        }
-    }
-}
-
-export interface IChangeScriptByAccount {
-    [accountNumber: number]: Buffer
-}
-
-// Send transaction
-export interface GUISendTransaction {
-    readonly txInfo: AuthoredTransactionMetadata | null
-    readonly sendTransactionCurrentStep: SendTransactionSteps
-}
-
-interface IConstructTransactionSuccessPayload {
+interface ICreateTransactionSuccessPayload {
     txInfo: AuthoredTransactionMetadata
     unsignedTx: Uint8Array
-    currentStep: SendTransactionSteps
-    changeScriptCache?: IChangeScriptByAccount
-}
-
-interface IICreateRawTransactionSuccessPayload {
-    txInfo: AuthoredTransactionMetadata
-    response: CreateTransactionResponse
-    currentStep: SendTransactionSteps
 }
 
 export const initialState: GetTransactionsState &
-    ConstructTransactionState &
-    CreateRawTransactionState &
+    CreateTransactionState &
     SignTransactionState &
     PublishTransactionState &
     ValidateAddressState &
-    SweepAccountState &
-    GUISendTransaction = {
+    SweepAccountState = {
     txList: [],
     getTransactionsAttempting: false,
     errorGetTransactions: null,
@@ -199,18 +97,12 @@ export const initialState: GetTransactionsState &
     targetTxCount: 1000,
     activeTypeFilter: TransactionType.REGULAR,
 
-    // ConstructTransaction
-    changeScriptCache: {},
-    errorConstructTransaction: null,
-    constructTransactionRequest: null,
-    constructTransactionAttempting: false,
+    // CreateTransaction
+    errorCreateTransaction: null,
+    createTransactionRequest: null,
+    createTransactionAttempting: false,
     unsignedTransaction: null,
-
-    // CreateRawTransaction
-    errorCreateRawTransaction: null,
-    createRawTransactionRequest: null,
-    createRawTransactionResponse: null,
-    createRawTransactionAttempting: false,
+    txInfo: null,
 
     // SignTransaction
     signTransactionAttempting: false,
@@ -218,7 +110,6 @@ export const initialState: GetTransactionsState &
     errorSignTransaction: null,
 
     // PublishTransaction
-    txInfo: null,
     publishTransactionAttempting: false,
     publishTransactionResponse: null,
     errorPublishTransaction: null,
@@ -233,8 +124,6 @@ export const initialState: GetTransactionsState &
     sweepAccountResponse: null,
     errorSweepAccount: null,
 
-    // Send transaction GUI
-    sendTransactionCurrentStep: SendTransactionSteps.CONSTRUCT_DIALOG,
 }
 
 const transactionsSlice = createSlice({
@@ -257,58 +146,29 @@ const transactionsSlice = createSlice({
         },
 
         // ConstructTransaction
-        constructTransactionAttempt(state) {
-            state.errorConstructTransaction = null
-            state.constructTransactionRequest = null
-            state.constructTransactionAttempting = true
+        createTransactionAttempt(state) {
+            state.errorCreateTransaction = null
+            state.createTransactionRequest = null
+            state.createTransactionAttempting = true
         },
-        constructTransactionFailed(state, action: PayloadAction<AppError>) {
-            state.errorConstructTransaction = action.payload
-            state.constructTransactionRequest = null
-            state.constructTransactionAttempting = false
+        createTransactionFailed(state, action: PayloadAction<AppError>) {
+            state.errorCreateTransaction = action.payload
+            state.createTransactionRequest = null
+            state.createTransactionAttempting = false
         },
-        constructTransactionSuccess(
+        createTransactionSuccess(
             state,
-            action: PayloadAction<IConstructTransactionSuccessPayload>
+            action: PayloadAction<ICreateTransactionSuccessPayload>
         ) {
             const {
                 txInfo,
-                currentStep,
                 unsignedTx,
-                changeScriptCache,
             } = action.payload
             state.txInfo = txInfo
-            state.changeScriptCache = changeScriptCache
-            state.sendTransactionCurrentStep = currentStep
-            state.errorConstructTransaction = null
-            state.constructTransactionRequest = null
-            state.constructTransactionAttempting = false
+            state.errorCreateTransaction = null
+            state.createTransactionRequest = null
+            state.createTransactionAttempting = false
             state.unsignedTransaction = unsignedTx
-        },
-
-        // CreateRawTransaction
-        createRawTransactionAttempt(state) {
-            state.errorCreateRawTransaction = null
-            state.createRawTransactionRequest = null
-            state.createRawTransactionResponse = null
-            state.createRawTransactionAttempting = true
-        },
-        createRawTransactionFailed(state, action: PayloadAction<AppError>) {
-            state.errorCreateRawTransaction = action.payload
-            state.createRawTransactionRequest = null
-            state.createRawTransactionResponse = null
-            state.createRawTransactionAttempting = false
-        },
-        createRawTransactionSuccess(
-            state,
-            action: PayloadAction<IICreateRawTransactionSuccessPayload>
-        ) {
-            const { txInfo, response, currentStep } = action.payload
-            state.txInfo = txInfo
-            state.sendTransactionCurrentStep = currentStep
-            state.createRawTransactionRequest = null
-            state.createRawTransactionResponse = response
-            state.createRawTransactionAttempting = false
         },
 
         // SignTransaction
@@ -316,13 +176,9 @@ const transactionsSlice = createSlice({
             state.errorSignTransaction = null
             state.signTransactionAttempting = true
         },
-        signTransactionCancel(
-            state,
-            action: PayloadAction<SendTransactionSteps>
-        ) {
+        signTransactionCancel(state) {
             state.errorSignTransaction = null
             state.signTransactionAttempting = false
-            state.sendTransactionCurrentStep = action.payload
         },
         signTransactionFailed(state, action: PayloadAction<AppError>) {
             state.errorSignTransaction = action.payload
@@ -330,16 +186,11 @@ const transactionsSlice = createSlice({
         },
         signTransactionSuccess(
             state,
-            action: PayloadAction<{
-                currentStep: SendTransactionSteps
-                response: SignTransactionResponse
-            }>
+            action: PayloadAction<SignTransactionResponse>
         ) {
-            const { currentStep, response } = action.payload
             state.errorSignTransaction = null
-            state.signTransactionResponse = response
+            state.signTransactionResponse = action.payload
             state.signTransactionAttempting = false
-            state.sendTransactionCurrentStep = currentStep
         },
 
         // PublishTransaction
@@ -353,17 +204,12 @@ const transactionsSlice = createSlice({
         },
         publishTransactionSuccess(
             state,
-            action: PayloadAction<{
-                currentStep: SendTransactionSteps
-                response: PublishTransactionResponse
-            }>
+            action: PayloadAction<PublishTransactionResponse>
         ) {
-            const { currentStep, response } = action.payload
             state.txInfo = null
             state.errorPublishTransaction = null
             state.signTransactionResponse = null
-            state.sendTransactionCurrentStep = currentStep
-            state.publishTransactionResponse = response
+            state.publishTransactionResponse = action.payload
             state.publishTransactionAttempting = false
         },
 
@@ -371,8 +217,6 @@ const transactionsSlice = createSlice({
             state.txInfo = null
             state.errorPublishTransaction = null
             state.signTransactionResponse = null
-            state.sendTransactionCurrentStep =
-                SendTransactionSteps.CONSTRUCT_DIALOG
             state.publishTransactionResponse = null
             state.publishTransactionAttempting = false
 
@@ -380,13 +224,9 @@ const transactionsSlice = createSlice({
             state.signTransactionResponse = null
             state.signTransactionAttempting = false
 
-            state.errorCreateRawTransaction = null
-            state.createRawTransactionRequest = null
-            state.createRawTransactionResponse = null
-            state.createRawTransactionAttempting = false
-            state.errorConstructTransaction = null
-            state.constructTransactionRequest = null
-            state.constructTransactionAttempting = false
+            state.errorCreateTransaction = null
+            state.createTransactionRequest = null
+            state.createTransactionAttempting = false
             state.unsignedTransaction = null
         },
 
@@ -431,15 +271,10 @@ export const {
     getTransactionsFailed,
     getTransactionsSuccess,
 
-    // ConstructTransaction
-    constructTransactionAttempt,
-    constructTransactionFailed,
-    constructTransactionSuccess,
-
-    // CreateRawTransaction
-    createRawTransactionAttempt,
-    createRawTransactionFailed,
-    createRawTransactionSuccess,
+    // CreateTransaction
+    createTransactionAttempt,
+    createTransactionFailed,
+    createTransactionSuccess,
 
     // SignTransaction
     signTransactionAttempt,
@@ -495,7 +330,7 @@ export const getWalletTransactions = (
         .filter(
             (t) =>
                 t.getDirection() ==
-                    TransactionDirection.TRANSACTION_DIR_RECEIVED ||
+                TransactionDirection.TRANSACTION_DIR_RECEIVED ||
                 t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT
         )
         .orderBy((e) => e.getTimestamp(), "desc")
@@ -511,7 +346,7 @@ export const getAddressTransactions = (
         .filter(
             (t) =>
                 t.getDirection() ==
-                    TransactionDirection.TRANSACTION_DIR_RECEIVED ||
+                TransactionDirection.TRANSACTION_DIR_RECEIVED ||
                 t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT
         )
         .filter((t) => {
@@ -526,13 +361,12 @@ export const getAccountTransactions = (
     state: IApplicationState,
     account: WalletAccount
 ): Transaction[] => {
-    const accountNumber = account.getAccountNumber()
     return _.chain(getTransactions(state))
         .filter((t) => t.getType() == state.transactions.activeTypeFilter)
         .filter(
             (t) =>
                 t.getDirection() ==
-                    TransactionDirection.TRANSACTION_DIR_RECEIVED ||
+                TransactionDirection.TRANSACTION_DIR_RECEIVED ||
                 t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT
         )
         .filter((t) => isTxLinkedToAccount(t, account))
@@ -542,12 +376,6 @@ export const getAccountTransactions = (
 
 export const getTransactions = (state: IApplicationState): Transaction[] => {
     return _.orderBy(state.transactions.txList, (e) => e.getTimestamp(), "desc")
-}
-
-export const getChangeScriptCache = (
-    state: IApplicationState
-): IChangeScriptByAccount => {
-    return state.transactions.changeScriptCache || {}
 }
 
 function isTxLinkedToAccount(tx: Transaction, account: WalletAccount): boolean {

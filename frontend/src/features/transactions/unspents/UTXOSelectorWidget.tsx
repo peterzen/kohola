@@ -33,21 +33,21 @@ class UTXOSelectorWidget extends React.Component<Props, InternalState> {
         return (
             <div>
                 {utxos != undefined && haveUtxos && (
-                    <Table hover>
+                    <Table hover size="sm">
                         <thead>
                             <tr>
                                 <th>Hash</th>
                                 <th>Timestamp</th>
-                                <th>Amount</th>
+                                <th style={{width:"10rem"}}>Amount</th>
                                 <th>
-                                    <Form.Check
+                                    {/* <Form.Check
                                         disabled
                                         type="checkbox"
                                         tabIndex={3}
                                         readOnly
                                         checked={false}
                                         label=""
-                                    />
+                                    /> */}
                                 </th>
                             </tr>
                         </thead>

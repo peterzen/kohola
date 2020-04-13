@@ -10,7 +10,6 @@ import (
 	"log"
 	"time"
 
-	// walletjson "github.com/decred/dcrwallet/rpc/jsonrpc/types"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 

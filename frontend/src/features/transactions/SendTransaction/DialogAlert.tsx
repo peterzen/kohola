@@ -14,7 +14,7 @@ const DialogAlert = (props: IDialogAlertProps) => {
     if (props.error == null) return null
 
     let msg = ""
-    console.error("Unhandled ERROR in DialogAlert", props.error)
+    // console.error("Unhandled ERROR in DialogAlert", props.error)
 
     switch (props.error.code) {
         case 8:

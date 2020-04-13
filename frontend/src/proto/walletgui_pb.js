@@ -5554,7 +5554,9 @@ proto.walletgui.CreateTransactionRequest.toObject = function(includeInstance, ms
     expiry: jspb.Message.getFieldWithDefault(msg, 4, 0),
     feeRate: jspb.Message.getFieldWithDefault(msg, 5, 0),
     sourceAccount: jspb.Message.getFieldWithDefault(msg, 6, 0),
-    changeAccount: jspb.Message.getFieldWithDefault(msg, 7, 0)
+    changeAccount: jspb.Message.getFieldWithDefault(msg, 7, 0),
+    requiredConfirmations: jspb.Message.getFieldWithDefault(msg, 8, 0),
+    sendAllFlag: jspb.Message.getBooleanFieldWithDefault(msg, 9, false)
   };
 
   if (includeInstance) {
@@ -5611,7 +5613,7 @@ proto.walletgui.CreateTransactionRequest.deserializeBinaryFromReader = function(
       msg.setExpiry(value);
       break;
     case 5:
-      var value = /** @type {number} */ (reader.readInt64());
+      var value = /** @type {number} */ (reader.readInt32());
       msg.setFeeRate(value);
       break;
     case 6:
@@ -5621,6 +5623,14 @@ proto.walletgui.CreateTransactionRequest.deserializeBinaryFromReader = function(
     case 7:
       var value = /** @type {number} */ (reader.readUint32());
       msg.setChangeAccount(value);
+      break;
+    case 8:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRequiredConfirmations(value);
+      break;
+    case 9:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSendAllFlag(value);
       break;
     default:
       reader.skipField();
@@ -5679,7 +5689,7 @@ proto.walletgui.CreateTransactionRequest.serializeBinaryToWriter = function(mess
   }
   f = message.getFeeRate();
   if (f !== 0) {
-    writer.writeInt64(
+    writer.writeInt32(
       5,
       f
     );
@@ -5695,6 +5705,20 @@ proto.walletgui.CreateTransactionRequest.serializeBinaryToWriter = function(mess
   if (f !== 0) {
     writer.writeUint32(
       7,
+      f
+    );
+  }
+  f = message.getRequiredConfirmations();
+  if (f !== 0) {
+    writer.writeInt32(
+      8,
+      f
+    );
+  }
+  f = message.getSendAllFlag();
+  if (f) {
+    writer.writeBool(
+      9,
       f
     );
   }
@@ -5798,7 +5822,7 @@ proto.walletgui.CreateTransactionRequest.prototype.setExpiry = function(value) {
 
 
 /**
- * optional int64 fee_rate = 5;
+ * optional int32 fee_rate = 5;
  * @return {number}
  */
 proto.walletgui.CreateTransactionRequest.prototype.getFeeRate = function() {
@@ -5851,6 +5875,42 @@ proto.walletgui.CreateTransactionRequest.prototype.setChangeAccount = function(v
 };
 
 
+/**
+ * optional int32 required_confirmations = 8;
+ * @return {number}
+ */
+proto.walletgui.CreateTransactionRequest.prototype.getRequiredConfirmations = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.walletgui.CreateTransactionRequest} returns this
+ */
+proto.walletgui.CreateTransactionRequest.prototype.setRequiredConfirmations = function(value) {
+  return jspb.Message.setProto3IntField(this, 8, value);
+};
+
+
+/**
+ * optional bool send_all_flag = 9;
+ * @return {boolean}
+ */
+proto.walletgui.CreateTransactionRequest.prototype.getSendAllFlag = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 9, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.walletgui.CreateTransactionRequest} returns this
+ */
+proto.walletgui.CreateTransactionRequest.prototype.setSendAllFlag = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 9, value);
+};
+
+
 
 
 
@@ -5884,7 +5944,8 @@ proto.walletgui.CreateTransactionResponse.prototype.toObject = function(opt_incl
 proto.walletgui.CreateTransactionResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     unsignedTransaction: msg.getUnsignedTransaction_asB64(),
-    estimatedSignedSize: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    estimatedSignedSize: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    estimatedFee: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -5929,6 +5990,10 @@ proto.walletgui.CreateTransactionResponse.deserializeBinaryFromReader = function
       var value = /** @type {number} */ (reader.readInt32());
       msg.setEstimatedSignedSize(value);
       break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setEstimatedFee(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -5969,6 +6034,13 @@ proto.walletgui.CreateTransactionResponse.serializeBinaryToWriter = function(mes
   if (f !== 0) {
     writer.writeInt32(
       2,
+      f
+    );
+  }
+  f = message.getEstimatedFee();
+  if (f !== 0) {
+    writer.writeInt64(
+      3,
       f
     );
   }
@@ -6032,6 +6104,24 @@ proto.walletgui.CreateTransactionResponse.prototype.getEstimatedSignedSize = fun
  */
 proto.walletgui.CreateTransactionResponse.prototype.setEstimatedSignedSize = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional int64 estimated_fee = 3;
+ * @return {number}
+ */
+proto.walletgui.CreateTransactionResponse.prototype.getEstimatedFee = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.walletgui.CreateTransactionResponse} returns this
+ */
+proto.walletgui.CreateTransactionResponse.prototype.setEstimatedFee = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 

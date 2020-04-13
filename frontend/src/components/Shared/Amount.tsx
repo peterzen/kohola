@@ -16,8 +16,9 @@ interface AmountProps {
 }
 
 export function Amount(props: AmountProps) {
+    if (props.amount == undefined || !isFinite(props.amount)) return null
     const showCurrency = props.showCurrency || false
-    const rounding = props.rounding || 4
+    const rounding = props.rounding || 8
     const dcrAmount = props.amount / ATOMS_DIVISOR
     const split = dcrAmount.toFixed(rounding).toString().split(".")
     const head = [split[0], split[1].slice(0, 2)].join(".")
@@ -55,8 +56,8 @@ class _FiatAmount extends React.Component<FiatAmountProps> {
                 {showCurrency ? (
                     <span className="currency">{this.props.currency}</span>
                 ) : (
-                    ""
-                )}
+                        ""
+                    )}
             </span>
         )
     }
@@ -67,7 +68,7 @@ interface FiatAmountOwnProps {
     getCurrentExchangeRate: (currencyCode: string) => number
 }
 
-interface FiatAmountDispatchProps {}
+interface FiatAmountDispatchProps { }
 
 const mapStateToProps = (state: IApplicationState) => {
     return {
