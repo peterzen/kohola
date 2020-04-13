@@ -29,15 +29,6 @@ var (
 	savedPassphrase   = ""
 
 	defaultConfig = &AppConfiguration{
-		DcrdEndpoint: &RPCEndpoint{
-			Hostname:     "localhost",
-			Port:         9109,
-			Username:     "gcUGfbMiULCnMm5OkmtDiS845GI=",
-			Password:     "azU+CHeww4WgmBTtRrmyoahL81U=",
-			Network:      Network_SIMNET,
-			CertFileName: "../dcrd-simnet.cert",
-			Label:        "localhost:9109 (SIMNET)",
-		},
 		WalletEndpoints: []*GRPCEndpoint{
 			&GRPCEndpoint{
 				Hostname:     "localhost",

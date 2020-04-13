@@ -3,7 +3,6 @@ import * as React from "react"
 import { connect } from "react-redux"
 
 import { Form, Row, Col, OverlayTrigger, Tooltip } from "react-bootstrap"
-import { UIPreferences } from "../../proto/walletgui_pb"
 import { AppError, IApplicationState, AppDispatch } from "../../store/types"
 
 import {
@@ -13,6 +12,7 @@ import {
 } from "./settingsSlice"
 import { DisplayUnit, FiatCurrency } from "../../constants"
 import { GetPassphraseForConfigEncryptionModal } from "./GetPassphraseForConfigEncryptionModal"
+import { AppConfiguration } from "../../proto/walletgui_pb"
 
 class Preferences extends React.Component<Props, InternalState> {
     constructor(props: Props) {
@@ -166,12 +166,12 @@ class Preferences extends React.Component<Props, InternalState> {
 }
 
 interface OwnProps {
-    uiPreferences: UIPreferences
+    uiPreferences: AppConfiguration.UIPreferences
     setConfigError: AppError | null
 }
 
 interface InternalState {
-    uiPreferences: UIPreferences
+    uiPreferences: AppConfiguration.UIPreferences
     showPassphraseModal: boolean
     passphraseModalCallback: (result: string) => void
 }
@@ -187,7 +187,7 @@ type Props = OwnProps & DispatchProps
 
 interface DispatchProps {
     updateUiPreferences: (
-        uiPreferences: UIPreferences,
+        uiPreferences: AppConfiguration.UIPreferences,
         passphrase?: string
     ) => void
 }
@@ -195,7 +195,7 @@ interface DispatchProps {
 const mapDispatchToProps = (dispatch: AppDispatch) => {
     return {
         updateUiPreferences: (
-            uiPreferences: UIPreferences,
+            uiPreferences: AppConfiguration.UIPreferences,
             passphrase?: string
         ) => {
             dispatch(updateUiPreferences({ uiPreferences: uiPreferences }))

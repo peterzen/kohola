@@ -33,6 +33,7 @@ import PassphraseEntryDialog, {
 } from "../../../components/Shared/PassphraseEntryDialog"
 import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { getConnectedEndpointId } from "../../app/appSlice"
 
 class Ticketbuyer extends React.Component<Props, InternalState> {
     constructor(props: Props) {
@@ -315,7 +316,10 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
             formIsValidated: true,
             isDirty: false,
         })
-        this.props.saveTicketbuyerRequestDefaults(this.state.ticketbuyerRequest)
+        this.props.saveTicketbuyerRequestDefaults(
+            this.props.walletEndpointId,
+            this.state.ticketbuyerRequest
+        )
         return false
     }
 
@@ -342,7 +346,6 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
                 this.setState({ error: err })
                 console.error(err)
                 console.log("askPassphrase", request.toObject())
-                // debugger
             })
     }
 
@@ -407,6 +410,7 @@ interface InternalState {
 interface OwnProps {
     error: AppError | null
     inProgress: boolean
+    walletEndpointId: string
     ticketbuyerRequest: RunTicketBuyerRequest
     runTicketBuyerError: AppError | null
     runTicketBuyerResponse: RunTicketBuyerResponse
@@ -415,13 +419,14 @@ interface OwnProps {
 }
 
 const mapStateToProps = (state: IApplicationState) => {
+    const walletEndpointId = getConnectedEndpointId(state)
     const request =
-        getAppConfig(state).getRunAutoBuyerRequestDefaults() ||
+    getAppConfig(state).getWalletPreferencesMap().get(walletEndpointId)?.getRunAutoBuyerRequestDefaults() ||
         new RunTicketBuyerRequest()
-    // console.error("runTicketBuyerError", state.staking.runTicketBuyerError)
     return {
         error: state.appconfiguration.setConfigError,
         inProgress: state.appconfiguration.setConfigAttempting,
+        walletEndpointId: walletEndpointId,
         ticketbuyerRequest: request,
         runTicketBuyerResponse: state.staking.runTicketBuyerResponse,
         runTicketBuyerError: state.staking.runTicketBuyerError,

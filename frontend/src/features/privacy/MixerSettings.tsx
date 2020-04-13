@@ -22,6 +22,7 @@ import {
 import { ErrorAlert } from "../../components/Shared/FormStatusAlerts"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons"
+import { getConnectedEndpointId } from "../app/appSlice"
 
 class MixerSettingsForm extends React.Component<Props, InternalState> {
     constructor(props: Props) {
@@ -238,6 +239,7 @@ class MixerSettingsForm extends React.Component<Props, InternalState> {
             isDirty: false,
         })
         this.props.saveAccountMixerRequestDefaults(
+            this.props.walletEndpointId,
             this.state.accountmixerRequest
         )
         return false
@@ -265,6 +267,7 @@ interface InternalState {
 interface OwnProps {
     error: AppError | null
     inProgress: boolean
+    walletEndpointId: string
     accountmixerRequest: RunAccountMixerRequest
     runAccountMixerError: AppError | null
     runAccountMixerResponse: RunAccountMixerResponse
@@ -281,13 +284,15 @@ interface DispatchProps {
 type Props = OwnProps & DispatchProps
 
 const mapStateToProps = (state: IApplicationState) => {
+    const walletEndpointId = getConnectedEndpointId(state)
     const request =
-        getAppConfig(state).getAccountMixerRequestDefaults() ||
+        getAppConfig(state).getWalletPreferencesMap().get(walletEndpointId)?.getAccountMixerRequestDefaults() ||
         new RunAccountMixerRequest()
     return {
         error: state.appconfiguration.setConfigError,
         inProgress: state.appconfiguration.setConfigAttempting,
         accountmixerRequest: request,
+        walletEndpointId: walletEndpointId,
         runAccountMixerResponse: state.mixer.runAccountMixerResponse,
         runAccountMixerError: state.mixer.runAccountMixerError,
         isAccountMixerRunning: state.mixer.isAccountMixerRunning,

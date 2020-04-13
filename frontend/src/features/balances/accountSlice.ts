@@ -152,8 +152,8 @@ const accountSlice = createSlice({
         accountNotificationsReceive(
             state,
             action: PayloadAction<AccountNotificationsResponse>
-        ) {},
-        accountNotificationsSubscribe(state) {},
+        ) { },
+        accountNotificationsSubscribe(state) { },
     },
 })
 
@@ -285,11 +285,8 @@ export const doRenameAccountAttempt = (
 export const isAccountVisible = (
     state: IApplicationState,
     accountNumber: number
-) => {
-    const accountPrefs = getAccountPrefs(state)
-    return accountPrefs[accountNumber]
-        ? accountPrefs[accountNumber].getIsHidden() == false
-        : true
+): boolean => {
+    return !!!getAccountPrefs(state)?.get(accountNumber)?.getIsHidden() 
 }
 
 export const getAccounts = (
@@ -319,9 +316,9 @@ export const getAccountNumbers = (state: IApplicationState): number[] => {
 }
 
 export const getVisibleAccountNumbers = (state: IApplicationState): number[] => {
-	return _.filter(getAccountNumbers(state), (accountNumber) => {
-		return isAccountVisible(state, accountNumber)
-	})
+    return _.filter(getAccountNumbers(state), (accountNumber) => {
+        return isAccountVisible(state, accountNumber)
+    })
 }
 
 export const lookupAccount = (

@@ -58,17 +58,6 @@ message GRPCEndpoint {
   uint32 coin_type = 10;
 }
 
-message AccountPreference {
-  uint32 account_number = 1;
-  bool is_hidden = 2;
-  uint32 display_order = 3;
-}
-
-message WalletPreferences {
-  string wallet_endpoint_id = 1;
-  repeated AccountPreference account_prefs = 2;
-}
-
 enum DisplayUnit {
   DCR = 0;
   ATOMS = 1;
@@ -79,21 +68,26 @@ enum FiatCurrency {
   EUR = 1;
 }
 
-message UIPreferences {
-  DisplayUnit display_unit = 1;
-  FiatCurrency fiat_currency = 2;
-  bool is_config_encrypted = 3;
-}
-
 message AppConfiguration {
-  RPCEndpoint dcrd_endpoint = 1;
-  repeated GRPCEndpoint wallet_endpoints = 2;
-  string default_wallet_endpoint_id = 3;
-  repeated WalletPreferences wallet_preferences = 4;
-  walletrpc.RunAccountMixerRequest account_mixer_request_defaults = 5;
-  walletrpc.RunTicketBuyerRequest run_auto_buyer_request_defaults = 6;
-  repeated string alt_display_currencies = 7;
-  UIPreferences ui_preferences = 8;
+  message UIPreferences {
+    DisplayUnit display_unit = 1;
+    FiatCurrency fiat_currency = 2;
+    bool is_config_encrypted = 3;
+  }
+  message AccountPreference {
+    bool is_hidden = 1;
+    uint32 display_order = 2;
+  }
+  message WalletPreferences {
+    map<uint32, AccountPreference> account_prefs = 1;
+    walletrpc.RunAccountMixerRequest account_mixer_request_defaults = 2;
+    walletrpc.RunTicketBuyerRequest run_auto_buyer_request_defaults = 3;
+  }
+  repeated GRPCEndpoint wallet_endpoints = 1;
+  string default_wallet_endpoint_id = 2;
+  map<string, WalletPreferences> wallet_preferences = 3;
+  repeated string alt_display_currencies = 4;
+  UIPreferences ui_preferences = 5;
 }
 
 service NetworkService {
