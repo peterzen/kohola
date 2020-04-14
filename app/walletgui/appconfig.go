@@ -19,6 +19,7 @@ import (
 
 	"github.com/decred/dcrd/dcrutil/v3"
 	"github.com/golang/protobuf/proto"
+	"github.com/peterzen/kohola/webview"
 )
 
 var (
@@ -218,8 +219,8 @@ func decrypt(passphrase string, data string) (decodedmess []byte, err error) {
 }
 
 // ExportConfigAPI exports functions to the UI
-func ExportConfigAPI(ui WebViewInterface) {
-	ui.Bind("walletgui__GetConfig", func(decryptionKey string) (r LorcaMessage) {
+func ExportConfigAPI(w webview.Interface) {
+	w.Bind("walletgui__GetConfig", func(decryptionKey string) (r LorcaMessage) {
 		// signal the UI that the configuration is empty, needs initial setup
 		err := LoadConfig(decryptionKey)
 		if err != nil {
@@ -238,7 +239,7 @@ func ExportConfigAPI(ui WebViewInterface) {
 		return r
 	})
 
-	ui.Bind("walletgui__SetConfig", func(requestAsHex string) (r LorcaMessage) {
+	w.Bind("walletgui__SetConfig", func(requestAsHex string) (r LorcaMessage) {
 		request := &SetConfigRequest{}
 		bytes, err := hex.DecodeString(requestAsHex)
 		err = proto.Unmarshal(bytes, request)
@@ -273,7 +274,7 @@ func ExportConfigAPI(ui WebViewInterface) {
 		return r
 	})
 
-	ui.Bind("walletgui__FetchCertBlob", func(certFileName string) (r LorcaMessage) {
+	w.Bind("walletgui__FetchCertBlob", func(certFileName string) (r LorcaMessage) {
 		b, err := ioutil.ReadFile(certFileName)
 		if err != nil {
 			r.Err = err

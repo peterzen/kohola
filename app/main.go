@@ -10,6 +10,7 @@ import (
 
 	"github.com/peterzen/kohola/exchangeratebot"
 	"github.com/peterzen/kohola/walletgui"
+	"github.com/peterzen/kohola/webview"
 
 	_ "net/http/pprof"
 )
@@ -22,7 +23,7 @@ func main() {
 
 	WalletAPIInit()
 
-	w := walletgui.NewWebView()
+	w := webview.New(true)
 	defer w.Destroy()
 
 	bindUIAPI(w)
@@ -33,7 +34,7 @@ func main() {
 
 }
 
-func startUI(w walletgui.WebViewInterface) {
+func startUI(w webview.Interface) {
 
 	f, errIndexFile := pkger.Open("/www/index.html")
 	if errIndexFile != nil {
@@ -52,7 +53,7 @@ func startUI(w walletgui.WebViewInterface) {
 	log.Println("exiting...")
 }
 
-func bindUIAPI(w walletgui.WebViewInterface) {
+func bindUIAPI(w webview.Interface) {
 
 	walletgui.ExportConfigAPI(w)
 	ExportWalletAPI(w)

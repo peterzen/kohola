@@ -12,6 +12,7 @@ import (
 	proto "github.com/golang/protobuf/proto"
 
 	"github.com/peterzen/kohola/walletgui"
+	"github.com/peterzen/kohola/webview"
 )
 
 // GetStakingHistory filters staking transactions and extracts credit/debit
@@ -114,8 +115,8 @@ func findScript(txOutList []*wire.TxOut, scriptClass txscript.ScriptClass) *wire
 }
 
 // ExportStakingHistoryAPI exports functions to the UI
-func ExportStakingHistoryAPI(ui walletgui.WebViewInterface) {
-	ui.Bind("walletgui__GetStakingHistory", func() (r walletgui.LorcaMessage) {
+func ExportStakingHistoryAPI(w webview.Interface) {
+	w.Bind("walletgui__GetStakingHistory", func() (r walletgui.LorcaMessage) {
 		history, err := GetStakingHistory()
 		r.Err = err
 		if err == nil {
