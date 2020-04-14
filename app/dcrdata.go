@@ -6,10 +6,12 @@ import (
 	"log"
 	"time"
 
-	walletrpc "decred.org/dcrwallet/rpc/walletrpc"
+	"decred.org/dcrwallet/rpc/walletrpc"
 	"github.com/go-resty/resty/v2"
-	proto "github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/proto"
+
 	"github.com/peterzen/kohola/walletgui"
+	"github.com/peterzen/kohola/webview"
 )
 
 const baseURL = "https://explorer.dcrdata.org/api"
@@ -50,8 +52,8 @@ func fetchStakeDiffHistory(startBlock uint32, endBlock uint32) (history *walletg
 }
 
 // ExportDcrdataAPI exports functions to the UI
-func ExportDcrdataAPI(ui walletgui.WebViewInterface) {
-	ui.Bind("walletgui__FetchStakeDiffHistory", func(startTimestamp int64, endTimestamp int64) (r walletgui.LorcaMessage) {
+func ExportDcrdataAPI(w webview.Interface) {
+	w.Bind("walletgui__FetchStakeDiffHistory", func(startTimestamp int64, endTimestamp int64) (r walletgui.LorcaMessage) {
 
 		request := &walletrpc.BestBlockRequest{}
 		response, err := walletServiceClient.BestBlock(ctx, request)

@@ -10,8 +10,10 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/peterzen/kohola/walletgui"
 	coingecko "github.com/superoo7/go-gecko/v3"
+
+	"github.com/peterzen/kohola/walletgui"
+	"github.com/peterzen/kohola/webview"
 )
 
 var cg *coingecko.Client
@@ -88,11 +90,11 @@ func fetchMarketChart(request *walletgui.GetMarketChartRequest) (marketChartData
 }
 
 // ExportExchangeRateAPI exports the exchangerateBot API functions to the UI
-func ExportExchangeRateAPI(ui walletgui.WebViewInterface) {
+func ExportExchangeRateAPI(w webview.Interface) {
 
 	cg = initializeCgClient()
 
-	ui.Bind("exchangerate__GetMarketChart", func(currencyCode string, days uint32) (r walletgui.LorcaMessage) {
+	w.Bind("exchangerate__GetMarketChart", func(currencyCode string, days uint32) (r walletgui.LorcaMessage) {
 
 		request := &walletgui.GetMarketChartRequest{
 			Days:         days,
@@ -117,7 +119,7 @@ func onUpdate(rates *walletgui.AltCurrencyRates) {
 	}
 	encodedMsg := hex.EncodeToString(b)
 	js := fmt.Sprintf("window.lorcareceiver__OnExchangeRateUpdate('%s')", encodedMsg)
-	walletgui.ExecuteJS(js)
+	webview.ExecuteJS(js)
 }
 
 // Start initializes a Coingecko client and starts a periodic fetcher process

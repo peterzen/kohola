@@ -14,9 +14,10 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	walletrpc "decred.org/dcrwallet/rpc/walletrpc"
-	proto "github.com/golang/protobuf/proto"
+	"decred.org/dcrwallet/rpc/walletrpc"
+	"github.com/golang/protobuf/proto"
 	"github.com/peterzen/kohola/walletgui"
+	"github.com/peterzen/kohola/webview"
 )
 
 var (
@@ -93,7 +94,7 @@ func newGRPCClient(endpointCfg *walletgui.GRPCEndpoint) (*grpc.ClientConn, error
 	return conn, nil
 }
 
-func subscribeTxNotifications(ui walletgui.WebViewInterface) {
+func subscribeTxNotifications(w webview.Interface) {
 	request := &walletrpc.TransactionNotificationsRequest{}
 	ntfnStream, err := walletServiceClient.TransactionNotifications(ctx, request)
 	if err != nil {
@@ -123,11 +124,11 @@ func subscribeTxNotifications(ui walletgui.WebViewInterface) {
 		}
 		encodedMsg := hex.EncodeToString(b)
 		js := fmt.Sprintf("window.lorcareceiver__OnTxNotification('%s')", encodedMsg)
-		walletgui.ExecuteJS(js)
+		webview.ExecuteJS(js)
 	}
 }
 
-// func subscribeConfirmNotifications(ui walletgui.WebViewInterface) {
+// func subscribeConfirmNotifications(ui walletgui.Interface) {
 // 	request := &walletrpc.ConfirmationNotificationsRequest{}
 // 	ntfnStream, err := walletServiceClient.ConfirmationNotifications(ctx, request)
 // 	if err != nil {
@@ -150,7 +151,7 @@ func subscribeTxNotifications(ui walletgui.WebViewInterface) {
 // 	}
 // }
 
-func subscribeAccountNotifications(ui walletgui.WebViewInterface) {
+func subscribeAccountNotifications(w webview.Interface) {
 
 	request := &walletrpc.AccountNotificationsRequest{}
 	ntfnStream, err := walletServiceClient.AccountNotifications(ctx, request)
@@ -171,14 +172,14 @@ func subscribeAccountNotifications(ui walletgui.WebViewInterface) {
 		}
 		encodedMsg := hex.EncodeToString(b)
 		js := fmt.Sprintf("window.lorcareceiver__OnAccountNotification('%s')", encodedMsg)
-		walletgui.ExecuteJS(js)
+		webview.ExecuteJS(js)
 	}
 }
 
 // SetupNotifications creates subscriptions
-func subscribeNotifications(ui walletgui.WebViewInterface) {
-	go subscribeTxNotifications(ui)
-	go subscribeAccountNotifications(ui)
+func subscribeNotifications(w webview.Interface) {
+	go subscribeTxNotifications(w)
+	go subscribeAccountNotifications(w)
 	// go subscribeConfirmNotifications(ui)
 }
 
@@ -193,7 +194,7 @@ func disconnectEndpoint() {
 	gRPCConnection = nil
 }
 
-func connectEndpoint(endpointID string, ui walletgui.WebViewInterface) (endpoint *walletgui.GRPCEndpoint, err error) {
+func connectEndpoint(endpointID string, w webview.Interface) (endpoint *walletgui.GRPCEndpoint, err error) {
 
 	if isEndpointConnected() {
 		disconnectEndpoint()
@@ -230,7 +231,7 @@ func connectEndpoint(endpointID string, ui walletgui.WebViewInterface) (endpoint
 	if network != nil {
 		endpoint.ActiveNetwork = network.ActiveNetwork
 	}
-	subscribeNotifications(ui)
+	subscribeNotifications(w)
 	return endpoint, nil
 }
 

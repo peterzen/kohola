@@ -16,10 +16,11 @@ import (
 	"github.com/golang/protobuf/proto"
 
 	"github.com/peterzen/kohola/walletgui"
+	"github.com/peterzen/kohola/webview"
 )
 
 // ExportWalletAPI exports the RPC API functions to the UI
-func ExportWalletAPI(ui walletgui.WebViewInterface) {
+func ExportWalletAPI(w webview.Interface) {
 
 	var (
 		tbCtx       context.Context
@@ -29,40 +30,40 @@ func ExportWalletAPI(ui walletgui.WebViewInterface) {
 		mixerCtxCancel context.CancelFunc
 	)
 
-	ui.Bind("walletrpc__GetBestBlock", getBestBlock)
-	ui.Bind("walletrpc__GetVoteChoices", getVoteChoices)
-	ui.Bind("walletrpc__SetVoteChoices", setVoteChoices)
-	ui.Bind("walletrpc__GetAgendas", getAgendas)
-	ui.Bind("walletrpc__GetBalance", getBalance)
-	ui.Bind("walletrpc__GetAccounts", getAccounts)
-	ui.Bind("walletrpc__GetStakeInfo", getStakeInfo)
-	ui.Bind("walletrpc__GetTicketPrice", getTicketPrice)
-	ui.Bind("walletrpc__GetTickets", getTickets)
-	ui.Bind("walletrpc__ListUnspent", listUnspent)
-	ui.Bind("walletrpc__NextAddress", getNextAddress)
-	ui.Bind("walletrpc__NextAccount", getNextAccount)
-	ui.Bind("walletrpc__RenameAccount", renameAccount)
-	ui.Bind("walletrpc__GetTransactions", getTransactions)
-	ui.Bind("walletrpc__ConstructTransaction", constructTransaction)
-	ui.Bind("walletrpc__CreateTransaction", createTransaction)
-	ui.Bind("walletrpc__SignTransaction", signTransaction)
-	ui.Bind("walletrpc__PublishTransaction", publishTransaction)
-	ui.Bind("walletrpc__PurchaseTickets", purchaseTickets)
-	ui.Bind("walletrpc__RevokeTickets", revokeExpiredTickets)
-	ui.Bind("walletrpc__DecodeRawTransaction", decodeRawTransaction)
-	ui.Bind("walletrpc__RunTicketBuyer", func(requestAsHex string, onErrorFnName string, onDoneFnName string, onStopFnName string) {
+	w.Bind("walletrpc__GetBestBlock", getBestBlock)
+	w.Bind("walletrpc__GetVoteChoices", getVoteChoices)
+	w.Bind("walletrpc__SetVoteChoices", setVoteChoices)
+	w.Bind("walletrpc__GetAgendas", getAgendas)
+	w.Bind("walletrpc__GetBalance", getBalance)
+	w.Bind("walletrpc__GetAccounts", getAccounts)
+	w.Bind("walletrpc__GetStakeInfo", getStakeInfo)
+	w.Bind("walletrpc__GetTicketPrice", getTicketPrice)
+	w.Bind("walletrpc__GetTickets", getTickets)
+	w.Bind("walletrpc__ListUnspent", listUnspent)
+	w.Bind("walletrpc__NextAddress", getNextAddress)
+	w.Bind("walletrpc__NextAccount", getNextAccount)
+	w.Bind("walletrpc__RenameAccount", renameAccount)
+	w.Bind("walletrpc__GetTransactions", getTransactions)
+	w.Bind("walletrpc__ConstructTransaction", constructTransaction)
+	w.Bind("walletrpc__CreateTransaction", createTransaction)
+	w.Bind("walletrpc__SignTransaction", signTransaction)
+	w.Bind("walletrpc__PublishTransaction", publishTransaction)
+	w.Bind("walletrpc__PurchaseTickets", purchaseTickets)
+	w.Bind("walletrpc__RevokeTickets", revokeExpiredTickets)
+	w.Bind("walletrpc__DecodeRawTransaction", decodeRawTransaction)
+	w.Bind("walletrpc__RunTicketBuyer", func(requestAsHex string, onErrorFnName string, onDoneFnName string, onStopFnName string) {
 
 		onErrorFn := func(err error) {
 			js := fmt.Sprintf("%s('%s')", onErrorFnName, err.Error())
-			walletgui.ExecuteJS(js)
+			webview.ExecuteJS(js)
 		}
 		onDoneFn := func() {
 			js := fmt.Sprintf("%s()", onDoneFnName)
-			walletgui.ExecuteJS(js)
+			webview.ExecuteJS(js)
 		}
 		onStopFn := func() {
 			js := fmt.Sprintf("%s()", onStopFnName)
-			walletgui.ExecuteJS(js)
+			webview.ExecuteJS(js)
 		}
 
 		request := &walletrpc.RunTicketBuyerRequest{}
@@ -76,25 +77,25 @@ func ExportWalletAPI(ui walletgui.WebViewInterface) {
 		runTicketbuyer(tbCtx, request, onErrorFn, onDoneFn, onStopFn)
 	})
 
-	ui.Bind("walletrpc__StopTicketBuyer", func() {
+	w.Bind("walletrpc__StopTicketBuyer", func() {
 		if tbCtxCancel != nil {
 			tbCtxCancel()
 		}
 	})
 
-	ui.Bind("walletrpc__RunAccountMixer", func(requestAsHex string, onErrorFnName string, onDoneFnName string, onStopFnName string) {
+	w.Bind("walletrpc__RunAccountMixer", func(requestAsHex string, onErrorFnName string, onDoneFnName string, onStopFnName string) {
 
 		onErrorFn := func(err error) {
 			js := fmt.Sprintf("%s('%s')", onErrorFnName, err.Error())
-			walletgui.ExecuteJS(js)
+			webview.ExecuteJS(js)
 		}
 		onDoneFn := func() {
 			js := fmt.Sprintf("%s()", onDoneFnName)
-			walletgui.ExecuteJS(js)
+			webview.ExecuteJS(js)
 		}
 		onStopFn := func() {
 			js := fmt.Sprintf("%s()", onStopFnName)
-			walletgui.ExecuteJS(js)
+			webview.ExecuteJS(js)
 		}
 
 		request := &walletrpc.RunAccountMixerRequest{}
@@ -108,18 +109,18 @@ func ExportWalletAPI(ui walletgui.WebViewInterface) {
 		runAccountMixer(mixerCtx, request, onErrorFn, onDoneFn, onStopFn)
 	})
 
-	ui.Bind("walletrpc__StopAccountMixer", func() {
+	w.Bind("walletrpc__StopAccountMixer", func() {
 		if mixerCtxCancel != nil {
 			mixerCtxCancel()
 		}
 	})
 
-	ui.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) (r walletgui.LorcaMessage) {
+	w.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) (r walletgui.LorcaMessage) {
 		if !walletgui.HaveConfig() {
 			r.Err = errors.New("Missing dcrwallet entry in config file")
 			return r
 		}
-		endpoint, err := connectEndpoint(endpointID, ui)
+		endpoint, err := connectEndpoint(endpointID, w)
 		r.Err = err
 		if err == nil {
 			r.Payload, _ = proto.Marshal(endpoint)
@@ -127,7 +128,7 @@ func ExportWalletAPI(ui walletgui.WebViewInterface) {
 		return r
 	})
 
-	ui.Bind("walletgui__CheckGRPCConnection", func(requestAsHex string) (r walletgui.CheckConnectionResponse) {
+	w.Bind("walletgui__CheckGRPCConnection", func(requestAsHex string) (r walletgui.CheckConnectionResponse) {
 		cfg := &walletgui.GRPCEndpoint{}
 		bytes, err := hex.DecodeString(requestAsHex)
 		err = proto.Unmarshal(bytes, cfg)
@@ -149,7 +150,7 @@ func ExportWalletAPI(ui walletgui.WebViewInterface) {
 		js := fmt.Sprintf(
 			"window.lorcareceiver__onEndpointConnectionStatusChange(%t, '%s', %d)",
 			isConnected, errMsg, lastCheckTimestamp)
-		walletgui.ExecuteJS(js)
+		webview.ExecuteJS(js)
 	}
 }
 
