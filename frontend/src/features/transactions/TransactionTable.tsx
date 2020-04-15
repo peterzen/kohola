@@ -11,10 +11,10 @@ import Fade from "react-reveal/Fade"
 import { TransitionGroup } from "react-transition-group"
 
 import { Transaction, WalletAccount } from "../../middleware/models"
-import { TransactionHash } from "../../components/Shared/shared"
 import { lookupAccounts } from "../balances/accountSlice"
 import { IApplicationState } from "../../store/types"
 import { Amount } from "../../components/Shared/Amount"
+import TransactionHash from "./TransactionHash"
 
 export const TransactionMempoolStatusIcon: any = (props: {
     isMined: boolean
