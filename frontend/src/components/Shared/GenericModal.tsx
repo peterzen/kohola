@@ -14,7 +14,7 @@ export default class GenericModal<P, S> extends React.Component<
     }
 
     render() {
-        const props = _.omit(this.props, "title")
+        const props = _.omit(this.props, "title", "footer")
         return (
             <Modal
                 {...props}
