@@ -59,3 +59,7 @@ export function makeTimeline(
         {}
     )
 }
+
+export interface Dictionary<T> {
+    [index: string]: T;
+}
