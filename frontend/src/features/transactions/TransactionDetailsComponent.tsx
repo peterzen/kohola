@@ -6,9 +6,10 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons"
 
 import { Transaction } from "../../middleware/models"
 import GenericModalDialog from "../../components/Shared/GenericModalDialog"
-import { Timestamp, TransactionHash } from "../../components/Shared/shared"
+import { Timestamp } from "../../components/Shared/shared"
 import { TransactionMempoolStatusIcon } from "./TransactionTable"
 import { Amount } from "../../components/Shared/Amount"
+import TransactionHash from "./TransactionHash"
 
 export const TransactionDetailsComponent = (props: OwnProps) => {
     const tx = props.tx

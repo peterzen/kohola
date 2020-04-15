@@ -265,6 +265,15 @@ export const displayTXNotification: ActionCreator<any> = (tx: Transaction) => {
     }
 }
 
+
+export const openURL: ActionCreator<any> = (url:string) => {
+    return async () => {
+        AppBackend.openURL(url)
+    }
+}
+
+
+
 // selectors
 export const getConnectedEndpoint = (state: IApplicationState) => {
     return state.app.currentWalletEndpoint
