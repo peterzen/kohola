@@ -10,7 +10,7 @@ import accounts from "../features/balances/accountSlice"
 import networkinfo from "../features/app/networkinfo/networkInfoSlice"
 import transactions from "../features/transactions/transactionsSlice"
 import walletbalance from "../features/balances/walletBalanceSlice"
-import unspentoutputs from "../features/unspents/unspentsSlice"
+import unspentoutputs from "../features/transactions/unspents/unspentsSlice"
 import appconfiguration from "../features/appconfiguration/settingsSlice"
 import { History } from "history"
 

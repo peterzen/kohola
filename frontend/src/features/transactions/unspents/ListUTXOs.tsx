@@ -6,9 +6,9 @@ import { Table, Dropdown } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons"
 
-import { Amount } from "../../components/Shared/Amount"
-import { UnspentOutput } from "../../proto/walletgui_pb"
-import { TxHash } from "../transactions/TransactionHash"
+import { Amount } from "../../../components/Shared/Amount"
+import { UnspentOutput } from "../../../proto/walletgui_pb"
+import { TxHash } from "../TransactionHash"
 
 interface ICoinToolsDropdown {
     utxo: UnspentOutput

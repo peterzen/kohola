@@ -48,7 +48,7 @@ export class WalletAccount extends AccountsResponse.Account {
     }
 }
 
-interface IBlockTemplate {
+export interface IBlockTemplate {
     getHash(): Uint8Array | string
     getHeight(): number
     getTimestamp(): number

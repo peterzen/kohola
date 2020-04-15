@@ -7,12 +7,13 @@ import { Card } from "react-bootstrap"
 
 import { Transaction } from "../../middleware/models"
 import TransactionTable from "./TransactionTable"
-import TransactionDetailsModal from "./TransactionDetailsComponent"
+import TransactionDetailsComponent from "./TransactionDetailsComponent"
+import GenericModal from "../../components/Shared/GenericModal"
 
 export default class RecentTransactionsComponent extends React.Component<
     Props,
     InternalState
-> {
+    > {
     constructor(props: Props) {
         super(props)
         this.state = {
@@ -36,12 +37,17 @@ export default class RecentTransactionsComponent extends React.Component<
                     onItemClick={_.bind(this.itemClickHandler, this)}
                     showAccount={this.props.showAccount}
                 />
-                <TransactionDetailsModal
-                    tx={this.state.selectedItem}
-                    modalTitle="Transaction details"
+
+                <GenericModal
+                    size="lg"
+                    footer={true}
+                    title="Transaction details"
                     show={this.state.showModal}
                     onHide={() => this.setState({ showModal: false })}
-                />
+                >
+                    <TransactionDetailsComponent tx={this.state.selectedItem} />
+                </GenericModal>
+
             </Card>
         )
     }

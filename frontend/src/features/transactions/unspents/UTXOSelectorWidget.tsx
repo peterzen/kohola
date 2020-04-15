@@ -4,18 +4,18 @@ import _ from "lodash"
 
 import TimeAgo from "react-timeago"
 
-import { WalletAccount } from "../../middleware/models"
+import { WalletAccount } from "../../../middleware/models"
 import {
     fetchUnspentsAttempt,
     getRegularUTXOs,
 } from "./unspentsSlice"
 
-import { IApplicationState } from "../../store/types"
+import { IApplicationState } from "../../../store/types"
 import { Table, Form, Alert } from "react-bootstrap"
-import { Amount } from "../../components/Shared/Amount"
+import { Amount } from "../../../components/Shared/Amount"
 import moment from "moment"
-import { UnspentOutput } from "../../proto/walletgui_pb"
-import { TxHash } from "../transactions/TransactionHash"
+import { UnspentOutput } from "../../../proto/walletgui_pb"
+import { TxHash } from "../TransactionHash"
 
 class UTXOSelectorWidget extends React.Component<Props, InternalState> {
     constructor(props: Props) {

@@ -3,10 +3,11 @@ import moment from "moment"
 import { Table } from "react-bootstrap"
 import TimeAgo from "react-timeago"
 
-import { Amount } from "../../components/Shared/Amount"
-import { UnspentOutput } from "../../proto/walletgui_pb"
-import { ScriptClass } from "../../constants"
-import { TxHash } from "../transactions/TransactionHash"
+import { Amount } from "../../../components/Shared/Amount"
+import { UnspentOutput } from "../../../proto/walletgui_pb"
+import { ScriptClass } from "../../../constants"
+import { TxHash } from "../TransactionHash"
+import Address from "../Address"
 
 export default class UTXODetailsComponent extends React.Component<Props, {}> {
     render() {
@@ -20,9 +21,7 @@ export default class UTXODetailsComponent extends React.Component<Props, {}> {
                             <th>OutPoint</th>
                             <td>
                                 <TxHash
-                                    hash={Buffer.from(
-                                        utxo.getTransactionHash_asU8()
-                                    )}
+                                    hash={utxo.getTransactionHash_asU8()}
                                     truncate={false}
                                 />
                                 :{utxo.getOutputIndex()}
@@ -30,7 +29,7 @@ export default class UTXODetailsComponent extends React.Component<Props, {}> {
                         </tr>
                         <tr>
                             <th>Address</th>
-                            <td>{utxo.getAddress()}</td>
+                            <td><Address address={utxo.getAddress()} /></td>
                         </tr>
                         <tr>
                             <th>Amount</th>

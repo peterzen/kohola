@@ -34,7 +34,7 @@ import { AccountSelector, PasteButton } from "../../../components/Shared/shared"
 import FeeChooserInput from "../../staking/FeeChooserInput"
 import UTXOSelectorWidget, {
     calculateTotalUTXOAmount,
-} from "../../unspents/UTXOSelectorWidget"
+} from "../unspents/UTXOSelectorWidget"
 import { getVisibleAccounts } from "../../balances/accountSlice"
 import {
     getCurrentExchangeRate,
