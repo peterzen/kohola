@@ -3,5 +3,9 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "formattingToggle.affects": ["formatOnSave"]
+"formattingToggle.affects": [
+	"formatOnSave"
+],
+"editor.dragAndDrop": false,
+"editor.detectIndentation":true
 }
