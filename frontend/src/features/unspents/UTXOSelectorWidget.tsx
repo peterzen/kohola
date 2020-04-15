@@ -4,22 +4,18 @@ import _ from "lodash"
 
 import TimeAgo from "react-timeago"
 
-import UTXODetailsModal from "./UTXODetailsComponent"
-import ListUTXOs from "./ListUTXOs"
 import { WalletAccount } from "../../middleware/models"
 import {
     fetchUnspentsAttempt,
-    IUnspentOutputsByAccount,
-    IUnspentState,
     getRegularUTXOs,
 } from "./unspentsSlice"
 
 import { IApplicationState } from "../../store/types"
 import { Table, Form, Alert } from "react-bootstrap"
-import { TxHash } from "../../components/Shared/shared"
 import { Amount } from "../../components/Shared/Amount"
 import moment from "moment"
 import { UnspentOutput } from "../../proto/walletgui_pb"
+import { TxHash } from "../transactions/TransactionHash"
 
 class UTXOSelectorWidget extends React.Component<Props, InternalState> {
     constructor(props: Props) {
@@ -67,9 +63,7 @@ class UTXOSelectorWidget extends React.Component<Props, InternalState> {
                                 >
                                     <td>
                                         <TxHash
-                                            hash={Buffer.from(
-                                                utxo.getTransactionHash_asU8()
-                                            )}
+                                            hash={utxo.getTransactionHash_asU8()}
                                         />
                                     </td>
                                     {/* <td>{utxo.getTree() }</td> */}

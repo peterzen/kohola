@@ -59,6 +59,15 @@ const AppBackend = {
             throw new AppError(0, "Cannot connect to endpoint")
         }
     },
+
+    openURL: async function (url: string) {
+        try {
+            await w.walletgui__FileOpen(url)
+        } catch (e) {
+            console.error("openURL", e)
+            throw e
+        }
+    },
 }
 
 export default AppBackend

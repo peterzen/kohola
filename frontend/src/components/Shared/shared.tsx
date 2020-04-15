@@ -25,21 +25,15 @@ import {
 
 import { formatTimestamp } from "../../helpers/helpers"
 import {
-	Transaction,
 	IndexedWalletAccounts,
 	WalletBalance,
 } from "../../middleware/models"
 
-import { rawHashToHex } from "../../helpers/byteActions"
 import CopyToClipboard from "react-copy-to-clipboard"
 import { ATOMS_DIVISOR } from "../../constants"
 import { getVisibleAccounts } from "../../features/balances/accountSlice"
-import {
-	getAccountPrefs,
-} from "../../features/appconfiguration/settingsSlice"
-import { getWalletBalances } from "../../features/balances/walletBalanceSlice"
 import { IApplicationState } from "../../store/types"
-import { AppConfiguration } from "../../proto/walletgui_pb"
+import { getWalletBalances } from "../../features/balances/walletBalanceSlice"
 
 interface TimestampProps {
 	ts: Moment
@@ -48,39 +42,6 @@ export function Timestamp(props: TimestampProps) {
 	return (
 		<span className="timestamp" title={props.ts.format()}>
 			{formatTimestamp(props.ts)}
-		</span>
-	)
-}
-
-export function TransactionHash(props: {
-	tx: Transaction
-	truncate?: boolean
-}) {
-	let truncate = true
-	if (props.truncate != undefined) truncate = props.truncate
-	const truncLength = truncate ? 15 : 100
-	return (
-		<span className="tx-hash" title={props.tx.getHash()}>
-			{_.truncate(props.tx.getHash(), { length: truncLength })}
-		</span>
-	)
-}
-
-export function TxHash(props: {
-	hash: Buffer | Uint8Array
-	truncate?: boolean
-}) {
-	const h = rawHashToHex(props.hash)
-	if (h == null) {
-		console.error("rawHashToHex returned null")
-		return null
-	}
-	let truncate = true
-	if (props.truncate != undefined) truncate = props.truncate
-	const truncLength = truncate ? 15 : 100
-	return (
-		<span className="tx-hash" title={h}>
-			{_.truncate(h, { length: truncLength })}
 		</span>
 	)
 }

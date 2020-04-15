@@ -11,16 +11,14 @@ import {
     AppError,
     IGetState,
     IApplicationState,
-    AppDispatch,
 } from "../../store/types"
 import {
     AppConfiguration,
-    RPCEndpoint,
     GRPCEndpoint,
 } from "../../proto/walletgui_pb"
-import { DisplayUnit } from "../../constants"
+import { Networks } from "../../constants"
 import AppBackend from "../../middleware/appbackend"
-import { getConnectedEndpoint, getConnectedEndpointId } from "../app/appSlice"
+import { getConnectedEndpointId } from "../app/appSlice"
 import {
     updateObjectInList,
     deleteObjectFromList,
@@ -302,4 +300,15 @@ export const getUiPreferences = (
         appConfigurationState.appConfig.getUiPreferences() ||
         new AppConfiguration.UIPreferences()
     )
+}
+
+export const getExplorerURL = (state: IApplicationState, network: Networks) => {
+    switch (network) {
+        case Networks.MAINNET:
+            return "https://explorer.dcrdata.org"
+        case Networks.TESTNET:
+            return "https://testnet.dcrdata.org"
+        default:
+            return ""
+    }
 }

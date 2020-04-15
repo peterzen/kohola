@@ -56,6 +56,7 @@ func startUI(w webview.Interface) {
 func bindUIAPI(w webview.Interface) {
 
 	walletgui.ExportConfigAPI(w)
+	walletgui.ExportGUIAPI(w)
 	ExportWalletAPI(w)
 	ExportStakingHistoryAPI(w)
 	ExportDcrdataAPI(w)

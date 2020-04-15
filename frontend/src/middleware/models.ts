@@ -73,7 +73,7 @@ export class Transaction {
     blockHash: string
     index: number
     hash: Uint8Array | string
-    txHash: string
+    txHash: Uint8Array
     type: TransactionDetails.TransactionTypeMap[keyof TransactionDetails.TransactionTypeMap]
     debitsAmount: number
     creditsAmount: number
@@ -96,9 +96,7 @@ export class Transaction {
             this.block = block
         }
         this.timestamp = moment.unix(tx.getTimestamp())
-        this.txHash = reverseHash(
-            Buffer.from(tx.getHash_asU8()).toString("hex")
-        )
+        this.txHash = tx.getHash_asU8()
         this.type = tx.getTransactionType()
 
         this.inputs = tx.getDebitsList()
@@ -128,6 +126,11 @@ export class Transaction {
         return this.timestamp
     }
     getHash() {
+        return reverseHash(
+            Buffer.from(this.txHash).toString("hex")
+        )
+    }
+    getHash_asU8() {
         return this.txHash
     }
     getHeight() {

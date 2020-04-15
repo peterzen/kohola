@@ -7,8 +7,8 @@ import { AppError } from "../../../store/types"
 import { rawToHex } from "../../../helpers/byteActions"
 import DialogAlert from "./DialogAlert"
 import { AuthoredTransactionMetadata } from "../transactionsSlice"
-import { TxHash } from "../../../components/Shared/shared"
 import { Amount } from "../../../components/Shared/Amount"
+import { TxHash } from "../TransactionHash"
 
 const ReviewTx = (props: { txInfo: AuthoredTransactionMetadata }) => {
     const txInfo = props.txInfo
