@@ -6,14 +6,14 @@ import { Card } from "react-bootstrap"
 
 import UTXODetailsComponent from "./UTXODetailsComponent"
 import ListUTXOs from "./ListUTXOs"
-import { WalletAccount } from "../../middleware/models"
+import { WalletAccount } from "../../../middleware/models"
 import {
     fetchUnspentsAttempt,
     getRegularUTXOs,
-} from "../unspents/unspentsSlice"
-import { IApplicationState } from "../../store/types"
-import { UnspentOutput } from "../../proto/walletgui_pb"
-import GenericModal from "../../components/Shared/GenericModal"
+} from "./unspentsSlice"
+import { IApplicationState } from "../../../store/types"
+import { UnspentOutput } from "../../../proto/walletgui_pb"
+import GenericModal from "../../../components/Shared/GenericModal"
 
 class UTXOContainer extends React.Component<Props, InternalState> {
     constructor(props: Props) {

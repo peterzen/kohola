@@ -15,16 +15,7 @@ import { lookupAccounts } from "../balances/accountSlice"
 import { IApplicationState } from "../../store/types"
 import { Amount } from "../../components/Shared/Amount"
 import TransactionHash from "./TransactionHash"
-
-export const TransactionMempoolStatusIcon: any = (props: {
-    isMined: boolean
-}) => {
-    return (
-        <span title="In the mempool" className="status-icon">
-            {props.isMined ? "" : <FontAwesomeIcon icon={faClock} />}
-        </span>
-    )
-}
+import TransactionMempoolStatusIcon from "./TransactionMempoolStatusIcon"
 
 const transitionGroupProps = {
     appear: true,

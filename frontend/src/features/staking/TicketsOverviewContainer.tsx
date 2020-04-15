@@ -10,9 +10,10 @@ import { Ticket } from "../../middleware/models"
 import { getTickets } from "./stakingSlice"
 import { TicketStatus } from "../../constants"
 import TicketsTable from "./TicketsTable"
-import TicketDetailsModal from "./TicketDetailsComponent"
 import { IApplicationState } from "../../store/types"
 import { SelectedDropdownItemLabel } from "../../components/Shared/shared"
+import GenericModal from "../../components/Shared/GenericModal"
+import TicketDetailsComponent from "./TicketDetailsComponent"
 
 interface ITicketsListFilterDropdownProps {
     menuHandler: (eventKey: string) => void
@@ -39,7 +40,7 @@ menuItems[TicketStatus.EXPIRED] = "Expired"
 class TicketsListFilterDropdown extends React.Component<
     ITicketsListFilterDropdownProps,
     TicketsListFilterDropdownState
-> {
+    > {
     constructor(props: ITicketsListFilterDropdownProps) {
         super(props)
         this.state = {
@@ -114,12 +115,16 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
                     onItemClick={_.bind(this.itemClickHandler, this)}
                 />
 
-                <TicketDetailsModal
-                    ticket={this.state.selectedItem}
-                    modalTitle="Ticket details"
+                <GenericModal
+                    size="lg"
+                    footer={true}
+                    title="Ticket details"
                     show={this.state.showModal}
                     onHide={() => this.setState({ showModal: false })}
-                />
+                >
+                    <TicketDetailsComponent ticket={this.state.selectedItem} />
+                </GenericModal>
+
             </Card>
         )
     }
@@ -158,7 +163,7 @@ interface OwnProps {
     tickets: Ticket[]
 }
 
-interface DispatchProps {}
+interface DispatchProps { }
 
 interface InternalState {
     showModal: boolean
