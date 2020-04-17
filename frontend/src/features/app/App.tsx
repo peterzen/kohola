@@ -2,7 +2,7 @@ import * as React from "react"
 import { connect } from "react-redux"
 import { hot } from "react-hot-loader/root"
 
-import { Route } from "react-router-dom"
+import { Route, Switch } from "react-router-dom"
 import { ConnectedRouter } from "connected-react-router"
 
 import { Container } from "react-bootstrap"
@@ -44,14 +44,9 @@ class App extends React.Component<Props> {
                 {devMonitorEnabled && <DevTools />}
                 <main id="main" className={mainClassNames.join(" ")}>
                     <AppSidebar>
-                        <Container fluid={true} className="main-content mt-5">
+                        <Container fluid={true} className="main-content">
                             <AppToastContainer />
-                            <AnimatedSwitch
-                                atEnter={bounceTransition.atEnter}
-                                atLeave={bounceTransition.atLeave}
-                                atActive={bounceTransition.atActive}
-                                mapStyles={mapStyles}
-                                className="switch-wrapper"
+                            <Switch
                             >
                                 <Route path="/staking" component={Staking} />
                                 <Route path="/settings" component={Settings} />
@@ -65,7 +60,7 @@ class App extends React.Component<Props> {
                                 <Route path="/login" component={Login} />
                                 <Route exact path="/" component={Welcome} />
                                 <Route component={NoRouteMatch} />
-                            </AnimatedSwitch>
+                            </Switch>
                         </Container>
                         {this.props.showProgress && <AppProgressIndicator />}
                         <ConfigDecryptContainer />
