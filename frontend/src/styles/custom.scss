@@ -2,7 +2,37 @@ $body-bg: #e5e5e5;
 
 body {
     background-color: #e5e5e5 !important;
+    overflow: hidden;
 }
+
+#content {
+    position: relative;
+}
+
+.content-wrapper {
+    padding-top: 2rem;
+    position: absolute;
+    height: 100%;
+    overflow-y: scroll;
+    width: 100%;
+    box-sizing: content-box;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+
+// animations
+// .switch-wrapper {
+//     position: relative;
+// }
+
+// .switch-wrapper > div {
+//     position: absolute;
+//     width: 100%;
+// }
+
 
 .footer {
     position: -webkit-sticky;
@@ -75,15 +105,6 @@ main.devmonitor {
     }
 }
 
-// animations
-.switch-wrapper {
-    position: relative;
-}
-
-.switch-wrapper > div {
-    position: absolute;
-    width: 100%;
-}
 
 fieldset[disabled] {
     opacity: 0.6;

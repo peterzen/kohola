@@ -184,7 +184,7 @@ class AppSidebar extends React.Component<AppSidebarProps, AppSidebarState> {
                             })
                         }
                     />
-                    <div>{this.props.children}</div>
+                    <div className="content-wrapper">{this.props.children}</div>
                 </div>
             </div>
         )
