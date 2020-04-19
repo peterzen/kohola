@@ -77,7 +77,7 @@ class StakingHistoryTable extends React.Component<Props> {
                                         <YAxis domain={["auto", "auto"]} />
                                         <Line
                                             type="monotone"
-                                            dataKey="sumRewardCredits"
+                                            dataKey="Sum(RewardCredit)"
                                             dot={false}
                                             stroke="#8884d8"
                                             strokeWidth={2}
@@ -88,7 +88,7 @@ class StakingHistoryTable extends React.Component<Props> {
                                             dot={false}
                                             stroke="#82ca9d"
                                             strokeWidth={2}
-                                            name="reward%"
+                                            name="Return%"
                                         />
                                         <Legend />
                                     </LineChart>
@@ -118,7 +118,7 @@ class StakingHistoryTable extends React.Component<Props> {
                                             dot={false}
                                             stroke="#8884d8"
                                             strokeWidth={2}
-                                            name="votes"
+                                            name="VOTE"
                                         />
                                         <Line
                                             type="monotone"
@@ -126,7 +126,7 @@ class StakingHistoryTable extends React.Component<Props> {
                                             dot={false}
                                             stroke="#82ca9d"
                                             strokeWidth={2}
-                                            name="purchased"
+                                            name="TICKET_PURCHASE"
                                         />
                                         <Line
                                             type="monotone"
@@ -134,7 +134,7 @@ class StakingHistoryTable extends React.Component<Props> {
                                             dot={false}
                                             stroke="#ff7300"
                                             strokeWidth={2}
-                                            name="revocations"
+                                            name="REVOCATION"
                                         />
                                         <Legend />
                                     </LineChart>
