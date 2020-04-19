@@ -20,7 +20,14 @@ import { Amount } from "../../components/Shared/Amount"
 import { TransactionType, ATOMS_DIVISOR } from "../../constants"
 import { rawHashToHex } from "../../helpers/byteActions"
 
-import { LineChart, Line, ResponsiveContainer, XAxis, YAxis } from "recharts"
+import {
+    LineChart,
+    Line,
+    ResponsiveContainer,
+    XAxis,
+    YAxis,
+    Legend,
+} from "recharts"
 import * as Moment from "moment"
 import { extendMoment } from "moment-range"
 const moment = extendMoment(Moment)
@@ -81,7 +88,9 @@ class StakingHistoryTable extends React.Component<Props> {
                                             dot={false}
                                             stroke="#82ca9d"
                                             strokeWidth={2}
+                                            name="reward%"
                                         />
+                                        <Legend />
                                     </LineChart>
                                 </ResponsiveContainer>
                             </div>
@@ -109,6 +118,7 @@ class StakingHistoryTable extends React.Component<Props> {
                                             dot={false}
                                             stroke="#8884d8"
                                             strokeWidth={2}
+                                            name="votes"
                                         />
                                         <Line
                                             type="monotone"
@@ -116,6 +126,7 @@ class StakingHistoryTable extends React.Component<Props> {
                                             dot={false}
                                             stroke="#82ca9d"
                                             strokeWidth={2}
+                                            name="purchased"
                                         />
                                         <Line
                                             type="monotone"
@@ -123,7 +134,9 @@ class StakingHistoryTable extends React.Component<Props> {
                                             dot={false}
                                             stroke="#ff7300"
                                             strokeWidth={2}
+                                            name="revocations"
                                         />
+                                        <Legend />
                                     </LineChart>
                                 </ResponsiveContainer>
                             </div>
