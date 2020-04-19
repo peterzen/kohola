@@ -8,7 +8,6 @@ import {
 import { TransactionType } from "../../src/constants"
 import moment from "moment"
 
-const days = 7
 var m = moment()
 
 const stakingHistoryRaw = [
@@ -58,8 +57,8 @@ const stakingHistory: StakingHistory.StakingHistoryLineItem[] = stakingHistoryRa
 
 
 
-test("getStakingHistoryCountEvents works", () => {
-
+test("getStakingHistoryCountEvents 7 days works", () => {
+    const days = 7
     m = moment().subtract(days, 'days')
     expect(getStakingHistoryCountEvents(stakingHistory, days)).toEqual([
         { timestamp: m.format("L"), voteCounts: 0, purchasedCounts: 0, revocationCounts: 0 },
@@ -71,14 +70,12 @@ test("getStakingHistoryCountEvents works", () => {
         { timestamp: m.add(1, 'days').format("L"), voteCounts: 2, purchasedCounts: 0, revocationCounts: 1 },
         { timestamp: m.add(1, 'days').format("L"), voteCounts: 1, purchasedCounts: 1, revocationCounts: 1 }
     ]);
-
 });
 
 
-test("getStakingHistoryRewardData works", () => {
-
+test("getStakingHistoryRewardData 7 days works", () => {
+    const days = 7
     m = moment().subtract(days, 'days')
-
     expect(getStakingHistoryRewardData(stakingHistory, days)).toEqual([
         { timestamp: m.format("L"), sumRewardCredits: 0, rewardPercent: 0 },
         { timestamp: m.add(1, 'days').format("L"), sumRewardCredits: 0.37, rewardPercent: 0.8409090909090908 },
@@ -89,5 +86,26 @@ test("getStakingHistoryRewardData works", () => {
         { timestamp: m.add(1, 'days').format("L"), sumRewardCredits: 1.21, rewardPercent: 0.6607142857142856 },
         { timestamp: m.add(1, 'days').format("L"), sumRewardCredits: 0.9, rewardPercent: 0.6615384615384615 }
     ]);
+});
 
+test("getStakingHistoryCountEvents 3 days works", () => {
+    const days = 3
+    m = moment().subtract(days, 'days')
+    expect(getStakingHistoryCountEvents(stakingHistory, days)).toEqual([
+        { timestamp: m.format("L"), voteCounts: 1, purchasedCounts: 5, revocationCounts: 1 },
+        { timestamp: m.add(1, 'days').format("L"), voteCounts: 2, purchasedCounts: 1, revocationCounts: 1 },
+        { timestamp: m.add(1, 'days').format("L"), voteCounts: 2, purchasedCounts: 0, revocationCounts: 1 },
+        { timestamp: m.add(1, 'days').format("L"), voteCounts: 1, purchasedCounts: 1, revocationCounts: 1 }
+    ]);
+});
+
+test("getStakingHistoryRewardData 3 days works", () => {
+    const days = 3
+    m = moment().subtract(days, 'days')
+    expect(getStakingHistoryRewardData(stakingHistory, days)).toEqual([
+        { timestamp: m.format("L"), sumRewardCredits: 4.18, rewardPercent: 1.658008658008658 },
+        { timestamp: m.add(1, 'days').format("L"), sumRewardCredits: 2.49, rewardPercent: 0.9032258064516129 },
+        { timestamp: m.add(1, 'days').format("L"), sumRewardCredits: 1.21, rewardPercent: 0.6607142857142856 },
+        { timestamp: m.add(1, 'days').format("L"), sumRewardCredits: 0.9, rewardPercent: 0.6615384615384615 }
+    ]);
 });

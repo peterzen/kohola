@@ -7,11 +7,17 @@ export interface ChartTimeframe {
     name: string
 }
 
-export const timeframes: ChartTimeframe[] = [
+export const marketTimeframes: ChartTimeframe[] = [
     { days: 1, name: "24 hours" },
     { days: 3, name: "3 days" },
     { days: 7, name: "1 week" },
     { days: 31, name: "1 month" },
+]
+
+export const stakingTimeframes: ChartTimeframe[] = [
+    { days: 7, name: "1 week" },
+    { days: 31, name: "1 month" },
+    { days: 365, name: "1 year" },
 ]
 
 export default class IntervalChooser extends React.Component<OwnProps> {
@@ -22,7 +28,7 @@ export default class IntervalChooser extends React.Component<OwnProps> {
                     {this.props.selectedValue.name}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                    {timeframes.map((item) => (
+                    {this.props.timeframes.map((item) => (
                         <Dropdown.Item
                             key={`interval-${item.days}`}
                             onClick={() => this.props.onChange(item)}
@@ -38,5 +44,6 @@ export default class IntervalChooser extends React.Component<OwnProps> {
 
 interface OwnProps {
     selectedValue: ChartTimeframe
+    timeframes: ChartTimeframe[]
     onChange: (interval: ChartTimeframe) => void
 }

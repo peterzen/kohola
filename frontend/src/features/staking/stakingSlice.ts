@@ -33,6 +33,7 @@ import {
 } from "../../middleware/models"
 import { StakingHistory, StakeDiffHistory } from "../../proto/walletgui_pb"
 import { TransactionType } from "../../constants"
+import { ChartTimeframe, stakingTimeframes } from "../market/IntervalChooser"
 
 // GetTickets
 export interface ITicketsState {
@@ -114,6 +115,7 @@ export interface IStakingHistoryState {
     readonly stakingHistory: StakingHistory | null
     readonly getStakingHistoryError: AppError | null
     readonly getStakingHistoryAttempting: boolean
+    readonly selectedTimeframe: ChartTimeframe
 }
 
 // StakeDiffHistory
@@ -194,6 +196,7 @@ export const initialState: ITicketsState &
     stakingHistory: null,
     getStakingHistoryAttempting: false,
     getStakingHistoryError: null,
+    selectedTimeframe: stakingTimeframes[0],
 
     // StakeDiffHistory
     stakediffHistory: null,
@@ -438,6 +441,11 @@ const stakingSlice = createSlice({
             state.getStakediffHistoryError = null
             state.getStakediffHistoryAttempting = false
         },
+
+        //Charts
+        setSelectedTimeframe(state, action: PayloadAction<ChartTimeframe>) {
+            state.selectedTimeframe = action.payload
+        },
     },
 })
 
@@ -505,6 +513,9 @@ export const {
     getStakediffHistoryAttempt,
     getStakediffHistoryFailed,
     getStakediffHistorySuccess,
+
+    // Charts
+    setSelectedTimeframe,
 } = stakingSlice.actions
 
 export default stakingSlice.reducer
@@ -772,6 +783,12 @@ export const loadStakeDiffHistory: ActionCreator<any> = (
         } catch (error) {
             dispatch(getStakediffHistoryFailed(error))
         }
+    }
+}
+
+export const onTimeFrameChanged: ActionCreator<any> = (timeframe: ChartTimeframe): AppThunk => {
+    return async (dispatch: AppDispatch, _) => {
+        dispatch(setSelectedTimeframe(timeframe))
     }
 }
 

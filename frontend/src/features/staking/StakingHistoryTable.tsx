@@ -10,6 +10,7 @@ import {
     getStakingHistoryCountEvents,
     IRewardDataChartdataTimelineItem,
     getStakingHistoryRewardData,
+    onTimeFrameChanged,
 } from "./stakingSlice"
 import { StakingHistory } from "../../proto/walletgui_pb"
 import { AppError, IApplicationState } from "../../store/types"
@@ -23,16 +24,17 @@ import { LineChart, Line, ResponsiveContainer, XAxis, YAxis } from "recharts"
 import * as Moment from "moment"
 import { extendMoment } from "moment-range"
 const moment = extendMoment(Moment)
-
-// @TODO add dropdown to control this
-const days = 7
+import IntervalChooser, {
+    ChartTimeframe,
+    stakingTimeframes,
+} from "../market/IntervalChooser"
 
 class StakingHistoryTable extends React.Component<Props> {
     render() {
-        const rewardData = this.props.rewardData.map(item => {
+        const rewardData = this.props.rewardData.map((item) => {
             return {
                 ...item,
-                sumRewardCredits: item.sumRewardCredits / ATOMS_DIVISOR
+                sumRewardCredits: item.sumRewardCredits / ATOMS_DIVISOR,
             }
         })
         return (
@@ -41,6 +43,13 @@ class StakingHistoryTable extends React.Component<Props> {
                     <Card.Title>Staking returns</Card.Title>
                 </Card.Header>
                 <Card.Body>
+                    <div className="text-right">
+                        <IntervalChooser
+                            onChange={this.props.onTimeFrameChanged}
+                            timeframes={stakingTimeframes}
+                            selectedValue={this.props.selectedTimeframe}
+                        />
+                    </div>
                     <Row>
                         <Col sm={6}>
                             <div style={{ width: "100%", height: "250px" }}>
@@ -190,30 +199,43 @@ interface OwnProps {
     stakingHistory: StakingHistory | null
     getStakingHistoryError: AppError | null
     getStakingHistoryAttempting: boolean
+    selectedTimeframe: ChartTimeframe
     txTypeCounts: ITxTypeCountsChartdataTimelineItem[]
     rewardData: IRewardDataChartdataTimelineItem[]
 }
 
 interface DispatchProps {
     loadStakingHistory: typeof loadStakingHistory
+    onTimeFrameChanged: typeof onTimeFrameChanged
 }
 
 type Props = OwnProps & DispatchProps
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
-    const stakingHistory = getStakingHistorySparklineData(state, days)
+    const stakingHistory = getStakingHistorySparklineData(
+        state,
+        state.staking.selectedTimeframe.days
+    )
 
     return {
         stakingHistory: state.staking.stakingHistory,
         getStakingHistoryError: state.staking.getStakingHistoryError,
         getStakingHistoryAttempting: state.staking.getStakingHistoryAttempting,
-        txTypeCounts: getStakingHistoryCountEvents(stakingHistory, days),
-        rewardData: getStakingHistoryRewardData(stakingHistory, days),
+        selectedTimeframe: state.staking.selectedTimeframe,
+        txTypeCounts: getStakingHistoryCountEvents(
+            stakingHistory,
+            state.staking.selectedTimeframe.days
+        ),
+        rewardData: getStakingHistoryRewardData(
+            stakingHistory,
+            state.staking.selectedTimeframe.days
+        ),
     }
 }
 
 const mapDispatchToProps = {
     loadStakingHistory,
+    onTimeFrameChanged,
 }
 
 export default withRouter(

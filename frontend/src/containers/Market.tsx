@@ -12,13 +12,13 @@ import { AltCurrencyRates } from "../proto/walletgui_pb"
 import { getCurrentExchangeRate } from "../features/market/marketSlice"
 import IntervalChooser, {
     ChartTimeframe,
-    timeframes,
+    marketTimeframes,
 } from "../features/market/IntervalChooser"
 
 // @TODO pull this out of AppConfig
 const altCurrencies = ["btc", "usd", "eur"]
 
-const defaultTimeframe = timeframes[0]
+const defaultTimeframe = marketTimeframes[0]
 
 class Market extends React.PureComponent<Props, InternalState> {
     constructor(props: Props) {
@@ -36,6 +36,7 @@ class Market extends React.PureComponent<Props, InternalState> {
                         onChange={(timeframe: ChartTimeframe) =>
                             this.setState({ selectedTimeframe: timeframe })
                         }
+                        timeframes={marketTimeframes}
                         selectedValue={this.state.selectedTimeframe}
                     />
                 </div>
