@@ -21,8 +21,8 @@ import { TransactionType, ATOMS_DIVISOR } from "../../constants"
 import { rawHashToHex } from "../../helpers/byteActions"
 
 import {
-    LineChart,
-    Line,
+    BarChart,
+    Bar,
     ResponsiveContainer,
     XAxis,
     YAxis,
@@ -61,7 +61,7 @@ class StakingHistoryTable extends React.Component<Props> {
                         <Col sm={6}>
                             <div style={{ width: "100%", height: "250px" }}>
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <LineChart
+                                    <BarChart
                                         data={rewardData}
                                         margin={{
                                             top: 0,
@@ -75,30 +75,24 @@ class StakingHistoryTable extends React.Component<Props> {
                                             minTickGap={20}
                                         />
                                         <YAxis domain={["auto", "auto"]} />
-                                        <Line
-                                            type="monotone"
+                                        <Bar
                                             dataKey="Sum(RewardCredit)"
-                                            dot={false}
-                                            stroke="#8884d8"
-                                            strokeWidth={2}
+                                            fill="#8884d8"
                                         />
-                                        <Line
-                                            type="monotone"
+                                        <Bar
                                             dataKey="rewardPercent"
-                                            dot={false}
-                                            stroke="#82ca9d"
-                                            strokeWidth={2}
+                                            fill="#82ca9d"
                                             name="Return%"
                                         />
                                         <Legend />
-                                    </LineChart>
+                                    </BarChart>
                                 </ResponsiveContainer>
                             </div>
                         </Col>
                         <Col sm={6}>
                             <div style={{ width: "100%", height: "250px" }}>
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <LineChart
+                                    <BarChart
                                         data={this.props.txTypeCounts}
                                         margin={{
                                             top: 0,
@@ -112,32 +106,23 @@ class StakingHistoryTable extends React.Component<Props> {
                                             minTickGap={20}
                                         />
                                         <YAxis domain={["auto", "auto"]} />
-                                        <Line
-                                            type="monotone"
+                                        <Bar
                                             dataKey="voteCounts"
-                                            dot={false}
-                                            stroke="#8884d8"
-                                            strokeWidth={2}
+                                            fill="#8884d8"
                                             name="VOTE"
                                         />
-                                        <Line
-                                            type="monotone"
+                                        <Bar
                                             dataKey="purchasedCounts"
-                                            dot={false}
-                                            stroke="#82ca9d"
-                                            strokeWidth={2}
+                                            fill="#82ca9d"
                                             name="TICKET_PURCHASE"
                                         />
-                                        <Line
-                                            type="monotone"
+                                        <Bar
                                             dataKey="revocationCounts"
-                                            dot={false}
-                                            stroke="#ff7300"
-                                            strokeWidth={2}
+                                            fill="#ff7300"
                                             name="REVOCATION"
                                         />
                                         <Legend />
-                                    </LineChart>
+                                    </BarChart>
                                 </ResponsiveContainer>
                             </div>
                         </Col>
