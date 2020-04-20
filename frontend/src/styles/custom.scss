@@ -10,12 +10,13 @@ body {
 }
 
 .content-wrapper {
-    padding-top: 2rem;
+    top: 0;
+    padding-top: 5rem;
     position: absolute;
-    height: 100%;
     overflow-y: scroll;
+    height: 100%;
     width: 100%;
-    box-sizing: content-box;
+    box-sizing: border-box;
 }
 
 ::-webkit-scrollbar {
