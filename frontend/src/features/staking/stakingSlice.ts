@@ -727,8 +727,12 @@ export const stopTicketBuyer: ActionCreator<any> = (): AppThunk => {
     }
 }
 
-export const loadStakingHistory: ActionCreator<any> = (): AppThunk => {
+export const loadStakingHistory: ActionCreator<any> = (
+    startingBlockHeight: number,
+    endingBlockHeight: number
+): AppThunk => {
     return async (dispatch: AppDispatch, getState: IGetState) => {
+
         const { getStakingHistoryAttempting } = getState().staking
         if (getStakingHistoryAttempting) {
             return
@@ -736,7 +740,7 @@ export const loadStakingHistory: ActionCreator<any> = (): AppThunk => {
 
         dispatch(getStakingHistoryAttempt())
         try {
-            const resp = await LorcaBackend.getStakingHistory()
+            const resp = await LorcaBackend.getStakingHistory(startingBlockHeight, endingBlockHeight)
             dispatch(getStakingHistorySuccess(resp))
         } catch (error) {
             dispatch(getStakingHistoryFailed(error))

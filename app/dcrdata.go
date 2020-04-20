@@ -4,9 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"time"
 
-	"decred.org/dcrwallet/rpc/walletrpc"
 	"github.com/go-resty/resty/v2"
 	"github.com/golang/protobuf/proto"
 
@@ -55,21 +53,11 @@ func fetchStakeDiffHistory(startBlock uint32, endBlock uint32) (history *walletg
 func ExportDcrdataAPI(w webview.Interface) {
 	w.Bind("walletgui__FetchStakeDiffHistory", func(startTimestamp int64, endTimestamp int64) (r walletgui.LorcaMessage) {
 
-		request := &walletrpc.BestBlockRequest{}
-		response, err := walletServiceClient.BestBlock(ctx, request)
+		startblockHeight, endblockHeight, err := timestampToBlockHeight(startTimestamp, endTimestamp)
 		if err != nil {
-			fmt.Println(err)
 			r.Err = err
 			return r
 		}
-
-		currentTimestamp := time.Now().Unix()
-		if endTimestamp == 0 {
-			endTimestamp = currentTimestamp
-		}
-		bestblockHeight := response.GetHeight()
-		endblockHeight := bestblockHeight - uint32((currentTimestamp-endTimestamp)/(5*60))
-		startblockHeight := bestblockHeight - uint32((currentTimestamp-startTimestamp)/(5*60))
 
 		history, err := fetchStakeDiffHistory(startblockHeight, endblockHeight)
 		r.Err = err
