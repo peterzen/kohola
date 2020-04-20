@@ -34,6 +34,7 @@ import PassphraseEntryDialog, {
 import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { getConnectedEndpointId } from "../../app/appSlice"
+import { ATOMS_DIVISOR } from "../../../constants"
 
 class Ticketbuyer extends React.Component<Props, InternalState> {
     constructor(props: Props) {
@@ -150,7 +151,7 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
                                                 placeholder="Amount"
                                                 onChange={onChange}
                                                 tabIndex={2}
-                                                defaultValue={request.getBalanceToMaintain()}
+                                                defaultValue={request.getBalanceToMaintain() / ATOMS_DIVISOR}
                                             />
                                             <InputGroup.Append>
                                                 <InputGroup.Text>
@@ -274,8 +275,7 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
                                                             Pool fees
                                                         </Form.Label>
                                                         <FeeChooserInput
-                                                            value={1}
-                                                            defaultValue={request.getPoolFees()}
+                                                            value={request.getPoolFees()}
                                                             onChange={(
                                                                 value: number
                                                             ) =>
@@ -421,7 +421,7 @@ interface OwnProps {
 const mapStateToProps = (state: IApplicationState) => {
     const walletEndpointId = getConnectedEndpointId(state)
     const request =
-    getAppConfig(state).getWalletPreferencesMap().get(walletEndpointId)?.getRunAutoBuyerRequestDefaults() ||
+        getAppConfig(state).getWalletPreferencesMap().get(walletEndpointId)?.getRunAutoBuyerRequestDefaults() ||
         new RunTicketBuyerRequest()
     return {
         error: state.appconfiguration.setConfigError,
@@ -460,7 +460,7 @@ const loadFormFields = (
     obj.setPoolAddress(f.pool_address.value)
     obj.setVotingAccount(f.voting_account.value)
     obj.setVotingAddress(f.voting_address.value)
-    obj.setBalanceToMaintain(f.balance_to_maintain.value)
+    obj.setBalanceToMaintain(f.balance_to_maintain.value * ATOMS_DIVISOR)
     obj.setPassphrase("")
     return obj
 }
