@@ -1,108 +1,23 @@
 import _ from "lodash"
 import * as React from "react"
+import { connect } from "react-redux"
 
-import { Form, Button, FormControl, Table, Row, Col } from "react-bootstrap"
+import { Form, Button, FormControl, Row, Col } from "react-bootstrap"
+import { StepWizardChildProps } from "react-step-wizard"
 
 import { AppError } from "../../../store/types"
-import { rawToHex } from "../../../helpers/byteActions"
 import DialogAlert from "./DialogAlert"
-import { AuthoredTransactionMetadata } from "../transactionsSlice"
-import { Amount } from "../../../components/Shared/Amount"
-import { TxHash } from "../TransactionHash"
+import { AuthoredTransactionMetadata } from "../models"
+import ReviewTransaction from "./ReviewTransaction"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSignature } from "@fortawesome/free-solid-svg-icons"
+import { signTransaction, cancelSignTransaction } from "../actions"
 
-const ReviewTx = (props: { txInfo: AuthoredTransactionMetadata }) => {
-    const txInfo = props.txInfo
-    return (
-        <div>
-            <Table>
-                <tbody>
-                    {txInfo.sourceAccount && (
-                        <tr>
-                            <th>Source account:</th>
-                            <td>{txInfo.sourceAccount.getAccountName()}</td>
-                        </tr>
-                    )}
-                    <tr>
-                        <th>Total amount:</th>
-                        <td>
-                            <Amount
-                                amount={txInfo.totalOutputAmount}
-                                showCurrency
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Fee</th>
-                        <td>
-                            Fee rate: {txInfo.feeRate}
-                            <br />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Inputs ({txInfo.decodedTx.getInputsList().length}):
-                        </th>
-                        <td>
-                            {txInfo.decodedTx.getInputsList().map((i) => (
-                                <div key={i.getPreviousTransactionHash_asB64()}>
-                                    <TxHash
-                                        hash={i.getPreviousTransactionHash_asU8()}
-                                    />
-                                    :{i.getPreviousTransactionIndex()}
-                                </div>
-                            ))}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Outputs:</th>
-                        <td>
-                            <Table>
-                                <tbody>
-                                    {txInfo.nonChangeOutputs.map((o) => {
-                                        return (
-                                            <tr key={o.address}>
-                                                <td>{o.address}</td>
-                                                <td>
-                                                    <Amount
-                                                        amount={o.amount}
-                                                        showCurrency
-                                                    />
-                                                </td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </Table>
+class SignDialog extends React.Component<Props & Partial<StepWizardChildProps>, InternalState> {
 
-                            {txInfo.changeAddress && (
-                                <div>
-                                    Change destination: {txInfo.changeAddress}
-                                </div>
-                            )}
-                        </td>
-                    </tr>
-                </tbody>
-            </Table>
-            <Form>
-                <Form.Group controlId="unsignedTxHex">
-                    <Form.Label>Unsigned tx</Form.Label>
-                    <Form.Control
-                        readOnly
-                        as="textarea"
-                        cols="20"
-                        rows="3"
-                        value={rawToHex(txInfo.unsignedTx)}
-                    />
-                </Form.Group>
-            </Form>
-        </div>
-    )
-}
-export default class SignDialog extends React.Component<
-    OwnProps,
-    InternalState
-> {
-    constructor(props: OwnProps) {
+    inputRef: React.RefObject<any> = React.createRef()
+
+    constructor(props: Props) {
         super(props)
         this.state = {
             error: null,
@@ -114,31 +29,37 @@ export default class SignDialog extends React.Component<
     render() {
         return (
             <div>
-                <h4>Review and confirm transaction</h4>
                 {this.props.txInfo != null && (
-                    <ReviewTx txInfo={this.props.txInfo} />
+                    <ReviewTransaction txInfo={this.props.txInfo} />
                 )}
+                <hr />
                 <Form
+                    className="m-0"
                     validated={this.state.formIsValidated && !this.props.error}
                     onSubmit={_.bind(this.handleFormSubmit, this)}
                 >
-                    <Form.Group controlId="destinationAddressControl">
-                        <Form.Label>Wallet passphrase:</Form.Label>
-                        <FormControl
-                            required
-                            autoComplete="off"
-                            tabIndex={0}
-                            type="password"
-                            placeholder=""
-                            onChange={_.bind(
-                                this.handleWalletPassphraseChange,
-                                this
-                            )}
-                            name="walletPassphrase"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            Invalid passphrase
-                        </Form.Control.Feedback>
+                    <Form.Group controlId="passphraseControl" as={Row}>
+                        <Form.Label column sm={2}>
+                            Wallet passphrase
+                        </Form.Label>
+                        <Col sm={4}>
+                            <FormControl
+                                required
+                                autoComplete="off"
+                                tabIndex={0}
+                                type="password"
+                                placeholder=""
+                                ref={this.inputRef}
+                                onChange={_.bind(
+                                    this.handleWalletPassphraseChange,
+                                    this
+                                )}
+                                name="walletPassphrase"
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Invalid passphrase
+                            </Form.Control.Feedback>
+                        </Col>
                     </Form.Group>
                     <DialogAlert error={this.props.error} />
                     <Row>
@@ -146,7 +67,7 @@ export default class SignDialog extends React.Component<
                             <Button
                                 tabIndex={4}
                                 variant="secondary"
-                                onClick={this.props.onCancel}
+                                onClick={(e: React.FormEvent<HTMLButtonElement>) => this.handleCancel(e)}
                             >
                                 Back
                             </Button>
@@ -157,6 +78,7 @@ export default class SignDialog extends React.Component<
                                 variant="primary"
                                 type="submit"
                             >
+                                <FontAwesomeIcon icon={faSignature} />{" "}
                                 Sign tx
                             </Button>
                         </Col>
@@ -177,25 +99,53 @@ export default class SignDialog extends React.Component<
         return true
     }
 
-    handleCancel(e: React.FormEvent<HTMLFormElement>) {
+    handleCancel(e: React.FormEvent<HTMLButtonElement>) {
         e.preventDefault()
         e.stopPropagation()
+        this.props.cancelSignTransaction()
+        this.props.onCancel()
     }
 
     handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         e.stopPropagation()
         this.setState({ formIsValidated: true })
-        this.props.onFormComplete(this.state)
+        this.signTransaction()
+        this.props.onCompleted()
         return false
+    }
+
+    signTransaction() {
+        this.props.signTransaction(
+            this.props.txInfo?.unsignedTx,
+            this.state.passphrase
+        )
+    }
+
+    componentDidMount() {
+        this.props.onStepChangeSubscribe(() => {
+            if (this.props.isActive) {
+                setTimeout(() => {
+                    this.inputRef.current.focus()
+                }, 1000)
+
+            }
+        })
     }
 }
 
 interface OwnProps {
     error: AppError | null
     txInfo: AuthoredTransactionMetadata | null
-    onFormComplete: (formData: ISignDialogFormData) => void
+    isActive?: boolean
     onCancel: () => void
+    onCompleted: () => void
+    onStepChangeSubscribe: (fn: () => void) => void
+}
+
+interface DispatchProps {
+    signTransaction: typeof signTransaction
+    cancelSignTransaction: typeof cancelSignTransaction
 }
 
 interface InternalState {
@@ -204,6 +154,22 @@ interface InternalState {
     passphrase: string
 }
 
+type Props = OwnProps & DispatchProps
+
+const mapStateToProps = () => {
+    return {
+
+    }
+}
+
+const mapDispatchToProps = {
+    signTransaction,
+    cancelSignTransaction,
+}
+
+
 export interface ISignDialogFormData {
     passphrase: string
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignDialog)

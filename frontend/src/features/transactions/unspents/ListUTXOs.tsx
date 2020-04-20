@@ -21,7 +21,7 @@ const CoinToolsDropdown = (props: ICoinToolsDropdown) => {
             alignRight
             onSelect={(evtKey: string) => props.menuHandler(evtKey, props.utxo)}
         >
-            <Dropdown.Toggle variant="secondary" id="dropdown-utxo">
+            <Dropdown.Toggle variant="secondary" id="dropdown-utxo" className="m-0" size="sm">
                 <FontAwesomeIcon icon={faEllipsisH} />
             </Dropdown.Toggle>
 
@@ -64,13 +64,14 @@ export enum UTXOMenuItems {
 export default class ListUTXOs extends React.Component<Props> {
     render() {
         const utxos = this.props.utxos
+        const totalAmount = _.reduce(utxos, (total, utxo) => total + utxo.getAmount(), 0)
         return (
             <div>
                 <Table hover>
                     <thead>
                         <tr>
                             <th>Outpoint</th>
-                            <th>Amount</th>
+                            <th>Amount (DCR)</th>
                             <th>Tree</th>
                             <th>Timestamp</th>
                             <th></th>
@@ -89,12 +90,7 @@ export default class ListUTXOs extends React.Component<Props> {
                                 }
                             >
                                 <td>
-                                    <TxHash
-                                        hash={Buffer.from(
-                                            utxo.getTransactionHash_asU8()
-                                        )}
-                                    />
-                                    :{utxo.getOutputIndex()}
+                                    <TxHash hash={utxo.getTransactionHash_asU8()} />:{utxo.getOutputIndex()}
                                 </td>
                                 <td>
                                     <Amount
@@ -121,6 +117,12 @@ export default class ListUTXOs extends React.Component<Props> {
                             </tr>
                         ))}
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td><strong><Amount amount={totalAmount} /></strong></td>
+                        </tr>
+                    </tfoot>
                 </Table>
             </div>
         )

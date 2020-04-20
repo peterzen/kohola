@@ -117,6 +117,7 @@ export default class TransactionDetailsComponent extends React.Component<OwnProp
             </div>
         )
     }
+
 }
 
 

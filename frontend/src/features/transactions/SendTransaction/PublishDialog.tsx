@@ -1,14 +1,19 @@
 import _ from "lodash"
 import * as React from "react"
+import { connect } from "react-redux"
 
 import { Form, Button, Row, Col } from "react-bootstrap"
 
-import { AppError } from "../../../store/types"
+import { AppError, IApplicationState } from "../../../store/types"
 import { rawToHex } from "../../../helpers/byteActions"
 import { SignTransactionResponse } from "../../../proto/api_pb"
+import { publishTransaction } from "../actions"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBroadcastTower } from "@fortawesome/free-solid-svg-icons"
 
-export default class PublishDialog extends React.Component<OwnProps> {
+class PublishDialog extends React.Component<Props> {
     render() {
+        if (this.props.signTransactionResponse == null) return null
         const txHash = rawToHex(
             this.props.signTransactionResponse.getTransaction_asU8()
         )
@@ -46,7 +51,7 @@ export default class PublishDialog extends React.Component<OwnProps> {
                                 variant="primary"
                                 type="submit"
                             >
-                                Broadcast tx
+                                <FontAwesomeIcon icon={faBroadcastTower} /> Broadcast tx
                             </Button>
                         </Col>
                     </Row>
@@ -58,14 +63,35 @@ export default class PublishDialog extends React.Component<OwnProps> {
     handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         e.stopPropagation()
-        this.props.onFormComplete()
+        this.props.publishTransaction()
+        this.props.onCompleted()
+
         return false
     }
 }
 
 interface OwnProps {
     error: AppError | null
-    signTransactionResponse: SignTransactionResponse
-    onFormComplete: () => void
+    signTransactionResponse?: SignTransactionResponse | null
     onCancel: () => void
+    onCompleted: () => void
+    onStepChangeSubscribe: (fn: () => void) => void
 }
+
+
+interface DispatchProps {
+    publishTransaction: typeof publishTransaction
+}
+
+type Props = OwnProps & DispatchProps
+
+const mapStateToProps = (state: IApplicationState) => {
+    return {
+    }
+}
+
+const mapDispatchToProps = {
+    publishTransaction,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PublishDialog)

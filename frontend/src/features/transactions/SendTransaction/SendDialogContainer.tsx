@@ -3,136 +3,101 @@ import * as React from "react"
 import { connect } from "react-redux"
 
 import { Card } from "react-bootstrap"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons"
+import StepWizard from "react-step-wizard"
 
 import {
     IndexedWalletAccounts,
     WalletAccount,
 } from "../../../middleware/models"
 import { AppError, IApplicationState } from "../../../store/types"
-import { ATOMS_DIVISOR } from "../../../constants"
-import { ConstructTxOutput } from "../../../middleware/models"
-import ConstructTxDialog, { ISendDialogFormData } from "./ConstructTxDialog"
-import SignDialog, { ISignDialogFormData } from "./SignDialog"
+import ConstructTxDialog from "./CreateTxDialog"
+import SignDialog from "./SignDialog"
 import PublishDialog from "./PublishDialog"
 import PublishConfirmDialog from "./PublishConfirmDialog"
 import { getAccounts } from "../../balances/accountSlice"
-import {
-    cancelSignTransaction,
-    constructTransaction,
-    signTransaction,
-    publishTransaction,
-    createTransaction,
-} from "../actions"
-import {
-    SendTransactionSteps,
-    AuthoredTransactionMetadata,
-    resetSendTransaction,
-} from "../transactionsSlice"
+import { AuthoredTransactionMetadata } from "../models"
 import {
     ConstructTransactionRequest,
     SignTransactionResponse,
     PublishTransactionResponse,
 } from "../../../proto/api_pb"
-import { CreateTransactionRequest } from "../../../proto/walletgui_pb"
+
+type IStepChangeCallback = () => void
 
 class SendDialogContainer extends React.Component<Props, InternalState> {
+
+    wizardInstance: StepWizard
+    onStepChangeSubscriptions: IStepChangeCallback[] = []
+
     render() {
-        const currentStep = this.props.currentStep
+        const onStepChangeSubscribe = _.bind(this.onStepChangeSubscribe, this)
         return (
             <Card>
                 <Card.Header>
-                    <Card.Title>Send funds</Card.Title>
+                    <Card.Title>
+                        Send funds
+                    </Card.Title>
                 </Card.Header>
 
                 <Card.Body>
-                    {currentStep == SendTransactionSteps.CONSTRUCT_DIALOG && (
+                    <StepWizard
+                        isLazyMount={false}
+                        onStepChange={() => this.onStepChange()}
+                        instance={(wizard: StepWizard) => {
+                            this.wizardInstance = wizard
+                        }}
+                    >
                         <ConstructTxDialog
                             defaultFromAccount={this.props.defaultFromAccount}
                             error={this.props.errorConstructTransaction}
-                            onFormComplete={_.bind(
-                                this.onConstructAttempt,
-                                this
-                            )}
-                            onCancel={() => {}}
+                            txInfo={this.props.txInfo}
+                            onCancel={() => { }}
+                            onCompleted={() => { this.nextStep() }}
+                            onStepChangeSubscribe={onStepChangeSubscribe}
                         />
-                    )}
-                    {currentStep == SendTransactionSteps.SIGN_DIALOG &&
-                        this.props.txInfo != null && (
-                            <SignDialog
-                                error={this.props.errorSignTransaction}
-                                txInfo={this.props.txInfo}
-                                onCancel={() =>
-                                    this.props.cancelSignTransaction()
-                                }
-                                onFormComplete={_.bind(
-                                    this.onSignAttempt,
-                                    this
-                                )}
-                            />
-                        )}
-                    {currentStep == SendTransactionSteps.PUBLISH_DIALOG &&
-                        this.props.signTransactionResponse != null && (
-                            <PublishDialog
-                                error={this.props.errorPublishTransaction}
-                                signTransactionResponse={
-                                    this.props.signTransactionResponse
-                                }
-                                onCancel={() =>
-                                    this.props.cancelSignTransaction()
-                                }
-                                onFormComplete={() =>
-                                    this.props.publishTransaction()
-                                }
-                            />
-                        )}
-                    {currentStep ==
-                        SendTransactionSteps.PUBLISH_CONFIRM_DIALOG &&
-                        this.props.publishTransactionResponse != null && (
-                            <PublishConfirmDialog
-                                publishTransactionResponse={
-                                    this.props.publishTransactionResponse
-                                }
-                            />
-                        )}
+                        <SignDialog
+                            error={this.props.errorSignTransaction}
+                            txInfo={this.props.txInfo}
+                            onCancel={() => { this.previousStep() }}
+                            onCompleted={() => { this.nextStep() }}
+                            onStepChangeSubscribe={onStepChangeSubscribe}
+                        />
+                        <PublishDialog
+                            error={this.props.errorPublishTransaction}
+                            signTransactionResponse={this.props.signTransactionResponse}
+                            onCancel={() => { this.previousStep() }}
+                            onCompleted={() => { this.nextStep() }}
+                            onStepChangeSubscribe={onStepChangeSubscribe}
+                        />
+                        <PublishConfirmDialog
+                            onCompleted={() => { this.firstStep() }}
+                            publishTransactionResponse={this.props.publishTransactionResponse}
+                            onStepChangeSubscribe={onStepChangeSubscribe}
+                        />
+                    </StepWizard>
                 </Card.Body>
             </Card>
         )
     }
-    onConstructAttempt(formData: ISendDialogFormData) {
-        if (formData.manualInputSelection == true) {
-            const request = new CreateTransactionRequest()
-            const amountsMap = request.getAmountsMap()
-            // TODO implement multiple output addresses
-            amountsMap.set(
-                formData.destinationAddress[0],
-                formData.amount * ATOMS_DIVISOR
-            )
-            request.setFeeRate(1000)
-            request.setSourceOutputsList(formData.selectedUTXOs)
-            console.log("REQUEST", request.toObject())
-            this.props.createTransaction(request)
-        } else {
-            const outputs: ConstructTxOutput[] = [
-                {
-                    destination: formData.destinationAddress[0],
-                    amount: formData.amount * ATOMS_DIVISOR,
-                },
-            ]
-            this.props.constructTransaction(
-                formData.sourceAccount.getAccountNumber(),
-                formData.requiredConfirmations,
-                outputs,
-                formData.sendAllToggle
-            )
-        }
+
+    onStepChangeSubscribe(callback: IStepChangeCallback) {
+        this.onStepChangeSubscriptions.push(callback)
     }
-    onSignAttempt(formData: ISignDialogFormData) {
-        this.props.signTransaction(
-            this.props.unsignedTransaction,
-            formData.passphrase
-        )
+
+    onStepChange() {
+        _.each(this.onStepChangeSubscriptions, fn => fn())
+    }
+
+    firstStep() {
+        this.wizardInstance.firstStep()
+    }
+
+    nextStep() {
+        this.wizardInstance.nextStep()
+    }
+
+    previousStep() {
+        this.wizardInstance.previousStep()
     }
 }
 
@@ -143,7 +108,6 @@ interface OwnProps {
 interface StateProps {
     txInfo: AuthoredTransactionMetadata | null
     accounts: IndexedWalletAccounts
-    currentStep: SendTransactionSteps
     constructTransactionRequest: ConstructTransactionRequest | null
     unsignedTransaction: Uint8Array | null
 
@@ -155,9 +119,11 @@ interface StateProps {
     errorPublishTransaction: AppError | null
 }
 
-type Props = StateProps & DispatchProps & OwnProps
 
-interface InternalState {}
+interface InternalState {
+}
+
+type Props = StateProps & OwnProps
 
 const mapStateToProps = (state: IApplicationState): StateProps => {
     return {
@@ -166,32 +132,14 @@ const mapStateToProps = (state: IApplicationState): StateProps => {
         unsignedTransaction: state.transactions.unsignedTransaction,
         errorSignTransaction: state.transactions.errorSignTransaction,
         errorPublishTransaction: state.transactions.errorPublishTransaction,
-        errorConstructTransaction: state.transactions.errorConstructTransaction,
+        errorConstructTransaction: state.transactions.errorCreateTransaction,
         signTransactionResponse: state.transactions.signTransactionResponse,
         publishTransactionResponse:
             state.transactions.publishTransactionResponse,
         constructTransactionRequest:
-            state.transactions.constructTransactionRequest,
-        currentStep: state.transactions.sendTransactionCurrentStep,
+            state.transactions.createTransactionRequest,
     }
 }
 
-interface DispatchProps {
-    signTransaction: typeof signTransaction
-    publishTransaction: typeof publishTransaction
-    createTransaction: typeof createTransaction
-    constructTransaction: typeof constructTransaction
-    cancelSignTransaction: typeof cancelSignTransaction
-    resetSendTransaction: typeof resetSendTransaction
-}
 
-const mapDispatchToProps = {
-    signTransaction,
-    publishTransaction,
-    createTransaction,
-    constructTransaction,
-    resetSendTransaction,
-    cancelSignTransaction,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SendDialogContainer)
+export default connect(mapStateToProps)(SendDialogContainer)

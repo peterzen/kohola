@@ -103,13 +103,13 @@ export class Transaction {
         this.outputs = tx.getCreditsList()
 
         this.fee = tx.getFee()
-        const inputAmounts = tx
+        this.debitsAmount = tx
             .getDebitsList()
             .reduce((s, input) => s + input.getPreviousAmount(), 0)
-        const outputAmounts = tx
+        this.creditsAmount = tx
             .getCreditsList()
             .reduce((s, input) => s + input.getAmount(), 0)
-        this.amount = outputAmounts - inputAmounts
+        this.amount = this.creditsAmount - this.debitsAmount
 
         if (this.type === TransactionDetails.TransactionType.REGULAR) {
             if (this.amount > 0) {

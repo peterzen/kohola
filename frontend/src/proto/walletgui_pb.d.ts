@@ -730,6 +730,12 @@ export class CreateTransactionRequest extends jspb.Message {
   getChangeAccount(): number;
   setChangeAccount(value: number): void;
 
+  getRequiredConfirmations(): number;
+  setRequiredConfirmations(value: number): void;
+
+  getSendAllFlag(): boolean;
+  setSendAllFlag(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateTransactionRequest.AsObject;
   static toObject(includeInstance: boolean, msg: CreateTransactionRequest): CreateTransactionRequest.AsObject;
@@ -749,6 +755,8 @@ export namespace CreateTransactionRequest {
     feeRate: number,
     sourceAccount: number,
     changeAccount: number,
+    requiredConfirmations: number,
+    sendAllFlag: boolean,
   }
 }
 
@@ -760,6 +768,9 @@ export class CreateTransactionResponse extends jspb.Message {
 
   getEstimatedSignedSize(): number;
   setEstimatedSignedSize(value: number): void;
+
+  getEstimatedFee(): number;
+  setEstimatedFee(value: number): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateTransactionResponse.AsObject;
@@ -775,6 +786,7 @@ export namespace CreateTransactionResponse {
   export type AsObject = {
     unsignedTransaction: Uint8Array | string,
     estimatedSignedSize: number,
+    estimatedFee: number,
   }
 }
 

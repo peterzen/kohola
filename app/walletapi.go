@@ -13,6 +13,7 @@ import (
 	"github.com/decred/dcrd/chaincfg/v3"
 	"github.com/decred/dcrd/dcrutil/v3"
 	"github.com/decred/dcrd/txscript/v3"
+	"github.com/decred/dcrwallet/wallet/txrules"
 	"github.com/golang/protobuf/proto"
 
 	"github.com/peterzen/kohola/walletgui"
@@ -44,7 +45,6 @@ func ExportWalletAPI(w webview.Interface) {
 	w.Bind("walletrpc__NextAccount", getNextAccount)
 	w.Bind("walletrpc__RenameAccount", renameAccount)
 	w.Bind("walletrpc__GetTransactions", getTransactions)
-	w.Bind("walletrpc__ConstructTransaction", constructTransaction)
 	w.Bind("walletrpc__CreateTransaction", createTransaction)
 	w.Bind("walletrpc__SignTransaction", signTransaction)
 	w.Bind("walletrpc__PublishTransaction", publishTransaction)
@@ -449,29 +449,23 @@ func renameAccount(
 	return r
 }
 
-func constructTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
-	request := &walletrpc.ConstructTransactionRequest{}
-	bytes, err := hex.DecodeString(requestAsHex)
-	err = proto.Unmarshal(bytes, request)
-	response, err := walletServiceClient.ConstructTransaction(ctx, request)
-	if err != nil {
-		fmt.Println(err)
-		r.Err = err
-		return r
-	}
-	r.Payload, err = proto.Marshal(response)
-	if err != nil {
-		r.Err = err
-		return r
-	}
-	return r
-}
-
 func createTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
 	request := &walletgui.CreateTransactionRequest{}
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
-	response, err := CreateTransaction(ctx, request)
+
+	if request.FeeRate == 0 {
+		request.FeeRate = int32(txrules.DefaultRelayFeePerKb)
+	}
+
+	var response *walletrpc.ConstructTransactionResponse
+	if request.SourceOutputs != nil && len(request.SourceOutputs) > 0 {
+		// manual UTXO selection
+		response, err = CreateTransaction(ctx, request)
+	} else {
+		// default automatic UTXO selection
+		response, err = ConstructTransaction(ctx, request)
+	}
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
