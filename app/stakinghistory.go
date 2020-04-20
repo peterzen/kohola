@@ -5,11 +5,11 @@ import (
 	"io"
 	"log"
 
-	walletrpc "decred.org/dcrwallet/rpc/walletrpc"
+	"decred.org/dcrwallet/rpc/walletrpc"
 	"github.com/decred/dcrd/dcrutil/v3"
 	"github.com/decred/dcrd/txscript"
 	"github.com/decred/dcrd/wire"
-	proto "github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 
 	"github.com/peterzen/kohola/walletgui"
 	"github.com/peterzen/kohola/webview"
@@ -17,12 +17,17 @@ import (
 
 // GetStakingHistory filters staking transactions and extracts credit/debit
 // information
-func GetStakingHistory() (stakingHistory *walletgui.StakingHistory, err error) {
+func GetStakingHistory(startTimestamp int64, endTimestamp int64) (stakingHistory *walletgui.StakingHistory, err error) {
+
+	startingBlockHeight, endingBlockHeight, err := timestampToBlockHeight(startTimestamp, endTimestamp)
+
+	if err != nil {
+		return nil, err
+	}
 
 	request := &walletrpc.GetTransactionsRequest{
-		StartingBlockHeight:    -1,
-		EndingBlockHeight:      1,
-		TargetTransactionCount: 100,
+		StartingBlockHeight: int32(startingBlockHeight),
+		EndingBlockHeight:   int32(endingBlockHeight),
 	}
 	stream, err := walletServiceClient.GetTransactions(ctx, request)
 	if err != nil {
@@ -116,8 +121,8 @@ func findScript(txOutList []*wire.TxOut, scriptClass txscript.ScriptClass) *wire
 
 // ExportStakingHistoryAPI exports functions to the UI
 func ExportStakingHistoryAPI(w webview.Interface) {
-	w.Bind("walletgui__GetStakingHistory", func() (r walletgui.LorcaMessage) {
-		history, err := GetStakingHistory()
+	w.Bind("walletgui__GetStakingHistory", func(startTimestamp int64, endTimestamp int64) (r walletgui.LorcaMessage) {
+		history, err := GetStakingHistory(startTimestamp, endTimestamp)
 		r.Err = err
 		if err == nil {
 			r.Payload, _ = proto.Marshal(history)

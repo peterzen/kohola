@@ -2,7 +2,10 @@ import * as React from "react"
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import _ from "lodash"
-import moment from "moment"
+
+import * as Moment from "moment"
+import { extendMoment } from "moment-range"
+const moment = extendMoment(Moment)
 
 import { loadStakingHistory } from "./stakingSlice"
 import { StakingHistory } from "../../proto/walletgui_pb"
@@ -81,7 +84,7 @@ class StakingHistoryTable extends React.Component<Props> {
         )
     }
     componentDidMount() {
-        this.props.loadStakingHistory()
+        this.props.loadStakingHistory(moment.default().unix(), moment.default().subtract("days",17).unix())
     }
 }
 

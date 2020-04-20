@@ -523,6 +523,25 @@ const LorcaBackend = {
         }
     },
 
+    getStakingHistory: async (
+        startBlockHeight: number,
+        endBlockHeight: number,
+    ) => {
+        try {
+            const r = await w.walletgui__GetStakingHistory(
+                startBlockHeight,
+                endBlockHeight
+            )
+            if (r.error != undefined) {
+                throw r.error
+            }
+            return StakingHistory.deserializeBinary(r.payload)
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    },
+
     fetchAgendas: endpointFactory("walletrpc__GetAgendas", AgendasResponse),
     fetchNetwork: endpointFactory("walletrpc__GetNetwork", NetworkResponse),
     fetchUnspent: endpointFactory("walletrpc__ListUnspent", UnspentOutput),
@@ -542,10 +561,6 @@ const LorcaBackend = {
     fetchVoteChoices: endpointFactory(
         "walletrpc__GetVoteChoices",
         VoteChoicesResponse
-    ),
-    getStakingHistory: endpointFactory(
-        "walletgui__GetStakingHistory",
-        StakingHistory
     ),
 }
 
