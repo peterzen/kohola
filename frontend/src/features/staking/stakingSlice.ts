@@ -74,7 +74,7 @@ export interface ISetVoteChoicesState {
 export interface IStakeInfoState {
     readonly stakeinfo: StakeInfo
     readonly errorStakeInfo: AppError | null
-    readonly getStakeInfoRequest: boolean
+    readonly getStakeInfoAttempting: boolean
 }
 
 // PurchaseTickets
@@ -163,7 +163,7 @@ export const initialState: ITicketsState &
 
     // StakeInfo
     stakeinfo: new StakeInfo(),
-    getStakeInfoRequest: false,
+    getStakeInfoAttempting: false,
     errorStakeInfo: null,
 
     // PurchaseTickets
@@ -295,16 +295,16 @@ const stakingSlice = createSlice({
         // StakeInfo
         getStakeInfoAttempt(state) {
             state.errorStakeInfo = null
-            state.getStakeInfoRequest = true
+            state.getStakeInfoAttempting = true
         },
         getStakeInfoFailed(state, action: PayloadAction<AppError>) {
             state.errorStakeInfo = action.payload
-            state.getStakeInfoRequest = false
+            state.getStakeInfoAttempting = false
         },
         getStakeInfoSuccess(state, action: PayloadAction<StakeInfo>) {
             state.stakeinfo = action.payload
             state.errorStakeInfo = null
-            state.getStakeInfoRequest = false
+            state.getStakeInfoAttempting = false
         },
 
         // PurchaseTicket
@@ -632,7 +632,7 @@ export const revokeExpiredTickets: ActionCreator<any> = (
 
 export const loadStakeInfoAttempt: ActionCreator<any> = (): AppThunk => {
     return async (dispatch, getState) => {
-        const { getStakeInfoRequest } = getState().staking
+        const { getStakeInfoAttempting: getStakeInfoRequest } = getState().staking
         if (getStakeInfoRequest) {
             return
         }

@@ -7,13 +7,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
 
 import { Ticket } from "../../middleware/models"
-import { getTickets } from "./stakingSlice"
+import { getTickets, loadTicketsAttempt } from "./stakingSlice"
 import { TicketStatus } from "../../constants"
 import TicketsTable from "./TicketsTable"
 import { IApplicationState } from "../../store/types"
 import { SelectedDropdownItemLabel } from "../../components/Shared/shared"
 import GenericModal from "../../components/Shared/GenericModal"
 import TicketDetailsComponent from "./TicketDetailsComponent"
+import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
 
 interface ITicketsListFilterDropdownProps {
     menuHandler: (eventKey: string) => void
@@ -109,11 +110,13 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
                         My tickets
                     </Card.Title>
                 </Card.Body>
-
-                <TicketsTable
-                    items={this.getFilteredTickets()}
-                    onItemClick={_.bind(this.itemClickHandler, this)}
-                />
+                
+                <ComponentPlaceHolder type='media' rows={7} ready={!this.props.getTicketsAttempting}>
+                    <TicketsTable
+                        items={this.getFilteredTickets()}
+                        onItemClick={_.bind(this.itemClickHandler, this)}
+                    />
+                </ComponentPlaceHolder>
 
                 <GenericModal
                     size="lg"
@@ -127,6 +130,9 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
 
             </Card>
         )
+    }
+    componentDidMount() {
+        this.props.loadTicketsAttempt()
     }
 
     getFilteredTickets() {
@@ -156,14 +162,18 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
 const mapStateToProps = (state: IApplicationState): OwnProps => {
     return {
         tickets: getTickets(state),
+        getTicketsAttempting: state.staking.getTicketsAttempting,
     }
 }
 
 interface OwnProps {
     tickets: Ticket[]
+    getTicketsAttempting: boolean
 }
 
-interface DispatchProps { }
+interface DispatchProps {
+    loadTicketsAttempt:typeof loadTicketsAttempt
+ }
 
 interface InternalState {
     showModal: boolean
@@ -173,4 +183,8 @@ interface InternalState {
 
 type Props = OwnProps & DispatchProps
 
-export default connect(mapStateToProps)(TicketsOverviewContainer)
+const mapDispatchToProps = {
+    loadTicketsAttempt
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TicketsOverviewContainer)

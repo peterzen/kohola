@@ -1,7 +1,7 @@
 import * as React from "react"
 import _ from "lodash"
 
-import { Table, Button } from "react-bootstrap"
+import { Table, Button, Card } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons"
 
@@ -14,37 +14,41 @@ import {
     WalletBalance,
     WalletTotals,
 } from "../../middleware/models"
+import { IApplicationState } from "../../store/types"
+import { connect } from "react-redux"
+import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
 
-export default class AccountBalanceTable extends React.Component<
-    OwnProps,
-    InternalState
-> {
+class AccountBalanceTable extends React.Component<Props, InternalState> {
     render() {
         return (
-            <Table hover>
-                <thead>
-                    <tr className="text-right">
-                        <th></th>
-                        <th>spendable</th>
-                        <th>total</th>
-                        <th className="text-secondary">unconf'd</th>
-                        <th className="text-secondary">
-                            immature
+            <Card >
+                <ComponentPlaceHolder type='text' rows={7} ready={!this.props.isLoading}>
+                    <Table hover>
+                        <thead>
+                            <tr className="text-right">
+                                <th></th>
+                                <th>spendable</th>
+                                <th>total</th>
+                                <th className="text-secondary">unconf'd</th>
+                                <th className="text-secondary">
+                                    immature
                             <br />
-                            <small>stake/reward</small>
-                        </th>
-                        <th className="text-secondary">
-                            voting
+                                    <small>stake/reward</small>
+                                </th>
+                                <th className="text-secondary">
+                                    voting
                             <br />
                             authority
                         </th>
-                        <th className="text-secondary">locked</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>{this.renderItems()}</tbody>
-                <tfoot>{this.renderTotals()}</tfoot>
-            </Table>
+                                <th className="text-secondary">locked</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>{this.renderItems()}</tbody>
+                        <tfoot>{this.renderTotals()}</tfoot>
+                    </Table>
+                </ComponentPlaceHolder>
+            </Card>
         )
     }
 
@@ -148,6 +152,10 @@ export default class AccountBalanceTable extends React.Component<
     }
 }
 
+interface StateProps {
+    isLoading: boolean
+}
+
 interface OwnProps {
     accounts: IndexedWalletAccounts
     balances: WalletBalance
@@ -155,8 +163,16 @@ interface OwnProps {
     menuHandler: (evtKey: string, account: WalletAccount) => void
 }
 
-interface DispatchProps {}
+interface DispatchProps { }
 
-type Props = DispatchProps & OwnProps
+type Props = StateProps & DispatchProps & OwnProps
 
-interface InternalState {}
+interface InternalState { }
+
+const mapStateToProps = (state: IApplicationState): StateProps => {
+    return {
+        isLoading: state.accounts.getAccountsAttempting
+    }
+}
+
+export default connect(mapStateToProps)(AccountBalanceTable)

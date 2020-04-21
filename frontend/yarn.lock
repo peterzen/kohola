@@ -11298,6 +11298,11 @@ react-overlays@^3.0.1:
     uncontrollable "^7.0.0"
     warning "^4.0.3"
 
+react-placeholder@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-placeholder/-/react-placeholder-4.0.1.tgz#2a9d0247ec04ee1895d0cd28dca1190d1e0756ec"
+  integrity sha512-UyFrOMu+O8Yqj1hY/KmOgMRvv41thzv3cUp0Z5s55a4BG4Kyvvz1bhnYnomEusFYa4eESTAqT/B1dRg+R59D5Q==
+
 react-pure-render@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-pure-render/-/react-pure-render-1.0.2.tgz#9d8a928c7f2c37513c2d064e57b3e3c356e9fabb"
