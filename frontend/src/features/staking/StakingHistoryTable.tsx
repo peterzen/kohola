@@ -70,19 +70,30 @@ class StakingHistoryTable extends React.Component<Props> {
                                             bottom: 0,
                                         }}
                                     >
-                                        <XAxis
-                                            dataKey="timestamp"
-                                            minTickGap={20}
+                                        <XAxis dataKey="timestamp" /> 
+                                        <YAxis
+                                            domain={["auto", "auto"]}
+                                            yAxisId="left"
+                                            orientation="left"
+                                            stroke="#8884d8"
                                         />
-                                        <YAxis domain={["auto", "auto"]} />
+                                        <YAxis
+                                            domain={["auto", "auto"]}
+                                            yAxisId="right"
+                                            orientation="right"
+                                            stroke="#82ca9d"
+                                        />
                                         <Bar
-                                            dataKey="Sum(RewardCredit)"
+                                            dataKey="sumRewardCredits"
                                             fill="#8884d8"
+                                            name="Sum(RewardCredit)"
+                                            yAxisId="left"
                                         />
                                         <Bar
                                             dataKey="rewardPercent"
                                             fill="#82ca9d"
                                             name="Return%"
+                                            yAxisId="right"
                                         />
                                         <Legend />
                                     </BarChart>
