@@ -20,7 +20,7 @@ import {
 } from "../features/staking/stakingSlice"
 import StakingToolsMenu from "../features/staking/StakingToolsMenu"
 import PassphraseEntryDialog from "../components/Shared/PassphraseEntryDialog"
-import StakingHistoryTable from "../features/staking/StakingHistoryTable"
+import StakingHistoryContainer from "../features/staking/StakingHistoryContainer"
 import { IApplicationState } from "../store/types"
 import { StakeInfo } from "../middleware/models"
 
@@ -55,7 +55,7 @@ class StakingContainer extends React.Component<Props> {
                         </Row>
                     </Tab>
                     <Tab eventKey="roi" title="Returns">
-                        <StakingHistoryTable />
+                        <StakingHistoryContainer />
                     </Tab>
                     <Tab eventKey="ticketbuyer" title="Ticketbuyer">
                         <TicketBuyerComponent />
