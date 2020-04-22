@@ -833,6 +833,13 @@ export interface IRewardDataChartdataTimelineItem {
     rewardPercent: number
 }
 
+export const sumRewardDataChartdata = (datapoint1: IRewardDataChartdataTimelineItem, datapoint2: IRewardDataChartdataTimelineItem) => {
+    const datapoint: IRewardDataChartdataTimelineItem = { ...datapoint1 }
+    datapoint.sumRewardCredits += datapoint2.sumRewardCredits
+    datapoint.rewardPercent += datapoint2.rewardPercent
+    return datapoint
+}
+
 export const getStakingHistoryRewardData = (
     history: StakingHistory.StakingHistoryLineItem[],
     days: number,
@@ -908,6 +915,13 @@ export interface ITxTypeCountsChartdataTimelineItem {
     purchasedCounts: number
     revocationCounts: number
 }
+export const sumTxTypeCountsChartdata = (datapoint1: ITxTypeCountsChartdataTimelineItem, datapoint2: ITxTypeCountsChartdataTimelineItem) => {
+    const datapoint: ITxTypeCountsChartdataTimelineItem = { ...datapoint1 }
+    datapoint.voteCounts += datapoint2.voteCounts
+    datapoint.purchasedCounts += datapoint2.purchasedCounts
+    datapoint.revocationCounts += datapoint2.revocationCounts
+    return datapoint
+}
 
 export const getStakingHistoryCountEvents = (
     history: StakingHistory.StakingHistoryLineItem[],
@@ -961,4 +975,32 @@ const countFilteredEvents = (
         .value()
 
     return datapoints
+}
+
+export function aggregateChartDataBy<T extends any>(timeframe: ChartTimeframe,
+    datapoints: T[],
+    sumFunction: ((datapoint1: T, datapoint2: T) => T)) {
+
+    const dateRange = moment.range(moment.default().subtract(timeframe.days, "day"), moment.default())
+    const timeline: String[] = Array.from(dateRange.reverseBy("day", { step: timeframe.step })).map((m) => m.format("L"))
+
+    let currDate = String(timeline.pop())
+    let aggregatedDatapoints: Dictionary<T> = {}
+    datapoints.forEach(datapoint => {
+        const timestampUtc = moment.default(datapoint.timestamp, 'MM/DD/YYYY').format('X')
+        const currDateUtc = moment.default(currDate, 'MM/DD/YYYY').format('X')
+
+        if (timestampUtc > currDateUtc) {
+            currDate = String(timeline.pop())
+        }
+        if (aggregatedDatapoints[currDate] == undefined) {
+            aggregatedDatapoints[currDate] = {
+                ...datapoint,
+                timestamp: currDate
+            }
+        } else {
+            aggregatedDatapoints[currDate] = sumFunction(aggregatedDatapoints[currDate], datapoint)
+        }
+    });
+    return _.values(aggregatedDatapoints)
 }

@@ -11,6 +11,9 @@ import {
     IRewardDataChartdataTimelineItem,
     getStakingHistoryRewardData,
     onTimeFrameChanged,
+    aggregateChartDataBy,
+    sumTxTypeCountsChartdata,
+    sumRewardDataChartdata,
 } from "./stakingSlice"
 import { StakingHistory } from "../../proto/walletgui_pb"
 import { AppError, IApplicationState } from "../../store/types"
@@ -70,7 +73,7 @@ class StakingHistoryTable extends React.Component<Props> {
                                             bottom: 0,
                                         }}
                                     >
-                                        <XAxis dataKey="timestamp" /> 
+                                        <XAxis dataKey="timestamp" />
                                         <YAxis
                                             domain={["auto", "auto"]}
                                             yAxisId="left"
@@ -231,13 +234,21 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
         getStakingHistoryError: state.staking.getStakingHistoryError,
         getStakingHistoryAttempting: state.staking.getStakingHistoryAttempting,
         selectedTimeframe: state.staking.selectedTimeframe,
-        txTypeCounts: getStakingHistoryCountEvents(
-            stakingHistory,
-            state.staking.selectedTimeframe.days
+        txTypeCounts: aggregateChartDataBy(
+            state.staking.selectedTimeframe,
+            getStakingHistoryCountEvents(
+                stakingHistory,
+                state.staking.selectedTimeframe.days
+            ),
+            sumTxTypeCountsChartdata
         ),
-        rewardData: getStakingHistoryRewardData(
-            stakingHistory,
-            state.staking.selectedTimeframe.days
+        rewardData: aggregateChartDataBy(
+            state.staking.selectedTimeframe,
+            getStakingHistoryRewardData(
+                stakingHistory,
+                state.staking.selectedTimeframe.days
+            ),
+            sumRewardDataChartdata
         ),
     }
 }

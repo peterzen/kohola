@@ -5,6 +5,7 @@ import { Dropdown } from "react-bootstrap"
 export interface ChartTimeframe {
     days: number
     name: string
+    step?: number
 }
 
 export const marketTimeframes: ChartTimeframe[] = [
@@ -15,9 +16,9 @@ export const marketTimeframes: ChartTimeframe[] = [
 ]
 
 export const stakingTimeframes: ChartTimeframe[] = [
-    { days: 7, name: "1 week" },
-    { days: 31, name: "1 month" },
-    { days: 365, name: "1 year" },
+    { days: 7, name: "1 week" , step: 1},
+    { days: 31, name: "1 month", step: 3 },
+    { days: 365, name: "1 year", step: 31 },
 ]
 
 export default class IntervalChooser extends React.Component<OwnProps> {
