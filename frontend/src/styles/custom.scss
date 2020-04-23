@@ -23,7 +23,6 @@ body {
     display: none;
 }
 
-
 // animations
 // .switch-wrapper {
 //     position: relative;
@@ -33,7 +32,6 @@ body {
 //     position: absolute;
 //     width: 100%;
 // }
-
 
 .footer {
     position: -webkit-sticky;
@@ -106,7 +104,6 @@ main.devmonitor {
     }
 }
 
-
 fieldset[disabled] {
     opacity: 0.6;
 }
@@ -155,6 +152,15 @@ form.in-progress {
     transition: transform 500ms ease-in;
 }
 
-table.table tbody tr  th {
-	text-align: left ;
+table.table tbody tr th {
+    text-align: left;
+}
+
+.card > .card-header .dropdown {
+    float: left;
+    .dropdown-toggle.btn {
+        padding-top: 0;
+        padding-bottom: 0;
+        margin: 0;
+    }
 }

@@ -85,7 +85,7 @@ export const initialState: GetTransactionsState &
     // If positive, the field is interpreted as a block height.
     // If negative, the height is subtracted from the block wallet /
     // considers itself in sync with.
-    startBlockHeight: -10,
+    startBlockHeight: -1,
 
     // The block height of the last block to include transactions from.
     // If non- zero, the ending_block_hash field must be set to its
@@ -94,7 +94,7 @@ export const initialState: GetTransactionsState &
     // and transactions through the best block and all
     // unmined transactions are included.
     endBlockHeight: 1,
-    targetTxCount: 1000,
+    targetTxCount: 0,
     activeTypeFilter: TransactionType.REGULAR,
 
     // CreateTransaction

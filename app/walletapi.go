@@ -318,6 +318,7 @@ func getTickets(
 	StartingBlockHeight int32,
 	EndingBlockHeight int32,
 	TargetTicketCount int32) (r walletgui.LorcaMessage) {
+		
 	request := &walletrpc.GetTicketsRequest{
 		StartingBlockHeight: StartingBlockHeight,
 		EndingBlockHeight:   EndingBlockHeight,

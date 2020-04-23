@@ -47,11 +47,7 @@ export function makeTimeline(
     days: number,
     fromDate?: Moment.Moment
 ): IChartdataTimelineItem[] {
-    fromDate = fromDate || moment.default()
-    const dateRange = moment.range(
-        moment.default().subtract(days, "day"),
-        fromDate
-    )
+    const dateRange = makeDateRangeFromDays(days, fromDate)
     const datePoints = Array.from(dateRange.by("day"))
     return _.transform(
         datePoints.map((m) => m.format("L")),
@@ -63,3 +59,11 @@ export function makeTimeline(
 export interface Dictionary<T> {
     [index: string]: T;
 }
+
+export function makeDateRangeFromDays(days: number, fromDate = Moment.default()) {
+    return moment.range(
+        moment.default().subtract(days, "day"),
+        fromDate
+    )
+}
+

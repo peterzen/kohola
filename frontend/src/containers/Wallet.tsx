@@ -7,6 +7,8 @@ import _ from "lodash"
 import Fade from "react-reveal/Fade"
 import { Card } from "react-bootstrap"
 
+
+
 import {
     Transaction,
     WalletAccount,
@@ -31,30 +33,24 @@ import {
 class Wallet extends React.PureComponent<Props> {
     render() {
         return (
-            <Fade fade cascade>
-                <div>
-                    <Card>
-                        <Card.Body>
-                            <WalletTotalsComponent
-                                totals={this.props.walletTotals}
-                            />
-                        </Card.Body>
-                    </Card>
-                    <Card className="mt-3">
-                        <AccountBalanceTable
-                            menuHandler={_.bind(this.menuHandler, this)}
-                            accounts={this.props.accounts}
-                            balances={this.props.balances}
-                            walletTotals={this.props.walletTotals}
-                        />
-                    </Card>
-                    <div className="mt-3" />
-                    <RecentTransactions
-                        txList={this.props.txList}
-                        showAccount={true}
-                    />
-                </div>
-            </Fade>
+            <div>
+
+                <WalletTotalsComponent
+                    totals={this.props.walletTotals}
+                />
+                <div className="mt-3" />
+                <AccountBalanceTable
+                    menuHandler={_.bind(this.menuHandler, this)}
+                    accounts={this.props.accounts}
+                    balances={this.props.balances}
+                    walletTotals={this.props.walletTotals}
+                />
+                <div className="mt-3" />
+                <RecentTransactions
+                    txList={this.props.txList}
+                    showAccount={true}
+                />
+            </div>
         )
     }
     menuHandler(evtKey: keyof MenuItems, selectedAccount: WalletAccount) {
@@ -68,7 +64,7 @@ class Wallet extends React.PureComponent<Props> {
         }
     }
     componentDidMount() {
-        this.props.loadTransactionsAttempt()
+        // this.props.loadTransactionsAttempt()
     }
 }
 

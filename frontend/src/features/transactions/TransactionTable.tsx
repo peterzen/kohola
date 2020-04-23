@@ -102,9 +102,9 @@ class TransactionTable extends React.Component<OwnProps> {
                         </TransitionGroup>
                     </Table>
                 )}
-                {this.props.items.length < 1 && (
+                {/* {this.props.items.length < 1 && (
                     <Alert variant="info">No transaction yet.</Alert>
-                )}
+                )} */}
             </div>
         )
     }

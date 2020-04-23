@@ -1,103 +1,94 @@
 import * as React from "react"
-import { connect } from "react-redux"
-import { withRouter } from "react-router-dom"
 import _ from "lodash"
+import moment from "../../helpers/moment-helper"
 
-import { loadStakingHistory } from "./stakingSlice"
-import { StakingHistory } from "../../proto/walletgui_pb"
-import { IApplicationState } from "../../store/types"
-import { Table, Card } from "react-bootstrap"
+
+import { Table, } from "react-bootstrap"
+
 import ReactTimeago from "react-timeago"
+import { TransitionGroup } from "react-transition-group"
+// @ts-ignore
+import Fade from "react-reveal/Fade"
+
 import { Amount } from "../../components/Shared/Amount"
-import { TransactionType } from "../../constants"
+import { TransactionType, transitionGroupProps } from "../../constants"
 import { rawHashToHex } from "../../helpers/byteActions"
+import { StakingHistory } from "../../proto/walletgui_pb"
 
-import * as Moment from "moment"
-import { extendMoment } from "moment-range"
-const moment = extendMoment(Moment)
-
-class StakingHistoryTable extends React.Component<Props> {
+export default class StakingHistoryTable extends React.Component<Props> {
     render() {
         return (
-            <Card>
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>TxType</th>
-                            <th>Timestamp</th>
-                            <th>RewardCredit</th>
-                            <th>TicketCostCredit</th>
-                            <th>TicketCostDebit</th>
-                            <th>FeeDebit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.props.stakingHistory
-                            ?.getLineItemsList()
-                            .map((item) => (
-                                <tr
-                                    key={
-                                        rawHashToHex(item.getTxHash_asU8()) ||
-                                        ""
-                                    }
-                                >
-                                    <td>{TransactionType[item.getTxType()]}</td>
-                                    <td>
-                                        <ReactTimeago
-                                            date={moment
-                                                .unix(item.getTimestamp())
-                                                .toDate()}
-                                        />
-                                    </td>
-                                    <td>
-                                        <Amount
-                                            amount={item.getRewardCredit()}
-                                            showCurrency={false}
-                                        />
-                                    </td>
-                                    <td>
-                                        <Amount
-                                            amount={item.getTicketCostCredit()}
-                                            showCurrency={false}
-                                        />
-                                    </td>
-                                    <td>
-                                        <Amount
-                                            amount={item.getTicketCostDebit()}
-                                            showCurrency={false}
-                                        />
-                                    </td>
-                                    <td>
-                                        <Amount
-                                            amount={item.getFeeDebit()}
-                                            showCurrency={false}
-                                        />
-                                    </td>
-                                </tr>
-                            ))}
-                    </tbody>
-                </Table>
-            </Card>
+            <Table>
+                <thead>
+                    <tr>
+                        <th>TxType</th>
+                        <th>Timestamp</th>
+                        <th>RewardCredit</th>
+                        <th>TicketCostCredit</th>
+                        <th>TicketCostDebit</th>
+                        <th>FeeDebit</th>
+                    </tr>
+                </thead>
+                <TransitionGroup
+                    {...transitionGroupProps}
+                    component="tbody"
+                >
+
+                    {this.props.stakingHistoryItems.map((item) => (
+                        <Fade slide cascade key={rawHashToHex(item.getTxHash_asU8()) || ""}>
+
+                            <tr>
+                                <td>{TransactionType[item.getTxType()]}</td>
+                                <td>
+                                    <ReactTimeago
+                                        date={moment
+                                            .unix(item.getTimestamp())
+                                            .toDate()}
+                                    />
+                                </td>
+                                <td>
+                                    <Amount
+                                        amount={item.getRewardCredit()}
+                                        showCurrency={false}
+                                    />
+                                </td>
+                                <td>
+                                    <Amount
+                                        amount={item.getTicketCostCredit()}
+                                        showCurrency={false}
+                                    />
+                                </td>
+                                <td>
+                                    <Amount
+                                        amount={item.getTicketCostDebit()}
+                                        showCurrency={false}
+                                    />
+                                </td>
+                                <td>
+                                    <Amount
+                                        amount={item.getFeeDebit()}
+                                        showCurrency={false}
+                                    />
+                                </td>
+                            </tr>
+                        </Fade>
+                    ))}
+                </TransitionGroup>
+            </Table>
         )
+    }
+    componentDidMount() {
+        // this.props.loadStakingHistory(moment.default().unix(), moment.default().subtract("days",17).unix())
     }
 }
 
 interface OwnProps {
-    stakingHistory: StakingHistory | null
+    stakingHistoryItems: StakingHistory.StakingHistoryLineItem[]
+}
+
+interface DispatchProps {
+    // loadStakingHistory: typeof loadStakingHistory
 }
 
 type Props = OwnProps
 
-const mapStateToProps = (state: IApplicationState): OwnProps => {
-    return {
-        stakingHistory: state.staking.stakingHistory,
-    }
-}
-
-const mapDispatchToProps = {
-    loadStakingHistory,
-}
-
-export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(StakingHistoryTable)
-)

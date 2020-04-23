@@ -11,8 +11,9 @@ import { Ticket } from "../../middleware/models"
 import { TicketStatusIcon } from "./TicketStatusIcon"
 import { transitionGroupProps } from "../../constants"
 import TransactionHash from "../transactions/TransactionHash"
+import { RectShape, TextBlock } from "react-placeholder/lib/placeholders"
 
-export default class TicketsTable extends React.Component<TicketsTableProps> {
+export default class TicketsTable extends React.PureComponent<TicketsTableProps> {
     render() {
         return (
             <Table hover>
@@ -65,3 +66,10 @@ interface TicketsTableProps {
     items: Ticket[]
     onItemClick: (ticket: Ticket) => void
 }
+
+export const TicketsTablePlaceHolder = (
+    <div>
+        <RectShape style={{ width: 30, height: 80 }} />
+        <TextBlock color="#ddd"  rows={7} />
+    </div>
+)

@@ -1,10 +1,17 @@
 import * as React from "react"
 import { connect } from "react-redux"
-import { withRouter } from "react-router-dom"
 import _ from "lodash"
 
-import {
-    loadStakingHistory,
+// @ts-ignore
+import Fade from "react-reveal/Fade"
+import { Card, Row, Col, Dropdown } from "react-bootstrap"
+import IntervalChooser, { ChartTimeframe, defaultTimeframe, stakingTimeframes } from "../market/IntervalChooser"
+import { IApplicationState } from "../../store/types"
+
+import { StakingHistory } from "../../proto/walletgui_pb"
+import StakingHistoryTable from "./StakingHistoryTable"
+import { getOrderedStakingHistory ,
+  loadStakingHistory,
     getStakingHistorySparklineData,
     ITxTypeCountsChartdataTimelineItem,
     getStakingHistoryCountEvents,
@@ -14,51 +21,29 @@ import {
     aggregateChartDataBy,
     sumTxTypeCountsChartdata,
     sumRewardDataChartdata,
-} from "./stakingSlice"
-import { StakingHistory } from "../../proto/walletgui_pb"
-import { AppError, IApplicationState } from "../../store/types"
-import { Card, Row, Col } from "react-bootstrap"
-import { ATOMS_DIVISOR } from "../../constants"
+ } from "./stakingSlice"
+  
+class StakingHistoryContainer extends React.PureComponent<Props, InternalState> {
+	constructor(props: Props) {
+		super(props)
+		this.state = {
+			selectedTimeframe: defaultTimeframe,
+		}
+	}
 
-import {
-    BarChart,
-    Bar,
-    ResponsiveContainer,
-    XAxis,
-    YAxis,
-    Legend,
-} from "recharts"
-import * as Moment from "moment"
-import { extendMoment } from "moment-range"
-const moment = extendMoment(Moment)
-import IntervalChooser, {
-    ChartTimeframe,
-    stakingTimeframes,
-} from "../market/IntervalChooser"
-import StakingHistoryTable from "./StakingHistoryTable"
-
-class StakingHistoryContainer extends React.Component<Props> {
-    render() {
-        const rewardData = this.props.rewardData.map((item) => {
-            return {
-                ...item,
-                sumRewardCredits: item.sumRewardCredits / ATOMS_DIVISOR,
-            }
-        })
-        return (
-            <Card>
-                <Card.Header>
-                    <Card.Title>Staking returns</Card.Title>
-                </Card.Header>
-                <Card.Body>
-                    <div className="text-right">
-                        <IntervalChooser
-                            onChange={this.props.onTimeFrameChanged}
-                            timeframes={stakingTimeframes}
-                            selectedValue={this.props.selectedTimeframe}
-                        />
-                    </div>
-                    <Row>
+	render() {
+		return (
+			<Card>
+				<Card.Header>
+					<div className="float-right">
+						<IntervalChooser
+							onChange={(timeframe: ChartTimeframe) => this.setState({ selectedTimeframe: timeframe })}
+							selectedValue={this.state.selectedTimeframe}
+						/>
+					</div>
+					<Card.Title>Staking returns</Card.Title>
+				</Card.Header>
+            <Row>
                         <Col sm={6}>
                             <div style={{ width: "100%", height: "250px" }}>
                                 <ResponsiveContainer width="100%" height="100%">
@@ -139,46 +124,36 @@ class StakingHistoryContainer extends React.Component<Props> {
                             </div>
                         </Col>
                     </Row>
-                </Card.Body>
-                <StakingHistoryTable />
-            </Card>
-        )
-    }
-    componentDidMount() {
-        this.props.loadStakingHistory(
-            moment.default().unix(),
-            moment.default().subtract("days", this.props.selectedTimeframe.days).unix()
-        )
-    }
+				<StakingHistoryTable stakingHistoryItems={this.props.getHistory(this.state.selectedTimeframe)} />
+			</Card>
+
+		)
+	}
+}
+
+interface InternalState {
+	selectedTimeframe: ChartTimeframe
 }
 
 interface OwnProps {
-    stakingHistory: StakingHistory | null
-    getStakingHistoryError: AppError | null
-    getStakingHistoryAttempting: boolean
-    selectedTimeframe: ChartTimeframe
-    txTypeCounts: ITxTypeCountsChartdataTimelineItem[]
+	getHistory: (timeframe: ChartTimeframe) => StakingHistory.StakingHistoryLineItem[]
+        txTypeCounts: ITxTypeCountsChartdataTimelineItem[]
     rewardData: IRewardDataChartdataTimelineItem[]
 }
 
 interface DispatchProps {
-    loadStakingHistory: typeof loadStakingHistory
-    onTimeFrameChanged: typeof onTimeFrameChanged
-}
+onTimeFrameChanged: typeof onTimeFrameChanged
+  }
 
-type Props = OwnProps & DispatchProps
+type Props = DispatchProps & OwnProps
 
-const mapStateToProps = (state: IApplicationState): OwnProps => {
-    const stakingHistory = getStakingHistorySparklineData(
+const mapStateToProps = (state: IApplicationState) => {
+      const stakingHistory = getStakingHistorySparklineData(
         state,
         state.staking.selectedTimeframe.days
     )
 
     return {
-        stakingHistory: state.staking.stakingHistory,
-        getStakingHistoryError: state.staking.getStakingHistoryError,
-        getStakingHistoryAttempting: state.staking.getStakingHistoryAttempting,
-        selectedTimeframe: state.staking.selectedTimeframe,
         txTypeCounts: aggregateChartDataBy(
             state.staking.selectedTimeframe,
             getStakingHistoryCountEvents(
@@ -195,14 +170,14 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
             ),
             sumRewardDataChartdata
         ),
-    }
+		getHistory: (timeframe: ChartTimeframe) => {
+			return getOrderedStakingHistory(state, timeframe.days)
+		}
+	}
 }
 
 const mapDispatchToProps = {
-    loadStakingHistory,
     onTimeFrameChanged,
 }
 
-export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(StakingHistoryContainer)
-)
+export default connect(mapStateToProps, mapDispatchToProps)(StakingHistoryContainer)

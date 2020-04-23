@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import _ from "lodash"
 
+
 import { Row, Col, Tabs, Tab } from "react-bootstrap"
 // @ts-ignore
 import Fade from "react-reveal/Fade"
@@ -12,6 +13,7 @@ import AgendasComponent from "../features/staking/Voting/AgendasComponent"
 import StakeInfoComponent from "../features/staking/StakeInfoComponent"
 import PurchaseTicketForm from "../features/staking/PurchaseTicket/SimplePurchaseTicketForm"
 import TicketBuyerComponent from "../features/staking/Ticketbuyer/TicketBuyerComponent"
+import StakingHistoryContainer from "../features/staking/StakingHistoryContainer"
 import TicketsOverviewContainer from "../features/staking/TicketsOverviewContainer"
 import {
     loadTicketsAttempt,
@@ -20,11 +22,11 @@ import {
 } from "../features/staking/stakingSlice"
 import StakingToolsMenu from "../features/staking/StakingToolsMenu"
 import PassphraseEntryDialog from "../components/Shared/PassphraseEntryDialog"
-import StakingHistoryContainer from "../features/staking/StakingHistoryContainer"
+
 import { IApplicationState } from "../store/types"
 import { StakeInfo } from "../middleware/models"
 
-class StakingContainer extends React.Component<Props> {
+class StakingContainer extends React.PureComponent<Props> {
     render() {
         return (
             <div>
@@ -38,21 +40,19 @@ class StakingContainer extends React.Component<Props> {
                     unmountOnExit={true}
                 >
                     <Tab eventKey="overview" title="Overview">
-                        <Fade fade>
+                        <div>
                             <StakeInfoComponent />
-                        </Fade>
-                        <Row className="mt-3">
-                            <Col>
-                                <Fade fade>
+                            <Row className="mt-3">
+                                <Col>
                                     <TicketsOverviewContainer />
-                                </Fade>
-                            </Col>
-                            <Col>
-                                <StakeStats />
-                                <div className="mt-3" />
-                                <PurchaseTicketForm />
-                            </Col>
-                        </Row>
+                                </Col>
+                                <Col>
+                                    <StakeStats />
+                                    <div className="mt-3" />
+                                    <PurchaseTicketForm />
+                                </Col>
+                            </Row>
+                        </div>
                     </Tab>
                     <Tab eventKey="roi" title="Returns">
                         <StakingHistoryContainer />
@@ -69,7 +69,8 @@ class StakingContainer extends React.Component<Props> {
         )
     }
     componentDidMount() {
-        this.props.loadStakeInfoAttempt()
+        // this.props.loadStakeInfoAttempt()
+        // this.props.loadStakingHistory(moment.default().unix(), moment.default().subtract("days", 17).unix())
         // this.props.loadStakingHistory()
         // this.props.loadTicketsAttempt()
     }
@@ -80,9 +81,9 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-    loadStakeInfoAttempt: typeof loadStakeInfoAttempt
-    loadStakingHistory: typeof loadStakingHistory
-    loadTicketsAttempt: typeof loadTicketsAttempt
+    // loadStakeInfoAttempt: typeof loadStakeInfoAttempt
+    // loadStakingHistory: typeof loadStakingHistory
+    // loadTicketsAttempt: typeof loadTicketsAttempt
 }
 
 type Props = OwnProps & DispatchProps
@@ -94,9 +95,9 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
 }
 
 const mapDispatchToProps = {
-    loadStakingHistory,
-    loadTicketsAttempt,
-    loadStakeInfoAttempt,
+    // loadStakingHistory,
+    // loadTicketsAttempt,
+    // loadStakeInfoAttempt,
 }
 
 export default withRouter(
