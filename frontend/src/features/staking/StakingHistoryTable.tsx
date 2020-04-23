@@ -2,9 +2,7 @@ import * as React from "react"
 import _ from "lodash"
 import moment from "../../helpers/moment-helper"
 
-
 import { Table, } from "react-bootstrap"
-
 import ReactTimeago from "react-timeago"
 import { TransitionGroup } from "react-transition-group"
 // @ts-ignore
@@ -34,7 +32,7 @@ export default class StakingHistoryTable extends React.Component<Props> {
                     component="tbody"
                 >
 
-                    {this.props.stakingHistoryItems.map((item) => (
+                    {this.props.stakingHistory.map((item) => (
                         <Fade slide cascade key={rawHashToHex(item.getTxHash_asU8()) || ""}>
 
                             <tr>
@@ -77,17 +75,13 @@ export default class StakingHistoryTable extends React.Component<Props> {
             </Table>
         )
     }
-    componentDidMount() {
-        // this.props.loadStakingHistory(moment.default().unix(), moment.default().subtract("days",17).unix())
-    }
 }
 
 interface OwnProps {
-    stakingHistoryItems: StakingHistory.StakingHistoryLineItem[]
+    stakingHistory: StakingHistory.StakingHistoryLineItem[]
 }
 
 interface DispatchProps {
-    // loadStakingHistory: typeof loadStakingHistory
 }
 
 type Props = OwnProps

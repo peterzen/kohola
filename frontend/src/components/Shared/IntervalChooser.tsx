@@ -10,18 +10,15 @@ export interface ChartTimeframe {
     step?: number
 }
 
-export const marketTimeframes: ChartTimeframe[] = [
+
+export const timeframes: ChartTimeframe[] = [
     { days: 1, name: "24 hours" },
     { days: 3, name: "3 days" },
-    { days: 7, name: "1 week" },
-    { days: 31, name: "1 month" },
-]
-
-export const stakingTimeframes: ChartTimeframe[] = [
-    { days: 7, name: "1 week" , step: 1},
+    { days: 7, name: "1 week", step: 1 },
     { days: 31, name: "1 month", step: 3 },
     { days: 365, name: "1 year", step: 31 },
 ]
+
 export const defaultTimeframe = timeframes[2]
 
 export default class IntervalChooser extends React.Component<OwnProps> {

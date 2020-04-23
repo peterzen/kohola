@@ -2,17 +2,13 @@ import * as React from "react"
 import { connect } from "react-redux"
 import _ from "lodash"
 
-// @ts-ignore
-import Fade from "react-reveal/Fade"
-import { Card, Row, Col, Dropdown } from "react-bootstrap"
-import IntervalChooser, { ChartTimeframe, defaultTimeframe, stakingTimeframes } from "../market/IntervalChooser"
+import { Card } from "react-bootstrap"
+import IntervalChooser, { ChartTimeframe, timeframes } from "../../components/Shared/IntervalChooser"
 import { IApplicationState } from "../../store/types"
 
 import { StakingHistory } from "../../proto/walletgui_pb"
 import StakingHistoryTable from "./StakingHistoryTable"
-import { getOrderedStakingHistory ,
-  loadStakingHistory,
-    getStakingHistorySparklineData,
+import {
     ITxTypeCountsChartdataTimelineItem,
     getStakingHistoryCountEvents,
     IRewardDataChartdataTimelineItem,
@@ -21,159 +17,79 @@ import { getOrderedStakingHistory ,
     aggregateChartDataBy,
     sumTxTypeCountsChartdata,
     sumRewardDataChartdata,
- } from "./stakingSlice"
-  
+    getFilteredStakingHistory,
+} from "./stakingSlice"
+import StakingHistoryChart from "./StakingHistoryChart"
+
 class StakingHistoryContainer extends React.PureComponent<Props, InternalState> {
-	constructor(props: Props) {
-		super(props)
-		this.state = {
-			selectedTimeframe: defaultTimeframe,
-		}
-	}
-
-	render() {
-		return (
-			<Card>
-				<Card.Header>
-					<div className="float-right">
-						<IntervalChooser
-							onChange={(timeframe: ChartTimeframe) => this.setState({ selectedTimeframe: timeframe })}
-							selectedValue={this.state.selectedTimeframe}
-						/>
-					</div>
-					<Card.Title>Staking returns</Card.Title>
-				</Card.Header>
-            <Row>
-                        <Col sm={6}>
-                            <div style={{ width: "100%", height: "250px" }}>
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart
-                                        data={rewardData}
-                                        margin={{
-                                            top: 0,
-                                            right: 0,
-                                            left: 20,
-                                            bottom: 0,
-                                        }}
-                                    >
-                                        <XAxis dataKey="timestamp" />
-                                        <YAxis
-                                            domain={["auto", "auto"]}
-                                            yAxisId="left"
-                                            orientation="left"
-                                            stroke="#8884d8"
-                                        />
-                                        <YAxis
-                                            domain={["auto", "auto"]}
-                                            yAxisId="right"
-                                            orientation="right"
-                                            stroke="#82ca9d"
-                                        />
-                                        <Bar
-                                            dataKey="sumRewardCredits"
-                                            fill="#8884d8"
-                                            name="Sum(RewardCredit)"
-                                            yAxisId="left"
-                                        />
-                                        <Bar
-                                            dataKey="rewardPercent"
-                                            fill="#82ca9d"
-                                            name="Return%"
-                                            yAxisId="right"
-                                        />
-                                        <Legend />
-                                    </BarChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </Col>
-                        <Col sm={6}>
-                            <div style={{ width: "100%", height: "250px" }}>
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart
-                                        data={this.props.txTypeCounts}
-                                        margin={{
-                                            top: 0,
-                                            right: 0,
-                                            left: 0,
-                                            bottom: 0,
-                                        }}
-                                    >
-                                        <XAxis
-                                            dataKey="timestamp"
-                                            minTickGap={20}
-                                        />
-                                        <YAxis domain={["auto", "auto"]} />
-                                        <Bar
-                                            dataKey="voteCounts"
-                                            fill="#8884d8"
-                                            name="VOTE"
-                                        />
-                                        <Bar
-                                            dataKey="purchasedCounts"
-                                            fill="#82ca9d"
-                                            name="TICKET_PURCHASE"
-                                        />
-                                        <Bar
-                                            dataKey="revocationCounts"
-                                            fill="#ff7300"
-                                            name="REVOCATION"
-                                        />
-                                        <Legend />
-                                    </BarChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </Col>
-                    </Row>
-				<StakingHistoryTable stakingHistoryItems={this.props.getHistory(this.state.selectedTimeframe)} />
-			</Card>
-
-		)
-	}
+    render() {
+        const history = this.props.getHistory(this.props.selectedTimeframe)
+        return (
+            <Card>
+                <Card.Header>
+                    <div className="float-right">
+                        <IntervalChooser
+                            timeframes={timeframes}
+                            onChange={(timeframe: ChartTimeframe) => this.props.onTimeFrameChanged(timeframe)}
+                            selectedValue={this.props.selectedTimeframe}
+                        />
+                    </div>
+                    <Card.Title>Staking returns</Card.Title>
+                </Card.Header>
+                <StakingHistoryChart stakingHistory={history} timeframe={this.props.selectedTimeframe} />
+                <hr/>
+                <StakingHistoryTable stakingHistory={history} />
+            </Card>
+        )
+    }
 }
 
 interface InternalState {
-	selectedTimeframe: ChartTimeframe
 }
 
 interface OwnProps {
-	getHistory: (timeframe: ChartTimeframe) => StakingHistory.StakingHistoryLineItem[]
-        txTypeCounts: ITxTypeCountsChartdataTimelineItem[]
+    selectedTimeframe: ChartTimeframe
+    getHistory: (timeframe: ChartTimeframe) => StakingHistory.StakingHistoryLineItem[]
     rewardData: IRewardDataChartdataTimelineItem[]
+    txTypeCounts: ITxTypeCountsChartdataTimelineItem[]
 }
 
 interface DispatchProps {
-onTimeFrameChanged: typeof onTimeFrameChanged
-  }
+    onTimeFrameChanged: typeof onTimeFrameChanged
+}
 
 type Props = DispatchProps & OwnProps
 
 const mapStateToProps = (state: IApplicationState) => {
-      const stakingHistory = getStakingHistorySparklineData(
+    const timeframe = state.staking.selectedTimeframe
+    const stakingHistory = getFilteredStakingHistory(
         state,
-        state.staking.selectedTimeframe.days
+        timeframe.days
     )
+    const chartData = _.orderBy(stakingHistory, item => item.getTimestamp(), "asc")
 
     return {
+        selectedTimeframe: timeframe,
         txTypeCounts: aggregateChartDataBy(
             state.staking.selectedTimeframe,
             getStakingHistoryCountEvents(
-                stakingHistory,
-                state.staking.selectedTimeframe.days
+                chartData,
+                timeframe.days
             ),
             sumTxTypeCountsChartdata
         ),
         rewardData: aggregateChartDataBy(
             state.staking.selectedTimeframe,
             getStakingHistoryRewardData(
-                stakingHistory,
-                state.staking.selectedTimeframe.days
+                chartData,
+                timeframe.days
             ),
             sumRewardDataChartdata
         ),
-		getHistory: (timeframe: ChartTimeframe) => {
-			return getOrderedStakingHistory(state, timeframe.days)
-		}
-	}
+        getHistory: () => {
+            return _.orderBy(stakingHistory, item => item.getTimestamp(), "desc")
+        }
+    }
 }
 
 const mapDispatchToProps = {

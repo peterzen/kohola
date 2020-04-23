@@ -33,7 +33,7 @@ import {
 
 import { StakingHistory, StakeDiffHistory } from "../../proto/walletgui_pb"
 import { TransactionType } from "../../constants"
-import { ChartTimeframe, stakingTimeframes } from "../market/IntervalChooser"
+import { ChartTimeframe, timeframes } from "../../components/Shared/IntervalChooser"
 
 
 // GetTickets
@@ -197,7 +197,7 @@ export const initialState: ITicketsState &
     stakingHistory: null,
     getStakingHistoryAttempting: false,
     getStakingHistoryError: null,
-    selectedTimeframe: stakingTimeframes[0],
+    selectedTimeframe: timeframes[0],
 
     // StakeDiffHistory
     stakediffHistory: null,
@@ -823,7 +823,7 @@ export const getOrderedStakingHistory = (
         .value()
 }
 
-export const getStakingHistorySparklineData = (
+export const getFilteredStakingHistory = (
     state: IApplicationState,
     days: number = 7
 ): StakingHistory.StakingHistoryLineItem[] => {
@@ -833,7 +833,6 @@ export const getStakingHistorySparklineData = (
     const startTimestamp = moment.default().subtract(days, "days").unix()
     return _.chain(getStakingHistory(state)?.getLineItemsList())
         .filter((item) => item.getTimestamp() >= startTimestamp)
-        .orderBy((item) => item.getTimestamp(), "asc")
         .value()
 }
 

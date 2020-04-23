@@ -8,7 +8,7 @@ import {
     sumTxTypeCountsChartdata,
     sumRewardDataChartdata
 } from "../../src/features/staking/stakingSlice"
-import { ChartTimeframe } from "../../src/features/market/IntervalChooser"
+import { ChartTimeframe } from "../../src/components/Shared/IntervalChooser"
 import { TransactionType } from "../../src/constants"
 import moment from "moment"
 

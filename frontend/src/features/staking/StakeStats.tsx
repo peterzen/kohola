@@ -1,6 +1,7 @@
 import * as React from "react"
 import { connect } from "react-redux"
 import _ from "lodash"
+import moment from "../../helpers/moment-helper"
 
 import { Row, Col, Card } from "react-bootstrap"
 
@@ -8,14 +9,15 @@ import { StakeInfo, TicketPrice } from "../../middleware/models"
 import { StakingHistory } from "../../proto/walletgui_pb"
 import { TicketStatus, TransactionType } from "../../constants"
 import {
-    loadStakeInfoAttempt,
     loadTicketPriceAttempt,
     getTicketPrice,
-    getStakingHistorySparklineData,
     loadStakeDiffHistory,
     getStakediffHistory,
+    getFilteredStakingHistory,
 } from "./stakingSlice"
 
+import { Amount } from "../../components/Shared/Amount"
+import { SparklineChart } from "../../components/charts/TinyCharts"
 import { TicketStatusIcon } from "./TicketStatusIcon"
 import { IApplicationState } from "../../store/types"
 import {
@@ -24,9 +26,6 @@ import {
     IChartdataTimelineItem,
 } from "../../helpers/helpers"
 
-import { Amount } from "../../components/Shared/Amount"
-import { SparklineChart } from "../../components/charts/TinyCharts"
-import moment from "../../helpers/moment-helper"
 
 // @TODO add dropdown to control this
 const days = 7
@@ -139,7 +138,7 @@ interface DispatchProps {
 type Props = DispatchProps & OwnProps
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
-    const stakingHistory = getStakingHistorySparklineData(state, days)
+    const stakingHistory = getFilteredStakingHistory(state, days)
     return {
         stakeinfo: state.staking.stakeinfo,
         ticketPrice: getTicketPrice(state),
