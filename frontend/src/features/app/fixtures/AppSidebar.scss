@@ -26,6 +26,9 @@
             span {
                 margin-left: 1rem;
             }
+            &.active {
+                background-color: #e5e5e5;
+            }
         }
     }
 }
