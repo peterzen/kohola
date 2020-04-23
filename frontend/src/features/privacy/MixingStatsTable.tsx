@@ -14,9 +14,9 @@ import { Transaction, WalletAccount } from "../../middleware/models"
 import { lookupAccounts } from "../balances/accountSlice"
 import { IApplicationState } from "../../store/types"
 import { Amount } from "../../components/Shared/Amount"
-import TransactionHash from "./TransactionHash"
-import TransactionMempoolStatusIcon from "./TransactionMempoolStatusIcon"
-import { isTxMixed } from "./transactionsSlice"
+import TransactionMempoolStatusIcon from "../transactions/TransactionMempoolStatusIcon"
+import TransactionHash from "../transactions/TransactionHash"
+import { isTxMixed } from "../transactions/transactionsSlice"
 
 const transitionGroupProps = {
     appear: true,
@@ -24,22 +24,19 @@ const transitionGroupProps = {
     exit: true,
 }
 
-class TransactionTable extends React.Component<Props> {
+class MixingStatsTable extends React.Component<Props> {
     render() {
-        const showAccount = this.props.showAccount || false
+		const showAccount = this.props.showAccount || false
+		const txList = this.props.transactions
         return (
             <div>
-                {this.props.items.length > 0 && (
+                {txList.length > 0 && (
                     <Table hover>
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Amount</th>
-                                {this.props.showAccount && (
-                                    <th>Account(s)</th>
-                                )}
+                                <th>Denomination</th>
                                 <th>Timestamp</th>
-                                <th>Tx type</th>
                                 <th>Hash</th>
                             </tr>
                         </thead>
@@ -47,7 +44,7 @@ class TransactionTable extends React.Component<Props> {
                             {...transitionGroupProps}
                             component="tbody"
                         >
-                            {this.props.items.map((tx: Transaction) => (
+                            {txList.map((tx: Transaction) => (
                                 <Fade slide cascade key={tx.getHash()}>
                                     <tr
                                         className="clickable"
@@ -66,42 +63,12 @@ class TransactionTable extends React.Component<Props> {
                                                 rounding={6}
                                             />
                                         </td>
-                                        {showAccount && (
-                                            <td>
-                                                {_.map(
-                                                    this.props.lookupAccounts(
-                                                        tx.getAccountNumbers()
-                                                    ),
-                                                    (account) => {
-                                                        if (
-                                                            account == undefined
-                                                        )
-                                                            return null
-                                                        return (
-                                                            <Badge
-                                                                key={account.getAccountName()}
-                                                                variant="info"
-                                                            >
-                                                                {account.getAccountName()}
-                                                            </Badge>
-                                                        )
-                                                    }
-                                                )}
-                                            </td>
-                                        )}
                                         <td>
                                             <TimeAgo
                                                 date={tx
                                                     .getTimestamp()
                                                     .toDate()}
                                             />
-                                        </td>
-                                        <td>
-                                            {tx.getTypeAsString()}
-                                            {" "}
-                                            {this.props.isTxMixed(tx) && (
-                                                <Badge variant="secondary">Mix</Badge>
-                                            )}
                                         </td>
                                         <td>
                                             <TransactionHash tx={tx} />
@@ -127,7 +94,7 @@ interface StateProps {
 }
 
 interface OwnProps {
-    items: Transaction[]
+    transactions: Transaction[]
     showAccount?: boolean
     onItemClick: (tx: Transaction) => void
 }
@@ -145,4 +112,4 @@ const mapStateToProps = (state: IApplicationState): StateProps => {
     }
 }
 
-export default connect(mapStateToProps)(TransactionTable)
+export default connect(mapStateToProps)(MixingStatsTable)

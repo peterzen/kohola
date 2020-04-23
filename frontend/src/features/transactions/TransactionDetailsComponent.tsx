@@ -1,6 +1,7 @@
 import * as React from "react"
+import { connect } from "react-redux"
 
-import { Table, Accordion, Button } from "react-bootstrap"
+import { Table, Accordion, Button, Badge } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons"
 
@@ -10,8 +11,10 @@ import { Amount } from "../../components/Shared/Amount"
 import TransactionHash from "./TransactionHash"
 import Address from "./Address"
 import Block from "./Block"
+import { isTxMixed } from "./transactionsSlice"
+import { IApplicationState } from "../../store/types"
 
-export default class TransactionDetailsComponent extends React.Component<OwnProps>{
+class TransactionDetailsComponent extends React.Component<Props>{
     render() {
         const tx = this.props.tx
         if (tx == null) {
@@ -23,12 +26,18 @@ export default class TransactionDetailsComponent extends React.Component<OwnProp
                     <tbody>
                         <tr>
                             <th>Type</th>
-                            <td>{tx.getTypeAsString()}</td>
+                            <td>
+                                {tx.getTypeAsString()}
+                                {/* {" "}
+                                {this.props.isTxMixed(tx) && (
+                                    <Badge variant="secondary">Mix</Badge>
+                                )} */}
+                            </td>
                         </tr>
                         <tr>
                             <th>Block</th>
                             <td>
-                                <Block block={tx.getBlock()}/>
+                                <Block block={tx.getBlock()} />
                             </td>
                         </tr>
                         <tr>
@@ -125,3 +134,19 @@ export default class TransactionDetailsComponent extends React.Component<OwnProp
 interface OwnProps {
     tx: Transaction | null
 }
+
+interface StateProps {
+    isTxMixed: (tx: Transaction) => boolean
+}
+
+type Props = OwnProps & StateProps
+
+const mapStateToProps = (state: IApplicationState): StateProps => {
+    return {
+        isTxMixed: (tx: Transaction) => {
+            return isTxMixed(state, tx)
+        },
+    }
+}
+
+export default connect(mapStateToProps)(TransactionDetailsComponent)

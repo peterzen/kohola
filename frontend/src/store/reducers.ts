@@ -5,6 +5,7 @@ import app from "../features/app/appSlice"
 import mixer from "../features/privacy/mixerSlice"
 import trezor from "../features/trezor/trezorSlice"
 import market from "../features/market/marketSlice"
+import wallet from '../features/app/walletSlice'
 import staking from "../features/staking/stakingSlice"
 import accounts from "../features/balances/accountSlice"
 import networkinfo from "../features/app/networkinfo/networkInfoSlice"
@@ -23,6 +24,7 @@ export default function createRootReducer(
         mixer,
         trezor,
         market,
+        wallet,
         staking,
         accounts,
         networkinfo,
