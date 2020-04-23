@@ -46,7 +46,7 @@ import {
     AccountBalance,
 } from "./models"
 
-const w = window as any
+const w = (process.env.NODE_ENV === "test") ? undefined : window as any
 
 export function endpointFactory<T>(methodName: string, responseType: T) {
     return async function <R>(request?: R) {

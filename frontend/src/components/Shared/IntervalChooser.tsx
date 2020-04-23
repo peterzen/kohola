@@ -7,13 +7,16 @@ import { faCalendar } from "@fortawesome/free-solid-svg-icons"
 export interface ChartTimeframe {
     days: number
     name: string
+    step?: number
 }
+
 
 export const timeframes: ChartTimeframe[] = [
     { days: 1, name: "24 hours" },
     { days: 3, name: "3 days" },
-    { days: 7, name: "1 week" },
-    { days: 31, name: "1 month" },
+    { days: 7, name: "1 week", step: 1 },
+    { days: 31, name: "1 month", step: 3 },
+    { days: 365, name: "1 year", step: 31 },
 ]
 
 export const defaultTimeframe = timeframes[2]
@@ -26,7 +29,7 @@ export default class IntervalChooser extends React.Component<OwnProps> {
                     <FontAwesomeIcon icon={faCalendar} /> {this.props.selectedValue.name}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                    {timeframes.map((item) => (
+                    {this.props.timeframes.map((item) => (
                         <Dropdown.Item
                             key={`interval-${item.days}`}
                             onClick={() => this.props.onChange(item)}
@@ -42,5 +45,6 @@ export default class IntervalChooser extends React.Component<OwnProps> {
 
 interface OwnProps {
     selectedValue: ChartTimeframe
+    timeframes: ChartTimeframe[]
     onChange: (interval: ChartTimeframe) => void
 }

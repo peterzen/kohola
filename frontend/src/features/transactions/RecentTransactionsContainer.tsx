@@ -11,7 +11,7 @@ import GenericModal from "../../components/Shared/GenericModal"
 import { loadTransactionsAttempt } from "./actions"
 import { IApplicationState } from "../../store/types"
 import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
-import IntervalChooser, { ChartTimeframe, timeframes, defaultTimeframe } from "../market/IntervalChooser"
+import IntervalChooser, { ChartTimeframe, timeframes, defaultTimeframe } from "../../components/Shared/IntervalChooser"
 import moment from "../../helpers/moment-helper"
 
 
@@ -32,6 +32,7 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
                 <Card.Header>
                     <div className="float-right">
                         <IntervalChooser
+                            timeframes={timeframes}
                             onChange={(timeframe: ChartTimeframe) => this.setState({ selectedTimeframe: timeframe })}
                             selectedValue={this.state.selectedTimeframe}
                         />

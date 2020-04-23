@@ -13,6 +13,7 @@ import AgendasComponent from "../features/staking/Voting/AgendasComponent"
 import StakeInfoComponent from "../features/staking/StakeInfoComponent"
 import PurchaseTicketForm from "../features/staking/PurchaseTicket/SimplePurchaseTicketForm"
 import TicketBuyerComponent from "../features/staking/Ticketbuyer/TicketBuyerComponent"
+import StakingHistoryContainer from "../features/staking/StakingHistoryContainer"
 import TicketsOverviewContainer from "../features/staking/TicketsOverviewContainer"
 import {
     loadTicketsAttempt,
@@ -21,9 +22,9 @@ import {
 } from "../features/staking/stakingSlice"
 import StakingToolsMenu from "../features/staking/StakingToolsMenu"
 import PassphraseEntryDialog from "../components/Shared/PassphraseEntryDialog"
+
 import { IApplicationState } from "../store/types"
 import { StakeInfo } from "../middleware/models"
-import StakingHistoryContainer from "../features/staking/StakingHistoryContainer"
 
 class StakingContainer extends React.PureComponent<Props> {
     render() {

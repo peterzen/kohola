@@ -56,6 +56,10 @@ export function makeTimeline(
     )
 }
 
+export interface Dictionary<T> {
+    [index: string]: T;
+}
+
 export function makeDateRangeFromDays(days: number, fromDate = Moment.default()) {
     return moment.range(
         moment.default().subtract(days, "day"),

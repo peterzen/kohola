@@ -13,8 +13,6 @@ import { TransactionType, transitionGroupProps } from "../../constants"
 import { rawHashToHex } from "../../helpers/byteActions"
 import { StakingHistory } from "../../proto/walletgui_pb"
 
-
-
 export default class StakingHistoryTable extends React.Component<Props> {
     render() {
         return (
@@ -34,7 +32,7 @@ export default class StakingHistoryTable extends React.Component<Props> {
                     component="tbody"
                 >
 
-                    {this.props.stakingHistoryItems.map((item) => (
+                    {this.props.stakingHistory.map((item) => (
                         <Fade slide cascade key={rawHashToHex(item.getTxHash_asU8()) || ""}>
 
                             <tr>
@@ -77,18 +75,14 @@ export default class StakingHistoryTable extends React.Component<Props> {
             </Table>
         )
     }
-    componentDidMount() {
-        // this.props.loadStakingHistory(moment.default().unix(), moment.default().subtract("days",17).unix())
-    }
 }
 
 interface OwnProps {
-    stakingHistoryItems: StakingHistory.StakingHistoryLineItem[]
+    stakingHistory: StakingHistory.StakingHistoryLineItem[]
 }
 
 interface DispatchProps {
-    // loadStakingHistory: typeof loadStakingHistory
 }
 
-type Props = OwnProps & DispatchProps
+type Props = OwnProps
 

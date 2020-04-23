@@ -1,7 +1,10 @@
 import _ from "lodash"
 
+import Moment from "moment"
+import moment from "../../helpers/moment-helper"
 
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit"
+import { makeTimeline, IChartdataTimelineItem, Dictionary } from "../../helpers/helpers"
 
 import {
     AppError,
@@ -27,9 +30,11 @@ import {
     Agendas,
     StakeInfo,
 } from "../../middleware/models"
+
 import { StakingHistory, StakeDiffHistory } from "../../proto/walletgui_pb"
-import Moment from "moment"
-import moment from "../../helpers/moment-helper"
+import { TransactionType } from "../../constants"
+import { ChartTimeframe, timeframes } from "../../components/Shared/IntervalChooser"
+
 
 // GetTickets
 export interface ITicketsState {
@@ -111,6 +116,7 @@ export interface IStakingHistoryState {
     readonly stakingHistory: StakingHistory | null
     readonly getStakingHistoryError: AppError | null
     readonly getStakingHistoryAttempting: boolean
+    readonly selectedTimeframe: ChartTimeframe
 }
 
 // StakeDiffHistory
@@ -191,6 +197,7 @@ export const initialState: ITicketsState &
     stakingHistory: null,
     getStakingHistoryAttempting: false,
     getStakingHistoryError: null,
+    selectedTimeframe: timeframes[0],
 
     // StakeDiffHistory
     stakediffHistory: null,
@@ -435,6 +442,11 @@ const stakingSlice = createSlice({
             state.getStakediffHistoryError = null
             state.getStakediffHistoryAttempting = false
         },
+
+        //Charts
+        setSelectedTimeframe(state, action: PayloadAction<ChartTimeframe>) {
+            state.selectedTimeframe = action.payload
+        },
     },
 })
 
@@ -502,6 +514,9 @@ export const {
     getStakediffHistoryAttempt,
     getStakediffHistoryFailed,
     getStakediffHistorySuccess,
+
+    // Charts
+    setSelectedTimeframe,
 } = stakingSlice.actions
 
 export default stakingSlice.reducer
@@ -771,6 +786,12 @@ export const loadStakeDiffHistory: ActionCreator<any> = (
     }
 }
 
+export const onTimeFrameChanged: ActionCreator<any> = (timeframe: ChartTimeframe): AppThunk => {
+    return async (dispatch: AppDispatch, _) => {
+        dispatch(setSelectedTimeframe(timeframe))
+    }
+}
+
 // selectors
 export const getTickets = (state: IApplicationState): Ticket[] => {
     return _.orderBy(
@@ -802,7 +823,7 @@ export const getOrderedStakingHistory = (
         .value()
 }
 
-export const getStakingHistorySparklineData = (
+export const getFilteredStakingHistory = (
     state: IApplicationState,
     days: number = 7
 ): StakingHistory.StakingHistoryLineItem[] => {
@@ -812,10 +833,187 @@ export const getStakingHistorySparklineData = (
     const startTimestamp = moment.default().subtract(days, "days").unix()
     return _.chain(getStakingHistory(state)?.getLineItemsList())
         .filter((item) => item.getTimestamp() >= startTimestamp)
-        .orderBy((item) => item.getTimestamp(), "asc")
         .value()
 }
 
 export const getStakediffHistory = (state: IApplicationState) => {
     return state.staking.stakediffHistory?.getSdiffValuesList()
+}
+
+export interface IRewardDataChartdataTimelineItem {
+    timestamp: string
+    sumRewardCredits: number
+    rewardPercent: number
+}
+
+export const sumRewardDataChartdata = (datapoint1: IRewardDataChartdataTimelineItem, datapoint2: IRewardDataChartdataTimelineItem) => {
+    const datapoint: IRewardDataChartdataTimelineItem = { ...datapoint1 }
+    datapoint.sumRewardCredits += datapoint2.sumRewardCredits
+    datapoint.rewardPercent += datapoint2.rewardPercent
+    return datapoint
+}
+
+export const getStakingHistoryRewardData = (
+    history: StakingHistory.StakingHistoryLineItem[],
+    days: number,
+): IRewardDataChartdataTimelineItem[] => {
+    const sumRewardCredits = getStakingHistorySumRewardCredits(history, days)
+    const rewardPercent = getStakingHistoryRewardPercent(history, days)
+
+    const rewardData: IRewardDataChartdataTimelineItem[] = Object.keys(makeTimeline(days)).map(date => {
+        return {
+            timestamp: date,
+            sumRewardCredits: _.find(sumRewardCredits, ['timestamp', date])?.value ?? 0,
+            rewardPercent: _.find(rewardPercent, ['timestamp', date])?.value ?? 0
+        }
+    })
+
+    return rewardData
+}
+
+const getStakingHistorySumRewardCredits = (
+    history: StakingHistory.StakingHistoryLineItem[],
+    days: number
+): IChartdataTimelineItem[] => {
+    const timeline = makeTimeline(days)
+
+    const datapoints = _.chain(history)
+        .map((item) => item.toObject())
+        .map(item => { return { ...item, timestamp: moment.default(item.timestamp * 1000).format("L") } })
+        .reduce((result: Dictionary<number>, item) => {
+            result[item.timestamp] = (result[item.timestamp] == undefined) ? item.rewardCredit : result[item.timestamp] + item.rewardCredit
+            return result
+        }, {})
+        .defaults(timeline)
+        .map((value: number, date: string) => {
+            return { timestamp: date, value: value }
+        })
+        .orderBy("timestamp", "asc")
+        .value()
+
+    return datapoints
+}
+
+const getStakingHistoryRewardPercent = (
+    history: StakingHistory.StakingHistoryLineItem[],
+    days: number
+): IChartdataTimelineItem[] => {
+    const timeline = makeTimeline(days)
+
+    const datapoints = _.chain(history)
+        .map((item) => item.toObject())
+        .map(item => { return { ...item, timestamp: moment.default(item.timestamp * 1000).format("L") } })
+        .reduce((result: Dictionary<[number, number]>, item) => {
+            const rewardCredit = item.txType == TransactionType.REVOCATION ? 0 : item.rewardCredit
+            result[item.timestamp] = (result[item.timestamp] == undefined) ?
+                [rewardCredit, item.ticketCostCredit] :
+                [result[item.timestamp][0] + rewardCredit, result[item.timestamp][1] + item.ticketCostCredit]
+            return result
+        }, {})
+        .defaults(timeline)
+        .map((value: [number, number], date: string) => {
+            const [sumRewardCredit, sumTicketCostCredit] = value
+            const sumValue = (sumTicketCostCredit && sumTicketCostCredit > 0) ? sumRewardCredit / sumTicketCostCredit : 0
+            return { timestamp: date, value: sumValue }
+        })
+        .orderBy("timestamp", "asc")
+        .value()
+
+    return datapoints
+}
+
+export interface ITxTypeCountsChartdataTimelineItem {
+    timestamp: string
+    voteCounts: number
+    purchasedCounts: number
+    revocationCounts: number
+}
+export const sumTxTypeCountsChartdata = (datapoint1: ITxTypeCountsChartdataTimelineItem, datapoint2: ITxTypeCountsChartdataTimelineItem) => {
+    const datapoint: ITxTypeCountsChartdataTimelineItem = { ...datapoint1 }
+    datapoint.voteCounts += datapoint2.voteCounts
+    datapoint.purchasedCounts += datapoint2.purchasedCounts
+    datapoint.revocationCounts += datapoint2.revocationCounts
+    return datapoint
+}
+
+export const getStakingHistoryCountEvents = (
+    history: StakingHistory.StakingHistoryLineItem[],
+    days: number,
+): ITxTypeCountsChartdataTimelineItem[] => {
+    const voteCounts = countFilteredEvents(
+        history,
+        days,
+        TransactionType.VOTE
+    )
+
+    const purchasedCounts = countFilteredEvents(
+        history,
+        days,
+        TransactionType.TICKET_PURCHASE
+    )
+
+    const revocationCounts = countFilteredEvents(
+        history,
+        days,
+        TransactionType.REVOCATION
+    )
+    const txTypeCounts: ITxTypeCountsChartdataTimelineItem[] = Object.keys(makeTimeline(days)).map(date => {
+        return {
+            timestamp: date,
+            voteCounts: _.find(voteCounts, ['timestamp', date])?.value ?? 0,
+            purchasedCounts: _.find(purchasedCounts, ['timestamp', date])?.value ?? 0,
+            revocationCounts: _.find(revocationCounts, ['timestamp', date])?.value ?? 0,
+        }
+    })
+
+    return txTypeCounts
+}
+
+const countFilteredEvents = (
+    history: StakingHistory.StakingHistoryLineItem[],
+    days: number,
+    txType: TransactionType
+): IChartdataTimelineItem[] => {
+    const timeline = makeTimeline(days)
+
+    const datapoints = _.chain(history)
+        .filter((item) => item.getTxType() == txType)
+        .map((item) => item.toObject())
+        .countBy((item) => moment.default(item.timestamp * 1000).format("L"))
+        .defaults(timeline)
+        .map((value: number, date: string) => {
+            return { timestamp: date, value: value }
+        })
+        .orderBy("timestamp", "asc")
+        .value()
+
+    return datapoints
+}
+
+export function aggregateChartDataBy<T extends any>(timeframe: ChartTimeframe,
+    datapoints: T[],
+    sumFunction: ((datapoint1: T, datapoint2: T) => T)) {
+
+    const dateRange = moment.range(moment.default().subtract(timeframe.days, "day"), moment.default())
+    const timeline: String[] = Array.from(dateRange.reverseBy("day", { step: timeframe.step })).map((m) => m.format("L"))
+
+    let currDate = String(timeline.pop())
+    let aggregatedDatapoints: Dictionary<T> = {}
+    datapoints.forEach(datapoint => {
+        const timestampUtc = moment.default(datapoint.timestamp, 'MM/DD/YYYY').format('X')
+        const currDateUtc = moment.default(currDate, 'MM/DD/YYYY').format('X')
+
+        if (timestampUtc > currDateUtc) {
+            currDate = String(timeline.pop())
+        }
+        if (aggregatedDatapoints[currDate] == undefined) {
+            aggregatedDatapoints[currDate] = {
+                ...datapoint,
+                timestamp: currDate
+            }
+        } else {
+            aggregatedDatapoints[currDate] = sumFunction(aggregatedDatapoints[currDate], datapoint)
+        }
+    });
+    return _.values(aggregatedDatapoints)
 }
