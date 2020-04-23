@@ -1,11 +1,12 @@
 import _ from "lodash"
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit"
 
-import moment from "moment"
+import moment from "../../helpers/moment-helper"
+
+import { TimeRange, TimeSeries, TimeEvent, Collection } from "pondjs"
 
 import {
-    AltCurrencyRates,
-    MarketChartDataPoint,
+    AltCurrencyRates, GetMarketChartResponse,
 } from "../../proto/walletgui_pb"
 import {
     AppError,
@@ -17,6 +18,7 @@ import { hexToRaw } from "../../helpers/byteActions"
 import { ExchangeRateBotBackend } from "../../middleware/exchangeratebot"
 import { normalizeDatapoints } from "../../helpers/helpers"
 
+
 const w = window as any
 
 export interface ExchangeRateState {
@@ -24,15 +26,22 @@ export interface ExchangeRateState {
     readonly currentRatesError: AppError | null
 }
 
+interface RateChartData {
+    readonly getMarketChartAttempting: boolean
+    readonly getMarketChartError: AppError | null
+
+    // readonly timerange: TimeRange
+    readonly priceSeries: TimeSeries | null
+    readonly volumeSeries: TimeSeries | null
+}
+
+
 interface CachedRateChartData {
-    [currencyCode: string]: {
-        readonly getMarketChartAttempting: boolean
-        readonly getMarketChartError: AppError | null
-        readonly getMarketChartData: MarketChartDataPoint[]
-    }
+    [currencyCode: string]: RateChartData
 }
 
 export interface GetMarketChartState {
+    readonly timerange: TimeRange
     readonly marketChartState: CachedRateChartData
 }
 
@@ -40,6 +49,7 @@ export const initialState: ExchangeRateState & GetMarketChartState = {
     currentRates: null,
     currentRatesError: null,
 
+    timerange: new TimeRange(),
     marketChartState: {},
 }
 
@@ -54,13 +64,18 @@ const exchangeRateSlice = createSlice({
             state.currentRatesError = action.payload
         },
 
+        updateTimerange(state, action: PayloadAction<TimeRange>) {
+            state.timerange = action.payload
+        },
+
         // GetMarketChart
         getMarketChartAttempt(state, action: PayloadAction<string>) {
             const currencyCode = action.payload
             state.marketChartState[currencyCode] = {
                 getMarketChartAttempting: true,
                 getMarketChartError: null,
-                getMarketChartData: [],
+                priceSeries: null,
+                volumeSeries: null,
             }
         },
         getMarketChartFailed(
@@ -78,14 +93,20 @@ const exchangeRateSlice = createSlice({
             state,
             action: PayloadAction<{
                 currencyCode: string
-                chartData: MarketChartDataPoint[]
+                priceSeries: TimeSeries,
+                volumeSeries: TimeSeries,
+
+                // TODO remove
+                prices: GetMarketChartResponse.MarketChartDataPoint[]
+                totalVolumes: GetMarketChartResponse.MarketChartDataPoint[],
             }>
         ) {
             const currencyCode = action.payload.currencyCode
             state.marketChartState[currencyCode] = {
                 getMarketChartAttempting: false,
                 getMarketChartError: null,
-                getMarketChartData: action.payload.chartData,
+                priceSeries: action.payload.priceSeries,
+                volumeSeries: action.payload.volumeSeries,
             }
         },
     },
@@ -144,10 +165,15 @@ export const fetchExchangeChartData: ActionCreator<any> = (
             dispatch(
                 getMarketChartSuccess({
                     currencyCode: currencyCode,
-                    chartData: resp.getDatapointsList(),
+                    prices: resp.getPricesList(),
+                    totalVolumes: resp.getVolumesList(),
+
+                    priceSeries: makePriceSeries(resp.getPricesList(), currencyCode),
+                    volumeSeries: makeVolumeSeries(resp.getVolumesList(), currencyCode),
                 })
             )
         } catch (error) {
+            debugger
             dispatch(
                 getMarketChartFailed({
                     currencyCode: currencyCode,
@@ -180,38 +206,11 @@ export const haveExchangeRateData = (state: IApplicationState) => {
     )
 }
 
-export const getMarketChartData = (
+export const getMarketCurrencyState = (
     state: IApplicationState,
     currencyCode: string
-): MarketChartDataPoint[] => {
-    return state.market.marketChartState[currencyCode]?.getMarketChartData || []
-}
-
-export const getExchangeSparklineData = (
-    state: IApplicationState,
-    currencyCode: string,
-    days: number
-): MarketChartDataPoint.AsObject[] => {
-    return normalizeDatapoints(
-        datapointsAsPOJO(getMarketChartData(state, currencyCode)),
-        "exchangeRate"
-    )
-}
-
-export const getExchangeChartData = (
-    state: IApplicationState,
-    currencyCode: string,
-    days: number
-): ChartDataPoint[] => {
-    return _.map(
-        datapointsAsPOJO(getMarketChartData(state, currencyCode)),
-        (point: MarketChartDataPoint.AsObject) => {
-            return {
-                name: xAxisTimeFormatter(point.timestamp, days),
-                value: point.exchangeRate,
-            }
-        }
-    )
+) => {
+    return state.market.marketChartState[currencyCode]
 }
 
 export const isChartDataLoaded = (
@@ -225,50 +224,42 @@ export const isChartDataLoaded = (
     return _.every(loadedState, (s) => s === false)
 }
 
-export const getCombinedMarketChartData = (
-    state: IApplicationState,
-    currencyCodes: string[]
-) => {
-    const combinedChartsData: any = []
-    const allChartdata: any = {}
-    for (let i = 0; i < currencyCodes.length; i++) {
-        const currencyCode = currencyCodes[i]
-        allChartdata[currencyCode] = normalizeDatapoints(
-            datapointsAsPOJO(getMarketChartData(state, currencyCode)),
-            "exchangeRate"
-        )
-    }
-    const masterChartCollection = allChartdata[_.first(currencyCodes) || ""]
-    for (let di = 0; di < masterChartCollection.length; di++) {
-        const d: any = {
-            timestamp: masterChartCollection[di].timestamp,
-        }
-        for (let i = 0; i < currencyCodes.length; i++) {
-            const currencyCode = currencyCodes[i]
-            d[currencyCode] = allChartdata[currencyCode][i].exchangeRate
-            combinedChartsData.push(d)
-        }
-    }
-
-    return combinedChartsData
-}
 
 // helpers
-export function datapointsAsPOJO(
-    datapoints: MarketChartDataPoint[]
-): MarketChartDataPoint.AsObject[] {
-    return _.map(datapoints, (d) => d.toObject())
+function makePriceSeries(data: GetMarketChartResponse.MarketChartDataPoint[], currencyCode: string) {
+
+    const events = _.map(data, item => {
+        const timestamp = moment.default(item.getTimestamp())
+        const args: any = {}
+        args[currencyCode] = item.getValue()
+        return new TimeEvent(timestamp.toDate(), args)
+    })
+    const collection = new Collection(events)
+    const sortedCollection = collection.sortByTime()
+    const series = new TimeSeries({
+        name: `dcr-${currencyCode}`,
+        columns: ["time", currencyCode],
+        collection: sortedCollection
+    })
+    return series
 }
 
-export function xAxisTimeFormatter(timestamp: number, timeframeDays: number) {
-    const m = moment(timestamp * 1000)
-    switch (timeframeDays) {
-        case 1:
-            return m.format("HH:mm")
-        case 3:
-        case 7:
-            return m.format("D ddd")
-        default:
-            return m.format("MM/DD")
-    }
+
+function makeVolumeSeries(data: GetMarketChartResponse.MarketChartDataPoint[], currencyCode: string) {
+
+    const events = _.map(data, item => {
+        const timestamp = moment.default(item.getTimestamp())
+        // const index = timestamp.format("I").replace(/\//g, "-")
+        return new TimeEvent(timestamp, {
+            volume: item.getValue(),
+        })
+    })
+    const collection = new Collection(events)
+    const sortedCollection = collection.sortByTime()
+    const series = new TimeSeries({
+        name: "DCR-volume",
+        columns: ["time", "volume"],
+        collection: sortedCollection
+    })
+    return series
 }

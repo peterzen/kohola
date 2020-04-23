@@ -39,6 +39,7 @@ import {
 } from "../appconfiguration/settingsSlice"
 import { CurrencyNet } from "../../constants"
 import { subscribeExchangeRateFeed } from "../market/marketSlice"
+import { loadWalletConfig } from "./walletSlice"
 
 const w = window as any
 
@@ -234,6 +235,7 @@ export const loadMainData: ActionCreator<any> = () => {
         await dispatch(loadAccountsAttempt())
 
         // batch(() => {
+        dispatch(loadWalletConfig())
         dispatch(loadTransactionsAttempt())
         dispatch(loadWalletBalance())
         dispatch(loadStakeInfoAttempt())

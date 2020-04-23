@@ -77,13 +77,21 @@ func fetchMarketChart(request *walletgui.GetMarketChartRequest) (marketChartData
 	}
 
 	marketChartData = &walletgui.GetMarketChartResponse{
-		Datapoints: make([]*walletgui.MarketChartDataPoint, len(*response.Prices)),
+		Prices:  make([]*walletgui.GetMarketChartResponse_MarketChartDataPoint, len(*response.Prices)),
+		Volumes: make([]*walletgui.GetMarketChartResponse_MarketChartDataPoint, len(*response.TotalVolumes)),
 	}
 
 	for i, v := range *response.Prices {
-		marketChartData.Datapoints[i] = &walletgui.MarketChartDataPoint{
-			Timestamp:    int64(v[0]) / 1000,
-			ExchangeRate: v[1],
+		marketChartData.Prices[i] = &walletgui.GetMarketChartResponse_MarketChartDataPoint{
+			Timestamp: int64(v[0]) / 1000,
+			Value:     v[1],
+		}
+	}
+
+	for i, v := range *response.TotalVolumes {
+		marketChartData.Volumes[i] = &walletgui.GetMarketChartResponse_MarketChartDataPoint{
+			Timestamp: int64(v[0]) / 1000,
+			Value:     v[1],
 		}
 	}
 

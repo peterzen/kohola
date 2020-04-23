@@ -25,25 +25,29 @@ import {
 import { reverseHash } from "../helpers/helpers"
 import _ from "lodash"
 
-export class Agenda extends AgendasResponse.Agenda {}
-export class Agendas extends AgendasResponse {}
-export class Network extends NetworkResponse {}
-export class BestBlock extends BestBlockResponse {}
-export class StakeInfo extends StakeInfoResponse {}
-export class WalletPing extends PingResponse {}
-export class TicketPrice extends TicketPriceResponse {}
-export class NextAddress extends NextAddressResponse {}
-export class VoteChoices extends VoteChoicesResponse {}
-export class StopAutoBuyer extends StopAutoBuyerResponse {}
-export class WalletAccounts extends AccountsResponse {}
-export class TicketBuyerConfig extends TicketBuyerConfigResponse {}
-export class LoadActiveDataFilters extends LoadActiveDataFiltersResponse {}
+export class Agenda extends AgendasResponse.Agenda { }
+export class Agendas extends AgendasResponse { }
+export class Network extends NetworkResponse { }
+export class BestBlock extends BestBlockResponse { }
+export class StakeInfo extends StakeInfoResponse { }
+export class WalletPing extends PingResponse { }
+export class TicketPrice extends TicketPriceResponse { }
+export class NextAddress extends NextAddressResponse { }
+export class VoteChoices extends VoteChoicesResponse { }
+export class StopAutoBuyer extends StopAutoBuyerResponse { }
+export class WalletAccounts extends AccountsResponse { }
+export class TicketBuyerConfig extends TicketBuyerConfigResponse { }
+export class LoadActiveDataFilters extends LoadActiveDataFiltersResponse { }
 
 export class WalletAccount extends AccountsResponse.Account {
-    constructor(id?: number) {
+    name: string
+    constructor(id?: number, name?: string) {
         super()
         if (id != undefined) {
             this.setAccountNumber(id)
+        }
+        if (name != undefined) {
+            this.setAccountName(name)
         }
     }
 }
@@ -77,6 +81,7 @@ export class Transaction {
     type: TransactionDetails.TransactionTypeMap[keyof TransactionDetails.TransactionTypeMap]
     debitsAmount: number
     creditsAmount: number
+    accountNumbers: number[]
     direction: TransactionDirection
     amount: number
     fee: number
@@ -121,7 +126,20 @@ export class Transaction {
                 this.direction = TransactionDirection.TRANSACTION_DIR_SENT
             }
         }
+
+        // collect relevant account numbers
+        const accounts: number[] = []
+        accounts.push(
+            ..._.map(this.getDebitsList(), (input) =>
+                input.getPreviousAccount()
+            )
+        )
+        accounts.push(
+            ..._.map(this.getCreditsList(), (output) => output.getAccount())
+        )
+        this.accountNumbers = _.uniq(accounts)
     }
+    
     getTimestamp() {
         return this.timestamp
     }
@@ -175,17 +193,8 @@ export class Transaction {
     setIsMined(flag: boolean) {
         this._isMined = flag
     }
-    getAccounts() {
-        const accounts: number[] = []
-        accounts.push(
-            ..._.map(this.getDebitsList(), (input) =>
-                input.getPreviousAccount()
-            )
-        )
-        accounts.push(
-            ..._.map(this.getCreditsList(), (output) => output.getAccount())
-        )
-        return _.uniq(accounts)
+    getAccountNumbers() {
+        return this.accountNumbers
     }
     getTypeAsString() {
         switch (this.type) {

@@ -3,20 +3,22 @@ import * as React from "react"
 import { Dropdown } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendar } from "@fortawesome/free-solid-svg-icons"
+import { SelectedDropdownItemLabel } from "./shared"
 
 export interface ChartTimeframe {
     days: number
     name: string
-    step?: number
+    windowSize: string
 }
 
 
 export const timeframes: ChartTimeframe[] = [
-    { days: 1, name: "24 hours" },
-    { days: 3, name: "3 days" },
-    { days: 7, name: "1 week", step: 1 },
-    { days: 31, name: "1 month", step: 3 },
-    { days: 365, name: "1 year", step: 31 },
+    { days: 1, name: "24 hours", windowSize: "1h" },
+    { days: 3, name: "3 days", windowSize: "6h" },
+    { days: 7, name: "1 week", windowSize: "4h" },
+    { days: 31, name: "1 month", windowSize: "3d" },
+    { days: 365, name: "1 year", windowSize: "7d" },
+    { days: 730, name: "2 years", windowSize: "14d" },
 ]
 
 export const defaultTimeframe = timeframes[4]
@@ -34,7 +36,11 @@ export default class IntervalChooser extends React.Component<OwnProps> {
                             key={`interval-${item.days}`}
                             onClick={() => this.props.onChange(item)}
                         >
-                            {item.name}
+                            <SelectedDropdownItemLabel
+                                isSelected={this.props.selectedValue == item}
+                            >
+                                {item.name}
+                            </SelectedDropdownItemLabel>
                         </Dropdown.Item>
                     ))}
                 </Dropdown.Menu>
@@ -44,7 +50,7 @@ export default class IntervalChooser extends React.Component<OwnProps> {
 }
 
 interface OwnProps {
-    selectedValue: ChartTimeframe
-    timeframes: ChartTimeframe[]
     onChange: (interval: ChartTimeframe) => void
+    timeframes: ChartTimeframe[]
+    selectedValue: ChartTimeframe
 }

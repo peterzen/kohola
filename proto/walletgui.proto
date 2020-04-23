@@ -130,14 +130,18 @@ service ExchangeRates {
 message GetMarketChartRequest {
   string currency_code = 1;
   uint32 days = 2;
+  int64 start_timestamp = 3;
+  int64 end_timestamp = 4;
 }
 
-message MarketChartDataPoint {
-  int64 timestamp = 1;
-  float exchange_rate = 2;
+message GetMarketChartResponse { 
+  message MarketChartDataPoint {
+    int64 timestamp = 1;
+    float value = 2;
+  }
+  repeated MarketChartDataPoint prices = 1; 
+  repeated MarketChartDataPoint volumes = 2; 
 }
-
-message GetMarketChartResponse { repeated MarketChartDataPoint datapoints = 1; }
 
 message StakingHistory {
   message StakingHistoryLineItem {
