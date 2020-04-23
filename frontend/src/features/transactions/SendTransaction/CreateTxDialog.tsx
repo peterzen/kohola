@@ -501,6 +501,10 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
         return false
     }
 
+    componentDidMount() {
+        this.handleSourceChange(false)
+    }
+
     async _updateTxMetadata() {
         const f = this.formRef.current
         const txInfo = this.props.txInfo
