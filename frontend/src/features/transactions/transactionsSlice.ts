@@ -85,7 +85,7 @@ export const initialState: GetTransactionsState &
     // If positive, the field is interpreted as a block height.
     // If negative, the height is subtracted from the block wallet /
     // considers itself in sync with.
-    startBlockHeight: -10,
+    startBlockHeight: -100,
 
     // The block height of the last block to include transactions from.
     // If non- zero, the ending_block_hash field must be set to its

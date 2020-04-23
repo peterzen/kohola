@@ -3,6 +3,10 @@ import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import _ from "lodash"
 
+import * as Moment from "moment"
+import { extendMoment } from "moment-range"
+const moment = extendMoment(Moment)
+
 import { Row, Col, Tabs, Tab } from "react-bootstrap"
 // @ts-ignore
 import Fade from "react-reveal/Fade"
@@ -38,21 +42,19 @@ class StakingContainer extends React.Component<Props> {
                     unmountOnExit={true}
                 >
                     <Tab eventKey="overview" title="Overview">
-                        <Fade fade>
+                        <div>
                             <StakeInfoComponent />
-                        </Fade>
-                        <Row className="mt-3">
-                            <Col>
-                                <Fade fade>
+                            <Row className="mt-3">
+                                <Col>
                                     <TicketsOverviewContainer />
-                                </Fade>
-                            </Col>
-                            <Col>
-                                <StakeStats />
-                                <div className="mt-3" />
-                                <PurchaseTicketForm />
-                            </Col>
-                        </Row>
+                                </Col>
+                                <Col>
+                                    <StakeStats />
+                                    <div className="mt-3" />
+                                    <PurchaseTicketForm />
+                                </Col>
+                            </Row>
+                        </div>
                     </Tab>
                     <Tab eventKey="roi" title="Returns">
                         <StakingHistoryTable />
@@ -70,6 +72,7 @@ class StakingContainer extends React.Component<Props> {
     }
     componentDidMount() {
         this.props.loadStakeInfoAttempt()
+        this.props.loadStakingHistory(moment.default().unix(), moment.default().subtract("days", 17).unix())
         // this.props.loadStakingHistory()
         // this.props.loadTicketsAttempt()
     }

@@ -84,7 +84,7 @@ class StakingHistoryTable extends React.Component<Props> {
         )
     }
     componentDidMount() {
-        this.props.loadStakingHistory(moment.default().unix(), moment.default().subtract("days",17).unix())
+        // this.props.loadStakingHistory(moment.default().unix(), moment.default().subtract("days",17).unix())
     }
 }
 

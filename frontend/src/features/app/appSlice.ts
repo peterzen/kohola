@@ -233,11 +233,11 @@ export const loadMainData: ActionCreator<any> = () => {
         await dispatch(loadBestBlockHeight())
         await dispatch(loadAccountsAttempt())
 
-        batch(() => {
-            dispatch(loadTransactionsAttempt())
+        // batch(() => {
+            // dispatch(loadTransactionsAttempt())
             dispatch(loadWalletBalance())
-            dispatch(loadTicketsAttempt())
-        })
+            // dispatch(loadTicketsAttempt())
+        // })
     }
 }
 

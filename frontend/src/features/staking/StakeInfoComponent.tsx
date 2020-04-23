@@ -7,6 +7,7 @@ import { TicketStatus } from "../../constants"
 import { loadStakeInfoAttempt } from "./stakingSlice"
 import { StakeInfo } from "../../middleware/models"
 import { IApplicationState } from "../../store/types"
+import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
 
 class StakeInfoComponent extends React.Component<Props> {
     render() {
@@ -20,55 +21,61 @@ class StakeInfoComponent extends React.Component<Props> {
         return (
             <Card>
                 <Card.Body>
-                    <Row>
-                        <Col>
-                            <h2>{allTixCount}</h2>
-                            <h6 className="text-muted">Σ Total</h6>
-                        </Col>
-                        <Col>
-                            <h2>{s.getOwnMempoolTix()}</h2>
-                            <h6 className="text-muted">
-                                <TicketStatusIcon
-                                    status={TicketStatus.UNMINED}
-                                />{" "}
+                    <ComponentPlaceHolder type='media' rows={7} ready={!this.props.getStakeInfoAttempting}>
+                        <div>
+                            <Row>
+                                <Col>
+                                    <h2>{allTixCount}</h2>
+                                    <h6 className="text-muted">Σ Total</h6>
+                                </Col>
+                                <Col>
+                                    <h2>{s.getOwnMempoolTix()}</h2>
+                                    <h6 className="text-muted">
+                                        <TicketStatusIcon
+                                            status={TicketStatus.UNMINED}
+                                        />{" "}
                                 In mempool
                             </h6>
-                        </Col>
-                        <Col>
-                            <h2>{s.getImmature()}</h2>
-                            <h6 className="text-muted">
-                                <TicketStatusIcon
-                                    status={TicketStatus.IMMATURE}
-                                />{" "}
+                                </Col>
+                                <Col>
+                                    <h2>{s.getImmature()}</h2>
+                                    <h6 className="text-muted">
+                                        <TicketStatusIcon
+                                            status={TicketStatus.IMMATURE}
+                                        />{" "}
                                 Immature
                             </h6>
-                        </Col>
-                        <Col>
-                            <h2>{s.getLive()}</h2>
-                            <h6 className="text-muted">
-                                <TicketStatusIcon status={TicketStatus.LIVE} />{" "}
+                                </Col>
+                                <Col>
+                                    <h2>{s.getLive()}</h2>
+                                    <h6 className="text-muted">
+                                        <TicketStatusIcon status={TicketStatus.LIVE} />{" "}
                                 Live
                             </h6>
-                        </Col>
-                        <Col>
-                            <h2>{s.getVoted()}</h2>
-                            <h6 className="text-muted">
-                                <TicketStatusIcon status={TicketStatus.VOTED} />{" "}
+                                </Col>
+                                <Col>
+                                    <h2>{s.getVoted()}</h2>
+                                    <h6 className="text-muted">
+                                        <TicketStatusIcon status={TicketStatus.VOTED} />{" "}
                                 Voted recently
                             </h6>
-                        </Col>
-                    </Row>
+                                </Col>
+                            </Row>
+                        </div>
+                    </ComponentPlaceHolder>
+
                 </Card.Body>
             </Card>
         )
     }
     componentDidMount() {
-        this.props.loadStakeInfoAttempt()
+        // this.props.loadStakeInfoAttempt()
     }
 }
 
 interface OwnProps {
     stakeinfo: StakeInfo
+    getStakeInfoAttempting: boolean
 }
 
 interface DispatchProps {
@@ -80,6 +87,7 @@ type Props = DispatchProps & OwnProps
 const mapStateToProps = (state: IApplicationState): OwnProps => {
     return {
         stakeinfo: state.staking.stakeinfo,
+        getStakeInfoAttempting: state.staking.getStakeInfoAttempting,
     }
 }
 
