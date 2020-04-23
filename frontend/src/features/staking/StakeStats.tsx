@@ -2,10 +2,6 @@ import * as React from "react"
 import { connect } from "react-redux"
 import _ from "lodash"
 
-import * as Moment from "moment"
-import { extendMoment } from "moment-range"
-const moment = extendMoment(Moment)
-
 import { Row, Col, Card } from "react-bootstrap"
 
 import { StakeInfo, TicketPrice } from "../../middleware/models"
@@ -30,6 +26,7 @@ import {
 
 import { Amount } from "../../components/Shared/Amount"
 import { SparklineChart } from "../../components/charts/TinyCharts"
+import moment from "../../helpers/moment-helper"
 
 // @TODO add dropdown to control this
 const days = 7

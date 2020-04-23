@@ -17,17 +17,11 @@ import (
 
 // GetStakingHistory filters staking transactions and extracts credit/debit
 // information
-func GetStakingHistory(startTimestamp int64, endTimestamp int64) (stakingHistory *walletgui.StakingHistory, err error) {
-
-	startingBlockHeight, endingBlockHeight, err := timestampToBlockHeight(startTimestamp, endTimestamp)
-
-	if err != nil {
-		return nil, err
-	}
+func GetStakingHistory(startingBlockHeight int32, endingBlockHeight int32) (stakingHistory *walletgui.StakingHistory, err error) {
 
 	request := &walletrpc.GetTransactionsRequest{
-		StartingBlockHeight: int32(startingBlockHeight),
-		EndingBlockHeight:   int32(endingBlockHeight),
+		StartingBlockHeight: startingBlockHeight,
+		EndingBlockHeight:   endingBlockHeight,
 	}
 	stream, err := walletServiceClient.GetTransactions(ctx, request)
 	if err != nil {
@@ -121,8 +115,8 @@ func findScript(txOutList []*wire.TxOut, scriptClass txscript.ScriptClass) *wire
 
 // ExportStakingHistoryAPI exports functions to the UI
 func ExportStakingHistoryAPI(w webview.Interface) {
-	w.Bind("walletgui__GetStakingHistory", func(startTimestamp int64, endTimestamp int64) (r walletgui.LorcaMessage) {
-		history, err := GetStakingHistory(startTimestamp, endTimestamp)
+	w.Bind("walletgui__GetStakingHistory", func(startingBlockHeight int32, endingBlockHeight int32) (r walletgui.LorcaMessage) {
+		history, err := GetStakingHistory(startingBlockHeight, endingBlockHeight)
 		r.Err = err
 		if err == nil {
 			r.Payload, _ = proto.Marshal(history)

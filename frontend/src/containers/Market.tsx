@@ -6,6 +6,7 @@ import _ from "lodash"
 // @ts-ignore
 import Fade from "react-reveal/Fade"
 import { Card, Row, Col, Dropdown } from "react-bootstrap"
+
 import { IApplicationState } from "../store/types"
 import ExchangeRateChart from "../features/market/charts/ExchangeRateChart"
 import { AltCurrencyRates } from "../proto/walletgui_pb"
@@ -43,29 +44,28 @@ class Market extends React.PureComponent<Props, InternalState> {
                     {altCurrencies.map((currencyCode) => (
                         <Col sm={6} key={currencyCode}>
                             <div className="mb-3">
-                                <Card key={currencyCode}>
-                                    <Card.Header>
-                                        <Card.Title className="mb-0">
-                                            <small className="float-right text-muted">
-                                                {this.props
-                                                    .getCurrentExchangeRate(
-                                                        currencyCode
-                                                    )
-                                                    ?.toFixed(6)}
-                                            </small>
+                                <Fade fade cascade >
+                                    <Card>
+                                        <Card.Header>
+                                            <Card.Title className="mb-0">
+                                                <small className="float-right text-muted">
+                                                    {this.props
+                                                        .getCurrentExchangeRate(
+                                                            currencyCode
+                                                        )
+                                                        ?.toFixed(6)}
+                                                </small>
                                             DCR-{currencyCode.toUpperCase()}
-                                        </Card.Title>
-                                    </Card.Header>
-                                    <Card.Body>
-                                        <ExchangeRateChart
-                                            currencyCode={currencyCode}
-                                            days={
-                                                this.state.selectedTimeframe
-                                                    .days
-                                            }
-                                        />
-                                    </Card.Body>
-                                </Card>
+                                            </Card.Title>
+                                        </Card.Header>
+                                        <Card.Body>
+                                            <ExchangeRateChart
+                                                currencyCode={currencyCode}
+                                                days={this.state.selectedTimeframe.days}
+                                            />
+                                        </Card.Body>
+                                    </Card>
+                                </Fade>
                             </div>
                         </Col>
                     ))}
