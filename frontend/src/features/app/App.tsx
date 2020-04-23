@@ -2,7 +2,7 @@ import * as React from "react"
 import { connect } from "react-redux"
 import { hot } from "react-hot-loader/root"
 
-import { Route, Switch } from "react-router-dom"
+import { Route } from "react-router-dom"
 import { ConnectedRouter } from "connected-react-router"
 
 import { Container } from "react-bootstrap"
@@ -23,7 +23,6 @@ import DevTools from "./fixtures/DevTools"
 import { IApplicationState } from "../../store/types"
 import { AppToastContainer } from "./fixtures/Toasts"
 
-import { bounceTransition, mapStyles } from "./routeSwitchAnimations"
 import AppProgressIndicator from "./AppProgressIndicator"
 import AppSidebar from "./fixtures/AppSidebar"
 import ConfigDecryptContainer from "../appconfiguration/ConfigDecryptDialog"
@@ -46,7 +45,11 @@ class App extends React.Component<Props> {
                     <AppSidebar>
                         <Container fluid={true} className="main-content">
                             <AppToastContainer />
-                            <Switch
+                            <AnimatedSwitch
+                                atEnter={{ opacity: 0 }}
+                                atLeave={{ opacity: 0 }}
+                                atActive={{ opacity: 1 }}
+                                className="switch-wrapper"
                             >
                                 <Route path="/staking" component={Staking} />
                                 <Route path="/settings" component={Settings} />
@@ -60,7 +63,7 @@ class App extends React.Component<Props> {
                                 <Route path="/login" component={Login} />
                                 <Route exact path="/" component={Welcome} />
                                 <Route component={NoRouteMatch} />
-                            </Switch>
+                            </AnimatedSwitch>
                         </Container>
                         {this.props.showProgress && <AppProgressIndicator />}
                         <ConfigDecryptContainer />
