@@ -19,7 +19,7 @@ export const timeframes: ChartTimeframe[] = [
     { days: 365, name: "1 year", step: 31 },
 ]
 
-export const defaultTimeframe = timeframes[2]
+export const defaultTimeframe = timeframes[4]
 
 export default class IntervalChooser extends React.Component<OwnProps> {
     render() {
