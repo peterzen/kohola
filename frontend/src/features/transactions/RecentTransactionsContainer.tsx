@@ -11,6 +11,9 @@ import GenericModal from "../../components/Shared/GenericModal"
 import { loadTransactionsAttempt } from "./actions"
 import { IApplicationState } from "../../store/types"
 import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
+import IntervalChooser, { ChartTimeframe, timeframes, defaultTimeframe } from "../market/IntervalChooser"
+import moment from "../../helpers/moment-helper"
+
 
 class RecentTransactionsComponent extends React.Component<Props, InternalState> {
     constructor(props: Props) {
@@ -18,14 +21,21 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
         this.state = {
             showModal: false,
             selectedItem: null,
+            selectedTimeframe: defaultTimeframe,
         }
     }
 
     render() {
-        const txList = this.props.txList
+        const txList = this.props.getTxList(this.state.selectedTimeframe)
         return (
             <Card>
                 <Card.Header>
+                    <div className="float-right">
+                        <IntervalChooser
+                            onChange={(timeframe: ChartTimeframe) => this.setState({ selectedTimeframe: timeframe })}
+                            selectedValue={this.state.selectedTimeframe}
+                        />
+                    </div>
                     <Card.Title>
                         Recent transactions{" "}
                         <small className="text-muted">({txList.length})</small>
@@ -60,12 +70,13 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
         })
     }
     componentDidMount() {
-        this.props.loadTransactionsAttempt()
+        // this.props.loadTransactionsAttempt()
     }
 }
 
 interface StateProps {
     isLoading: boolean
+    getTxList: (timeframe: ChartTimeframe) => Transaction[]
 }
 
 interface OwnProps {
@@ -76,20 +87,26 @@ interface OwnProps {
 interface InternalState {
     showModal: boolean
     selectedItem: Transaction | null
+    selectedTimeframe: ChartTimeframe
 }
 
 interface DispatchProps {
-    loadTransactionsAttempt: typeof loadTransactionsAttempt
+    // loadTransactionsAttempt: typeof loadTransactionsAttempt
 }
 type Props = OwnProps & StateProps & DispatchProps
 
-const mapStateToProps = (state: IApplicationState): StateProps => {
+const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): StateProps => {
     return {
-        isLoading: state.transactions.getTransactionsAttempting
+        isLoading: state.transactions.getTransactionsAttempting,
+        getTxList: (timeframe: ChartTimeframe) => {
+            const startTimestamp = moment.default().subtract(timeframe.days, "days").unix()
+            return _.filter(ownProps.txList, tx => tx.getTimestamp().unix() >= startTimestamp)
+        }
     }
 }
 
 const mapDispatchtoProps = {
-    loadTransactionsAttempt
+    // loadTransactionsAttempt
 }
+
 export default connect(mapStateToProps, mapDispatchtoProps)(RecentTransactionsComponent)

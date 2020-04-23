@@ -25,7 +25,7 @@ import {
     loadTransactionsAttempt,
 } from "../transactions/actions"
 import { loadWalletBalance } from "../balances/walletBalanceSlice"
-import { loadTicketsAttempt } from "../staking/stakingSlice"
+import { loadTicketsAttempt, loadStakeInfoAttempt, loadStakingHistory } from "../staking/stakingSlice"
 import {
     showTransactionToast,
     showInfoToast,
@@ -139,8 +139,8 @@ export const launchApp: ActionCreator<any> = () => {
         // default flag.
         // @FIXME add GUI to select default endpoint
         await store.dispatch(connectDefaultWallet())
-		await store.dispatch(subscribeExchangeRateFeed())
-		w.walletgui_onAppOpen()
+        await store.dispatch(subscribeExchangeRateFeed())
+        w.walletgui_onAppOpen()
     }
 }
 
@@ -162,7 +162,7 @@ export const connectWallet: ActionCreator<any> = (
             dispatch(connectWalletSuccess(connectedEndpoint))
             dispatch(initializeStore()).then(() => {
                 setTimeout(() => {
-                    ;(history.location.pathname == "/login" ||
+                    ; (history.location.pathname == "/login" ||
                         history.location.pathname == "/") &&
                         history.push("/wallet")
                     setTimeout(() => {
@@ -234,9 +234,11 @@ export const loadMainData: ActionCreator<any> = () => {
         await dispatch(loadAccountsAttempt())
 
         // batch(() => {
-            // dispatch(loadTransactionsAttempt())
-            dispatch(loadWalletBalance())
-            // dispatch(loadTicketsAttempt())
+        dispatch(loadTransactionsAttempt())
+        dispatch(loadWalletBalance())
+        dispatch(loadStakeInfoAttempt())
+        dispatch(loadStakingHistory())
+        dispatch(loadTicketsAttempt())
         // })
     }
 }
@@ -266,7 +268,7 @@ export const displayTXNotification: ActionCreator<any> = (tx: Transaction) => {
 }
 
 
-export const openURL: ActionCreator<any> = (url:string) => {
+export const openURL: ActionCreator<any> = (url: string) => {
     return async () => {
         AppBackend.openURL(url)
     }

@@ -1,8 +1,5 @@
 import _ from "lodash"
 
-import * as Moment from "moment"
-import { extendMoment } from "moment-range"
-const moment = extendMoment(Moment)
 
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit"
 
@@ -31,6 +28,8 @@ import {
     StakeInfo,
 } from "../../middleware/models"
 import { StakingHistory, StakeDiffHistory } from "../../proto/walletgui_pb"
+import Moment from "moment"
+import moment from "../../helpers/moment-helper"
 
 // GetTickets
 export interface ITicketsState {
@@ -136,7 +135,7 @@ export const initialState: ITicketsState &
     // GetTickets
     tickets: [],
     endBlockHeight: 1,
-    startBlockHeight: -4,
+    startBlockHeight: -1,
     targetTicketCount: 0,
     getTicketsAttempting: false,
     errorGetTickets: null,
@@ -728,25 +727,24 @@ export const stopTicketBuyer: ActionCreator<any> = (): AppThunk => {
 }
 
 export const loadStakingHistory: ActionCreator<any> = (
-    startingBlockHeight: number,
-    endingBlockHeight: number
+
 ): AppThunk => {
     return async (dispatch: AppDispatch, getState: IGetState) => {
 
-        const { getStakingHistoryAttempting } = getState().staking
+        const { getStakingHistoryAttempting, startBlockHeight, endBlockHeight } = getState().staking
         if (getStakingHistoryAttempting) {
             return
         }
-
         dispatch(getStakingHistoryAttempt())
         try {
-            const resp = await LorcaBackend.getStakingHistory(startingBlockHeight, endingBlockHeight)
+            const resp = await LorcaBackend.getStakingHistory(startBlockHeight, endBlockHeight)
             dispatch(getStakingHistorySuccess(resp))
         } catch (error) {
             dispatch(getStakingHistoryFailed(error))
         }
     }
 }
+
 
 export const loadStakeDiffHistory: ActionCreator<any> = (
     startDate: Moment.Moment,
@@ -788,6 +786,20 @@ export const getTicketPrice = (state: IApplicationState): TicketPrice => {
 
 export const getStakingHistory = (state: IApplicationState) => {
     return state.staking.stakingHistory
+}
+
+export const getOrderedStakingHistory = (
+    state: IApplicationState,
+    days: number = 7
+): StakingHistory.StakingHistoryLineItem[] => {
+    if (getStakingHistory(state) == null) {
+        return []
+    }
+    const startTimestamp = moment.default().subtract(days, "days").unix()
+    return _.chain(getStakingHistory(state)?.getLineItemsList())
+        .filter((item) => item.getTimestamp() >= startTimestamp)
+        .orderBy((item) => item.getTimestamp(), "desc")
+        .value()
 }
 
 export const getStakingHistorySparklineData = (
