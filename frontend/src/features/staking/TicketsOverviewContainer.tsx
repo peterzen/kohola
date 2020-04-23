@@ -102,6 +102,7 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
     }
 
     render() {
+        const tickets = this.props.getFilteredTickets(this.state.currentFilter, this.props.selectedTimeframe)
         return (
             <Card>
                 <Card.Header>
@@ -116,7 +117,7 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
                         />
                     </div>
                     <Card.Title>
-                        My tickets
+                        My tickets <small className="text-muted">({tickets.length})</small>
                     </Card.Title>
                 </Card.Header>
 
@@ -126,7 +127,7 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
                     rows={7}
                     ready={!this.props.getTicketsAttempting}>
                     <TicketsTable
-                        items={this.props.getFilteredTickets(this.state.currentFilter, this.props.selectedTimeframe)}
+                        items={tickets}
                         onItemClick={_.bind(this.itemClickHandler, this)}
                     />
                 </ComponentPlaceHolder>
