@@ -21,3 +21,10 @@ h6 {
         }
     }
 }
+
+small > .amount  {
+    &  .currency,
+    & .fractions {
+        font-size: 100% !important;
+    }
+}
