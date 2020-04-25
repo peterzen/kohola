@@ -305,7 +305,7 @@ export const getUiPreferences = (
 export const getExplorerURL = (state: IApplicationState, network: Networks) => {
     switch (network) {
         case Networks.MAINNET:
-            return "https://explorer.dcrdata.org"
+            return "https://alpha.dcrdata.org"
         case Networks.TESTNET:
             return "https://testnet.dcrdata.org"
         default:
