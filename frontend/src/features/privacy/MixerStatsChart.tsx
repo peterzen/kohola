@@ -1,98 +1,74 @@
 import * as React from "react"
 import { connect } from "react-redux"
-import _ from "lodash"
+import _, { chain } from "lodash"
 
 import { Row, Col } from "react-bootstrap"
 import { ChartTimeframe } from "../../components/Shared/IntervalChooser"
 import { IApplicationState } from "../../store/types"
+import { Charts, ChartContainer, ChartRow, YAxis, LineChart, Resizable, BarChart, styler } from "react-timeseries-charts";
+import { TimeSeries, Collection, IndexedEvent, TimeEvent, TimeRange, count, sum, Pipeline, TimeRangeEvent, EventOut } from "pondjs"
 
 
-import { ResponsiveContainer, BarChart, XAxis, YAxis, Bar, Legend } from "recharts"
-import { IRewardDataChartdataTimelineItem, ITxTypeCountsChartdataTimelineItem } from "../staking/stakingSlice"
+import { getChartData } from "./mixerSlice"
+import { ATOMS_DIVISOR } from "../../constants"
 
 class MixerStatsChart extends React.PureComponent<Props, InternalState> {
 	render() {
-		const rewardData = this.props.rewardData
+		if (this.props.chartData == undefined) return null
+		if (this.props.chartData.range() == undefined) return null
+
+		const style = styler([
+			{ key: "tx_count", color: "#A5C8E1" },
+			{ key: "value_sum", color: "orange" },
+		])
 		return (
-			<Row>
-				<Col sm={8}>
-					<div style={{ width: "100%", height: "250px" }} className="p-2">
-						<ResponsiveContainer width="100%" height="100%">
-							<BarChart
-								data={rewardData}
-								margin={{
-									top: 0,
-									right: 0,
-									left: 20,
-									bottom: 0,
-								}}
-							>
-								<XAxis dataKey="timestamp" />
-								<YAxis
-									domain={["auto", "auto"]}
-									yAxisId="left"
-									orientation="left"
+
+			<div className="p-3">
+				<Resizable>
+					<ChartContainer
+						timeRange={this.props.chartData.timerange()}
+						// showGrid={true}
+
+						enablePanZoom={true}
+						width={800}>
+						<ChartRow height="400">
+							<YAxis
+								id="tx-count-axis"
+								label="# of transactions"
+								min={0}
+								max={this.props.chartData.max("tx_count")}
+								width="60"
+								type="linear"
+								format="d" />
+							<Charts>
+								<LineChart
+									axis="tx-count-axis"
+									smooth={true}
+									series={this.props.chartData}
+									style={style}
+									columns={["tx_count"]}
+									yScale={() => 1}
 								/>
-								<YAxis
-									domain={["auto", "auto"]}
-									yAxisId="right"
-									orientation="right"
+								<BarChart
+									axis="value-sum-axis"
+									style={style}
+									series={this.props.chartData}
+									columns={["value_sum"]}
+									yScale={() => 1}
 								/>
-								<Bar
-									dataKey="sumRewardCredits"
-									fill="#8884d8"
-									name="Σ Reward"
-									yAxisId="left"
-								/>
-								<Bar
-									dataKey="rewardPercent"
-									fill="#82ca9d"
-									name="ROI %"
-									yAxisId="right"
-								/>
-								<Legend />
-							</BarChart>
-						</ResponsiveContainer>
-					</div>
-				</Col>
-				<Col sm={4}>
-					<div style={{ width: "100%", height: "250px" }} className="p-2">
-						<ResponsiveContainer width="100%" height="100%">
-							<BarChart
-								data={this.props.txTypeCounts}
-								margin={{
-									top: 0,
-									right: 0,
-									left: 0,
-									bottom: 0,
-								}}
-							>
-								<XAxis
-									dataKey="timestamp"
-									minTickGap={20}
-								/>
-								<YAxis domain={["auto", "auto"]} />
-								<Bar
-									dataKey="voteCounts"
-									fill="#8884d8"
-									name="VOTE"
-								/>
-								<Bar
-									dataKey="purchasedCounts"
-									fill="#82ca9d"
-									name="TICKET_PURCHASE"
-								/>
-								<Bar
-									dataKey="revocationCounts"
-									fill="#ff7300"
-									name="REVOCATION"
-								/>
-								<Legend />
-							</BarChart>
-						</ResponsiveContainer>
-					</div>
-				</Col>
-			</Row>
+							</Charts>
+							<YAxis
+								id="value-sum-axis"
+								label="Value"
+								min={0}
+								max={0.01}
+								width="80"
+								type="linear"
+								format="d" />
+						</ChartRow>
+					</ChartContainer>
+				</Resizable>
+			</div>
 		)
 	}
 }
@@ -101,43 +77,59 @@ interface InternalState {
 }
 
 interface OwnProps {
-	timeframe:ChartTimeframe
+	timeframe: ChartTimeframe
 	// stakingHistory: StakingHistory.StakingHistoryLineItem[]
 }
 
 interface StateProps {
-	txTypeCounts: ITxTypeCountsChartdataTimelineItem[]
-	rewardData: IRewardDataChartdataTimelineItem[]
+	chartData: TimeSeries
+	// txTypeCounts: ITxTypeCountsChartdataTimelineItem[]
+	// rewardData: IRewardDataChartdataTimelineItem[]
 }
 
 interface DispatchProps {
 }
 
-type Props = DispatchProps & OwnProps&StateProps
+type Props = DispatchProps & OwnProps & StateProps
 
-const mapStateToProps = (state: IApplicationState, ownProps:OwnProps) :StateProps=> {
+const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): StateProps => {
+	// const stakingHistory = getFilteredTransactions(state, days)
+
+
+	const chain = getChartData(state, ownProps.timeframe.days)
+	// if (chain == undefined) {
+	// 	return null
+	// }
+
+	const events = _.map(chain.value(), t => new TimeEvent(t.getTimestamp(), {
+		denomination: t.getAmount() / ATOMS_DIVISOR,
+	}))
+	const collection = new Collection(events, false)
+
+	const series = new TimeSeries({
+		name: "denoms",
+		columns: ["time", "value"],
+		collection: collection.sortByTime()
+	})
+	console.log("SERIES", series)
+
+	const rollup = series.fixedWindowRollup({
+		windowSize: "1d",
+		toTimeEvents: false,
+		aggregation: {
+			tx_count: { denomination: count() },
+			value_sum: { denomination: sum() },
+		}
+	})
+
+	console.log("ROLLUP", rollup)
+
 	return {
-		txTypeCounts: aggregateChartDataBy(
-			state.staking.selectedTimeframe,
-			getStakingHistoryCountEvents(
-				ownProps.stakingHistory,
-				ownProps.timeframe.days
-			),
-			sumTxTypeCountsChartdata
-		),
-		rewardData: aggregateChartDataBy(
-			state.staking.selectedTimeframe,
-			getStakingHistoryRewardData(
-				ownProps.stakingHistory,
-				ownProps.timeframe.days
-			),
-			sumRewardDataChartdata
-		),
+		chartData: rollup
 	}
 }
 
 const mapDispatchToProps = {
-	onTimeFrameChanged,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MixerStatsChart)

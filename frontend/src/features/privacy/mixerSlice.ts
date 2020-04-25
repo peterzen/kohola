@@ -1,12 +1,19 @@
 import _ from "lodash"
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit"
 
-import { AppError, AppThunk } from "../../store/types"
+import { AppError, AppThunk, IApplicationState } from "../../store/types"
 import {
     RunAccountMixerResponse,
     RunAccountMixerRequest,
 } from "../../proto/api_pb"
 import LorcaBackend from "../../middleware/lorca"
+import { getMixTransactions, getWalletTransactions } from "../transactions/transactionsSlice"
+
+
+import { TimeSeries, Collection, IndexedEvent, TimeEvent, TimeRange, count, Pipeline, TimeRangeEvent } from "pondjs"
+
+import moment from "moment"
+import { ATOMS_DIVISOR } from "../../constants"
 
 // RunAccountMixer
 export interface IRunAccountMixerState {
@@ -128,3 +135,18 @@ export const stopAccountMixer: ActionCreator<any> = (): AppThunk => {
 
 
 // selectors
+export const getFilteredTransactions = (state: IApplicationState, days: number) => {
+    const now = moment()
+    return _.chain(getWalletTransactions(state))
+        .filter(tx => moment(tx.getTimestamp()).isAfter(now.subtract(days, "days").startOf("day")))
+}
+
+export const getChartData = (state: IApplicationState, days: number) => {
+
+    const chain = getMixTransactions(state)
+        .orderBy(t => t.getTimestamp())
+
+    return chain
+
+}
+

@@ -341,7 +341,7 @@ export const getWalletTransactions = (
 
 export const getMixTransactions = (
     state: IApplicationState
-): Transaction[] => {
+)  => {
     return _.chain(getTransactions(state))
         .filter((t) => t.getType() == state.transactions.activeTypeFilter)
         .filter(
@@ -351,8 +351,6 @@ export const getMixTransactions = (
                 t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT
         )
         .filter(t => isTxMixed(state, t))
-        .orderBy((e) => e.getTimestamp(), "desc")
-        .value()
 }
 
 
@@ -416,6 +414,7 @@ function isTxLinkedToAccount(tx: Transaction, account: WalletAccount): boolean {
 
 export function isTxMixed(state: IApplicationState, tx: Transaction): boolean {
     const walletConfig = getWalletConfig(state)
+    console.log("WALLETCONFIG",walletConfig)
     if (walletConfig.MixedAccount == null || walletConfig.ChangeAccount == null) {
         return false
     }
