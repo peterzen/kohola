@@ -1,6 +1,7 @@
 package exchangeratebot
 
 import (
+	"context"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -123,9 +124,19 @@ func onUpdate(rates *walletgui.AltCurrencyRates) {
 }
 
 // Start initializes a Coingecko client and starts a periodic fetcher process
-func Start(altCurrencies []string) {
+func Start(ctx context.Context, altCurrencies []string) {
+
+	ctx, cancel := context.WithCancel(ctx)
+	_ = cancel
 
 	for {
+		select {
+		case <-ctx.Done():
+			log.Printf("exchangeratebot stopped")
+			return
+		default:
+		}
+
 		rates, err := fetchCurrentRates(altCurrencies)
 		if err == nil {
 			rates.LastUpdatedTs = time.Now().Unix()

@@ -67,7 +67,7 @@ func bindUIAPI(w webview.Interface) {
 
 	w.Bind("walletgui_onAppOpen", func() {
 		fmt.Println("App booted")
-		go exchangeratebot.Start(altCurrencies)
+		go exchangeratebot.Start(ctx, altCurrencies)
 	})
 
 	w.Bind("walletgui_CloseApp", func() {
