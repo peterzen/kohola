@@ -1,103 +1,48 @@
 import * as React from "react"
-import { sprintf } from "sprintf-js"
 
-import { Row, Col, ProgressBar, Card } from "react-bootstrap"
-
+import { Row, Col, Container } from "react-bootstrap"
 import { WalletTotals } from "../../middleware/models"
-import { Amount, FiatAmount } from "../../components/Shared/Amount"
-import SparklineChart from "../market/charts/SparklineChart"
 import { IApplicationState } from "../../store/types"
 import { connect } from "react-redux"
-import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
-
-
-interface IValueColProps {
-    amount: number
-    total: number
-    label: string
-    variant: string
-}
-
-const ValueCol = (props: IValueColProps) => {
-    const clazz = "spendable spendable-" + props.variant
-    const pct =
-        props.amount > 0
-            ? sprintf("%.1f%%", (100 * props.amount) / props.total)
-            : "0%"
-    return (
-        <Col>
-            <h3>{pct}</h3>
-            <div>
-                <ProgressBar
-                    className={clazz}
-                    now={(100 * props.amount) / props.total}
-                />
-            </div>
-            <p className=" text-muted">{props.label}</p>
-            <h4 className="text-right text-muted">
-                <Amount amount={props.amount} rounding={2} showCurrency />
-            </h4>
-            {/* <h4 className="text-right text-muted"><FiatAmount amount={props.amount} showCurrency currency="USD" /></h4> */}
-        </Col>
-    )
-}
+import WalletTotalsCard from "./WalletTotalsCard"
+import WalletAvailableBalanceCard from "./WalletAvailableBalanceCard"
+import WalletCreditDebitCard from "./WalletCreditDebitCard"
 
 class WalletTotalsComponent extends React.PureComponent<Props, {}> {
     render() {
         const totals = this.props.totals
         return (
-            <Card>
-                <Card.Body>
-                    <ComponentPlaceHolder type='text' rows={7} ready={!this.props.loading}>
-                        <div>
-                            <Row>
-                                <Col>
-                                    <h1>
-                                        <Amount amount={totals.total} />
-                                    </h1>
-                                    <p className="text-muted text-right">Total DCR</p>
-                                    <h4 className="text-right text-muted">
-                                        <FiatAmount
-                                            amount={totals.total}
-                                            showCurrency
-                                            currency="USD"
-                                        />
-                                    </h4>
-                                    <SparklineChart currencyCode="eur" days={14} />
-                                </Col>
-
-                                <ValueCol
-                                    label="Spendable"
-                                    amount={totals.spendable}
-                                    total={totals.total}
-                                    variant="spendable"
-                                ></ValueCol>
-
-                                <ValueCol
-                                    label="Unconfirmed"
-                                    amount={totals.unconfirmed}
-                                    total={totals.total}
-                                    variant="unconfirmed"
-                                ></ValueCol>
-
-                                <ValueCol
-                                    label="Immature"
-                                    amount={totals.immature_coinbase + totals.immature_stake}
-                                    total={totals.total}
-                                    variant="immature"
-                                ></ValueCol>
-
-                                <ValueCol
-                                    label="Voting authority"
-                                    amount={totals.votingauth}
-                                    total={totals.total}
-                                    variant="votingauth"
-                                ></ValueCol>
-                            </Row>
-                        </div>
-                    </ComponentPlaceHolder>
-                </Card.Body>
-            </Card>
+            <Container fluid>
+                <Row>
+                    <Col className="pl-0 pr-0" xs="12" sm="6" md="3" lg="3">
+                        <WalletAvailableBalanceCard
+                            totals={totals}
+                            loading={this.props.loading}
+                        />
+                    </Col>
+                    <Col
+                        className="pr-0 pl-0 pt-3 pl-sm-3 pt-sm-0 pl-md-3 pt-md-0"
+                        xs="12"
+                        sm="6"
+                        md="4"
+                        lg="3"
+                    >
+                        <WalletTotalsCard
+                            totals={totals}
+                            loading={this.props.loading}
+                        />
+                    </Col>
+                    <Col
+                        className="pr-0 pl-0 pt-3 pl-sm-0 pt-sm-3 pl-md-3 pt-md-0"
+                        sm="12"
+                        md="5"
+                        lg="6"
+                    >
+                        <WalletCreditDebitCard
+                        />
+                    </Col>
+                </Row>
+            </Container>
         )
     }
 }
@@ -105,7 +50,6 @@ class WalletTotalsComponent extends React.PureComponent<Props, {}> {
 interface OwnProps {
     totals: WalletTotals
 }
-
 
 interface StateProps {
     loading: boolean
@@ -115,7 +59,7 @@ type Props = OwnProps & StateProps
 
 const mapStateToProps = (state: IApplicationState): StateProps => {
     return {
-        loading: state.accounts.getAccountsAttempting
+        loading: state.accounts.getAccountsAttempting,
     }
 }
 

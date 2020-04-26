@@ -1,4 +1,4 @@
-import _ from "lodash"
+import _, { CollectionChain } from "lodash"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { AppError, IApplicationState } from "../../store/types"
@@ -15,6 +15,9 @@ import {
 import { TransactionType, TransactionDirection } from "../../constants"
 import { AuthoredTransactionMetadata } from "./models"
 import { getWalletConfig } from "../app/walletSlice"
+import { TimeEvent, TimeSeries, Collection } from "pondjs"
+import moment from "../../helpers/moment-helper"
+import { ChartTimeframe } from "../../components/Shared/IntervalChooser"
 
 
 // GetTransactions
@@ -370,7 +373,7 @@ export const getMinedTransactions = (
 
 export const getWalletTransactions = (
     state: IApplicationState
-): Transaction[] => {
+): CollectionChain<Transaction> => {
     return _.chain(getTransactions(state))
         .filter((t) => t.getType() == state.transactions.activeTypeFilter)
         .filter(
@@ -381,12 +384,11 @@ export const getWalletTransactions = (
         )
         .filter(t => isTxMixed(state, t) == false)
         .orderBy((e) => e.getTimestamp(), "desc")
-        .value()
 }
 
 export const getMixTransactions = (
     state: IApplicationState
-)  => {
+) => {
     return _.chain(getTransactions(state))
         .filter((t) => t.getType() == state.transactions.activeTypeFilter)
         .filter(
@@ -398,7 +400,29 @@ export const getMixTransactions = (
         .filter(t => isTxMixed(state, t))
 }
 
+export const makeTxHistoryChartSeries = (state: IApplicationState, timeframe: ChartTimeframe) => {
+    const now = moment.default()
 
+    const chain = getWalletTransactions(state)
+        .filter(tx => moment.default(tx.getTimestamp()).isAfter(now.subtract(timeframe.days, "days").startOf("day")))
+
+    if (chain == undefined || chain.value().length < 1) {
+        return
+    }
+
+    const events = _.map(chain.value(), (tx) => new TimeEvent(tx.getTimestamp(), {
+        debit: -1 * tx.getDebitsAmount(),
+        credit: tx.getCreditsAmount(),
+    }))
+
+    const series = new TimeSeries({
+        name: "tx-history",
+        columns: ["time", "credit", "debit"],
+        collection: new Collection(events, false).sortByTime(),
+    })
+    console.log("TX HISTORY SERIES", series.toJSON())
+    return series
+}
 
 export const getAddressTransactions = (
     state: IApplicationState,

@@ -59,7 +59,7 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState> {
 		this.setState({ mode: "log" })
 	}
 
-	handleTrackerChanged = (tracker: any) => {
+	handleTrackerChanged = (tracker: Date | null) => {
 		if (!tracker) {
 			this.setState({ tracker, x: null, y: null })
 		} else {
@@ -67,11 +67,11 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState> {
 		}
 	}
 
-	handleTimeRangeChange = (timerange: any) => {
+	handleTimeRangeChange = (timerange: TimeRange) => {
 		this.setState({ timerange })
 	}
 
-	handleMouseMove = (x: any, y: any) => {
+	handleMouseMove = (x: number | null, y: number | null) => {
 		this.setState({ x, y })
 	}
 
@@ -94,25 +94,27 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState> {
 			// volumeSeries
 		} = this.props
 
+		const timerange = priceSeries.timerange()
+
 		return (
 			<div>
-				{priceSeries == undefined ||
+				{/* {priceSeries == undefined ||
 					(priceSeries.count() < 1 && (
 						<Alert variant="secondary">price series</Alert>
-					))}
+					))} */}
 
 				{priceSeries != undefined && priceSeries.count() > 0 && (
 					<div>
 						<Resizable>
 							<ChartContainer
-								timeRange={priceSeries.timerange()}
+								timeRange={timerange}
 								hideWeekends={false}
 								timeAxisAngledLabels={true}
 								timeAxisHeight={65}
 								enablePanZoom={true}
 								showGrid={false}
-								maxTime={priceSeries.timerange().end()}
-								minTime={priceSeries.timerange().begin()}
+								maxTime={timerange.end()}
+								minTime={timerange.begin()}
 								onTrackerChanged={this.handleTrackerChanged}
 								onBackgroundClick={() =>
 									this.setState({ selection: null })
@@ -275,9 +277,9 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState> {
 		)
 	}
 
-	shouldComponentUpdate(nextProps: Props, nextState: any) {
-		return nextProps.priceSeries != undefined
-	}
+	// shouldComponentUpdate(nextProps: Props, nextState: any) {
+	// 	return nextProps.priceSeries != undefined
+	// }
 
 	componentDidMount() {
 		_.each(this.props.currencies, (currency) =>
@@ -317,6 +319,7 @@ interface InternalState {
 }
 
 const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
+	debugger
 	const timerange = makeTimerange(ownProps.days)
 
 	const seriesList = _.compact(
@@ -326,15 +329,20 @@ const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
 		)
 	)
 
-	const combinedSeries = TimeSeries.timeSeriesListMerge({
+	let combinedSeries = TimeSeries.timeSeriesListMerge({
 		name: "combined",
 		seriesList: seriesList,
 	})
 
+	console.log("timerange", timerange.humanize())
+	if (combinedSeries.count() > 0) {
+		combinedSeries = combinedSeries.crop(timerange)
+	}
 	return {
 		// error: currencyData.getMarketChartError,
 		timerange: timerange,
 		priceSeries: combinedSeries,
+		// priceSeries: combinedSeries.crop(timerange),
 		// volumeSeries: currencyData.volumeSeries,
 	}
 }

@@ -35,7 +35,7 @@ func Test_GetStakingHistory(t *testing.T) {
 
 	connectWallet(endpoint)
 
-	history, err := GetStakingHistory()
+	history, err := GetStakingHistory(-1, 0)
 
 	if err != nil {
 		fmt.Printf("Missing endpoint in config")
