@@ -72,10 +72,7 @@ class SparklineChart extends React.Component<Props> {
         this.setState({ x, y })
     }
     componentDidMount() {
-        this.props.fetchExchangeChartData(
-            this.props.currencyCode,
-            this.props.days
-        )
+        this.props.fetchExchangeChartData(this.props.currencyCode, this.props.days)
     }
 }
 

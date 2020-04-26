@@ -224,7 +224,6 @@ export const isChartDataLoaded = (
     return _.every(loadedState, (s) => s === false)
 }
 
-
 // helpers
 function makePriceSeries(data: GetMarketChartResponse.MarketChartDataPoint[], currencyCode: string) {
 

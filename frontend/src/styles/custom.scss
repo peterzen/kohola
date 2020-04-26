@@ -1,4 +1,8 @@
 $body-bg: #e5e5e5;
+$chart-color-1: #00c49f;
+$chart-color-2: #0088fe;
+$chart-color-3: #ffbb28;
+$chart-color-4: #ff8042;
 
 body {
     background-color: #e5e5e5;
@@ -83,18 +87,37 @@ label {
 .copy-to-clipboard {
     cursor: pointer;
 }
+.indicator-circle {
+    width: 8px;
+    height: 8px;
+    float: left;
+    margin: 5px 8px 0 0;
+    border-radius: 4px;
+}
 
-.spendable-total .progress-bar {
-    background-color: #00c49f;
+.spendable-spendable {
+    &.indicator-circle {
+        background-color: $chart-color-1;
+    }
+    fill: $chart-color-1;
 }
-.spendable-spendable .progress-bar {
-    background-color: #0088fe;
+.spendable-unconfirmed {
+    &.indicator-circle {
+        background-color: $chart-color-2;
+    }
+    fill: $chart-color-2;
 }
-.spendable-immature .progress-bar {
-    background-color: #ffbb28;
+.spendable-immature {
+    &.indicator-circle {
+        background-color: $chart-color-3;
+    }
+    fill: $chart-color-3;
 }
-.spendable-locked .progress-bar {
-    background-color: #ff8042;
+.spendable-votingauth {
+    &.indicator-circle {
+        background-color: $chart-color-4;
+    }
+    fill: $chart-color-4;
 }
 
 main.devmonitor {
@@ -162,5 +185,18 @@ table.table tbody tr th {
         padding-top: 0;
         padding-bottom: 0;
         margin: 0;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .current-balance-container {
+        .amount {
+            font-size: 33px;
+        }
+        .text-muted {
+            .amount {
+                font-size: 25px;
+            }
+        }
     }
 }
