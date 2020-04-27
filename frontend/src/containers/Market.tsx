@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import { withRouter, RouteChildrenProps } from "react-router-dom"
 import _ from "lodash"
 
+
 // @ts-ignore
 import Fade from "react-reveal/Fade"
 import { Card, Row, Col, Dropdown } from "react-bootstrap"
@@ -10,38 +11,51 @@ import { Card, Row, Col, Dropdown } from "react-bootstrap"
 import { IApplicationState } from "../store/types"
 import ExchangeRateChart from "../features/market/charts/ExchangeRateChart"
 import { AltCurrencyRates } from "../proto/walletgui_pb"
-import { getCurrentExchangeRate } from "../features/market/marketSlice"
+import { getCurrentExchangeRate, makeTimerange } from "../features/market/marketSlice"
 import IntervalChooser, {
     ChartTimeframe,
     timeframes,
     defaultTimeframe,
 } from "../components/Shared/IntervalChooser"
+import { TimeRange } from "pondjs"
+import ExchangeRateV2Chart from "../features/market/charts/ExchangeRateV2Chart"
 
 // @TODO pull this out of AppConfig
 const altCurrencies = ["btc", "usd", "eur"]
 
 
 class Market extends React.PureComponent<Props, InternalState> {
-    constructor(props: Props) {
-        super(props)
-        this.state = {
-            selectedTimeframe: defaultTimeframe,
-        }
+
+    state = {
+        selectedTimeframe: defaultTimeframe,
+        // timerange: makeTimerange(defaultTimeframe.days)
     }
 
     render() {
         return (
             <div>
-                <div className="text-right">
-                    <IntervalChooser
-                        onChange={(timeframe: ChartTimeframe) =>
-                            this.setState({ selectedTimeframe: timeframe })
-                        }
-                        timeframes={timeframes}
-                        selectedValue={this.state.selectedTimeframe}
-                    />
-                </div>
-                <Row>
+                <Card>
+                    <Card.Header>
+                        <div className="float-right">
+                            <IntervalChooser
+                                onChange={(timeframe: ChartTimeframe) =>
+                                    this.handleTimerangeChange(timeframe)
+                                }
+                                timeframes={timeframes}
+                                selectedValue={this.state.selectedTimeframe}
+                            />
+                        </div>
+                        <Card.Title>
+                            DCR Markets
+                        </Card.Title>
+                    </Card.Header>
+                    <div>
+                        <ExchangeRateV2Chart
+                            currencies={altCurrencies}
+                            days={this.state.selectedTimeframe.days}
+                            currencyCode="btc" />
+                    </div>
+                    {/* <Row>
                     {altCurrencies.map((currencyCode) => (
                         <Col sm={6} key={currencyCode}>
                             <div className="mb-3">
@@ -70,14 +84,23 @@ class Market extends React.PureComponent<Props, InternalState> {
                             </div>
                         </Col>
                     ))}
-                </Row>
+                </Row> */}
+
+                </Card>
             </div>
         )
+    }
+    handleTimerangeChange(timeframe: ChartTimeframe) {
+        this.setState({
+            timerange: makeTimerange(timeframe.days),
+            selectedTimeframe: timeframe
+        })
     }
 }
 
 interface InternalState {
     selectedTimeframe: ChartTimeframe
+    // timerange: TimeRange
 }
 
 interface OwnProps {
@@ -91,10 +114,10 @@ const mapStateToProps = (state: IApplicationState) => {
     return {
         currentRates: state.market.currentRates,
         getCurrentExchangeRate: (currencyCode: string) => {
-            const r = getCurrentExchangeRate(state, currencyCode)
-            return r
+            return getCurrentExchangeRate(state, currencyCode)
         },
     }
 }
 
 export default withRouter(connect(mapStateToProps)(Market))
+

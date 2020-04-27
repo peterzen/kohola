@@ -478,6 +478,12 @@ export class GetMarketChartRequest extends jspb.Message {
   getDays(): number;
   setDays(value: number): void;
 
+  getStartTimestamp(): number;
+  setStartTimestamp(value: number): void;
+
+  getEndTimestamp(): number;
+  setEndTimestamp(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetMarketChartRequest.AsObject;
   static toObject(includeInstance: boolean, msg: GetMarketChartRequest): GetMarketChartRequest.AsObject;
@@ -492,38 +498,21 @@ export namespace GetMarketChartRequest {
   export type AsObject = {
     currencyCode: string,
     days: number,
-  }
-}
-
-export class MarketChartDataPoint extends jspb.Message {
-  getTimestamp(): number;
-  setTimestamp(value: number): void;
-
-  getExchangeRate(): number;
-  setExchangeRate(value: number): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): MarketChartDataPoint.AsObject;
-  static toObject(includeInstance: boolean, msg: MarketChartDataPoint): MarketChartDataPoint.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: MarketChartDataPoint, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): MarketChartDataPoint;
-  static deserializeBinaryFromReader(message: MarketChartDataPoint, reader: jspb.BinaryReader): MarketChartDataPoint;
-}
-
-export namespace MarketChartDataPoint {
-  export type AsObject = {
-    timestamp: number,
-    exchangeRate: number,
+    startTimestamp: number,
+    endTimestamp: number,
   }
 }
 
 export class GetMarketChartResponse extends jspb.Message {
-  clearDatapointsList(): void;
-  getDatapointsList(): Array<MarketChartDataPoint>;
-  setDatapointsList(value: Array<MarketChartDataPoint>): void;
-  addDatapoints(value?: MarketChartDataPoint, index?: number): MarketChartDataPoint;
+  clearPricesList(): void;
+  getPricesList(): Array<GetMarketChartResponse.MarketChartDataPoint>;
+  setPricesList(value: Array<GetMarketChartResponse.MarketChartDataPoint>): void;
+  addPrices(value?: GetMarketChartResponse.MarketChartDataPoint, index?: number): GetMarketChartResponse.MarketChartDataPoint;
+
+  clearVolumesList(): void;
+  getVolumesList(): Array<GetMarketChartResponse.MarketChartDataPoint>;
+  setVolumesList(value: Array<GetMarketChartResponse.MarketChartDataPoint>): void;
+  addVolumes(value?: GetMarketChartResponse.MarketChartDataPoint, index?: number): GetMarketChartResponse.MarketChartDataPoint;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetMarketChartResponse.AsObject;
@@ -537,7 +526,32 @@ export class GetMarketChartResponse extends jspb.Message {
 
 export namespace GetMarketChartResponse {
   export type AsObject = {
-    datapointsList: Array<MarketChartDataPoint.AsObject>,
+    pricesList: Array<GetMarketChartResponse.MarketChartDataPoint.AsObject>,
+    volumesList: Array<GetMarketChartResponse.MarketChartDataPoint.AsObject>,
+  }
+
+  export class MarketChartDataPoint extends jspb.Message {
+    getTimestamp(): number;
+    setTimestamp(value: number): void;
+
+    getValue(): number;
+    setValue(value: number): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): MarketChartDataPoint.AsObject;
+    static toObject(includeInstance: boolean, msg: MarketChartDataPoint): MarketChartDataPoint.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: MarketChartDataPoint, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): MarketChartDataPoint;
+    static deserializeBinaryFromReader(message: MarketChartDataPoint, reader: jspb.BinaryReader): MarketChartDataPoint;
+  }
+
+  export namespace MarketChartDataPoint {
+    export type AsObject = {
+      timestamp: number,
+      value: number,
+    }
   }
 }
 

@@ -350,7 +350,7 @@ export const getMixTransactions = (
                 TransactionDirection.TRANSACTION_DIR_RECEIVED ||
                 t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT
         )
-        .filter(t => isTxMixed(state, t))
+        // .filter(t => isTxMixed(state, t))
 }
 
 
@@ -414,7 +414,7 @@ function isTxLinkedToAccount(tx: Transaction, account: WalletAccount): boolean {
 
 export function isTxMixed(state: IApplicationState, tx: Transaction): boolean {
     const walletConfig = getWalletConfig(state)
-    console.log("WALLETCONFIG",walletConfig)
+    // console.log("WALLETCONFIG",walletConfig)
     if (walletConfig.MixedAccount == null || walletConfig.ChangeAccount == null) {
         return false
     }

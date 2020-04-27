@@ -294,6 +294,9 @@ declare module "pondjs" {
           *  outageEvent.data()
           * to fetch the whole data object, which will be an Immutable Map.
           */
+     export class TimeEvent extends Event {
+     }
+
      export class Event {
           /**
                *  The creation of an Event is done by combining two parts: the timestamp and the data.
@@ -572,7 +575,7 @@ declare module "pondjs" {
                * - a simple type such as an integer.
                * In the case of the simple type this is a shorthand for supplying {"value": v}.
                */
-          constructor(arg1: any, arg2: any, arg3: any);
+          constructor(arg1: any, arg2: any, arg3?: any);
 
           /**
                * Returns a flat array starting with the timestamp, followed by the values.
@@ -665,7 +668,7 @@ declare module "pondjs" {
                *      arg1 Collection | array | Immutable.List - Initial data for the collection. If arg1 is another Collection, this will act as a copy constructor.
                *      [arg2] Boolean - When using a the copy constructor this specified whether or not to also copy all the events in this collection. Generally you'll want to let it copy the events. If arg1 is an Immutable.List, then arg2 will specify the type of the Events accepted into the Collection. This form is generally used internally.
                */
-          constructor(arg1: Collection | any[] | List<any>, arg2: boolean);
+          constructor(arg1: Collection | any[] | List<any>, arg2?: boolean);
 
           /**
                * Returns the Collection as a regular JSON object.
@@ -1027,6 +1030,8 @@ declare module "pondjs" {
           */
 
      export class TimeSeries {
+          static timeSeriesListMerge(options: { name: string, seriesList: TimeSeries[] }): TimeSeries
+          
           constructor(
                arg:
                     | {
@@ -1131,7 +1136,7 @@ declare module "pondjs" {
                *      t Date - The time to bisect the TimeSeries with
                *      b number - The position to begin searching at
                */
-          bisect(t: Date, b: number): number;
+          bisect(t: Date, b?: number): number;
 
           /**
                * Perform a slice of events within the TimeSeries, returns a new TimeSeries representing a portion of this TimeSeries from begin up to but not including end.
@@ -1240,7 +1245,7 @@ declare module "pondjs" {
                *      fieldPath string - Column to find the stdev of. A deep value can be referenced with a string.like.this. If not supplied the value column will be aggregated.
                *      filter function - Optional filter function used to clean data before aggregating
                */
-          sum(fieldPath: string | string[], filter: Function): number;
+          sum(fieldPath: string | string[], filter?: Function): number;
 
           /**
                * Aggregates the events down to their maximum value.
@@ -1257,7 +1262,7 @@ declare module "pondjs" {
                *      fieldPath string - Column to find the min of. A deep value can be referenced with a string.like.this. If not supplied the value column will be aggregated.
                *      filter function - Optional filter function used to clean data before aggregating
                */
-          min(fieldPath: string | string[], filter: Function): number;
+          min(fieldPath: string | string[], filter?: Function): number;
 
           /**
                * Aggregates the events in the TimeSeries down to their average.
@@ -1266,7 +1271,7 @@ declare module "pondjs" {
                *      fieldPath string - Column to find the avg of. A deep value can be referenced with a string.like.this. If not supplied the value column will be aggregated.
                *      filter function - Optional filter function used to clean data before aggregating
                */
-          avg(fieldPath: string | string[], filter: Function): number;
+          avg(fieldPath: string | string[], filter?: Function): number;
 
           /**
                * Aggregates the events in the TimeSeries down to their mean (same as avg).
@@ -1275,7 +1280,7 @@ declare module "pondjs" {
                *      fieldPath string - Column to find the mean of. A deep value can be referenced with a string.like.this. If not supplied the value column will be aggregated.
                *      filter function - Optional filter function used to clean data before aggregating
                */
-          mean(fieldPath: string | string[], filter: Function): number;
+          mean(fieldPath: string | string[], filter?: Function): number;
 
           /**
                * Aggregates the events down to their medium value.
@@ -1285,7 +1290,7 @@ declare module "pondjs" {
                *      filter function - Optional filter function used to clean data before aggregating
   
                */
-          median(fieldPath: string | string[], filter: Function): number;
+          median(fieldPath: string | string[], filter?: Function): number;
 
           /**
                * Aggregates the events down to their stdev.
@@ -1294,7 +1299,7 @@ declare module "pondjs" {
                *      fieldPath string - Column to find the stdev of. A deep value can be referenced with a string.like.this. If not supplied the value column will be aggregated.
                *      filter function - Optional filter function used to clean data before aggregating
                */
-          stdev(fieldPath: string | string[], filter: Function): number;
+          stdev(fieldPath: string | string[], filter?: Function): number;
 
           /**
                * Gets percentile q within the TimeSeries. This works the same way as numpy.
@@ -1314,7 +1319,7 @@ declare module "pondjs" {
                     | "higher"
                     | "nearest"
                     | "midpoint",
-               filter: Function
+               filter?: Function
           ): number;
 
           /**

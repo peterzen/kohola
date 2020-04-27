@@ -6,7 +6,8 @@ import { Row, Col } from "react-bootstrap"
 import { ChartTimeframe } from "../../components/Shared/IntervalChooser"
 import { IApplicationState } from "../../store/types"
 import { Charts, ChartContainer, ChartRow, YAxis, LineChart, Resizable, BarChart, styler } from "react-timeseries-charts";
-import { TimeSeries, Collection, IndexedEvent, TimeEvent, TimeRange, count, sum, Pipeline, TimeRangeEvent, EventOut } from "pondjs"
+// @ts-ignore
+import { TimeSeries, Collection, IndexedEvent, TimeEvent, TimeRange, count, sum, Pipeline, TimeRangeEvent } from "pondjs"
 
 
 import { getChartData } from "./mixerSlice"
@@ -15,14 +16,13 @@ import { ATOMS_DIVISOR } from "../../constants"
 class MixerStatsChart extends React.PureComponent<Props, InternalState> {
 	render() {
 		if (this.props.chartData == undefined) return null
-		if (this.props.chartData.range() == undefined) return null
+		if (this.props.chartData.timerange() == undefined) return null
 
 		const style = styler([
 			{ key: "tx_count", color: "#A5C8E1" },
 			{ key: "value_sum", color: "orange" },
 		])
 		return (
-
 			<div className="p-3">
 				<Resizable>
 					<ChartContainer
@@ -92,15 +92,15 @@ interface DispatchProps {
 
 type Props = DispatchProps & OwnProps & StateProps
 
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): StateProps => {
+const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): StateProps | undefined => {
 	// const stakingHistory = getFilteredTransactions(state, days)
 
 
 	const chain = getChartData(state, ownProps.timeframe.days)
-	// if (chain == undefined) {
-	// 	return null
-	// }
 
+	if (chain == undefined || chain.value().length < 1) {
+		return
+	}
 	const events = _.map(chain.value(), t => new TimeEvent(t.getTimestamp(), {
 		denomination: t.getAmount() / ATOMS_DIVISOR,
 	}))
@@ -108,7 +108,7 @@ const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): StatePro
 
 	const series = new TimeSeries({
 		name: "denoms",
-		columns: ["time", "value"],
+		columns: ["time", "denomination"],
 		collection: collection.sortByTime()
 	})
 	console.log("SERIES", series)

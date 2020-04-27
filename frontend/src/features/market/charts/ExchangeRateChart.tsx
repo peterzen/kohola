@@ -16,7 +16,7 @@ class ExchangeRateChart extends React.Component<Props> {
             <div style={{ width: "100%", height: "250px" }}>
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart
-                        data={this.props.getChartData()}
+                        data={this.props.chartData}
                         margin={{
                             top: 0,
                             right: 0,
@@ -56,12 +56,12 @@ class ExchangeRateChart extends React.Component<Props> {
 }
 
 interface OwnProps {
-    currencyCode: string
     days: number
+    currencyCode: string
 }
 
 interface StateProps {
-    getChartData: () => ChartDataPoint[]
+    chartData: ChartDataPoint[]
 }
 
 interface DispatchProps {
@@ -72,13 +72,11 @@ type Props = OwnProps & StateProps & DispatchProps
 
 const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
     return {
-        getChartData: () => {
-            return getExchangeChartData(
-                state,
-                ownProps.currencyCode,
-                ownProps.days
-            )
-        },
+        chartData: getExchangeChartData(
+            state,
+            ownProps.currencyCode,
+            ownProps.days
+        )
     }
 }
 

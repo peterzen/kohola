@@ -9,7 +9,7 @@ import {
 import LorcaBackend from "../../middleware/lorca"
 import { getMixTransactions, getWalletTransactions } from "../transactions/transactionsSlice"
 
-
+// @ts-ignore
 import { TimeSeries, Collection, IndexedEvent, TimeEvent, TimeRange, count, Pipeline, TimeRangeEvent } from "pondjs"
 
 import moment from "moment"
@@ -142,11 +142,5 @@ export const getFilteredTransactions = (state: IApplicationState, days: number) 
 }
 
 export const getChartData = (state: IApplicationState, days: number) => {
-
-    const chain = getMixTransactions(state)
-        .orderBy(t => t.getTimestamp())
-
-    return chain
-
+    return getMixTransactions(state).orderBy(t => t.getTimestamp())
 }
-
