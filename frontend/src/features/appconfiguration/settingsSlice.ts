@@ -7,15 +7,8 @@ import {
     ActionCreator,
     Dispatch,
 } from "@reduxjs/toolkit"
-import {
-    AppError,
-    IGetState,
-    IApplicationState,
-} from "../../store/types"
-import {
-    AppConfiguration,
-    GRPCEndpoint,
-} from "../../proto/walletgui_pb"
+import { AppError, IGetState, IApplicationState } from "../../store/types"
+import { AppConfiguration, GRPCEndpoint } from "../../proto/walletgui_pb"
 import { Networks } from "../../constants"
 import AppBackend from "../../middleware/appbackend"
 import { getConnectedEndpointId } from "../app/appSlice"
@@ -37,6 +30,7 @@ export interface IAppConfigurationState {
     appConfigDecryptionKeyCallback: PassphraseCallback | null
 
     setConfigError: AppError | null
+    getConfigError: AppError | null
     setConfigAttempting: boolean
     currentWalletEndpointId: string
 }
@@ -48,6 +42,7 @@ export const initialState: IAppConfigurationState = {
     appConfigDecryptionKeyCallback: null,
 
     setConfigError: null,
+    getConfigError: null,
     setConfigAttempting: false,
     currentWalletEndpointId: "",
 }
@@ -64,11 +59,12 @@ const settingsSlice = createSlice({
             state.appConfigDecryptionKeyRequested = true
             state.appConfigDecryptionKeyCallback = action.payload
         },
-        requestConfigurationDecryptionKeySuccess(
+        requestConfigurationDecryptionKeySubmit(
             state,
             action: PayloadAction<string>
         ) {
             state.appConfigDecryptionKeyRequested = false
+            state.getConfigError = null
             state.appConfigDecryptionKey = action.payload
             if (state.appConfigDecryptionKeyCallback != null) {
                 state.appConfigDecryptionKeyCallback()
@@ -89,7 +85,10 @@ const settingsSlice = createSlice({
         getConfigSuccess(state, action: PayloadAction<AppConfiguration>) {
             state.appConfig = action.payload
         },
-        getConfigFailed(state, action) { },
+        getConfigFailed(state, action: PayloadAction<AppError>) {
+            state.getConfigError =
+                state.appConfigDecryptionKey != "" ? action.payload : null
+        },
         setAccountPreference(
             state,
             action: PayloadAction<{
@@ -98,13 +97,23 @@ const settingsSlice = createSlice({
                 walletEndpointId: string
             }>
         ) {
-            const { preference, accountNumber, walletEndpointId } = action.payload
-            const walletPrefs = state.appConfig.getWalletPreferencesMap().get(walletEndpointId) || new AppConfiguration.WalletPreferences()
+            const {
+                preference,
+                accountNumber,
+                walletEndpointId,
+            } = action.payload
+            const walletPrefs =
+                state.appConfig
+                    .getWalletPreferencesMap()
+                    .get(walletEndpointId) ||
+                new AppConfiguration.WalletPreferences()
             walletPrefs.getAccountPrefsMap().set(accountNumber, preference)
         },
         updateUiPreferences(
             state,
-            action: PayloadAction<{ uiPreferences: AppConfiguration.UIPreferences }>
+            action: PayloadAction<{
+                uiPreferences: AppConfiguration.UIPreferences
+            }>
         ) {
             state.appConfig.setUiPreferences(action.payload.uiPreferences)
         },
@@ -135,12 +144,15 @@ const settingsSlice = createSlice({
         setMixerRequestDefaults(
             state,
             action: PayloadAction<{
-                accountMixerDefaults: RunAccountMixerRequest,
+                accountMixerDefaults: RunAccountMixerRequest
                 walletEndpointId: string
             }>
         ) {
             const { accountMixerDefaults, walletEndpointId } = action.payload
-            state.appConfig.getWalletPreferencesMap().get(walletEndpointId)?.setAccountMixerRequestDefaults(accountMixerDefaults)
+            state.appConfig
+                .getWalletPreferencesMap()
+                .get(walletEndpointId)
+                ?.setAccountMixerRequestDefaults(accountMixerDefaults)
         },
         setAutobuyerRequestDefaults(
             state,
@@ -150,14 +162,17 @@ const settingsSlice = createSlice({
             }>
         ) {
             const { ticketBuyerDefaults, walletEndpointId } = action.payload
-            state.appConfig.getWalletPreferencesMap().get(walletEndpointId)?.setRunAutoBuyerRequestDefaults(ticketBuyerDefaults)
+            state.appConfig
+                .getWalletPreferencesMap()
+                .get(walletEndpointId)
+                ?.setRunAutoBuyerRequestDefaults(ticketBuyerDefaults)
         },
     },
 })
 
 export const {
     requestConfigurationDecryptionKeyAttempt,
-    requestConfigurationDecryptionKeySuccess,
+    requestConfigurationDecryptionKeySubmit,
 
     setConfigAttempt,
     setConfigFailed,
@@ -185,6 +200,7 @@ export const getConfiguration: ActionCreator<any> = () => {
             )
             dispatch(getConfigSuccess(cfg))
         } catch (error) {
+            dispatch(getConfigFailed(new AppError(0, "Invalid passphrase")))
             await dispatch(requestConfigurationDecryptionKey())
             await dispatch(getConfiguration())
         }
@@ -248,10 +264,12 @@ export const saveTicketbuyerRequestDefaults: ActionCreator<any> = (
     request: RunTicketBuyerRequest
 ) => {
     return async (dispatch: Dispatch) => {
-        dispatch(setAutobuyerRequestDefaults({
-            walletEndpointId: walletEndpointId,
-            ticketBuyerDefaults: request,
-        }))
+        dispatch(
+            setAutobuyerRequestDefaults({
+                walletEndpointId: walletEndpointId,
+                ticketBuyerDefaults: request,
+            })
+        )
         dispatch(saveConfigurationAttempt())
     }
 }
@@ -261,29 +279,42 @@ export const saveAccountMixerRequestDefaults: ActionCreator<any> = (
     request: RunAccountMixerRequest
 ) => {
     return async (dispatch: Dispatch) => {
-        dispatch(setMixerRequestDefaults({
-            walletEndpointId: walletEndpointId,
-            accountMixerDefaults: request,
-        }))
+        dispatch(
+            setMixerRequestDefaults({
+                walletEndpointId: walletEndpointId,
+                accountMixerDefaults: request,
+            })
+        )
         dispatch(saveConfigurationAttempt())
     }
 }
 
 // selectors
-export const getAccountPrefs = (state: IApplicationState): jspb.Map<number, AppConfiguration.AccountPreference> => {
+export const getAccountPrefs = (
+    state: IApplicationState
+): jspb.Map<number, AppConfiguration.AccountPreference> => {
     const walletEndpointId = getConnectedEndpointId(state)
-    const walletPrefs = state.appconfiguration.appConfig.getWalletPreferencesMap().get(walletEndpointId)
+    const walletPrefs = state.appconfiguration.appConfig
+        .getWalletPreferencesMap()
+        .get(walletEndpointId)
     if (walletPrefs == undefined) {
-        state.appconfiguration.appConfig.getWalletPreferencesMap().set(walletEndpointId, new AppConfiguration.WalletPreferences())
+        state.appconfiguration.appConfig
+            .getWalletPreferencesMap()
+            .set(walletEndpointId, new AppConfiguration.WalletPreferences())
     }
-    return state.appconfiguration.appConfig.getWalletPreferencesMap().get(walletEndpointId)!.getAccountPrefsMap()
+    return state.appconfiguration.appConfig
+        .getWalletPreferencesMap()
+        .get(walletEndpointId)!
+        .getAccountPrefsMap()
 }
 
 export const getWalletPrefs = (
     appConfigurationState: IAppConfigurationState,
     walletEndpointId: string
 ): AppConfiguration.WalletPreferences | undefined => {
-    return appConfigurationState.appConfig.getWalletPreferencesMap().get(walletEndpointId)
+    return appConfigurationState.appConfig
+        .getWalletPreferencesMap()
+        .get(walletEndpointId)
 }
 
 export const getAppConfig = (state: IApplicationState) =>
