@@ -10,6 +10,7 @@ import {
     PublishTransactionResponse,
     ValidateAddressResponse,
     SweepAccountResponse,
+    PublishUnminedTransactionsResponse,
 } from "../../proto/api_pb"
 import { TransactionType, TransactionDirection } from "../../constants"
 import { AuthoredTransactionMetadata } from "./models"
@@ -65,6 +66,13 @@ export interface SweepAccountState {
     readonly errorSweepAccount: AppError | null
 }
 
+// PublishUnminedTransactions
+export interface PublishUnminedTransactionsState {
+    readonly publishUnminedTransactionsAttempting: boolean
+    readonly publishUnminedTransactionsResponse: PublishUnminedTransactionsResponse | null
+    readonly errorPublishUnminedTransactions: AppError | null
+}
+
 interface ICreateTransactionSuccessPayload {
     txInfo: AuthoredTransactionMetadata
     unsignedTx: Uint8Array
@@ -75,6 +83,7 @@ export const initialState: GetTransactionsState &
     SignTransactionState &
     PublishTransactionState &
     ValidateAddressState &
+    PublishUnminedTransactionsState &
     SweepAccountState = {
     txList: [],
     getTransactionsAttempting: false,
@@ -124,6 +133,10 @@ export const initialState: GetTransactionsState &
     sweepAccountResponse: null,
     errorSweepAccount: null,
 
+    // PublishUnminedTransactions
+    publishUnminedTransactionsAttempting: false,
+    publishUnminedTransactionsResponse: null,
+    errorPublishUnminedTransactions: null,    
 }
 
 const transactionsSlice = createSlice({
@@ -262,6 +275,32 @@ const transactionsSlice = createSlice({
             state.sweepAccountResponse = action.payload
             state.sweepAccountAttempting = false
         },
+
+        // PublishUnminedTransactions
+        publishUnminedTransactionsAttempt(state) {
+            state.publishUnminedTransactionsAttempting = true
+            state.errorPublishUnminedTransactions = null
+        },
+        publishUnminedTransactionsFailed(
+            state,
+            action: PayloadAction<AppError>
+        ) {
+            state.publishUnminedTransactionsAttempting = false
+            state.errorPublishUnminedTransactions = action.payload
+        },
+        publishUnminedTransactionsSuccess(
+            state,
+            action: PayloadAction<PublishUnminedTransactionsResponse>
+        ) {
+            state.errorPublishUnminedTransactions = null
+            state.publishUnminedTransactionsResponse = action.payload
+            state.publishUnminedTransactionsAttempting = false
+        },
+        publishUnminedTransactionsCleanup(state) {
+            state.errorPublishUnminedTransactions = null
+            state.publishUnminedTransactionsResponse = null
+            state.publishUnminedTransactionsAttempting = false
+        },
     },
 })
 
@@ -298,6 +337,12 @@ export const {
     sweepaccountAttempt,
     sweepaccountFailed,
     sweepaccount,
+
+    // PublishUnminedTransactions
+    publishUnminedTransactionsAttempt,
+    publishUnminedTransactionsFailed,
+    publishUnminedTransactionsSuccess,
+    publishUnminedTransactionsCleanup,
 } = transactionsSlice.actions
 
 export default transactionsSlice.reducer
