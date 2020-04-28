@@ -18,6 +18,7 @@ export const timeframes: ChartTimeframe[] = [
     { days: 7, name: "1 week", windowSize: "4h" },
     { days: 31, name: "1 month", windowSize: "3d" },
     { days: 365, name: "1 year", windowSize: "7d" },
+    { days: 730, name: "2 years", windowSize: "14d" },
 ]
 
 export const defaultTimeframe = timeframes[4]
