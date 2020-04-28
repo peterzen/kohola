@@ -62,7 +62,7 @@ const stakingHistory: StakingHistory.StakingHistoryLineItem[] = stakingHistoryRa
 
 
 test("aggregateChartDataBy with 1 step works", () => {
-    const timeframe: ChartTimeframe = { days: 7, name: "1 week", step: 1 }
+    const timeframe: ChartTimeframe = { days: 7, name: "1 week", windowSize: 1 }
     const data = getStakingHistoryCountEvents(stakingHistory, timeframe.days);
 
     expect(aggregateChartDataBy(timeframe, data, sumTxTypeCountsChartdata)).toEqual(data)
@@ -70,13 +70,13 @@ test("aggregateChartDataBy with 1 step works", () => {
 
 test("aggregateChartDataBy with 3 step works", () => {
     m = moment()
-    const timeframe: ChartTimeframe = { days: 7, name: "1 week", step: 3 }
+    const timeframe: ChartTimeframe = { days: 7, name: "1 week", windowSize: 3 }
     const data = getStakingHistoryCountEvents(stakingHistory, timeframe.days);
     const aggregatedData = aggregateChartDataBy(timeframe, data, sumTxTypeCountsChartdata)
     const expected = [
         { timestamp: m.format("L"), voteCounts: 5, purchasedCounts: 2, revocationCounts: 3 },
-        { timestamp: m.subtract(timeframe.step, 'days').format("L"), voteCounts: 4, purchasedCounts: 8, revocationCounts: 2 },
-        { timestamp: m.subtract(timeframe.step, 'days').format("L"), voteCounts: 1, purchasedCounts: 2, revocationCounts: 0 },
+        { timestamp: m.subtract(timeframe.windowSize, 'days').format("L"), voteCounts: 4, purchasedCounts: 8, revocationCounts: 2 },
+        { timestamp: m.subtract(timeframe.windowSize, 'days').format("L"), voteCounts: 1, purchasedCounts: 2, revocationCounts: 0 },
     ].reverse()
     expect(aggregatedData).toEqual(expected);
 })
@@ -136,13 +136,13 @@ test("getStakingHistoryRewardData 3 days works", () => {
 
 test("aggregateChartDataBy with 7 days and 3 step works", () => {
     m = moment()
-    const timeframe: ChartTimeframe = { days: 7, name: "1 week", step: 3 }
+    const timeframe: ChartTimeframe = { days: 7, name: "1 week", windowSize: 3 }
     const data = getStakingHistoryRewardData(stakingHistory, timeframe.days);
     const aggregatedData = aggregateChartDataBy(timeframe, data, sumRewardDataChartdata)
     const expected = [
         { timestamp: m.format("L"), sumRewardCredits: 4.6000000000000005, rewardPercent: 2.22547855370436 },
-        { timestamp: m.subtract(timeframe.step, 'days').format("L"), sumRewardCredits: 7.8100000000000005,   rewardPercent: 2.9763607179337517 },
-        { timestamp: m.subtract(timeframe.step, 'days').format("L"), sumRewardCredits: 0.37, rewardPercent: 0.8409090909090908 },
+        { timestamp: m.subtract(timeframe.windowSize, 'days').format("L"), sumRewardCredits: 7.8100000000000005,   rewardPercent: 2.9763607179337517 },
+        { timestamp: m.subtract(timeframe.windowSize, 'days').format("L"), sumRewardCredits: 0.37, rewardPercent: 0.8409090909090908 },
     ].reverse()
     expect(aggregatedData).toEqual(expected);
 })

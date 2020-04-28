@@ -1,6 +1,6 @@
 import * as React from "react"
 import _ from "lodash"
-import moment from "../../helpers/moment-helper"
+import moment from "../../../helpers/moment-helper"
 
 import { Table, } from "react-bootstrap"
 import ReactTimeago from "react-timeago"
@@ -8,10 +8,10 @@ import { TransitionGroup } from "react-transition-group"
 // @ts-ignore
 import Fade from "react-reveal/Fade"
 
-import { Amount } from "../../components/Shared/Amount"
-import { TransactionType, transitionGroupProps } from "../../constants"
-import { rawHashToHex } from "../../helpers/byteActions"
-import { StakingHistory } from "../../proto/walletgui_pb"
+import { Amount } from "../../../components/Shared/Amount"
+import { TransactionType, transitionGroupProps } from "../../../constants"
+import { rawHashToHex } from "../../../helpers/byteActions"
+import { StakingHistory } from "../../../proto/walletgui_pb"
 
 export default class StakingHistoryTable extends React.Component<Props> {
     render() {
@@ -34,7 +34,6 @@ export default class StakingHistoryTable extends React.Component<Props> {
 
                     {this.props.stakingHistory.map((item) => (
                         <Fade slide cascade key={rawHashToHex(item.getTxHash_asU8()) || ""}>
-
                             <tr>
                                 <td>{TransactionType[item.getTxType()]}</td>
                                 <td>

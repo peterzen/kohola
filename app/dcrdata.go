@@ -12,7 +12,7 @@ import (
 	"github.com/peterzen/kohola/webview"
 )
 
-const baseURL = "https://explorer.dcrdata.org/api"
+const baseURL = "https://alpha.dcrdata.org/api"
 
 func queryDcrdata(path string) ([]byte, error) {
 

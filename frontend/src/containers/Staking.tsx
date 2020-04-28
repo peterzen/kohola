@@ -13,7 +13,7 @@ import AgendasComponent from "../features/staking/Voting/AgendasComponent"
 import StakeInfoComponent from "../features/staking/StakeInfoComponent"
 import PurchaseTicketForm from "../features/staking/PurchaseTicket/SimplePurchaseTicketForm"
 import TicketBuyerComponent from "../features/staking/Ticketbuyer/TicketBuyerComponent"
-import StakingHistoryContainer from "../features/staking/StakingHistoryContainer"
+import StakingHistoryContainer from "../features/staking/StakingHistory/StakingHistoryContainer"
 import TicketsOverviewContainer from "../features/staking/TicketsOverviewContainer"
 import {
     loadTicketsAttempt,

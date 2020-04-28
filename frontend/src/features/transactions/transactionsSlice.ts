@@ -13,6 +13,7 @@ import {
 } from "../../proto/api_pb"
 import { TransactionType, TransactionDirection } from "../../constants"
 import { AuthoredTransactionMetadata } from "./models"
+import { getWalletConfig } from "../app/walletSlice"
 
 
 // GetTransactions
@@ -333,9 +334,26 @@ export const getWalletTransactions = (
                 TransactionDirection.TRANSACTION_DIR_RECEIVED ||
                 t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT
         )
+        .filter(t => isTxMixed(state, t) == false)
         .orderBy((e) => e.getTimestamp(), "desc")
         .value()
 }
+
+export const getMixTransactions = (
+    state: IApplicationState
+)  => {
+    return _.chain(getTransactions(state))
+        .filter((t) => t.getType() == state.transactions.activeTypeFilter)
+        .filter(
+            (t) =>
+                t.getDirection() ==
+                TransactionDirection.TRANSACTION_DIR_RECEIVED ||
+                t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT
+        )
+        .filter(t => isTxMixed(state, t))
+}
+
+
 
 export const getAddressTransactions = (
     state: IApplicationState,
@@ -370,6 +388,7 @@ export const getAccountTransactions = (
                 t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT
         )
         .filter((t) => isTxLinkedToAccount(t, account))
+        .filter(t => isTxMixed(state, t) == false)
         .orderBy((e) => e.getTimestamp(), "desc")
         .value()
 }
@@ -389,5 +408,19 @@ function isTxLinkedToAccount(tx: Transaction, account: WalletAccount): boolean {
             tx.getCreditsList(),
             (output) => output.getAccount() == accountNumber
         ) != undefined
+    )
+}
+
+
+export function isTxMixed(state: IApplicationState, tx: Transaction): boolean {
+    const walletConfig = getWalletConfig(state)
+    // console.log("WALLETCONFIG",walletConfig)
+    if (walletConfig.MixedAccount == null || walletConfig.ChangeAccount == null) {
+        return false
+    }
+    const txAccounts = tx.getAccountNumbers()
+    return !!(
+        _.find(txAccounts, a => walletConfig.MixedAccount!.getAccountNumber() == a) &&
+        _.find(txAccounts, a => walletConfig.ChangeAccount!.getAccountNumber() == a)
     )
 }

@@ -5,14 +5,20 @@ import { Table, Accordion, Button } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons"
 
-import { Ticket } from "../../middleware/models"
+import { Ticket, Transaction, WalletAccount } from "../../middleware/models"
 import { TicketStatusIcon } from "./TicketStatusIcon"
 import { Amount } from "../../components/Shared/Amount"
 import TransactionHash from "../transactions/TransactionHash"
 import Address from "../transactions/Address"
 import Block from "../transactions/Block"
+import { connect } from "react-redux"
+import { IApplicationState } from "../../store/types"
+import { isTxMixed } from "../transactions/transactionsSlice"
+import { lookupAccounts } from "../balances/accountSlice"
+import { DebitAccountItem } from "../transactions/TransactionDetailsComponent"
+import _ from "lodash"
 
-export default class TicketDetailsComponent extends React.Component<OwnProps>{
+class TicketDetailsComponent extends React.Component<Props>{
     render() {
         if (this.props.ticket == null) {
             return null
@@ -33,7 +39,7 @@ export default class TicketDetailsComponent extends React.Component<OwnProps>{
                         <tr>
                             <th>Mined in block</th>
                             <td>
-                                <Block block={tx.getBlock()}/>
+                                <Block block={tx.getBlock()} />
                             </td>
                         </tr>
                         <tr>
@@ -49,27 +55,22 @@ export default class TicketDetailsComponent extends React.Component<OwnProps>{
                             </td>
                         </tr>
                         <tr>
-                            <th>Debit accounts</th>
+                            <th>Accounts</th>
                             <td>
-                                {tx.getDebitsList().map((a) => {
-                                    return (
-                                        <div
-                                            key={
-                                                "account-" +
-                                                a.getIndex() +
-                                                a.getPreviousAccount()
-                                            }
-                                        >
-                                            {a.getPreviousAccount()}:{" "}
-                                            {a.getPreviousAccount()} /{" "}
-                                            <Amount
-                                                showCurrency={true}
-                                                amount={a.getPreviousAmount()}
-                                            />
-                                            <br />
-                                        </div>
-                                    )
-                                })}
+                                {tx.getDebitsList().map(debit => (
+                                    <div
+                                        key={
+                                            "account-" +
+                                            debit.getIndex() +
+                                            debit.getPreviousAccount()
+                                        }
+                                    >
+                                        <DebitAccountItem
+                                            account={_.first(this.props.lookupAccounts([debit.getPreviousAccount()]))}
+                                            debit={debit} />
+                                    </div>
+                                )
+                                )}
                             </td>
                         </tr>
                         <tr>
@@ -107,3 +108,23 @@ export default class TicketDetailsComponent extends React.Component<OwnProps>{
 interface OwnProps {
     ticket: Ticket | null
 }
+
+interface StateProps {
+    isTxMixed: (tx: Transaction) => boolean
+    lookupAccounts: (accountNumbers: number[]) => WalletAccount[]
+}
+
+type Props = OwnProps & StateProps
+
+const mapStateToProps = (state: IApplicationState): StateProps => {
+    return {
+        isTxMixed: (tx: Transaction) => {
+            return isTxMixed(state, tx)
+        },
+        lookupAccounts: (accountNumbers: number[]) => {
+            return lookupAccounts(state, accountNumbers)
+        },
+    }
+}
+
+export default connect(mapStateToProps)(TicketDetailsComponent)
