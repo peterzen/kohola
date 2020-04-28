@@ -21,7 +21,7 @@ export default class GenericModal<P, S> extends React.Component<P & GenericModal
                 show={this.props.show}
                 onHide={this.props.onHide}
             >
-                <Modal.Header closeButton>
+                <Modal.Header closeButton={this.props.onHide != undefined}>
                     <Modal.Title>{this.props.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>{this.props.children}</Modal.Body>

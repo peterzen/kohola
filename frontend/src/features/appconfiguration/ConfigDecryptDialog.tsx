@@ -5,8 +5,9 @@ import _ from "lodash"
 import { Form, Button } from "react-bootstrap"
 
 import GenericModal from "../../components/Shared/GenericModal"
-import { IApplicationState } from "../../store/types"
-import { requestConfigurationDecryptionKeySuccess } from "./settingsSlice"
+import { AppError, IApplicationState } from "../../store/types"
+import { requestConfigurationDecryptionKeySubmit } from "./settingsSlice"
+import { ErrorAlert } from "../../components/Shared/FormStatusAlerts"
 
 class ConfigDecryptDialog extends React.Component<Props, InternalState> {
     private passphraseInnerRef: React.RefObject<any> = React.createRef<any>()
@@ -24,7 +25,6 @@ class ConfigDecryptDialog extends React.Component<Props, InternalState> {
                 title="Unlock configuration"
                 show={this.props.modalShown}
                 onEntered={() => this.passphraseInnerRef.current!.focus()}
-                onHide={() => {}} // no need for this, the dialog must be fully modal, i.e. no [X] Close button
             >
                 <Form onSubmit={_.bind(this.handleFormSubmit, this)}>
                     <Form.Group>
@@ -43,6 +43,7 @@ class ConfigDecryptDialog extends React.Component<Props, InternalState> {
                             This passphrase will be used to decrypt your
                             application configuration.
                         </Form.Text>
+                        <ErrorAlert error={this.props.getConfigError}/>
                     </Form.Group>
                     <div className="text-right">
                         <Button className="primary" type="submit">
@@ -63,7 +64,10 @@ class ConfigDecryptDialog extends React.Component<Props, InternalState> {
     handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         e.stopPropagation()
-        this.props.requestConfigurationDecryptionKeySuccess(
+        this.setState({
+            passphrase: "",
+        })
+        this.props.requestConfigurationDecryptionKeySubmit(
             this.state.passphrase
         )
         return false
@@ -73,6 +77,7 @@ class ConfigDecryptDialog extends React.Component<Props, InternalState> {
 const mapStateToProps = (state: IApplicationState): OwnProps => {
     return {
         modalShown: state.appconfiguration.appConfigDecryptionKeyRequested,
+        getConfigError: state.appconfiguration.getConfigError,
     }
 }
 
@@ -82,14 +87,15 @@ interface InternalState {
 
 interface OwnProps {
     modalShown: boolean
+    getConfigError: AppError | null
 }
 
 interface DispatchProps {
-    requestConfigurationDecryptionKeySuccess: typeof requestConfigurationDecryptionKeySuccess
+    requestConfigurationDecryptionKeySubmit: typeof requestConfigurationDecryptionKeySubmit
 }
 
 const mapDispatchToProps = {
-    requestConfigurationDecryptionKeySuccess,
+    requestConfigurationDecryptionKeySubmit,
 }
 
 type Props = OwnProps & DispatchProps
