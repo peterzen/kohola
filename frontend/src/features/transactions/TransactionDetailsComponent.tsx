@@ -28,11 +28,11 @@ class TransactionDetailsComponent extends React.Component<Props> {
             <div>
                 {!isMined && (
                     <Button
+                        variant="secondary"
                         className="float-right"
                         onClick={() => this.props.publishUnminedTransactions()}
                     >
-                        <FontAwesomeIcon icon={faBroadcastTower} /> Publish
-                        Unmined Transactions
+                        <FontAwesomeIcon icon={faBroadcastTower} /> Rebroadcast TX
                     </Button>
                 )}
                 <Table borderless>
