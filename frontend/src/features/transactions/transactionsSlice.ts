@@ -350,7 +350,7 @@ export const getMixTransactions = (
                 TransactionDirection.TRANSACTION_DIR_RECEIVED ||
                 t.getDirection() == TransactionDirection.TRANSACTION_DIR_SENT
         )
-        // .filter(t => isTxMixed(state, t))
+        .filter(t => isTxMixed(state, t))
 }
 
 

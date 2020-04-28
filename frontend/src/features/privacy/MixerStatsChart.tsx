@@ -5,46 +5,69 @@ import _, { chain } from "lodash"
 import { Row, Col } from "react-bootstrap"
 import { ChartTimeframe } from "../../components/Shared/IntervalChooser"
 import { IApplicationState } from "../../store/types"
-import { Charts, ChartContainer, ChartRow, YAxis, LineChart, Resizable, BarChart, styler } from "react-timeseries-charts";
+import {
+	Charts,
+	ChartContainer,
+	ChartRow,
+	YAxis,
+	LineChart,
+	Resizable,
+	BarChart,
+	styler,
+} from "react-timeseries-charts"
 // @ts-ignore
-import { TimeSeries, Collection, IndexedEvent, TimeEvent, TimeRange, count, sum, Pipeline, TimeRangeEvent } from "pondjs"
+import {
+	TimeSeries,
+	Collection,
+	IndexedEvent,
+	TimeEvent,
+	TimeRange,
+	count,
+	sum,
+	Pipeline,
+	TimeRangeEvent,
+} from "pondjs"
 
-
-import { getChartData } from "./mixerSlice"
+import { getMixerStatsChartData } from "./mixerSlice"
 import { ATOMS_DIVISOR } from "../../constants"
+import { colorScheme } from "../staking/StakingHistory/StakingHistoryChart"
+import { makeTimerange } from "../../helpers/pondjs"
 
 class MixerStatsChart extends React.PureComponent<Props, InternalState> {
 	render() {
-		if (this.props.chartData == undefined) return null
-		if (this.props.chartData.timerange() == undefined) return null
+		const timerange = this.props.chartSeries?.timerange()
+		if (timerange == undefined) return null
 
 		const style = styler([
-			{ key: "tx_count", color: "#A5C8E1" },
-			{ key: "value_sum", color: "orange" },
+			{ key: "tx_count", color: colorScheme[3], width: 5 },
+			{ key: "value_sum", color: colorScheme[1] },
 		])
 		return (
 			<div className="p-3">
 				<Resizable>
 					<ChartContainer
-						timeRange={this.props.chartData.timerange()}
+						timeRange={timerange}
 						// showGrid={true}
 
 						enablePanZoom={true}
-						width={800}>
+						width={800}
+					>
 						<ChartRow height="400">
 							<YAxis
 								id="tx-count-axis"
 								label="# of transactions"
 								min={0}
-								max={this.props.chartData.max("tx_count")}
+								max={this.props.chartSeries.max("tx_count")}
 								width="60"
 								type="linear"
-								format="d" />
+								format="d"
+							/>
 							<Charts>
 								<LineChart
 									axis="tx-count-axis"
 									smooth={true}
-									series={this.props.chartData}
+									interpolation={"curveBasis"}
+									series={this.props.chartSeries}
 									style={style}
 									columns={["tx_count"]}
 									yScale={() => 1}
@@ -52,9 +75,8 @@ class MixerStatsChart extends React.PureComponent<Props, InternalState> {
 								<BarChart
 									axis="value-sum-axis"
 									style={style}
-									series={this.props.chartData}
+									series={this.props.chartSeries}
 									columns={["value_sum"]}
-									yScale={() => 1}
 								/>
 							</Charts>
 							<YAxis
@@ -64,7 +86,8 @@ class MixerStatsChart extends React.PureComponent<Props, InternalState> {
 								max={0.01}
 								width="80"
 								type="linear"
-								format="d" />
+								format="d"
+							/>
 						</ChartRow>
 					</ChartContainer>
 				</Resizable>
@@ -73,63 +96,43 @@ class MixerStatsChart extends React.PureComponent<Props, InternalState> {
 	}
 }
 
-interface InternalState {
-}
+interface InternalState { }
 
 interface OwnProps {
 	timeframe: ChartTimeframe
-	// stakingHistory: StakingHistory.StakingHistoryLineItem[]
 }
 
 interface StateProps {
-	chartData: TimeSeries
-	// txTypeCounts: ITxTypeCountsChartdataTimelineItem[]
-	// rewardData: IRewardDataChartdataTimelineItem[]
+	chartSeries: TimeSeries
 }
 
-interface DispatchProps {
-}
+interface DispatchProps { }
 
 type Props = DispatchProps & OwnProps & StateProps
 
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): StateProps | undefined => {
-	// const stakingHistory = getFilteredTransactions(state, days)
+const mapStateToProps = (
+	state: IApplicationState,
+	ownProps: OwnProps
+): StateProps | undefined => {
 
+	const series = getMixerStatsChartData(state, ownProps.timeframe)
 
-	const chain = getChartData(state, ownProps.timeframe.days)
-
-	if (chain == undefined || chain.value().length < 1) {
-		return
-	}
-	const events = _.map(chain.value(), t => new TimeEvent(t.getTimestamp(), {
-		denomination: t.getAmount() / ATOMS_DIVISOR,
-	}))
-	const collection = new Collection(events, false)
-
-	const series = new TimeSeries({
-		name: "denoms",
-		columns: ["time", "denomination"],
-		collection: collection.sortByTime()
-	})
-	console.log("SERIES", series)
-
-	const rollup = series.fixedWindowRollup({
-		windowSize: "1d",
+	const rollup = series?.fixedWindowRollup({
+		windowSize: ownProps.timeframe.windowSize,
 		toTimeEvents: false,
 		aggregation: {
 			tx_count: { denomination: count() },
 			value_sum: { denomination: sum() },
-		}
+		},
 	})
 
-	console.log("ROLLUP", rollup)
+	console.log("ROLLUP", rollup?.toJSON())
 
 	return {
-		chartData: rollup
+		chartSeries: rollup,
 	}
 }
 
-const mapDispatchToProps = {
-}
+const mapDispatchToProps = {}
 
 export default connect(mapStateToProps, mapDispatchToProps)(MixerStatsChart)

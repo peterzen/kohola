@@ -1,18 +1,44 @@
-import React from "react";
+import React from "react"
 import _ from "lodash"
 import { connect } from "react-redux"
 
 // @ts-ignore
-import { Collection, TimeSeries, TimeEvent, IndexedEvent, TimeRange, count, sum } from "pondjs"
-import { Charts, ChartContainer, ChartRow, YAxis, LineChart, Resizable, AreaChart, BarChart, Legend, styler } from "react-timeseries-charts"
+import {
+	Collection,
+	TimeSeries,
+	TimeEvent,
+	IndexedEvent,
+	TimeRange,
+	count,
+	sum,
+} from "pondjs"
+import {
+	Charts,
+	ChartContainer,
+	ChartRow,
+	YAxis,
+	LineChart,
+	Resizable,
+	AreaChart,
+	BarChart,
+	Legend,
+	styler,
+} from "react-timeseries-charts"
 
-import { ChartDataPoint, fetchExchangeChartData, getExchangeChartData, getMarketChartData, makeTimerange, getMarketCurrencyState } from "../marketSlice"
+import {
+	ChartDataPoint,
+	fetchExchangeChartData,
+	getExchangeChartData,
+	getMarketChartData,
+	makeTimerange,
+	getMarketCurrencyState,
+} from "../marketSlice"
 import { IApplicationState, AppError } from "../../../store/types"
-import { GetMarketChartResponse } from "../../../proto/walletgui_pb";
-import { Card, Alert } from "react-bootstrap";
-import { ErrorAlert } from "../../../components/Shared/FormStatusAlerts";
-import { sprintf } from "sprintf-js";
-
+import { GetMarketChartResponse } from "../../../proto/walletgui_pb"
+import { Card, Alert } from "react-bootstrap"
+import { ErrorAlert } from "../../../components/Shared/FormStatusAlerts"
+import { sprintf } from "sprintf-js"
+import { CrossHairs } from "./CrossHairs"
 
 const style = styler([
 	{ key: "btc", color: "#7ebdb4" },
@@ -21,14 +47,10 @@ const style = styler([
 	{ key: "default", color: "#f6d198" },
 ])
 
-
-
 // TODO
 // https://github.com/esnet/react-timeseries-charts/blob/master/src/website/packages/charts/examples/currency/Index.js
 
-
-
-class ExchangeRateChartv2 extends React.Component<Props, InternalState>{
+class ExchangeRateChartv2 extends React.Component<Props, InternalState> {
 	state = {
 		x: null,
 		y: null,
@@ -40,31 +62,31 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState>{
 	}
 
 	setModeLinear = () => {
-		this.setState({ mode: "linear" });
+		this.setState({ mode: "linear" })
 	}
 
 	setModeLog = () => {
-		this.setState({ mode: "log" });
+		this.setState({ mode: "log" })
 	}
 
 	handleTrackerChanged = (tracker: any) => {
 		if (!tracker) {
-			this.setState({ tracker, x: null, y: null });
+			this.setState({ tracker, x: null, y: null })
 		} else {
-			this.setState({ tracker });
+			this.setState({ tracker })
 		}
-	};
+	}
 
 	handleTimeRangeChange = (timerange: any) => {
-		this.setState({ timerange });
-	};
+		this.setState({ timerange })
+	}
 
 	handleMouseMove = (x: any, y: any) => {
-		this.setState({ x, y });
+		this.setState({ x, y })
 	}
 
 	f(n: number) {
-		return sprintf("%.6f", n)
+		return sprintf("%.6f", n || 0)
 	}
 
 	getTrackedValue(series: TimeSeries, currency: string) {
@@ -85,9 +107,10 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState>{
 
 		return (
 			<div>
-				{priceSeries == undefined || priceSeries.count() < 1 && (
-					<Alert variant="secondary">price series</Alert>
-				)}
+				{priceSeries == undefined ||
+					(priceSeries.count() < 1 && (
+						<Alert variant="secondary">price series</Alert>
+					))}
 
 				{priceSeries != undefined && priceSeries.count() > 0 && (
 					<div>
@@ -98,19 +121,22 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState>{
 								timeAxisAngledLabels={true}
 								timeAxisHeight={65}
 								enablePanZoom={true}
-
 								showGrid={false}
 								maxTime={priceSeries.timerange().end()}
 								minTime={priceSeries.timerange().begin()}
 								onTrackerChanged={this.handleTrackerChanged}
-								onBackgroundClick={() => this.setState({ selection: null })}
+								onBackgroundClick={() =>
+									this.setState({ selection: null })
+								}
 								onTimeRangeChanged={this.handleTimeRangeChange}
-								onMouseMove={(x, y) => this.handleMouseMove(x, y)}
+								onMouseMove={(x, y) =>
+									this.handleMouseMove(x, y)
+								}
 								minDuration={1000 * 60 * 60 * 24 * 30}
 							// timeAxisStyle={{ axis: { fill: "none", stroke: "none" } }}
 							>
 								<ChartRow height="300">
-									{this.props.currencies.map(currency => (
+									{this.props.currencies.map((currency) => (
 										<YAxis
 											key={currency}
 											id={`axis-${currency}`}
@@ -118,35 +144,51 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState>{
 											min={priceSeries.min(currency)}
 											max={priceSeries.max(currency)}
 											format=",.0f"
-											width="60"
+											width="0"
 											type={this.state.mode}
+											visible={false}
 										/>
 									))}
 									<Charts>
-										{this.props.currencies.map(currency => (
-											<LineChart
-												key={currency}
-												axis={`axis-${currency}`}
-												style={style}
-												breakLine={false}
-												// style={{ value: { normal: { stroke: "steelblue" } } }}
-												columns={[currency]}
-												series={priceSeries}
-												interpolation="curveBasis"
-
-												highlight={this.state.highlight}
-												onHighlightChange={highlight =>
-													this.setState({ highlight })
-												}
-												selection={this.state.selection}
-												onSelectionChange={selection =>
-													this.setState({ selection })
-												}
-											/>
-										))}
-										<CrossHairs x={this.state.x} y={this.state.y} />
+										{this.props.currencies.map(
+											(currency) => (
+												<LineChart
+													key={currency}
+													axis={`axis-${currency}`}
+													style={style}
+													breakLine={false}
+													// style={{ value: { normal: { stroke: "steelblue" } } }}
+													columns={[currency]}
+													series={priceSeries}
+													interpolation="curveBasis"
+													highlight={
+														this.state.highlight
+													}
+													onHighlightChange={(
+														highlight
+													) =>
+														this.setState({
+															highlight,
+														})
+													}
+													selection={
+														this.state.selection
+													}
+													onSelectionChange={(
+														selection
+													) =>
+														this.setState({
+															selection,
+														})
+													}
+												/>
+											)
+										)}
+										<CrossHairs
+											x={this.state.x}
+											y={this.state.y}
+										/>
 									</Charts>
-
 								</ChartRow>
 								{/* <ChartRow height="120" axisMargin={0}>
 									<Charts>
@@ -167,20 +209,33 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState>{
 								</ChartRow> */}
 							</ChartContainer>
 						</Resizable>
-						<div >
+						<div>
 							<Legend
 								type="line"
 								align="right"
 								style={style}
 								highlight={this.state.highlight}
-								onHighlightChange={highlight => this.setState({ highlight })}
+								onHighlightChange={(highlight) =>
+									this.setState({ highlight })
+								}
 								selection={this.state.selection}
-								onSelectionChange={selection => this.setState({ selection })}
-								categories={_.map(this.props.currencies, c => Object.assign({}, {
-									key: c,
-									label: `DCR-${c.toUpperCase()}`,
-									value: (this.getTrackedValue(this.props.priceSeries, c) || "") + " "
-								}))}
+								onSelectionChange={(selection) =>
+									this.setState({ selection })
+								}
+								categories={_.map(this.props.currencies, (c) =>
+									Object.assign(
+										{},
+										{
+											key: c,
+											label: `DCR-${c.toUpperCase()}`,
+											value:
+												(this.getTrackedValue(
+													this.props.priceSeries,
+													c
+												) || "") + " ",
+										}
+									)
+								)}
 							/>
 						</div>
 					</div>
@@ -193,35 +248,39 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState>{
 		const linkStyle = {
 			fontWeight: 600,
 			color: "grey",
-			cursor: "default"
+			cursor: "default",
 		}
 
 		const linkStyleActive = {
 			color: "steelblue",
-			cursor: "pointer"
+			cursor: "pointer",
 		}
 
 		return (
 			<div>
-				<div>
-					<span
-						style={this.state.mode === "log" ? linkStyleActive : linkStyle}
+				<div className="text-right mr-4">
+					<span style={
+						this.state.mode === "log"
+							? linkStyleActive
+							: linkStyle}
 						onClick={this.setModeLinear}
 					>
 						Linear
-                        </span>
+                    </span>
 					<span> | </span>
 					<span
-						style={this.state.mode === "linear" ? linkStyleActive : linkStyle}
+						style={
+							this.state.mode === "linear"
+								? linkStyleActive
+								: linkStyle
+						}
 						onClick={this.setModeLog}
 					>
 						Log
-                        </span>
+                    </span>
 				</div>
 
-				<div className="">
-					{this.renderChart()}
-				</div>
+				<div className="">{this.renderChart()}</div>
 				{/* <ErrorAlert error={this.props.error} /> */}
 			</div>
 		)
@@ -232,10 +291,11 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState>{
 	}
 
 	componentDidMount() {
-		_.each(this.props.currencies, currency => this.props.fetchExchangeChartData(currency, this.props.days))
+		_.each(this.props.currencies, (currency) =>
+			this.props.fetchExchangeChartData(currency, this.props.days)
+		)
 	}
 }
-
 
 interface OwnProps {
 	days: number
@@ -270,8 +330,12 @@ interface InternalState {
 const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
 	const timerange = makeTimerange(ownProps.days)
 
-	const seriesList = _.compact(_.map(ownProps.currencies, currency =>
-		getMarketCurrencyState(state, currency)?.priceSeries))
+	const seriesList = _.compact(
+		_.map(
+			ownProps.currencies,
+			(currency) => getMarketCurrencyState(state, currency)?.priceSeries
+		)
+	)
 
 	const combinedSeries = TimeSeries.timeSeriesListMerge({
 		name: "combined",
@@ -284,7 +348,6 @@ const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
 	// console.log("currencyData", currencyData)
 	// const priceSeries = getPriceSeries(currencyData.marketPriceData)
 	// const volumeSeries = getVolumeSeries(exchangeRateData)
-
 
 	// let croppedSeries
 	// if (priceSeries.count()) {
@@ -304,23 +367,3 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExchangeRateChartv2)
-
-
-
-class CrossHairs extends React.Component {
-	render() {
-		// @ts-ignore 
-		const { x, y } = this.props;
-		const style = { pointerEvents: "none", stroke: "#ccc" };
-		if (!_.isNull(x) && !_.isNull(y)) {
-			return (
-				<g>
-					<line style={style} x1={0} y1={y} x2={this.props.width} y2={y} />
-					<line style={style} x1={x} y1={0} x2={x} y2={this.props.height} />
-				</g>
-			)
-		} else {
-			return <g />
-		}
-	}
-}

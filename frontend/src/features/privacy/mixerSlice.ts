@@ -14,6 +14,7 @@ import { TimeSeries, Collection, IndexedEvent, TimeEvent, TimeRange, count, Pipe
 
 import moment from "moment"
 import { ATOMS_DIVISOR } from "../../constants"
+import { ChartTimeframe } from "../../components/Shared/IntervalChooser"
 
 // RunAccountMixer
 export interface IRunAccountMixerState {
@@ -24,13 +25,25 @@ export interface IRunAccountMixerState {
     readonly stopAccountMixerAttempting: boolean
 }
 
-export const initialState: IRunAccountMixerState = {
+export interface IMixerStatsState {
+    timeframe: ChartTimeframe | null
+    baseSeries: TimeSeries | null
+    rollup: TimeSeries | null
+}
+
+export const initialState:
+    IRunAccountMixerState &
+    IMixerStatsState = {
     // RunAccountMixer
     runAccountMixerAttempting: false,
     runAccountMixerResponse: null,
     runAccountMixerError: null,
     isAccountMixerRunning: false,
     stopAccountMixerAttempting: false,
+
+    timeframe: null,
+    baseSeries: null,
+    rollup: null,
 }
 
 const stakingSlice = createSlice({
@@ -141,6 +154,30 @@ export const getFilteredTransactions = (state: IApplicationState, days: number) 
         .filter(tx => moment(tx.getTimestamp()).isAfter(now.subtract(days, "days").startOf("day")))
 }
 
-export const getChartData = (state: IApplicationState, days: number) => {
-    return getMixTransactions(state).orderBy(t => t.getTimestamp())
+export const getMixerStatsChartData = (state: IApplicationState, timeframe: ChartTimeframe) => {
+    const now = moment()
+
+    const chain = getMixTransactions(state)
+        .filter(tx => moment(tx.getTimestamp()).isAfter(now.subtract(timeframe.days, "days").startOf("day")))
+        .orderBy(t => t.getTimestamp())
+
+    // const chain = getMixerStatsChartData(state, ownProps.timeframe.days)
+
+    if (chain == undefined || chain.value().length < 1) {
+        return
+    }
+    const events = _.map(
+        chain.value(), (t) => new TimeEvent(t.getTimestamp(), {
+            denomination: t.getAmount() / ATOMS_DIVISOR,
+        })
+    )
+    const series = new TimeSeries({
+        name: "denoms",
+        columns: ["time", "denomination"],
+        collection: new Collection(events, false).sortByTime(),
+    })
+    console.log("SERIES", series.toJSON())
+
+    return series
+
 }
