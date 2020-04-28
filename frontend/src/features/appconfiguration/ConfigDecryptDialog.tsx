@@ -7,6 +7,7 @@ import { Form, Button } from "react-bootstrap"
 import GenericModal from "../../components/Shared/GenericModal"
 import { AppError, IApplicationState } from "../../store/types"
 import { requestConfigurationDecryptionKeySubmit } from "./settingsSlice"
+import { ErrorAlert } from "../../components/Shared/FormStatusAlerts"
 
 class ConfigDecryptDialog extends React.Component<Props, InternalState> {
     private passphraseInnerRef: React.RefObject<any> = React.createRef<any>()
@@ -38,16 +39,11 @@ class ConfigDecryptDialog extends React.Component<Props, InternalState> {
                                 e: React.ChangeEvent<HTMLInputElement>
                             ) => this.handleChange(e.currentTarget.value)}
                         />
-                        <Form.Text className="text-danger">
-                            {this.state.passphrase == "" &&
-                            this.props.getConfigError?.message
-                                ? "*" + this.props.getConfigError?.message ?? ""
-                                : ""}
-                        </Form.Text>
                         <Form.Text className="text-muted">
                             This passphrase will be used to decrypt your
                             application configuration.
                         </Form.Text>
+                        <ErrorAlert error={this.props.getConfigError}/>
                     </Form.Group>
                     <div className="text-right">
                         <Button className="primary" type="submit">
