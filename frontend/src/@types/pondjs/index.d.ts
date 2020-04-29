@@ -2,6 +2,9 @@ declare module "pondjs" {
      import { List, Map } from "immutable";
      import { Moment } from "moment";
 
+     function sum(): number
+     function count(filter?: any): number
+
      // =======================================================================================================
      // TimeRange
      // =======================================================================================================
@@ -1031,7 +1034,7 @@ declare module "pondjs" {
 
      export class TimeSeries {
           static timeSeriesListMerge(options: { name: string, seriesList: TimeSeries[] }): TimeSeries
-          
+
           constructor(
                arg:
                     | {

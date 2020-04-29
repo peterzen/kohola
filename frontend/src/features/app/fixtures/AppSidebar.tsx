@@ -125,7 +125,7 @@ interface StatusBarProps {
 class StatusBar extends React.Component<StatusBarProps> {
     render() {
         return (
-            <Navbar bg="light" expand="lg">
+            <Navbar bg="light" expand="sm">
                 <Nav className="">
                     <Nav.Link onClick={() => this.props.onMenuToggle()}>
                         <FontAwesomeIcon icon={faBars} />

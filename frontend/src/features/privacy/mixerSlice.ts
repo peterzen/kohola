@@ -150,7 +150,7 @@ export const stopAccountMixer: ActionCreator<any> = (): AppThunk => {
 // selectors
 export const getFilteredTransactions = (state: IApplicationState, days: number) => {
     const now = moment()
-    return _.chain(getWalletTransactions(state))
+    return getWalletTransactions(state)
         .filter(tx => moment(tx.getTimestamp()).isAfter(now.subtract(days, "days").startOf("day")))
 }
 
