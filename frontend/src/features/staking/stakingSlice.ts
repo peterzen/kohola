@@ -667,9 +667,9 @@ export const purchaseTicket: ActionCreator<any> = (
 ): AppThunk => {
     return async (dispatch, getState) => {
         const {
-            purchaseTicketAttempting: isPurchaseTicketAttempting,
+            purchaseTicketAttempting,
         } = getState().staking
-        if (isPurchaseTicketAttempting) {
+        if (purchaseTicketAttempting) {
             return
         }
 

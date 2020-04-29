@@ -7,6 +7,7 @@ import {
     SignTransactionRequest,
     PublishTransactionRequest,
     TransactionNotificationsResponse,
+    ConfirmationNotificationsResponse,
 } from "../../proto/api_pb"
 
 import LorcaBackend from "../../middleware/lorca"
@@ -72,13 +73,13 @@ export const processTransactionNotification: ActionCreator<any> = (
     return async (dispatch) => {
         _.map(unminedTxList, (tx) => dispatch(displayTXNotification(tx)))
 
-        batch(() => {
+        // batch(() => {
             dispatch(loadBestBlockHeight())
+            dispatch(loadWalletBalance())
             dispatch(loadStakeInfoAttempt())
             dispatch(loadTicketsAttempt())
             dispatch(loadTransactionsAttempt())
-            dispatch(loadWalletBalance())
-        })
+        // })
     }
 }
 
@@ -98,10 +99,14 @@ export const createTxNotificationReceivers: ActionCreator<any> = (): AppThunk =>
             dispatch(processTransactionNotification(unminedTxList))
         }
 
-        // w.lorcareceiver__OnConfirmNotification = (serializedMsg: Uint8Array) => {
-        // 	const message = ConfirmationNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
-        // 	dispatch(transactionNotification(message))
-        // }
+        w.lorcareceiver__OnConfirmNotification = (serializedMsg: Uint8Array) => {
+        	const message = ConfirmationNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
+        	dispatch(loadBestBlockHeight())
+            dispatch(loadWalletBalance())
+            dispatch(loadStakeInfoAttempt())
+            dispatch(loadTicketsAttempt())
+            dispatch(loadTransactionsAttempt())
+        }
     }
 }
 

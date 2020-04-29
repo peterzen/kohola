@@ -22,12 +22,12 @@ import { getWalletBalances } from "../../balances/walletBalanceSlice"
 import { SteppableNumberInput } from "../../../components/Shared/SteppableNumberInput"
 import { Amount } from "../../../components/Shared/Amount"
 import PurchaseTicketSettings from "./PurchaseTicketSettings"
+import { ErrorAlert } from "../../../components/Shared/FormStatusAlerts"
 
 class PurchaseTicketForm extends React.Component<Props, InternalState> {
     constructor(props: Props) {
         super(props)
         this.state = {
-            error: null,
             isDirty: false,
             buyingPower: 0,
             remainingBalance: -1,
@@ -115,9 +115,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
                         <PassphraseEntryDialog show={false} />
                     </Card.Body>
                     <Card.Footer>
-                        {this.props.error != null && (
-                            <Alert variant="danger">{this.props.error}</Alert>
-                        )}
+                        <ErrorAlert error={this.props.error} />
 
                         {showForm && (
                             <Row>
@@ -183,12 +181,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
                 console.log("askPassphrase", request.toObject())
                 return this.props.purchaseTicket(request)
             })
-            .then((r) => {
-                // this.setState({ error: err })
-                console.log("response", r)
-            })
             .catch((err) => {
-                this.setState({ error: err })
                 console.error(err)
                 console.log("askPassphrase", request.toObject())
                 // debugger
@@ -273,7 +266,6 @@ const mapDispatchToProps = {
 
 interface InternalState {
     formRef: React.RefObject<any>
-    error: AppError | null
     formIsValidated: boolean
     buyingPower: number
     remainingBalance: number

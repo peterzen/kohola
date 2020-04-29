@@ -127,28 +127,28 @@ func subscribeTxNotifications(w webview.Interface) {
 	}
 }
 
-// func subscribeConfirmNotifications(ui walletgui.Interface) {
-// 	request := &walletrpc.ConfirmationNotificationsRequest{}
-// 	ntfnStream, err := walletServiceClient.ConfirmationNotifications(ctx, request)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		return
-// 	}
+func subscribeConfirmNotifications(w webview.Interface) {
+	// request := &walletrpc.ConfirmationNotificationsRequest{}
+	ntfnStream, err := walletServiceClient.ConfirmationNotifications(ctx)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
-// 	for {
-// 		ntfnResponse, err := ntfnStream.Recv()
-// 		if err != nil {
-// 			log.Fatalf("Failed to receive a ConfirmationNotificationsResponse: %#v", err)
-// 		}
-// 		b, err := proto.Marshal(ntfnResponse)
-// 		if err != nil {
-// 			return
-// 		}
-// 		encodedMsg := hex.EncodeToString(b)
-// 		js := fmt.Sprintf("window.lorcareceiver__OnConfirmNotification('%s')", encodedMsg)
-// 		ui.Eval(js)
-// 	}
-// }
+	for {
+		ntfnResponse, err := ntfnStream.Recv()
+		if err != nil {
+			log.Fatalf("Failed to receive a ConfirmationNotificationsResponse: %#v", err)
+		}
+		b, err := proto.Marshal(ntfnResponse)
+		if err != nil {
+			return
+		}
+		encodedMsg := hex.EncodeToString(b)
+		js := fmt.Sprintf("window.lorcareceiver__OnConfirmNotification('%s')", encodedMsg)
+		webview.ExecuteJS(js)
+	}
+}
 
 func subscribeAccountNotifications(w webview.Interface) {
 

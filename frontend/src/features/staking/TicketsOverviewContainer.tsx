@@ -122,6 +122,7 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
                 </Card.Header>
 
                 <ComponentPlaceHolder
+                    firstLaunchOnly={true}
                     delay={500}
                     type='text'
                     rows={7}
