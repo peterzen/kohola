@@ -7,6 +7,7 @@ import {
     SignTransactionRequest,
     PublishTransactionRequest,
     TransactionNotificationsResponse,
+    PublishUnminedTransactionsRequest,
     ConfirmationNotificationsResponse,
 } from "../../proto/api_pb"
 
@@ -27,6 +28,10 @@ import {
     signTransactionAttempt,
     createTransactionAttempt,
     publishTransactionAttempt,
+    publishUnminedTransactionsAttempt,
+    publishUnminedTransactionsFailed,
+    publishUnminedTransactionsSuccess,
+    publishUnminedTransactionsCleanup,
 } from "./transactionsSlice"
 import { AuthoredTransactionMetadata } from "./models"
 import { AppError, IGetState, AppDispatch, AppThunk } from "../../store/types"
@@ -238,6 +243,30 @@ export const validateAddressAttempt: ActionCreator<any> = (): AppThunk => {
             dispatch(validateAddressSuccess(resp))
         } catch (error) {
             dispatch(validateAddressFailed(error))
+        }
+    }
+}
+
+export const publishUnminedTransactions: ActionCreator<any> = (): AppThunk => {
+    return async (dispatch: AppDispatch, getState: IGetState) => {
+        const {
+            publishUnminedTransactionsAttempting,
+        } = getState().transactions
+        if (publishUnminedTransactionsAttempting) {
+            return
+        }
+
+        const request = new PublishUnminedTransactionsRequest()
+        dispatch(publishUnminedTransactionsAttempt())
+
+        try {
+            const resp = await LorcaBackend.publishUnminedTransactions(request)
+            dispatch(publishUnminedTransactionsSuccess(resp))
+            setTimeout(() => {
+                dispatch(publishUnminedTransactionsCleanup())
+            }, 3000)            
+        } catch (error) {
+            dispatch(publishUnminedTransactionsFailed(error))
         }
     }
 }

@@ -29,6 +29,7 @@ import {
     RevokeTicketsResponse,
     RunAccountMixerRequest,
     DecodeRawTransactionResponse,
+    PublishUnminedTransactionsRequest,
 } from "../proto/api_pb"
 import { rawToHex } from "../helpers/byteActions"
 import {
@@ -242,6 +243,20 @@ const LorcaBackend = {
                 throw r.error
             }
             return PublishTransactionResponse.deserializeBinary(r.payload)
+        } catch (e) {
+            console.error("Serialization error", e)
+            throw e
+        }
+    },
+
+    publishUnminedTransactions: async (request: PublishUnminedTransactionsRequest) => {
+        try {
+            const ser = rawToHex(request.serializeBinary().buffer)
+            const r = await w.walletrpc__PublishUnminedTransactions(ser)
+            if (r.error != undefined) {
+                throw r.error
+            }
+            return PublishUnminedTransactionsRequest.deserializeBinary(r.payload)
         } catch (e) {
             console.error("Serialization error", e)
             throw e

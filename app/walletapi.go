@@ -48,6 +48,7 @@ func ExportWalletAPI(w webview.Interface) {
 	w.Bind("walletrpc__CreateTransaction", createTransaction)
 	w.Bind("walletrpc__SignTransaction", signTransaction)
 	w.Bind("walletrpc__PublishTransaction", publishTransaction)
+	w.Bind("walletrpc__PublishUnminedTransactions", publishUnminedTransactions)
 	w.Bind("walletrpc__PurchaseTickets", purchaseTickets)
 	w.Bind("walletrpc__RevokeTickets", revokeExpiredTickets)
 	w.Bind("walletrpc__DecodeRawTransaction", decodeRawTransaction)
@@ -503,6 +504,24 @@ func publishTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
 	bytes, err := hex.DecodeString(requestAsHex)
 	err = proto.Unmarshal(bytes, request)
 	response, err := walletServiceClient.PublishTransaction(ctx, request)
+	if err != nil {
+		fmt.Println(err)
+		r.Err = err
+		return r
+	}
+	r.Payload, err = proto.Marshal(response)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	return r
+}
+
+func publishUnminedTransactions(requestAsHex string) (r walletgui.LorcaMessage) {
+	request := &walletrpc.PublishUnminedTransactionsRequest{}
+	bytes, err := hex.DecodeString(requestAsHex)
+	err = proto.Unmarshal(bytes, request)
+	response, err := walletServiceClient.PublishUnminedTransactions(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 		r.Err = err
