@@ -18,7 +18,7 @@ export default class WalletAvailableBalanceCard extends PureComponent<OwnProps> 
                                 rows={3}
                                 ready={!this.props.loading}
                             >
-                                <div className="current-balance-container">
+                                <div>
                                     <div className="text-muted">
                                         Available balance
                                     </div>
@@ -43,9 +43,8 @@ export default class WalletAvailableBalanceCard extends PureComponent<OwnProps> 
                     <Row>
                         <Col>
                             <SparklineChart
-                                currencyCodes={["eur", "btc"]}
+                                currencyCode="btc"
                                 days={14}
-                                height={90}
                             />
                         </Col>
                     </Row>

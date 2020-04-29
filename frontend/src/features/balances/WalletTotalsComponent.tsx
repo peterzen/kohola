@@ -39,8 +39,6 @@ class WalletTotalsComponent extends React.PureComponent<Props, {}> {
                         lg="6"
                     >
                         <WalletCreditDebitCard
-                            totals={totals}
-                            loading={this.props.loading}
                         />
                     </Col>
                 </Row>
