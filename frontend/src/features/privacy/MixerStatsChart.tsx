@@ -103,7 +103,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-	chartSeries: TimeSeries
+	chartSeries: TimeSeries | undefined
 }
 
 interface DispatchProps { }
