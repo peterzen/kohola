@@ -1,0 +1,38 @@
+[data-theme="dark"] {
+    .bg-light {
+        background-color: $default-dark-bg !important;
+    }
+    .navbar-light .navbar-nav .nav-link {
+        color: $color;
+    }
+    
+    #sidebar {
+        background-color: $default-dark-bg !important;
+        color: $color;
+        
+        .nav-item .nav-link.active {
+            background-color: $default-bg;
+        }        
+    }
+
+    .sidebar-header {
+        svg {
+            fill: $color !important;
+        }
+    }    
+
+    .nav-tabs .nav-link {
+        color: #6c757d!important;
+        &.active {
+            color: $color!important;
+        }
+    }
+
+    .clickable.card:hover {
+        background-color: hsla(0,0%,60%,.2);
+    }
+
+    .btn, .custom-file-control:before {
+        color: $color;
+    }
+}

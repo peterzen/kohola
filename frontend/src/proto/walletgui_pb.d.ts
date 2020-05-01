@@ -245,6 +245,9 @@ export namespace AppConfiguration {
     getIsConfigEncrypted(): boolean;
     setIsConfigEncrypted(value: boolean): void;
 
+    getTheme(): ThemeMap[keyof ThemeMap];
+    setTheme(value: ThemeMap[keyof ThemeMap]): void;
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): UIPreferences.AsObject;
     static toObject(includeInstance: boolean, msg: UIPreferences): UIPreferences.AsObject;
@@ -260,6 +263,7 @@ export namespace AppConfiguration {
       displayUnit: DisplayUnitMap[keyof DisplayUnitMap],
       fiatCurrency: FiatCurrencyMap[keyof FiatCurrencyMap],
       isConfigEncrypted: boolean,
+      theme: ThemeMap[keyof ThemeMap],
     }
   }
 
@@ -825,4 +829,11 @@ export interface FiatCurrencyMap {
 }
 
 export const FiatCurrency: FiatCurrencyMap;
+
+export interface ThemeMap {
+  LIGHT: 0;
+  DARK: 1;
+}
+
+export const Theme: ThemeMap;
 

@@ -81,3 +81,8 @@ export enum FiatCurrency {
     USD = 0,
     EUR = 1,
 }
+
+export enum Theme {
+    LIGHT = 0,
+    DARK = 1,
+}

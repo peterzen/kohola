@@ -34,13 +34,15 @@ class TransactionTable extends React.Component<Props> {
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Amount</th>
+                                <th className="text-secondary">Amount</th>
                                 {this.props.showAccount && (
-                                    <th>Account(s)</th>
+                                    <th className="text-secondary">
+                                        Account(s)
+                                    </th>
                                 )}
-                                <th>Timestamp</th>
-                                <th>Tx type</th>
-                                <th>Hash</th>
+                                <th className="text-secondary">Timestamp</th>
+                                <th className="text-secondary">Tx type</th>
+                                <th className="text-secondary">Hash</th>
                             </tr>
                         </thead>
                         <TransitionGroup
@@ -97,10 +99,11 @@ class TransactionTable extends React.Component<Props> {
                                             />
                                         </td>
                                         <td>
-                                            {tx.getTypeAsString()}
-                                            {" "}
+                                            {tx.getTypeAsString()}{" "}
                                             {this.props.isTxMixed(tx) && (
-                                                <Badge variant="secondary">Mix</Badge>
+                                                <Badge variant="secondary">
+                                                    Mix
+                                                </Badge>
                                             )}
                                         </td>
                                         <td>

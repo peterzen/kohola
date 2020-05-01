@@ -35,9 +35,9 @@ class MixingStatsTable extends React.Component<Props> {
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Denomination</th>
-                                <th>Timestamp</th>
-                                <th>Hash</th>
+                                <th className="text-secondary">Denomination</th>
+                                <th className="text-secondary">Timestamp</th>
+                                <th className="text-secondary">Hash</th>
                             </tr>
                         </thead>
                         <TransitionGroup

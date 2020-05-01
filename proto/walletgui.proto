@@ -68,11 +68,17 @@ enum FiatCurrency {
   EUR = 1;
 }
 
+enum Theme {
+  LIGHT = 0;
+  DARK = 1;
+}
+
 message AppConfiguration {
   message UIPreferences {
     DisplayUnit display_unit = 1;
     FiatCurrency fiat_currency = 2;
     bool is_config_encrypted = 3;
+    Theme theme = 4;
   }
   message AccountPreference {
     bool is_hidden = 1;
