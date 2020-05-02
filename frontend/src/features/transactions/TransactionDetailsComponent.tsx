@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import { Table, Accordion, Button, Badge } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons"
+import { faBroadcastTower } from "@fortawesome/free-solid-svg-icons"
 
 import { Transaction, WalletAccount } from "../../middleware/models"
 import { Timestamp } from "../../components/Shared/shared"
@@ -11,8 +12,11 @@ import { Amount } from "../../components/Shared/Amount"
 import TransactionHash from "./TransactionHash"
 import Address from "./Address"
 import Block from "./Block"
+import { publishUnminedTransactions } from "./actions"
+import { AppError, IApplicationState } from "../../store/types"
+import { PublishUnminedTransactionsResponse } from "../../proto/api_pb"
+import { ErrorAlert, SuccessAlert } from "../../components/Shared/FormStatusAlerts"
 import { isTxMixed } from "./transactionsSlice"
-import { IApplicationState } from "../../store/types"
 import { lookupAccounts } from "../balances/accountSlice"
 import _ from "lodash"
 
@@ -46,8 +50,18 @@ class TransactionDetailsComponent extends React.Component<Props>{
         if (tx == null) {
             return null
         }
+        const isMined = tx.block.getHeight() != -1
         return (
             <div>
+                {!isMined && (
+                    <Button
+                        variant="secondary"
+                        className="float-right"
+                        onClick={() => this.props.publishUnminedTransactions()}
+                    >
+                        <FontAwesomeIcon icon={faBroadcastTower} /> Rebroadcast TX
+                    </Button>
+                )}
                 <Table borderless>
                     <tbody>
                         <tr>
@@ -141,13 +155,14 @@ class TransactionDetailsComponent extends React.Component<Props>{
                         <pre>{JSON.stringify(tx.toObject(), undefined, "  ")}</pre>
                     </Accordion.Collapse>
                 </Accordion>
+                <ErrorAlert error={this.props.error} />
+                {this.props.publishUnminedTransactionsResponse != null && (
+                    <SuccessAlert message="Unmined transactions published successfully." />
+                )}
             </div>
         )
     }
-
 }
-
-
 
 interface OwnProps {
     tx: Transaction | null
@@ -156,9 +171,15 @@ interface OwnProps {
 interface StateProps {
     isTxMixed: (tx: Transaction) => boolean
     lookupAccounts: (accountNumbers: number[]) => WalletAccount[]
+    error: AppError | null
+    publishUnminedTransactionsResponse: PublishUnminedTransactionsResponse | null    
 }
 
-type Props = OwnProps & StateProps
+interface DispatchProps {
+    publishUnminedTransactions: typeof publishUnminedTransactions
+}
+
+type Props = OwnProps & StateProps & DispatchProps
 
 const mapStateToProps = (state: IApplicationState): StateProps => {
     return {
@@ -168,8 +189,17 @@ const mapStateToProps = (state: IApplicationState): StateProps => {
         lookupAccounts: (accountNumbers: number[]) => {
             return lookupAccounts(state, accountNumbers)
         },
+        error: state.transactions.errorPublishUnminedTransactions,
+        publishUnminedTransactionsResponse:
+            state.transactions.publishUnminedTransactionsResponse,
     }
 }
 
-export default connect(mapStateToProps)(TransactionDetailsComponent)
+const mapDispatchToProps = {
+    publishUnminedTransactions,
+}
 
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TransactionDetailsComponent)
