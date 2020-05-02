@@ -43,6 +43,8 @@ import { loadWalletConfig } from "./walletSlice"
 
 const w = window as any
 
+import { ThemeConfig } from "bootstrap-darkmode"
+
 export interface AppState {
     readonly isWalletConnected: boolean
     readonly currentWalletEndpoint: GRPCEndpoint | null
@@ -134,8 +136,21 @@ export const {
 export default appSlice.reducer
 
 export const launchApp: ActionCreator<any> = () => {
-    return async (dispatch: AppDispatch) => {
+    return async (dispatch: AppDispatch, getState: IGetState) => {
         await dispatch(getConfiguration())
+
+        const themeConfig = new ThemeConfig()
+        themeConfig.loadTheme = () => {
+            const theme =
+                getState()
+                    .appconfiguration.appConfig.getUiPreferences()
+                    ?.getTheme() == 1
+                    ? "dark"
+                    : "light";
+            return theme
+        }
+        themeConfig.initTheme()        
+
         // connect to the first wallet endpoint, in lieu of a proper
         // default flag.
         // @FIXME add GUI to select default endpoint

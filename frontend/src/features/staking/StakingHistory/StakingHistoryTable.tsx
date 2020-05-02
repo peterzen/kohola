@@ -19,12 +19,12 @@ export default class StakingHistoryTable extends React.Component<Props> {
             <Table>
                 <thead>
                     <tr>
-                        <th>TxType</th>
-                        <th>Timestamp</th>
-                        <th>RewardCredit</th>
-                        <th>TicketCostCredit</th>
-                        <th>TicketCostDebit</th>
-                        <th>FeeDebit</th>
+                        <th className="text-secondary">TxType</th>
+                        <th className="text-secondary">Timestamp</th>
+                        <th className="text-secondary">RewardCredit</th>
+                        <th className="text-secondary">TicketCostCredit</th>
+                        <th className="text-secondary">TicketCostDebit</th>
+                        <th className="text-secondary">FeeDebit</th>
                     </tr>
                 </thead>
                 <TransitionGroup

@@ -21,25 +21,29 @@ import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
 class AccountBalanceTable extends React.Component<Props, InternalState> {
     render() {
         return (
-            <Card >
-                <ComponentPlaceHolder type='text' rows={7} ready={!this.props.isLoading}>
+            <Card>
+                <ComponentPlaceHolder
+                    type="text"
+                    rows={7}
+                    ready={!this.props.isLoading}
+                >
                     <Table hover>
                         <thead>
                             <tr className="text-right">
                                 <th></th>
-                                <th>spendable</th>
-                                <th>total</th>
+                                <th className="text-secondary">spendable</th>
+                                <th className="text-secondary">total</th>
                                 <th className="text-secondary">unconf'd</th>
                                 <th className="text-secondary">
                                     immature
-                            <br />
+                                    <br />
                                     <small>stake/reward</small>
                                 </th>
                                 <th className="text-secondary">
                                     voting
-                            <br />
-                            authority
-                        </th>
+                                    <br />
+                                    authority
+                                </th>
                                 <th className="text-secondary">locked</th>
                                 <th></th>
                             </tr>

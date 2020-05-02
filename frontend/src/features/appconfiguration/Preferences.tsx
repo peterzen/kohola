@@ -10,9 +10,10 @@ import {
     getUiPreferences,
     updateUiPreferences,
 } from "./settingsSlice"
-import { DisplayUnit, FiatCurrency } from "../../constants"
+import { DisplayUnit, FiatCurrency, Theme } from "../../constants"
 import { GetPassphraseForConfigEncryptionModal } from "./GetPassphraseForConfigEncryptionModal"
 import { AppConfiguration } from "../../proto/walletgui_pb"
+import { ThemeConfig } from "bootstrap-darkmode"
 
 class Preferences extends React.Component<Props, InternalState> {
     constructor(props: Props) {
@@ -29,6 +30,7 @@ class Preferences extends React.Component<Props, InternalState> {
         const displayUnit = uiPreferences.getDisplayUnit()
         const fiatCurrency = uiPreferences.getFiatCurrency()
         const isConfigEncrypted = uiPreferences.getIsConfigEncrypted()
+        const theme = uiPreferences.getTheme() == 1 ? "DARK" : "LIGHT"
 
         return (
             <Form>
@@ -110,6 +112,28 @@ class Preferences extends React.Component<Props, InternalState> {
                         />
                     </Col>
                 </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column sm={2}>
+                        Theme
+                    </Form.Label>
+                    <Col sm={10}>
+                        <Form.Control
+                            defaultValue={theme}
+                            onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                                this.onThemeSwitchChanged(
+                                    Theme[
+                                        e.currentTarget
+                                            .value as keyof typeof Theme
+                                    ]
+                                )
+                            }
+                            as="select"
+                        >
+                            <option value="LIGHT">Light</option>
+                            <option value="DARK">Dark</option>
+                        </Form.Control>
+                    </Col>
+                </Form.Group>
                 <GetPassphraseForConfigEncryptionModal
                     onHide={() => this.hidePassphraseModal()}
                     passphraseModalCallback={this.state.passphraseModalCallback}
@@ -162,6 +186,17 @@ class Preferences extends React.Component<Props, InternalState> {
         this.setState({
             showPassphraseModal: false,
         })
+    }
+
+    onThemeSwitchChanged(theme: Theme) {
+        const uiPreferences = this.state.uiPreferences
+        uiPreferences?.setTheme(theme)
+        this.setState({
+            uiPreferences: uiPreferences,
+        })
+        this.props.updateUiPreferences(uiPreferences)
+        const themeConfig = new ThemeConfig()
+        themeConfig.setTheme(theme == 1 ? "dark" : "light")
     }
 }
 
