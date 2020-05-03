@@ -4,6 +4,7 @@ import { Row, Col, Card } from "react-bootstrap"
 import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
 import { Amount, FiatAmount } from "../../components/Shared/Amount"
 import SparklineChart from "../market/charts/SparklineChart"
+import BalanceHistoryChart from "./BalanceHistoryChart"
 
 export default class WalletAvailableBalanceCard extends PureComponent<OwnProps> {
     render() {
@@ -40,15 +41,8 @@ export default class WalletAvailableBalanceCard extends PureComponent<OwnProps> 
                             </ComponentPlaceHolder>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <SparklineChart
-                                currencyCode="btc"
-                                days={14}
-                            />
-                        </Col>
-                    </Row>
                 </Card.Body>
+                <BalanceHistoryChart />
             </Card>
         )
     }
