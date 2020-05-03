@@ -98,10 +98,10 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState> {
 
 		return (
 			<div>
-				{priceSeries == undefined ||
+				{/* {priceSeries == undefined ||
 					(priceSeries.count() < 1 && (
 						<Alert variant="secondary">price series</Alert>
-					))}
+					))} */}
 
 				{priceSeries != undefined && priceSeries.count() > 0 && (
 					<div>
