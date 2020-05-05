@@ -26,6 +26,7 @@ import { AppToastContainer } from "./fixtures/Toasts"
 import AppProgressIndicator from "./AppProgressIndicator"
 import AppSidebar from "./fixtures/AppSidebar"
 import ConfigDecryptContainer from "../appconfiguration/ConfigDecryptDialog"
+import ErrorBoundary from "./ErrorBoundary"
 
 const devMonitorEnabled = false
 
@@ -45,25 +46,27 @@ class App extends React.Component<Props> {
                     <AppSidebar>
                         <Container fluid={true} className="main-content">
                             <AppToastContainer />
-                            <AnimatedSwitch
-                                atEnter={{ opacity: 0 }}
-                                atLeave={{ opacity: 0 }}
-                                atActive={{ opacity: 1 }}
-                                className="switch-wrapper"
-                            >
-                                <Route path="/staking" component={Staking} />
-                                <Route path="/settings" component={Settings} />
-                                <Route
-                                    path="/account/:accountNumber"
-                                    component={AccountDetails}
-                                />
-                                <Route path="/wallet" component={Wallet} />
-                                <Route path="/mixing" component={Mixing} />
-                                <Route path="/market" component={Market} />
-                                <Route path="/login" component={Login} />
-                                <Route exact path="/" component={Welcome} />
-                                <Route component={NoRouteMatch} />
-                            </AnimatedSwitch>
+                            <ErrorBoundary>
+                                <AnimatedSwitch
+                                    atEnter={{ opacity: 0 }}
+                                    atLeave={{ opacity: 0 }}
+                                    atActive={{ opacity: 1 }}
+                                    className="switch-wrapper"
+                                >
+                                    <Route path="/staking" component={Staking} />
+                                    <Route path="/settings" component={Settings} />
+                                    <Route
+                                        path="/account/:accountNumber"
+                                        component={AccountDetails}
+                                    />
+                                    <Route path="/wallet" component={Wallet} />
+                                    <Route path="/mixing" component={Mixing} />
+                                    <Route path="/market" component={Market} />
+                                    <Route path="/login" component={Login} />
+                                    <Route exact path="/" component={Welcome} />
+                                    <Route component={NoRouteMatch} />
+                                </AnimatedSwitch>
+                            </ErrorBoundary>
                         </Container>
                         {this.props.showProgress && <AppProgressIndicator />}
                         <ConfigDecryptContainer />
