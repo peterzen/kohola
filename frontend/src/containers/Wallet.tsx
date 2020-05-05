@@ -84,7 +84,7 @@ type Props = OwnProps & DispatchProps & RouteChildrenProps<any>
 
 const mapStateToProps = (state: IApplicationState): OwnProps => {
     return {
-        txList: getWalletTransactions(state),
+        txList: getWalletTransactions(state).value(),
         accounts: getVisibleAccounts(state),
         balances: getWalletBalances(state),
         walletTotals: getWalletTotals(state),

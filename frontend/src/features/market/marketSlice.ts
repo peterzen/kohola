@@ -224,22 +224,18 @@ export const isChartDataLoaded = (
     return _.every(loadedState, (s) => s === false)
 }
 
-
 // helpers
 function makePriceSeries(data: GetMarketChartResponse.MarketChartDataPoint[], currencyCode: string) {
 
     const events = _.map(data, item => {
-        const timestamp = moment.default(item.getTimestamp())
         const args: any = {}
         args[currencyCode] = item.getValue()
-        return new TimeEvent(timestamp.toDate(), args)
+        return new TimeEvent(item.getTimestamp()*1000, args)
     })
-    const collection = new Collection(events)
-    const sortedCollection = collection.sortByTime()
     const series = new TimeSeries({
         name: `dcr-${currencyCode}`,
         columns: ["time", currencyCode],
-        collection: sortedCollection
+        collection: new Collection(events).sortByTime()
     })
     return series
 }
