@@ -52,13 +52,14 @@ const menuItems: MenuItemProps[] = [
         href: "/#market",
     },
     {
-        title: "",
-        href: "",
-    },
-    {
         title: "Settings",
         icon: faCog,
         href: "/#settings",
+        style: {
+            position: "absolute",
+            bottom: "0.5rem",
+            left: "1rem",
+        }
     },
 ]
 
@@ -78,10 +79,7 @@ class NavMenu extends React.Component<NavMenuProps> {
                         <Fade fade slide left cascade>
                             <div>
                                 {menuItems.map((m) => (
-                                    <div key={m.href} hidden={!isNavigable}>
-                                        {m.title == "" && (
-                                            <div className="mt-5" />
-                                        )}
+                                    <div key={m.href} hidden={!isNavigable} style={m.style}>
                                         {m.title != "" && (
                                             <SidebarNavItem {...m} />
                                         )}
@@ -100,6 +98,7 @@ type MenuItemProps = {
     title: string
     href?: string
     icon?: IconDefinition
+    style?: any
 }
 
 const SidebarNavItem = (props: MenuItemProps) => {
