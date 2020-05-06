@@ -18,6 +18,7 @@ import { getWalletConfig } from "../app/walletSlice"
 import { TimeEvent, TimeSeries, Collection } from "pondjs"
 import moment from "../../helpers/moment-helper"
 import { ChartTimeframe } from "../../components/Shared/IntervalChooser"
+import { BlockHeightRange } from "../../helpers/wallet"
 
 
 // GetTransactions
@@ -140,13 +141,17 @@ export const initialState: GetTransactionsState &
     // PublishUnminedTransactions
     publishUnminedTransactionsAttempting: false,
     publishUnminedTransactionsResponse: null,
-    errorPublishUnminedTransactions: null,    
+    errorPublishUnminedTransactions: null,
 }
 
 const transactionsSlice = createSlice({
     name: "transactionsSlice",
     initialState,
     reducers: {
+        setTimerangeAttempt(state, action: PayloadAction<BlockHeightRange>) {
+            state.startBlockHeight = action.payload.startblockHeight
+            state.endBlockHeight = action.payload.endblockHeight
+        },
         // GetTransactions
         getTransactionsAttempt(state) {
             state.errorGetTransactions = null
@@ -309,6 +314,7 @@ const transactionsSlice = createSlice({
 })
 
 export const {
+    setTimerangeAttempt,
     // GetTransactions
     getTransactionsAttempt,
     getTransactionsFailed,
