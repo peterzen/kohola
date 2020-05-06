@@ -753,7 +753,7 @@ export const loadStakingHistory: ActionCreator<any> = (
         }
         dispatch(getStakingHistoryAttempt())
         try {
-            const resp = await LorcaBackend.getStakingHistory(startBlockHeight, endBlockHeight)
+            const resp = await LorcaBackend.fetchStakingHistory(startBlockHeight, endBlockHeight)
             dispatch(getStakingHistorySuccess(resp))
         } catch (error) {
             dispatch(getStakingHistoryFailed(error))

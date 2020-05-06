@@ -174,7 +174,7 @@ export const getMixerStatsChartData = (state: IApplicationState, timeframe: Char
     const series = new TimeSeries({
         name: "denoms",
         columns: ["time", "denomination"],
-        collection: new Collection(events, false).sortByTime(),
+        collection: new Collection(events).sortByTime(),
     })
     console.log("SERIES", series.toJSON())
 

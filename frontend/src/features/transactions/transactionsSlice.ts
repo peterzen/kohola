@@ -402,9 +402,11 @@ export const getMixTransactions = (
 
 export const makeTxHistoryChartSeries = (state: IApplicationState, timeframe: ChartTimeframe) => {
     const now = moment.default()
-
+    const startTime = now.subtract(timeframe.days, "days").startOf("day")
+    // debugger
     const chain = getWalletTransactions(state)
-        .filter(tx => moment.default(tx.getTimestamp()).isAfter(now.subtract(timeframe.days, "days").startOf("day")))
+        .filter(tx => tx.getTimestamp().isAfter(startTime))
+        .orderBy(tx => tx.getTimestamp().unix(), "desc")
 
     if (chain == undefined || chain.value().length < 1) {
         return
@@ -418,7 +420,7 @@ export const makeTxHistoryChartSeries = (state: IApplicationState, timeframe: Ch
     const series = new TimeSeries({
         name: "tx-history",
         columns: ["time", "credit", "debit"],
-        collection: new Collection(events, false).sortByTime(),
+        collection: new Collection(events).sortByTime(),
     })
     console.log("TX HISTORY SERIES", series.toJSON())
     return series
@@ -463,7 +465,7 @@ export const getAccountTransactions = (
 }
 
 export const getTransactions = (state: IApplicationState): Transaction[] => {
-    return _.orderBy(state.transactions.txList, (e) => e.getTimestamp(), "desc")
+    return state.transactions.txList
 }
 
 function isTxLinkedToAccount(tx: Transaction, account: WalletAccount): boolean {

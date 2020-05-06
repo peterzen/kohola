@@ -76,15 +76,14 @@ export const processTransactionNotification: ActionCreator<any> = (
     unminedTxList: Transaction[]
 ): AppThunk => {
     return async (dispatch) => {
-        _.map(unminedTxList, (tx) => dispatch(displayTXNotification(tx)))
 
-        // batch(() => {
+        batch(() => {
             dispatch(loadBestBlockHeight())
             dispatch(loadWalletBalance())
             dispatch(loadStakeInfoAttempt())
             dispatch(loadTicketsAttempt())
-            dispatch(loadTransactionsAttempt())
-        // })
+            // dispatch(loadTransactionsAttempt())
+        })
     }
 }
 
@@ -101,16 +100,18 @@ export const createTxNotificationReceivers: ActionCreator<any> = (): AppThunk =>
                 message.getUnminedTransactionsList(),
                 (td) => new Transaction(td)
             )
-            dispatch(processTransactionNotification(unminedTxList))
+            _.map(unminedTxList, (tx) => dispatch(displayTXNotification(tx)))
+            dispatch(processTransactionNotification())
         }
 
-        w.lorcareceiver__OnConfirmNotification = (serializedMsg: Uint8Array) => {
+        w.lorcareceiver__OnConfirmNotification = (serializedMsg: string) => {
         	const message = ConfirmationNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
-        	dispatch(loadBestBlockHeight())
-            dispatch(loadWalletBalance())
-            dispatch(loadStakeInfoAttempt())
-            dispatch(loadTicketsAttempt())
-            dispatch(loadTransactionsAttempt())
+            dispatch(processTransactionNotification())
+            // dispatch(loadBestBlockHeight())
+            // dispatch(loadWalletBalance())
+            // dispatch(loadStakeInfoAttempt())
+            // dispatch(loadTicketsAttempt())
+            // dispatch(loadTransactionsAttempt())
         }
     }
 }

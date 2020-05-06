@@ -149,7 +149,7 @@ export const launchApp: ActionCreator<any> = () => {
                     : "light";
             return theme
         }
-        themeConfig.initTheme()        
+        themeConfig.initTheme()
 
         // connect to the first wallet endpoint, in lieu of a proper
         // default flag.
@@ -249,14 +249,16 @@ export const loadMainData: ActionCreator<any> = () => {
         await dispatch(loadBestBlockHeight())
         await dispatch(loadAccountsAttempt())
 
-        // batch(() => {
-        dispatch(loadWalletConfig())
-        dispatch(loadTransactionsAttempt())
-        dispatch(loadWalletBalance())
-        dispatch(loadStakeInfoAttempt())
-        dispatch(loadStakingHistory())
-        dispatch(loadTicketsAttempt())
-        // })
+        // await dispatch(setTransactionsTimerange(moment.default().subtract(3, "month"), moment.default()))
+
+        batch(() => {
+            dispatch(loadWalletConfig())
+            dispatch(loadTransactionsAttempt())
+            dispatch(loadWalletBalance())
+            dispatch(loadStakeInfoAttempt())
+            dispatch(loadStakingHistory())
+            dispatch(loadTicketsAttempt())
+        })
     }
 }
 
