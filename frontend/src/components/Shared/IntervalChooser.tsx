@@ -14,9 +14,9 @@ export interface ChartTimeframe {
 
 export const timeframes: ChartTimeframe[] = [
     { days: 1, name: "24 hours", windowSize: "1h" },
-    { days: 3, name: "3 days", windowSize: "6h" },
-    { days: 7, name: "1 week", windowSize: "4h" },
-    { days: 31, name: "1 month", windowSize: "3d" },
+    { days: 3, name: "3 days", windowSize: "12h" },
+    { days: 7, name: "1 week", windowSize: "1d" },
+    { days: 31, name: "1 month", windowSize: "1d" },
     { days: 365, name: "1 year", windowSize: "7d" },
     { days: 730, name: "2 years", windowSize: "14d" },
 ]

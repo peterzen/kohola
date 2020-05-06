@@ -64,7 +64,7 @@ class Wallet extends React.PureComponent<Props> {
         }
     }
     componentDidMount() {
-        // this.props.loadTransactionsAttempt()
+        this.props.loadTransactionsAttempt()
     }
 }
 
