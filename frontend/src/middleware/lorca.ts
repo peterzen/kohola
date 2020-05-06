@@ -539,7 +539,7 @@ const LorcaBackend = {
         }
     },
 
-    getStakingHistory: async (
+    fetchStakingHistory: async (
         startBlockHeight: number,
         endBlockHeight: number,
     ) => {

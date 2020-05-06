@@ -3,7 +3,7 @@ import { IApplicationState, AppError } from "../store/types"
 import moment from "./moment-helper"
 
 
-interface BlockHeightRange {
+export interface BlockHeightRange {
 	startblockHeight: number
 	endblockHeight: number
 }
