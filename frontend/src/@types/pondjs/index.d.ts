@@ -1484,7 +1484,7 @@ declare module "pondjs" {
           align(options: {
                fieldSpec: string | string[];
                period: string;
-               method: "linear" | "pad";
+               method: "linear" | "pad" | "hold";
                limit: number;
           }): TimeSeries;
 

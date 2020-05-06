@@ -1,48 +1,58 @@
 import * as React from "react"
 
-import { Row, Col, Container } from "react-bootstrap"
+import { Row, Col, Card } from "react-bootstrap"
+
 import { WalletTotals } from "../../middleware/models"
 import { IApplicationState } from "../../store/types"
 import { connect } from "react-redux"
 import WalletTotalsCard from "./WalletTotalsCard"
 import WalletAvailableBalanceCard from "./WalletAvailableBalanceCard"
 import WalletCreditDebitCard from "./WalletCreditDebitCard"
+import { TimeSeries } from "pondjs"
+import {
+    timeframes,
+    ChartTimeframe,
+} from "../../components/Shared/IntervalChooser"
+import { makeTxHistoryChartSeries } from "../transactions/transactionsSlice"
+import BalanceHistoryChart from "./BalanceHistoryChart"
 
 class WalletTotalsComponent extends React.PureComponent<Props, {}> {
     render() {
         const totals = this.props.totals
         return (
-            <Container fluid>
-                <Row>
-                    <Col className="pl-0 pr-0" xs="12" sm="6" md="3" lg="3">
-                        <WalletAvailableBalanceCard
-                            totals={totals}
-                            loading={this.props.loading}
+            <Row>
+                <Col sm="4">
+                    <Card className="h-100">
+                        <Card.Body>
+                            <Row>
+                                <Col>
+                                    <WalletAvailableBalanceCard
+                                        totals={totals}
+                                        loading={this.props.loading}
+                                    />
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                        <BalanceHistoryChart
+                            timeframe={this.props.timeframe}
+                            currentBalance={totals.total}
+                            txHistorySeries={this.props.txHistorySeries}
                         />
-                    </Col>
-                    <Col
-                        className="pr-0 pl-0 pt-3 pl-sm-3 pt-sm-0 pl-md-3 pt-md-0"
-                        xs="12"
-                        sm="6"
-                        md="4"
-                        lg="3"
-                    >
-                        <WalletTotalsCard
-                            totals={totals}
-                            loading={this.props.loading}
-                        />
-                    </Col>
-                    <Col
-                        className="pr-0 pl-0 pt-3 pl-sm-0 pt-sm-3 pl-md-3 pt-md-0"
-                        sm="12"
-                        md="5"
-                        lg="6"
-                    >
-                        <WalletCreditDebitCard
-                        />
-                    </Col>
-                </Row>
-            </Container>
+                    </Card>
+                </Col>
+                <Col sm="4">
+                    <WalletTotalsCard
+                        totals={totals}
+                        loading={this.props.loading}
+                    />
+                </Col>
+                <Col sm="4">
+                    <WalletCreditDebitCard
+                        timeframe={this.props.timeframe}
+                        txHistorySeries={this.props.txHistorySeries}
+                    />
+                </Col>
+            </Row>
         )
     }
 }
@@ -53,13 +63,19 @@ interface OwnProps {
 
 interface StateProps {
     loading: boolean
+    timeframe: ChartTimeframe
+    txHistorySeries: TimeSeries | undefined
 }
 
 type Props = OwnProps & StateProps
 
 const mapStateToProps = (state: IApplicationState): StateProps => {
+    const timeframe = timeframes[3]
+    const txHistorySeries = makeTxHistoryChartSeries(state, timeframe)
     return {
         loading: state.accounts.getAccountsAttempting,
+        timeframe: timeframe,
+        txHistorySeries: txHistorySeries,
     }
 }
 
