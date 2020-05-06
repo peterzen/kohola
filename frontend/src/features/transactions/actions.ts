@@ -32,6 +32,7 @@ import {
     publishUnminedTransactionsFailed,
     publishUnminedTransactionsSuccess,
     publishUnminedTransactionsCleanup,
+    setTimerangeAttempt,
 } from "./transactionsSlice"
 import { AuthoredTransactionMetadata } from "./models"
 import { AppError, IGetState, AppDispatch, AppThunk } from "../../store/types"
@@ -46,6 +47,18 @@ import { Transaction } from "../../middleware/models"
 import { displayTXNotification } from "../app/appSlice"
 import { hexToRaw } from "../../helpers/byteActions"
 import { CreateTransactionRequest } from "../../proto/walletgui_pb"
+import { Moment } from "moment"
+import { timestampToBlockHeight } from "../../helpers/wallet"
+
+
+export const setTransactionsTimerange: ActionCreator<any> = (
+    startTimestamp: Moment, endTimestamp: Moment
+): AppThunk => {
+    return async (dispatch: AppDispatch, getState: IGetState) => {
+        const blockRange = timestampToBlockHeight(getState(), startTimestamp.unix(), endTimestamp.unix())
+        await dispatch(setTimerangeAttempt(blockRange))
+    }
+}
 
 export const loadTransactionsAttempt: ActionCreator<any> = (): AppThunk => {
     return async (dispatch: AppDispatch, getState: IGetState) => {
@@ -105,7 +118,7 @@ export const createTxNotificationReceivers: ActionCreator<any> = (): AppThunk =>
         }
 
         w.lorcareceiver__OnConfirmNotification = (serializedMsg: string) => {
-        	const message = ConfirmationNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
+            const message = ConfirmationNotificationsResponse.deserializeBinary(hexToRaw(serializedMsg))
             dispatch(processTransactionNotification())
             // dispatch(loadBestBlockHeight())
             // dispatch(loadWalletBalance())
@@ -265,7 +278,7 @@ export const publishUnminedTransactions: ActionCreator<any> = (): AppThunk => {
             dispatch(publishUnminedTransactionsSuccess(resp))
             setTimeout(() => {
                 dispatch(publishUnminedTransactionsCleanup())
-            }, 3000)            
+            }, 3000)
         } catch (error) {
             dispatch(publishUnminedTransactionsFailed(error))
         }
