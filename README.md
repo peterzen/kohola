@@ -18,11 +18,30 @@ By default, `dcrwallet` listens on port 9111 (mainnet) or 19111 (testnet).  The 
 
 ### Linux (Debian, Ubuntu)
 
+##### Dependencies:
+
+ * `yarn`
+ * `golang` 1.12 or later (tested on 1.13 but should work on 1.12)
+ * development packages:
+ ```
+ apt-get install libwebkit2gtk-4.0-dev \
+	libgtk-3-dev \
+	libcairo2-dev \
+	libglib2.0-dev \
+	libappindicator3-dev \
+	libappindicator3-0.1-cil-dev
+```
+
 `./build-linux.sh`
+
+There is an experimental `Dockerfile` to build without having to install  dependencies:
+
+`docker build  -t decred/dcrwalletgui .`
 
 ### MacOS
 
 `./build-macos.sh`
+
 
 ### Windows
 
@@ -32,7 +51,7 @@ TODO - [contribution welcome](https://github.com/peterzen/kohola/issues/8)
 
 1. Clone repo
 
-`git clone --recurse-submodules https://github.com/peterzen/kohola`
+`git clone https://github.com/peterzen/kohola`
 
 2. Build and run React frontend 
 
