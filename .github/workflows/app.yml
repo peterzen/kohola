@@ -28,6 +28,9 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
+    - name: install deps
+      run: sudo apt-get update && sudo apt-get install -y -q --no-install-recommends libwebkit2gtk-4.0-dev libgtk-3-dev libcairo2-dev libglib2.0-dev libappindicator3-dev libappindicator3-0.1-cil-dev
+
     # Runs a single command using the runners shell
     - name: build
       run: go build
