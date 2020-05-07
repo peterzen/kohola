@@ -12,7 +12,7 @@ require (
 	github.com/decred/dcrd/txscript/v3 v3.0.0-20200311044114-143c1884e4c8
 	github.com/decred/dcrd/wire v1.3.0
 	github.com/decred/dcrwallet/wallet v1.3.0
-	github.com/getlantern/systray v0.0.0-20200109124156-9abdfb6448b3
+	github.com/getlantern/systray v0.0.0-20200324212034-d3ab4fd25d99
 	github.com/go-resty/resty/v2 v2.2.0
 	github.com/golang/protobuf v1.3.5
 	github.com/gotk3/gotk3 v0.0.0-20200129211157-69caac910e50 // indirect
