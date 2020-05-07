@@ -151,10 +151,7 @@
         },
         "transformIgnorePatterns": [
             "/node_modules/",
-            "app/middleware/",
-            "app/middleware/walletrpc/api_pb.js",
-            "app/proto/",
-            "app/middleware/ln/rpc_pb.js"
+            "src/proto/"
         ]
     }
 }
