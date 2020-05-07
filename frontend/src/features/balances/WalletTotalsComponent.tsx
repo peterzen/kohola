@@ -70,7 +70,7 @@ interface StateProps {
 type Props = OwnProps & StateProps
 
 const mapStateToProps = (state: IApplicationState): StateProps => {
-    const timeframe = timeframes[3]
+    const timeframe = timeframes[4]
     const txHistorySeries = makeTxHistoryChartSeries(state, timeframe)
     return {
         loading: state.accounts.getAccountsAttempting,
