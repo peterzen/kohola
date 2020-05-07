@@ -27,7 +27,10 @@ export default class IntervalChooser extends React.Component<OwnProps> {
     render() {
         return (
             <Dropdown>
-                <Dropdown.Toggle variant="secondary" id="timeframe-dropdown">
+                <Dropdown.Toggle
+                    variant="secondary"
+                    id="timeframe-dropdown"
+                    size="sm">
                     <FontAwesomeIcon icon={faCalendar} /> {this.props.selectedValue.name}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
