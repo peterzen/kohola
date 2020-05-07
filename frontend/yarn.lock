@@ -3455,10 +3455,10 @@ bootstrap-darkmode@^0.5.0:
   resolved "https://registry.yarnpkg.com/bootstrap-darkmode/-/bootstrap-darkmode-0.5.0.tgz#e2d1c90aa44e26aee8b3cc801deb525d612d1788"
   integrity sha512-9aStSRi9FUYmAxNeavp3Dv5/MHKGnhpGHqR2bRlobo1WnbLX8TJ3na5ElmilQK6G83Zww3GbTWacemXYHESVsg==
 
-bootstrap-material-design@4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/bootstrap-material-design/-/bootstrap-material-design-4.1.1.tgz#87433db0bf64d6a0afb0f5faaa8606134c9d26d2"
-  integrity sha1-h0M9sL9k1qCvsPX6qoYGE0ydJtI=
+bootstrap-material-design@4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/bootstrap-material-design/-/bootstrap-material-design-4.1.2.tgz#d6f282f1248c6ce2959c69ca86afe113ee128e88"
+  integrity sha512-hKeUkOM6g2DqpktvEMHrIDpQ5qupV4DSeKlJSJ60tLFQ+8tPlszVCa3JVLTV+ZFbJRMb0UA6UWTsnjW57kYNeg==
 
 bootstrap@^4.4.1:
   version "4.4.1"
