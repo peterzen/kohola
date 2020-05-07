@@ -3,7 +3,6 @@ import { connect } from "react-redux"
 import { withRouter, RouteChildrenProps } from "react-router-dom"
 import _ from "lodash"
 
-
 import { Card } from "react-bootstrap"
 
 import { IApplicationState } from "../store/types"
@@ -15,9 +14,7 @@ import IntervalChooser, {
 } from "../components/Shared/IntervalChooser"
 import ExchangeRateV2Chart from "../features/market/charts/ExchangeRateV2Chart"
 
-
 class Market extends React.PureComponent<Props, InternalState> {
-
     state = {
         selectedTimeframe: defaultTimeframe,
     }
@@ -36,15 +33,14 @@ class Market extends React.PureComponent<Props, InternalState> {
                                 selectedValue={this.state.selectedTimeframe}
                             />
                         </div>
-                        <Card.Title>
-                            DCR Markets
-                        </Card.Title>
+                        <Card.Title>DCR Markets</Card.Title>
                     </Card.Header>
                     <div>
                         <ExchangeRateV2Chart
                             currencies={this.props.currencies}
                             days={this.state.selectedTimeframe.days}
-                            currencyCode="btc" />
+                            currencyCode="btc"
+                        />
                     </div>
                 </Card>
             </div>
@@ -53,7 +49,7 @@ class Market extends React.PureComponent<Props, InternalState> {
 
     handleTimerangeChange(timeframe: ChartTimeframe) {
         this.setState({
-            selectedTimeframe: timeframe
+            selectedTimeframe: timeframe,
         })
     }
 }
@@ -64,7 +60,7 @@ interface InternalState {
 
 interface OwnProps {
     currentRates: AltCurrencyRates
-    currencies:string[]
+    currencies: string[]
 }
 
 type Props = OwnProps & RouteChildrenProps<any>
@@ -80,4 +76,3 @@ const mapStateToProps = (state: IApplicationState) => {
 }
 
 export default withRouter(connect(mapStateToProps)(Market))
-

@@ -30,8 +30,7 @@ class ConnectionSettings extends React.Component<Props, InternalState> {
                     <Button
                         variant="secondary"
                         size="sm"
-                        onClick={() => this.createNewEndpoint()}
-                    >
+                        onClick={() => this.createNewEndpoint()}>
                         <FontAwesomeIcon icon={faPlus} /> Add wallet host...
                     </Button>
                 </div>

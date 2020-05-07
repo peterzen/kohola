@@ -25,8 +25,7 @@ class SettingsContainer extends React.Component<Props> {
                     mountOnEnter={true}
                     unmountOnExit={true}
                     defaultActiveKey="accounts"
-                    id="appconfiguration-tabs"
-                >
+                    id="appconfiguration-tabs">
                     <Tab eventKey="accounts" title="Accounts">
                         <Card>
                             <Card.Body>

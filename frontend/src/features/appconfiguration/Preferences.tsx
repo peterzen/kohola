@@ -82,8 +82,7 @@ class Preferences extends React.Component<Props, InternalState> {
                                     ]
                                 )
                             }
-                            as="select"
-                        >
+                            as="select">
                             <option>USD</option>
                             <option>EUR</option>
                         </Form.Control>
@@ -127,8 +126,7 @@ class Preferences extends React.Component<Props, InternalState> {
                                     ]
                                 )
                             }
-                            as="select"
-                        >
+                            as="select">
                             <option value="LIGHT">Light</option>
                             <option value="DARK">Dark</option>
                         </Form.Control>

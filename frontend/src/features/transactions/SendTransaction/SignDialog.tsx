@@ -13,8 +13,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSignature } from "@fortawesome/free-solid-svg-icons"
 import { signTransaction, cancelSignTransaction } from "../actions"
 
-class SignDialog extends React.Component<Props & Partial<StepWizardChildProps>, InternalState> {
-
+class SignDialog extends React.Component<
+    Props & Partial<StepWizardChildProps>,
+    InternalState
+> {
     inputRef: React.RefObject<any> = React.createRef()
 
     constructor(props: Props) {
@@ -36,8 +38,7 @@ class SignDialog extends React.Component<Props & Partial<StepWizardChildProps>, 
                 <Form
                     className="m-0"
                     validated={this.state.formIsValidated && !this.props.error}
-                    onSubmit={_.bind(this.handleFormSubmit, this)}
-                >
+                    onSubmit={_.bind(this.handleFormSubmit, this)}>
                     <Form.Group controlId="passphraseControl" as={Row}>
                         <Form.Label column sm={2}>
                             Wallet passphrase
@@ -67,8 +68,9 @@ class SignDialog extends React.Component<Props & Partial<StepWizardChildProps>, 
                             <Button
                                 tabIndex={4}
                                 variant="secondary"
-                                onClick={(e: React.FormEvent<HTMLButtonElement>) => this.handleCancel(e)}
-                            >
+                                onClick={(
+                                    e: React.FormEvent<HTMLButtonElement>
+                                ) => this.handleCancel(e)}>
                                 Back
                             </Button>
                         </Col>
@@ -76,10 +78,8 @@ class SignDialog extends React.Component<Props & Partial<StepWizardChildProps>, 
                             <Button
                                 tabIndex={4}
                                 variant="primary"
-                                type="submit"
-                            >
-                                <FontAwesomeIcon icon={faSignature} />{" "}
-                                Sign tx
+                                type="submit">
+                                <FontAwesomeIcon icon={faSignature} /> Sign tx
                             </Button>
                         </Col>
                     </Row>
@@ -128,7 +128,6 @@ class SignDialog extends React.Component<Props & Partial<StepWizardChildProps>, 
                 setTimeout(() => {
                     this.inputRef.current.focus()
                 }, 1000)
-
             }
         })
     }
@@ -157,16 +156,13 @@ interface InternalState {
 type Props = OwnProps & DispatchProps
 
 const mapStateToProps = () => {
-    return {
-
-    }
+    return {}
 }
 
 const mapDispatchToProps = {
     signTransaction,
     cancelSignTransaction,
 }
-
 
 export interface ISignDialogFormData {
     passphrase: string

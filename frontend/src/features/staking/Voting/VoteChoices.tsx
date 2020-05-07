@@ -29,8 +29,7 @@ class VoteChoices extends React.Component<Props> {
                                 action
                                 as={"div"}
                                 key={choice.getId()}
-                                className={`votechoice-${choice.getId()}`}
-                            >
+                                className={`votechoice-${choice.getId()}`}>
                                 <Form.Check
                                     custom
                                     checked={

@@ -45,8 +45,7 @@ export default class PassphraseEntryDialog extends React.Component<
                 centered
                 onEntered={() => this.state.inputRef.current?.focus()}
                 onExit={_.bind(this.onExit, this)}
-                show={this.state.showModal}
-            >
+                show={this.state.showModal}>
                 <Form>
                     <Modal.Header closeButton>Unlock wallet</Modal.Header>
                     <Modal.Body>
@@ -67,15 +66,13 @@ export default class PassphraseEntryDialog extends React.Component<
                                 variant="secondary"
                                 onClick={() =>
                                     this.setState({ showModal: false })
-                                }
-                            >
+                                }>
                                 Cancel
                             </Button>
                             <Button
                                 type="submit"
                                 onClick={_.bind(this.handleFormSubmit, this)}
-                                variant="primary"
-                            >
+                                variant="primary">
                                 Unlock
                             </Button>
                         </div>

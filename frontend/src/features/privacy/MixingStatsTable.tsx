@@ -26,8 +26,8 @@ const transitionGroupProps = {
 
 class MixingStatsTable extends React.Component<Props> {
     render() {
-		const showAccount = this.props.showAccount || false
-		const txList = this.props.transactions
+        const showAccount = this.props.showAccount || false
+        const txList = this.props.transactions
         return (
             <div>
                 {txList.length > 0 && (
@@ -42,16 +42,14 @@ class MixingStatsTable extends React.Component<Props> {
                         </thead>
                         <TransitionGroup
                             {...transitionGroupProps}
-                            component="tbody"
-                        >
+                            component="tbody">
                             {txList.map((tx: Transaction) => (
                                 <Fade slide cascade key={tx.getHash()}>
                                     <tr
                                         className="clickable"
                                         onClick={() =>
                                             this.props.onItemClick(tx)
-                                        }
-                                    >
+                                        }>
                                         <td>
                                             <TransactionMempoolStatusIcon
                                                 isMined={tx.isMined()}
@@ -86,7 +84,6 @@ class MixingStatsTable extends React.Component<Props> {
         )
     }
 }
-
 
 interface StateProps {
     isTxMixed: (tx: Transaction) => boolean

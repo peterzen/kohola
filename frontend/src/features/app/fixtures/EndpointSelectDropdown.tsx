@@ -23,8 +23,7 @@ class EndpointSelectDropdown extends React.Component<Props> {
                             this.connectWallet(evtKey)
                         }
                         title={<ConnectionStatus />}
-                        id="endpoint-nav-dropdown"
-                    >
+                        id="endpoint-nav-dropdown">
                         {this.props.walletEndpoints.map((endpoint) => {
                             const isCurrent =
                                 currentEndpoint.getId() == endpoint.getId()
@@ -36,11 +35,9 @@ class EndpointSelectDropdown extends React.Component<Props> {
                                         currentEndpoint.getId() ==
                                         endpoint.getId()
                                     }
-                                    eventKey={endpoint.getId()}
-                                >
+                                    eventKey={endpoint.getId()}>
                                     <SelectedDropdownItemLabel
-                                        isSelected={isCurrent}
-                                    >
+                                        isSelected={isCurrent}>
                                         <div>{endpoint.getLabel()}</div>
                                         {isCurrent && (
                                             <div className="text-muted mt-2">

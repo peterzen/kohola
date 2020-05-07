@@ -47,8 +47,7 @@ export default class WalletTotalsCard extends PureComponent<OwnProps> {
                             <ComponentPlaceHolder
                                 type="text"
                                 rows={8}
-                                ready={!this.props.loading}
-                            >
+                                ready={!this.props.loading}>
                                 <div>
                                     <ValueRow
                                         label="Spendable"

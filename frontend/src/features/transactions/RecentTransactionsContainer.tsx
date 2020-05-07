@@ -11,11 +11,17 @@ import GenericModal from "../../components/Shared/GenericModal"
 import { loadTransactionsAttempt } from "./actions"
 import { IApplicationState } from "../../store/types"
 import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
-import IntervalChooser, { ChartTimeframe, timeframes, defaultTimeframe } from "../../components/Shared/IntervalChooser"
+import IntervalChooser, {
+    ChartTimeframe,
+    timeframes,
+    defaultTimeframe,
+} from "../../components/Shared/IntervalChooser"
 import moment from "../../helpers/moment-helper"
 
-
-class RecentTransactionsComponent extends React.Component<Props, InternalState> {
+class RecentTransactionsComponent extends React.Component<
+    Props,
+    InternalState
+> {
     constructor(props: Props) {
         super(props)
         this.state = {
@@ -33,7 +39,9 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
                     <div className="float-right">
                         <IntervalChooser
                             timeframes={timeframes}
-                            onChange={(timeframe: ChartTimeframe) => this.setState({ selectedTimeframe: timeframe })}
+                            onChange={(timeframe: ChartTimeframe) =>
+                                this.setState({ selectedTimeframe: timeframe })
+                            }
                             selectedValue={this.state.selectedTimeframe}
                         />
                     </div>
@@ -43,7 +51,10 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
                     </Card.Title>
                 </Card.Header>
 
-                <ComponentPlaceHolder type='text' rows={7} ready={!this.props.isLoading}>
+                <ComponentPlaceHolder
+                    type="text"
+                    rows={7}
+                    ready={!this.props.isLoading}>
                     <TransactionTable
                         items={txList}
                         onItemClick={_.bind(this.itemClickHandler, this)}
@@ -56,11 +67,9 @@ class RecentTransactionsComponent extends React.Component<Props, InternalState> 
                     footer={true}
                     title="Transaction details"
                     show={this.state.showModal}
-                    onHide={() => this.setState({ showModal: false })}
-                >
+                    onHide={() => this.setState({ showModal: false })}>
                     <TransactionDetailsComponent tx={this.state.selectedItem} />
                 </GenericModal>
-
             </Card>
         )
     }
@@ -96,13 +105,22 @@ interface DispatchProps {
 }
 type Props = OwnProps & StateProps & DispatchProps
 
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): StateProps => {
+const mapStateToProps = (
+    state: IApplicationState,
+    ownProps: OwnProps
+): StateProps => {
     return {
         isLoading: state.transactions.getTransactionsAttempting,
         getTxList: (timeframe: ChartTimeframe) => {
-            const startTimestamp = moment.default().subtract(timeframe.days, "days").unix()
-            return _.filter(ownProps.txList, tx => tx.getTimestamp().unix() >= startTimestamp)
-        }
+            const startTimestamp = moment
+                .default()
+                .subtract(timeframe.days, "days")
+                .unix()
+            return _.filter(
+                ownProps.txList,
+                (tx) => tx.getTimestamp().unix() >= startTimestamp
+            )
+        },
     }
 }
 
@@ -110,4 +128,7 @@ const mapDispatchtoProps = {
     // loadTransactionsAttempt
 }
 
-export default connect(mapStateToProps, mapDispatchtoProps)(RecentTransactionsComponent)
+export default connect(
+    mapStateToProps,
+    mapDispatchtoProps
+)(RecentTransactionsComponent)

@@ -56,8 +56,8 @@ class _FiatAmount extends React.Component<FiatAmountProps> {
                 {showCurrency ? (
                     <span className="currency">{this.props.currency}</span>
                 ) : (
-                        ""
-                    )}
+                    ""
+                )}
             </span>
         )
     }
@@ -68,7 +68,7 @@ interface FiatAmountOwnProps {
     getCurrentExchangeRate: (currencyCode: string) => number
 }
 
-interface FiatAmountDispatchProps { }
+interface FiatAmountDispatchProps {}
 
 const mapStateToProps = (state: IApplicationState) => {
     return {

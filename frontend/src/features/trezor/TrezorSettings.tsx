@@ -30,8 +30,7 @@ class TrezorSettings extends React.Component<Props> {
                 <div className="text-right">
                     <Button
                         onClick={() => this.reloadDevices()}
-                        variant="secondary"
-                    >
+                        variant="secondary">
                         <FontAwesomeIcon icon={faSyncAlt} /> Refresh
                     </Button>
                 </div>

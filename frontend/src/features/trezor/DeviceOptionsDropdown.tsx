@@ -12,12 +12,10 @@ class DeviceOptionsDropdown extends React.Component<Props> {
         return (
             <Dropdown
                 alignRight
-                onSelect={(evtKey: string) => this.menuHandler(evtKey)}
-            >
+                onSelect={(evtKey: string) => this.menuHandler(evtKey)}>
                 <Dropdown.Toggle
                     id={"trezor-device-options-dropdown"}
-                    className="no-arrow mt-3"
-                >
+                    className="no-arrow mt-3">
                     <div className="text-muted">
                         <FontAwesomeIcon icon={faEllipsisV} />
                     </div>
@@ -27,8 +25,7 @@ class DeviceOptionsDropdown extends React.Component<Props> {
                         eventKey={
                             StakingToolsMenuItems[StakingToolsMenuItems.REVOKE]
                         }
-                        disabled={true}
-                    >
+                        disabled={true}>
                         Forget device
                     </Dropdown.Item>
 
@@ -36,8 +33,7 @@ class DeviceOptionsDropdown extends React.Component<Props> {
                         eventKey={
                             StakingToolsMenuItems[StakingToolsMenuItems.REVOKE]
                         }
-                        disabled={true}
-                    >
+                        disabled={true}>
                         Settings...
                     </Dropdown.Item>
                 </Dropdown.Menu>

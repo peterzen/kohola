@@ -29,8 +29,7 @@ export const NetworkSelector = (props: {
             name={props.name}
             defaultValue={props.defaultValue.toString()}
             onChange={props.onChange}
-            as="select"
-        >
+            as="select">
             <option value="0">MAINNET</option>
             <option value="1">TESTNET</option>
             <option value="2">SIMNET</option>
@@ -104,8 +103,7 @@ export default class RPCEndpointConfigForm extends React.Component<
                 ref={this.state.formRef}
                 validated={this.state.formIsValidated && !this.props.error}
                 onSubmit={_.bind(this.handleFormSubmit, this)}
-                className="m-0"
-            >
+                className="m-0">
                 <Form.Group>
                     {/* <Form.Label>Network</Form.Label> */}
                     <NetworkSelector
@@ -173,8 +171,7 @@ export default class RPCEndpointConfigForm extends React.Component<
                             <Button
                                 variant="secondary"
                                 size="sm"
-                                onClick={_.bind(this.browseFile, this)}
-                            >
+                                onClick={_.bind(this.browseFile, this)}>
                                 Browse...
                             </Button>
                         </Col>
@@ -245,8 +242,7 @@ export default class RPCEndpointConfigForm extends React.Component<
                     <Button
                         disabled={!this.state.isDirty}
                         type="submit"
-                        variant="primary"
-                    >
+                        variant="primary">
                         Save
                     </Button>
                 </div>
@@ -372,8 +368,7 @@ export class EditEndpointModal extends React.Component<
             <GenericModal
                 title={this.props.title}
                 show={this.props.show}
-                onHide={this.props.onHide}
-            >
+                onHide={this.props.onHide}>
                 <RPCEndpointConfigForm {...this.props} />
             </GenericModal>
         )

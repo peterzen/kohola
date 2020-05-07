@@ -13,7 +13,11 @@ import {
     IndexedWalletAccounts,
     WalletBalance,
 } from "../../middleware/models"
-import { loadNextAccountAttempt, doRenameAccountAttempt, isAccountVisible } from "./accountSlice"
+import {
+    loadNextAccountAttempt,
+    doRenameAccountAttempt,
+    isAccountVisible,
+} from "./accountSlice"
 import PassphraseEntryDialog, {
     askPassphrase,
 } from "../../components/Shared/PassphraseEntryDialog"
@@ -71,7 +75,10 @@ interface IAddAccountProps {
     onEditComplete: (value: string) => void
 }
 
-class AddAccountComponent extends React.Component<IAddAccountProps, { visible: boolean }> {
+class AddAccountComponent extends React.Component<
+    IAddAccountProps,
+    { visible: boolean }
+> {
     constructor(props: IAddAccountProps) {
         super(props)
         this.state = {
@@ -85,8 +92,7 @@ class AddAccountComponent extends React.Component<IAddAccountProps, { visible: b
                 <Button
                     variant="secondary"
                     size="sm"
-                    onClick={() => this.setState({ visible: !toggle })}
-                >
+                    onClick={() => this.setState({ visible: !toggle })}>
                     <FontAwesomeIcon icon={faPlus} /> Add account...
                 </Button>
                 {this.state.visible && this.props.nextAccountResponse == null && (
@@ -165,11 +171,19 @@ class AccountsSetup extends React.Component<Props, InternalState> {
                 {accounts.map((account) => {
                     const accountNumber = account.getAccountNumber()
 
-                    const totalBalance = this.props.accountBalances[accountNumber] ?
-                        this.props.accountBalances[accountNumber].getTotal() : 0
+                    const totalBalance = this.props.accountBalances[
+                        accountNumber
+                    ]
+                        ? this.props.accountBalances[accountNumber].getTotal()
+                        : 0
 
-                    const votingAuthBalance = this.props.accountBalances[accountNumber] ?
-                        this.props.accountBalances[accountNumber].getVotingAuthority() : 0
+                    const votingAuthBalance = this.props.accountBalances[
+                        accountNumber
+                    ]
+                        ? this.props.accountBalances[
+                              accountNumber
+                          ].getVotingAuthority()
+                        : 0
 
                     return (
                         <Row key={`account-row-${accountNumber}`}>
@@ -183,8 +197,7 @@ class AccountsSetup extends React.Component<Props, InternalState> {
                                                 this.setState({
                                                     editable: accountNumber,
                                                 })
-                                            }
-                                        >
+                                            }>
                                             <FontAwesomeIcon
                                                 icon={faPencilAlt}
                                             />
@@ -214,11 +227,17 @@ class AccountsSetup extends React.Component<Props, InternalState> {
                             </Col>
                             <Col xs={2}>
                                 <Form.Check
-                                    checked={!this.props.isAccountVisible(accountNumber)}
+                                    checked={
+                                        !this.props.isAccountVisible(
+                                            accountNumber
+                                        )
+                                    }
                                     type="switch"
                                     id={`account-visibility-${accountNumber}`}
                                     label=""
-                                    onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                                    onChange={(
+                                        e: React.FormEvent<HTMLInputElement>
+                                    ) =>
                                         this.props.updateAccountPreference(
                                             this.props.walletEndpointId,
                                             accountNumber,
@@ -270,7 +289,7 @@ const mapStateToProps = function (state: IApplicationState): OwnProps {
         errorNextAccount: state.accounts.errorNextAccount,
         isAccountVisible: (accountNumber: number) => {
             return isAccountVisible(state, accountNumber)
-        }
+        },
     }
 }
 

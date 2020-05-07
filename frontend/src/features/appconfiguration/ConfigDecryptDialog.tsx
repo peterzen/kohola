@@ -24,8 +24,7 @@ class ConfigDecryptDialog extends React.Component<Props, InternalState> {
             <GenericModal
                 title="Unlock configuration"
                 show={this.props.modalShown}
-                onEntered={() => this.passphraseInnerRef.current!.focus()}
-            >
+                onEntered={() => this.passphraseInnerRef.current!.focus()}>
                 <Form onSubmit={_.bind(this.handleFormSubmit, this)}>
                     <Form.Group>
                         <Form.Control
@@ -43,7 +42,7 @@ class ConfigDecryptDialog extends React.Component<Props, InternalState> {
                             This passphrase will be used to decrypt your
                             application configuration.
                         </Form.Text>
-                        <ErrorAlert error={this.props.getConfigError}/>
+                        <ErrorAlert error={this.props.getConfigError} />
                     </Form.Group>
                     <div className="text-right">
                         <Button className="primary" type="submit">

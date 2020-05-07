@@ -40,15 +40,13 @@ class EditableEndpointGrid extends React.Component<Props, InternalState> {
                     {this.state.editable ? (
                         <Button
                             variant="primary"
-                            onClick={() => this.toggleEditable()}
-                        >
+                            onClick={() => this.toggleEditable()}>
                             <FontAwesomeIcon icon={faCheck} /> Done
                         </Button>
                     ) : (
                         <Button
                             variant="secondary"
-                            onClick={() => this.toggleEditable()}
-                        >
+                            onClick={() => this.toggleEditable()}>
                             <FontAwesomeIcon icon={faCog} /> Settings
                         </Button>
                     )}

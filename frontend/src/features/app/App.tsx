@@ -51,10 +51,15 @@ class App extends React.Component<Props> {
                                     atEnter={{ opacity: 0 }}
                                     atLeave={{ opacity: 0 }}
                                     atActive={{ opacity: 1 }}
-                                    className="switch-wrapper"
-                                >
-                                    <Route path="/staking" component={Staking} />
-                                    <Route path="/settings" component={Settings} />
+                                    className="switch-wrapper">
+                                    <Route
+                                        path="/staking"
+                                        component={Staking}
+                                    />
+                                    <Route
+                                        path="/settings"
+                                        component={Settings}
+                                    />
                                     <Route
                                         path="/account/:accountNumber"
                                         component={AccountDetails}

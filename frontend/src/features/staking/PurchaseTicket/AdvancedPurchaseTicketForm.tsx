@@ -48,8 +48,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
                             this.state.formIsValidated && !this.props.error
                         }
                         onSubmit={_.bind(this.handleFormSubmit, this)}
-                        className="m-0"
-                    >
+                        className="m-0">
                         <Form.Group as={Row}>
                             <Col sm={4}>
                                 <Form.Label>From account</Form.Label>
@@ -77,8 +76,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
                                             this.state.formRef.current
                                                 .num_tickets.value > 0 &&
                                                 this.state.formRef.current.num_tickets.stepDown()
-                                        }}
-                                    >
+                                        }}>
                                         <FontAwesomeIcon icon={faMinus} />
                                     </Button>
                                 </InputGroup.Prepend>
@@ -96,8 +94,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
                                         variant="secondary"
                                         onClick={() => {
                                             this.state.formRef.current.num_tickets.stepUp()
-                                        }}
-                                    >
+                                        }}>
                                         <FontAwesomeIcon icon={faPlus} />
                                     </Button>
                                 </InputGroup.Append>
@@ -138,8 +135,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
                     <Button
                         type="submit"
                         onClick={_.bind(this.handleFormSubmit, this)}
-                        variant="primary"
-                    >
+                        variant="primary">
                         Purchase
                     </Button>
                 </Card.Footer>

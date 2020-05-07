@@ -22,8 +22,7 @@ class SendTransaction extends React.Component<OwnProps, InternalState> {
                 <Button
                     variant="primary"
                     className=""
-                    onClick={_.bind(this.showSendTxModal, this)}
-                >
+                    onClick={_.bind(this.showSendTxModal, this)}>
                     Send
                 </Button>
 
