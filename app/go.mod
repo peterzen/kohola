@@ -6,7 +6,7 @@ require (
 	decred.org/dcrwallet v1.2.3-0.20200322211959-ec65a80865c2
 	github.com/decred/dcrd/chaincfg/chainhash v1.0.2
 	github.com/decred/dcrd/chaincfg/v3 v3.0.0-20200311044114-143c1884e4c8
-	github.com/decred/dcrd/dcrutil v1.3.0
+	github.com/decred/dcrd/dcrutil v1.4.0
 	github.com/decred/dcrd/dcrutil/v3 v3.0.0-20200311044114-143c1884e4c8
 	github.com/decred/dcrd/txscript v1.1.0
 	github.com/decred/dcrd/txscript/v3 v3.0.0-20200311044114-143c1884e4c8
