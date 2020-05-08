@@ -44,11 +44,11 @@ import {
     loadTicketsAttempt,
 } from "../../features/staking/stakingSlice"
 import { Transaction } from "../../middleware/models"
-import { displayTXNotification } from "../app/appSlice"
 import { hexToRaw } from "../../helpers/byteActions"
 import { CreateTransactionRequest } from "../../proto/walletgui_pb"
 import { Moment } from "moment"
 import { timestampToBlockHeight } from "../../helpers/wallet"
+import { displayTXNotification } from "../app/notifications/notifications"
 
 
 export const setTransactionsTimerange: ActionCreator<any> = (

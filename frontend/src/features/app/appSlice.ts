@@ -2,6 +2,8 @@ import _ from "lodash"
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit"
 import { batch } from "react-redux"
 
+import { ThemeConfig } from "bootstrap-darkmode"
+
 import store, { history } from "../../store/store"
 
 import { GRPCEndpoint } from "../../proto/walletgui_pb"
@@ -26,12 +28,6 @@ import {
 } from "../transactions/actions"
 import { loadWalletBalance } from "../balances/walletBalanceSlice"
 import { loadTicketsAttempt, loadStakeInfoAttempt, loadStakingHistory } from "../staking/stakingSlice"
-import {
-    showTransactionToast,
-    showInfoToast,
-    showDangerToast,
-} from "./fixtures/Toasts"
-import { Transaction } from "../../middleware/models"
 import AppBackend from "../../middleware/appbackend"
 import {
     getWalletEndpoints,
@@ -39,16 +35,13 @@ import {
 } from "../appconfiguration/settingsSlice"
 import {
     CurrencyNet,
-    TransactionType,
-    TransactionDirection,
 } from "../../constants"
 import { subscribeExchangeRateFeed } from "../market/marketSlice"
 import { loadWalletConfig } from "./walletSlice"
+import { showInfoToast, showDangerToast } from "./notifications/notifications"
 
 const w = window as any
 
-import { ThemeConfig } from "bootstrap-darkmode"
-import { AmountString } from "../../helpers/helpers"
 
 export interface AppState {
     readonly isWalletConnected: boolean
@@ -285,78 +278,11 @@ export const initializeStore: ActionCreator<any> = () => {
     }
 }
 
-export const displayTXNotification: ActionCreator<any> = (tx: Transaction) => {
-    return async () => {
-        try {
-            const transactionProps = getDesktopTXNotificationProps(tx)
-            await AppBackend.sendDesktopNotification(
-                transactionProps.title,
-                transactionProps.message
-            )
-        } catch (error) {
-            showTransactionToast(tx)
-        }
-    }
-}
-
-const getDesktopTXNotificationProps = (tx: Transaction) => {
-    const notificationProps: IDesktopNotificationProps = {
-        title: "",
-        message: "",
-    }
-
-    const amountString = AmountString(tx.getAmount(), true)
-
-    switch (tx.getType()) {
-        case TransactionType.COINBASE:
-            notificationProps.title = "DCR mined"
-            notificationProps.message = amountString
-            break
-
-        case TransactionType.REGULAR:
-            switch (tx.getDirection()) {
-                case TransactionDirection.TRANSACTION_DIR_RECEIVED:
-                    notificationProps.title = "Funds received"
-                    break
-                case TransactionDirection.TRANSACTION_DIR_SENT:
-                    notificationProps.title = "Transaction sent"
-                    break
-                case TransactionDirection.TRANSACTION_DIR_TRANSFERRED:
-                    notificationProps.title = "Transfer completed"
-                    break
-            }
-            notificationProps.message = amountString
-            break
-
-        case TransactionType.TICKET_PURCHASE:
-            notificationProps.title = "Ticket purchased"
-            notificationProps.message = amountString
-            break
-
-        case TransactionType.VOTE:
-            notificationProps.title = "Vote"
-            notificationProps.message = `Voted on ticket`
-            break
-
-        case TransactionType.REVOCATION:
-            notificationProps.title = "Ticket revoked"
-            notificationProps.message = ``
-            break
-    }
-    return notificationProps
-}
-
-interface IDesktopNotificationProps {
-    title: string
-    message: string
-}
-
 export const openURL: ActionCreator<any> = (url: string) => {
     return async () => {
         AppBackend.openURL(url)
     }
 }
-
 
 
 // selectors
