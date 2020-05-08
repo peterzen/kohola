@@ -14,7 +14,7 @@ require (
 	github.com/decred/dcrwallet/wallet v1.3.0
 	github.com/getlantern/systray v0.0.0-20200109124156-9abdfb6448b3
 	github.com/go-resty/resty/v2 v2.2.0
-	github.com/golang/protobuf v1.3.5
+	github.com/golang/protobuf v1.4.1
 	github.com/gotk3/gotk3 v0.0.0-20200129211157-69caac910e50 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/markbates/pkger v0.15.0
