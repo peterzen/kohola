@@ -22,7 +22,7 @@ require (
 	github.com/superoo7/go-gecko v1.0.0
 	github.com/zserge/lorca v0.1.9
 	github.com/zserge/webview v0.0.0-20200410160118-50e4bcc420ab
-	google.golang.org/grpc v1.28.0
+	google.golang.org/grpc v1.29.1
 )
 
 //replace decred.org/dcrwallet => ../deps/dcrwallet
