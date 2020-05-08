@@ -20,7 +20,7 @@ WORKDIR frontend/
 RUN yarn && yarn build
 
 # stage II - Go build & packaging
-FROM golang:1.13-stretch
+FROM golang:1.14-stretch
 
 RUN apt-get update && apt-get install -y -q --no-install-recommends \
 	libwebkit2gtk-4.0-dev \
