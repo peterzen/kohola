@@ -21,6 +21,8 @@ func main() {
 	// 	log.Println(http.ListenAndServe("localhost:6060", nil))
 	// }()
 
+	walletgui.InitConfig("")
+
 	WalletAPIInit()
 
 	w := webview.New(false)

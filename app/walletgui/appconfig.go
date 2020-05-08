@@ -18,6 +18,7 @@ import (
 	"path/filepath"
 
 	"github.com/decred/dcrd/dcrutil/v3"
+	"github.com/gen2brain/dlgs"
 	"github.com/golang/protobuf/proto"
 	"github.com/peterzen/kohola/webview"
 )
@@ -71,6 +72,22 @@ func GetConfigMarshaled() ([]byte, error) {
 	return b, err
 }
 
+// ErrConfigDecrypt describes an error returned by LoadConfig when the config decryption failed.
+type ErrConfigDecrypt struct {
+	message string
+}
+
+// NewErrConfigDecrypt returns a new ErrConfigDecrypt typed error object
+func NewErrConfigDecrypt(message string) *ErrConfigDecrypt {
+	return &ErrConfigDecrypt{
+		message: message,
+	}
+}
+
+func (e *ErrConfigDecrypt) Error() string {
+	return e.message
+}
+
 // LoadConfig reads the config file into AppConfiguration struct
 func LoadConfig(passphrase string) error {
 	if !fileExists(configFilePath) {
@@ -94,14 +111,14 @@ func LoadConfig(passphrase string) error {
 	}
 	if err = json.Unmarshal(content, cfg); err != nil {
 		if passphrase == "" {
-			return err
+			return NewErrConfigDecrypt("DECRYPT_ERROR")
 		}
 		var decryptedContent, err = decrypt(passphrase, string(content))
 		if err != nil {
 			return err
 		}
 		if err = json.Unmarshal(decryptedContent, cfg); err != nil {
-			return err
+			return NewErrConfigDecrypt("DECRYPT_ERROR")
 		}
 	}
 	savedPassphrase = passphrase
@@ -218,9 +235,42 @@ func decrypt(passphrase string, data string) (decodedmess []byte, err error) {
 	return
 }
 
+// InitConfig try to initialize application config.
+// If it is protected, the user will be asked for decryption passphrase using native password dialog.
+func InitConfig(passphrase string) {
+	err := LoadConfig(passphrase)
+	if err != nil {
+		switch err.(type) {
+		case *ErrConfigDecrypt:
+			fmt.Println("ErrConfigDecrypt", err)
+			var message = "Enter your passphrase to continue:"
+			if passphrase != "" {
+				message = "Error: invalid passphrase. Please enter your passphrase again:"
+			}
+			passphraseEntered, b, err := dlgs.Password("Kohala is locked.", message)
+			// user pressed Cancel button
+			if !b {
+				os.Exit(3)
+			}
+			if err != nil {
+				panic(err)
+			}
+
+			InitConfig(passphraseEntered)
+		default:
+			fmt.Println("Could not read the config", err)
+		}
+	}
+}
+
 // ExportConfigAPI exports functions to the UI
 func ExportConfigAPI(w webview.Interface) {
 	w.Bind("walletgui__GetConfig", func(decryptionKey string) (r LorcaMessage) {
+		if HaveConfig() {
+			r.Payload, r.Err = GetConfigMarshaled()
+			return r
+		}
+
 		// signal the UI that the configuration is empty, needs initial setup
 		err := LoadConfig(decryptionKey)
 		if err != nil {
