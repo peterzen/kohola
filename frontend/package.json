@@ -74,7 +74,7 @@
         "trezor-link": "^1.7.0",
         "trezor.js": "^9.1.0",
         "tslib": "^1.10.0",
-        "uuid": "^7.0.2"
+        "uuid": "^8.0.0"
     },
     "devDependencies": {
         "@babel/core": "7.9.6",
