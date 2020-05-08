@@ -68,6 +68,18 @@ const AppBackend = {
             throw e
         }
     },
+
+    sendDesktopNotification: async function (message: string, title: string) {
+        try {
+            const r = await w.walletgui__SendDesktopNotification(message, title)
+            if (r.error != undefined) {
+                throw r.error
+            }            
+        } catch (e) {
+            console.error("sendDesktopNotification error", e)
+            throw e
+        }
+    },
 }
 
 export default AppBackend

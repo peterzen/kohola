@@ -57,6 +57,7 @@ func bindUIAPI(w webview.Interface) {
 
 	walletgui.ExportConfigAPI(w)
 	walletgui.ExportGUIAPI(w)
+	walletgui.ExportDesktopNotificationAPI(w)
 	ExportWalletAPI(w)
 	ExportStakingHistoryAPI(w)
 	ExportDcrdataAPI(w)
