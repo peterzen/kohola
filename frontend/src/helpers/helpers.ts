@@ -3,6 +3,8 @@ import _ from "lodash"
 import * as Moment from "moment"
 import { extendMoment } from "moment-range"
 const moment = extendMoment(Moment)
+import { ATOMS_DIVISOR } from "../constants"
+import { sprintf } from "sprintf-js"
 
 export function formatTimestamp(ts: Moment.Moment): string {
     return ts.fromNow()
@@ -67,3 +69,19 @@ export function makeDateRangeFromDays(days: number, fromDate = Moment.default())
     )
 }
 
+export function AmountString(
+    amount: number,
+    showCurrency: boolean,
+    rounding: number = 8
+) {
+    if (amount == undefined || !isFinite(amount)) return ""
+    const dcrAmount = amount / ATOMS_DIVISOR
+    const split = dcrAmount.toFixed(rounding).toString().split(".")
+    const head = [split[0], split[1].slice(0, 2)].join(".")
+    const tail = split[1].slice(2).replace(/0{1,3}$/, "")
+    const negativeZero = parseFloat(head) === 0 && dcrAmount < 0
+
+    return (sprintf("%s%02.02f", negativeZero ? "-" : "", head) +
+        tail +
+        (showCurrency ? "DCR" : ""))
+}

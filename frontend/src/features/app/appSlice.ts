@@ -37,13 +37,18 @@ import {
     getWalletEndpoints,
     getConfiguration,
 } from "../appconfiguration/settingsSlice"
-import { CurrencyNet } from "../../constants"
+import {
+    CurrencyNet,
+    TransactionType,
+    TransactionDirection,
+} from "../../constants"
 import { subscribeExchangeRateFeed } from "../market/marketSlice"
 import { loadWalletConfig } from "./walletSlice"
 
 const w = window as any
 
 import { ThemeConfig } from "bootstrap-darkmode"
+import { AmountString } from "../../helpers/helpers"
 
 export interface AppState {
     readonly isWalletConnected: boolean
@@ -146,7 +151,7 @@ export const launchApp: ActionCreator<any> = () => {
                     .appconfiguration.appConfig.getUiPreferences()
                     ?.getTheme() == 1
                     ? "dark"
-                    : "light";
+                    : "light"
             return theme
         }
         themeConfig.initTheme()
@@ -178,7 +183,7 @@ export const connectWallet: ActionCreator<any> = (
             dispatch(connectWalletSuccess(connectedEndpoint))
             dispatch(initializeStore()).then(() => {
                 setTimeout(() => {
-                    ; (history.location.pathname == "/login" ||
+                    (history.location.pathname == "/login" ||
                         history.location.pathname == "/") &&
                         history.push("/wallet")
                     setTimeout(() => {
@@ -282,10 +287,69 @@ export const initializeStore: ActionCreator<any> = () => {
 
 export const displayTXNotification: ActionCreator<any> = (tx: Transaction) => {
     return async () => {
-        showTransactionToast(tx)
+        try {
+            const transactionProps = getDesktopTXNotificationProps(tx)
+            await AppBackend.sendDesktopNotification(
+                transactionProps.title,
+                transactionProps.message
+            )
+        } catch (error) {
+            showTransactionToast(tx)
+        }
     }
 }
 
+const getDesktopTXNotificationProps = (tx: Transaction) => {
+    const notificationProps: IDesktopNotificationProps = {
+        title: "",
+        message: "",
+    }
+
+    const amountString = AmountString(tx.getAmount(), true)
+
+    switch (tx.getType()) {
+        case TransactionType.COINBASE:
+            notificationProps.title = "DCR mined"
+            notificationProps.message = amountString
+            break
+
+        case TransactionType.REGULAR:
+            switch (tx.getDirection()) {
+                case TransactionDirection.TRANSACTION_DIR_RECEIVED:
+                    notificationProps.title = "Funds received"
+                    break
+                case TransactionDirection.TRANSACTION_DIR_SENT:
+                    notificationProps.title = "Transaction sent"
+                    break
+                case TransactionDirection.TRANSACTION_DIR_TRANSFERRED:
+                    notificationProps.title = "Transfer completed"
+                    break
+            }
+            notificationProps.message = amountString
+            break
+
+        case TransactionType.TICKET_PURCHASE:
+            notificationProps.title = "Ticket purchased"
+            notificationProps.message = amountString
+            break
+
+        case TransactionType.VOTE:
+            notificationProps.title = "Vote"
+            notificationProps.message = `Voted on ticket`
+            break
+
+        case TransactionType.REVOCATION:
+            notificationProps.title = "Ticket revoked"
+            notificationProps.message = ``
+            break
+    }
+    return notificationProps
+}
+
+interface IDesktopNotificationProps {
+    title: string
+    message: string
+}
 
 export const openURL: ActionCreator<any> = (url: string) => {
     return async () => {
