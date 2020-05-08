@@ -15,17 +15,16 @@ require (
 	github.com/gen2brain/beeep v0.0.0-20200420150314-13046a26d502
 	github.com/getlantern/systray v0.0.0-20200109124156-9abdfb6448b3
 	github.com/go-resty/resty/v2 v2.2.0
-	github.com/golang/protobuf v1.3.5
 	github.com/gopherjs/gopherjs v0.0.0-20200217142428-fce0ec30dd00 // indirect
 	github.com/gotk3/gotk3 v0.0.0-20200129211157-69caac910e50 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
-	github.com/markbates/pkger v0.15.0
+	github.com/markbates/pkger v0.15.1
 	github.com/sqweek/dialog v0.0.0-20200304031853-0dcd55bfe06a
 	github.com/superoo7/go-gecko v1.0.0
 	github.com/zserge/lorca v0.1.9
 	github.com/zserge/webview v0.0.0-20200410160118-50e4bcc420ab
 	golang.org/x/sys v0.0.0-20200501145240-bc7a7d42d5c3 // indirect
-	google.golang.org/grpc v1.28.0
+	google.golang.org/grpc v1.29.1
 )
 
 //replace decred.org/dcrwallet => ../deps/dcrwallet
