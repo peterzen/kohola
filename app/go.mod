@@ -12,9 +12,11 @@ require (
 	github.com/decred/dcrd/txscript/v3 v3.0.0-20200311044114-143c1884e4c8
 	github.com/decred/dcrd/wire v1.3.0
 	github.com/decred/dcrwallet/wallet v1.3.0
+	github.com/gen2brain/dlgs v0.0.0-20200211102745-b9c2664df42f
 	github.com/getlantern/systray v0.0.0-20200109124156-9abdfb6448b3
 	github.com/go-resty/resty/v2 v2.2.0
 	github.com/golang/protobuf v1.3.5
+	github.com/gopherjs/gopherjs v0.0.0-20200217142428-fce0ec30dd00 // indirect
 	github.com/gotk3/gotk3 v0.0.0-20200129211157-69caac910e50 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/markbates/pkger v0.15.0
