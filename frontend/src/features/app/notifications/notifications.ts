@@ -95,7 +95,7 @@ export interface NotificationProps {
 }
 
 
-export const sendNotification = (ntfnProps: NotificationProps) => {
+export const sendNotification = async (ntfnProps: NotificationProps) => {
     try {
         await AppBackend.sendDesktopNotification(
             ntfnProps.title,
