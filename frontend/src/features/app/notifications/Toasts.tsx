@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { NotificationProps } from "./notifications"
 
+import "./Toasts.scss"
 
 export const ToastNotification = (props: NotificationProps) => {
     return (
