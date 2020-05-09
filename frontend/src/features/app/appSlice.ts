@@ -44,6 +44,7 @@ import { loadWalletConfig } from "./walletSlice"
 const w = window as any
 
 import { ThemeConfig } from "bootstrap-darkmode"
+import { enableTrezor } from "../trezor/trezorSlice"
 
 export interface AppState {
     readonly isWalletConnected: boolean
@@ -184,6 +185,7 @@ export const connectWallet: ActionCreator<any> = (
                     setTimeout(() => {
                         dispatch(showProgressbar(false))
                         dispatch(setWalletOpened())
+                        dispatch(enableTrezor())
                         dispatch(
                             endpointStatusChange({
                                 isEndpointConnected: true,
