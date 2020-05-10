@@ -12867,7 +12867,7 @@ react-timeseries-charts@^0.16.1:
     react-hot-loader "4.1.2"
     underscore "^1.8.3"
 
-react-toastify@*, react-toastify@^5.5.0:
+react-toastify@*:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-5.5.0.tgz#f55de44f6b5e3ce3b13b69e5bb4427f2c9404822"
   integrity sha512-jsVme7jALIFGRyQsri/g4YTsRuaaGI70T6/ikjwZMB4mwTZaCWqj5NqxhGrRStKlJc5npXKKvKeqTiRGQl78LQ==
@@ -12876,6 +12876,15 @@ react-toastify@*, react-toastify@^5.5.0:
     classnames "^2.2.6"
     prop-types "^15.7.2"
     react-transition-group "^4"
+
+react-toastify@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-6.0.0.tgz#743b729dcc681e36e29cf923462d01f1129deede"
+  integrity sha512-Zn1413jKOdEnw0sFgRLnKokyZB/wa7tkcoWCxKPpu1JaJ60DZQ+HLU3PJqOoAwWV3x0+cVaK9doQ305ows6BQA==
+  dependencies:
+    classnames "^2.2.6"
+    prop-types "^15.7.2"
+    react-transition-group "^4.4.1"
 
 react-transition-group@^2.5.0:
   version "2.9.0"
@@ -12891,6 +12900,16 @@ react-transition-group@^4, react-transition-group@^4.0.0, react-transition-group
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.3.0.tgz#fea832e386cf8796c58b61874a3319704f5ce683"
   integrity sha512-1qRV1ZuVSdxPlPf4O8t7inxUGpdyO5zG9IoNfJxSO0ImU2A1YWkEQvFPuIPZmMLkg5hYs7vv5mMOyfgSkvAwvw==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    dom-helpers "^5.0.1"
+    loose-envify "^1.4.0"
+    prop-types "^15.6.2"
+
+react-transition-group@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.1.tgz#63868f9325a38ea5ee9535d828327f85773345c9"
+  integrity sha512-Djqr7OQ2aPUiYurhPalTrVy9ddmFCCzwhqQmtN+J3+3DzLO209Fdr70QrN8Z3DsglWql6iY1lDWAfpFiBtuKGw==
   dependencies:
     "@babel/runtime" "^7.5.5"
     dom-helpers "^5.0.1"
