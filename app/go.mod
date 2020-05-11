@@ -10,7 +10,7 @@ require (
 	github.com/decred/dcrd/dcrutil/v3 v3.0.0-20200311044114-143c1884e4c8
 	github.com/decred/dcrd/txscript v1.1.0
 	github.com/decred/dcrd/txscript/v3 v3.0.0-20200311044114-143c1884e4c8
-	github.com/decred/dcrd/wire v1.3.0
+	github.com/decred/dcrd/wire/v2/v2 v2.1.0
 	github.com/decred/dcrwallet/wallet v1.3.0
 	github.com/gen2brain/dlgs v0.0.0-20200211102745-b9c2664df42f
 	github.com/getlantern/systray v0.0.0-20200109124156-9abdfb6448b3
