@@ -142,17 +142,17 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
         stakeinfo: state.staking.stakeinfo,
         ticketPrice: getTicketPrice(state),
         voteCounts: countFilteredEvents(
-            stakingHistory,
+            stakingHistory.value(),
             days,
             TransactionType.VOTE
         ),
         purchasedCounts: countFilteredEvents(
-            stakingHistory,
+            stakingHistory.value(),
             days,
             TransactionType.TICKET_PURCHASE
         ),
         revocationCounts: countFilteredEvents(
-            stakingHistory,
+            stakingHistory.value(),
             days,
             TransactionType.REVOCATION
         ),
