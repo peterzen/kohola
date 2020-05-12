@@ -21,7 +21,7 @@ import { NoRouteMatch } from "../../components/Shared/shared"
 
 import DevTools from "./fixtures/DevTools"
 import { IApplicationState } from "../../store/types"
-import { AppToastContainer } from "./fixtures/Toasts"
+import { AppToastContainer } from "./notifications/Toasts"
 
 import AppProgressIndicator from "./AppProgressIndicator"
 import AppSidebar from "./fixtures/AppSidebar"

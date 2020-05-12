@@ -2,6 +2,8 @@ import _ from "lodash"
 import { createSlice, PayloadAction, ActionCreator } from "@reduxjs/toolkit"
 import { batch } from "react-redux"
 
+import { ThemeConfig } from "bootstrap-darkmode"
+
 import store, { history } from "../../store/store"
 
 import { GRPCEndpoint } from "../../proto/walletgui_pb"
@@ -26,24 +28,20 @@ import {
 } from "../transactions/actions"
 import { loadWalletBalance } from "../balances/walletBalanceSlice"
 import { loadTicketsAttempt, loadStakeInfoAttempt, loadStakingHistory } from "../staking/stakingSlice"
-import {
-    showTransactionToast,
-    showInfoToast,
-    showDangerToast,
-} from "./fixtures/Toasts"
-import { Transaction } from "../../middleware/models"
 import AppBackend from "../../middleware/appbackend"
 import {
     getWalletEndpoints,
     getConfiguration,
 } from "../appconfiguration/settingsSlice"
-import { CurrencyNet } from "../../constants"
+import {
+    CurrencyNet,
+} from "../../constants"
 import { subscribeExchangeRateFeed } from "../market/marketSlice"
 import { loadWalletConfig } from "./walletSlice"
+import { showInfoToast, showDangerToast } from "./notifications/notifications"
 
 const w = window as any
 
-import { ThemeConfig } from "bootstrap-darkmode"
 
 export interface AppState {
     readonly isWalletConnected: boolean
@@ -146,7 +144,7 @@ export const launchApp: ActionCreator<any> = () => {
                     .appconfiguration.appConfig.getUiPreferences()
                     ?.getTheme() == 1
                     ? "dark"
-                    : "light";
+                    : "light"
             return theme
         }
         themeConfig.initTheme()
@@ -178,7 +176,7 @@ export const connectWallet: ActionCreator<any> = (
             dispatch(connectWalletSuccess(connectedEndpoint))
             dispatch(initializeStore()).then(() => {
                 setTimeout(() => {
-                    ; (history.location.pathname == "/login" ||
+                    (history.location.pathname == "/login" ||
                         history.location.pathname == "/") &&
                         history.push("/wallet")
                     setTimeout(() => {
@@ -280,19 +278,11 @@ export const initializeStore: ActionCreator<any> = () => {
     }
 }
 
-export const displayTXNotification: ActionCreator<any> = (tx: Transaction) => {
-    return async () => {
-        showTransactionToast(tx)
-    }
-}
-
-
 export const openURL: ActionCreator<any> = (url: string) => {
     return async () => {
         AppBackend.openURL(url)
     }
 }
-
 
 
 // selectors
