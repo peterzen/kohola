@@ -3,10 +3,13 @@ import _ from "lodash"
 
 import { Modal, Button } from "react-bootstrap"
 
-export default class GenericModal<P, S> extends React.Component<P & GenericModalProps, S> {
+export default class GenericModal<P, S> extends React.Component<
+    P & GenericModalProps,
+    S
+> {
     static defaultProps = {
-        onEntered: () => { },
-        onExit: () => { },
+        onEntered: () => {},
+        onExit: () => {},
         footer: false,
     }
 
@@ -19,8 +22,7 @@ export default class GenericModal<P, S> extends React.Component<P & GenericModal
                 onEntered={() => this.props.onEntered!()}
                 onExit={() => this.props.onExit!()}
                 show={this.props.show}
-                onHide={this.props.onHide}
-            >
+                onHide={this.props.onHide}>
                 <Modal.Header closeButton={this.props.onHide != undefined}>
                     <Modal.Title>{this.props.title}</Modal.Title>
                 </Modal.Header>
@@ -30,8 +32,7 @@ export default class GenericModal<P, S> extends React.Component<P & GenericModal
                         <Button
                             variant="secondary"
                             size="sm"
-                            onClick={this.props.onHide}
-                        >
+                            onClick={this.props.onHide}>
                             Close
                         </Button>
                     )}

@@ -86,8 +86,7 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
                                         disabled={
                                             this.props.isTicketBuyerRunning
                                         }
-                                        onClick={() => this.startTicketbuyer()}
-                                    >
+                                        onClick={() => this.startTicketbuyer()}>
                                         <FontAwesomeIcon icon={faPlay} /> Start
                                     </Button>
                                     <Button
@@ -95,8 +94,7 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
                                         disabled={
                                             !this.props.isTicketBuyerRunning
                                         }
-                                        onClick={() => this.stopTicketbuyer()}
-                                    >
+                                        onClick={() => this.stopTicketbuyer()}>
                                         <FontAwesomeIcon icon={faStop} /> Stop
                                     </Button>
                                 </span>
@@ -111,14 +109,12 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
                             onSubmit={_.bind(this.handleFormSubmit, this)}
                             className={
                                 this.props.inProgress ? "in-progress" : ""
-                            }
-                        >
+                            }>
                             <fieldset
                                 disabled={
                                     this.props.isTicketBuyerRunning ||
                                     this.props.runTicketBuyerAttempting
-                                }
-                            >
+                                }>
                                 <Row className="mb-4">
                                     <Col sm={6}>
                                         <Form.Group>
@@ -151,7 +147,10 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
                                                 placeholder="Amount"
                                                 onChange={onChange}
                                                 tabIndex={2}
-                                                defaultValue={request.getBalanceToMaintain() / ATOMS_DIVISOR}
+                                                defaultValue={
+                                                    request.getBalanceToMaintain() /
+                                                    ATOMS_DIVISOR
+                                                }
                                             />
                                             <InputGroup.Append>
                                                 <InputGroup.Text>
@@ -169,22 +168,19 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
                                     onSelect={(tab: string) =>
                                         this.activateVotingTab(tab)
                                     }
-                                    id="ticketbuyer-voting-tabs"
-                                >
+                                    id="ticketbuyer-voting-tabs">
                                     <Row>
                                         <Col sm={3}>
                                             <Nav
                                                 variant="pills"
-                                                className="flex-column"
-                                            >
+                                                className="flex-column">
                                                 <Nav.Item>
                                                     <Nav.Link
                                                         disabled={
                                                             this.props
                                                                 .isTicketBuyerRunning
                                                         }
-                                                        eventKey="voting_account"
-                                                    >
+                                                        eventKey="voting_account">
                                                         Voting account
                                                     </Nav.Link>
                                                 </Nav.Item>
@@ -194,8 +190,7 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
                                                             this.props
                                                                 .isTicketBuyerRunning
                                                         }
-                                                        eventKey="voting_address"
-                                                    >
+                                                        eventKey="voting_address">
                                                         Voting address
                                                     </Nav.Link>
                                                 </Nav.Item>
@@ -205,8 +200,7 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
                                                             this.props
                                                                 .isTicketBuyerRunning
                                                         }
-                                                        eventKey="pool"
-                                                    >
+                                                        eventKey="pool">
                                                         VSP (pool address)
                                                     </Nav.Link>
                                                 </Nav.Item>
@@ -235,8 +229,7 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
 
                                                 <Tab.Pane
                                                     eventKey="voting_address"
-                                                    title="Voting address"
-                                                >
+                                                    title="Voting address">
                                                     <Form.Group>
                                                         <Form.Label>
                                                             Voting address
@@ -254,8 +247,7 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
 
                                                 <Tab.Pane
                                                     eventKey="pool"
-                                                    title="VSP (pool address)"
-                                                >
+                                                    title="VSP (pool address)">
                                                     <Form.Group>
                                                         <Form.Label>
                                                             Pool address
@@ -295,8 +287,7 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
                                     <Button
                                         disabled={!this.state.isDirty}
                                         type="submit"
-                                        variant="primary"
-                                    >
+                                        variant="primary">
                                         Save settings
                                     </Button>
                                 </div>
@@ -421,8 +412,10 @@ interface OwnProps {
 const mapStateToProps = (state: IApplicationState) => {
     const walletEndpointId = getConnectedEndpointId(state)
     const request =
-        getAppConfig(state).getWalletPreferencesMap().get(walletEndpointId)?.getRunAutoBuyerRequestDefaults() ||
-        new RunTicketBuyerRequest()
+        getAppConfig(state)
+            .getWalletPreferencesMap()
+            .get(walletEndpointId)
+            ?.getRunAutoBuyerRequestDefaults() || new RunTicketBuyerRequest()
     return {
         error: state.appconfiguration.setConfigError,
         inProgress: state.appconfiguration.setConfigAttempting,

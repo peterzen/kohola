@@ -22,8 +22,7 @@ class ExchangeRateChart extends React.Component<Props> {
                             right: 0,
                             left: 0,
                             bottom: 0,
-                        }}
-                    >
+                        }}>
                         <XAxis dataKey="name" minTickGap={20} />
                         <YAxis domain={["auto", "auto"]} />
                         <Line
@@ -76,7 +75,7 @@ const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
             state,
             ownProps.currencyCode,
             ownProps.days
-        )
+        ),
     }
 }
 

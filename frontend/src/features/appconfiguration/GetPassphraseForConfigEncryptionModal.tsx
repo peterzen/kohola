@@ -22,8 +22,7 @@ export class GetPassphraseForConfigEncryptionModal extends React.Component<
                 title="Enter passphrase"
                 show={this.props.show}
                 onEntered={() => this.state.passphraseInnerRef.current.focus()}
-                onHide={this.props.onHide}
-            >
+                onHide={this.props.onHide}>
                 <Form>
                     <Form.Group>
                         <Form.Control
@@ -59,15 +58,13 @@ export class GetPassphraseForConfigEncryptionModal extends React.Component<
                         <div className="text-right pr-4">
                             <Button
                                 variant="secondary"
-                                onClick={this.props.onHide}
-                            >
+                                onClick={this.props.onHide}>
                                 Cancel
                             </Button>
                             <Button
                                 type="submit"
                                 onClick={_.bind(this.handleFormSubmit, this)}
-                                variant="primary"
-                            >
+                                variant="primary">
                                 Submit
                             </Button>
                         </div>

@@ -15,36 +15,36 @@ import Block from "./Block"
 import { publishUnminedTransactions } from "./actions"
 import { AppError, IApplicationState } from "../../store/types"
 import { PublishUnminedTransactionsResponse } from "../../proto/api_pb"
-import { ErrorAlert, SuccessAlert } from "../../components/Shared/FormStatusAlerts"
+import {
+    ErrorAlert,
+    SuccessAlert,
+} from "../../components/Shared/FormStatusAlerts"
 import { isTxMixed } from "./transactionsSlice"
 import { lookupAccounts } from "../balances/accountSlice"
 import _ from "lodash"
 
-
-export const DebitAccountItem = (props: { debit: any, account: WalletAccount | undefined }) => {
+export const DebitAccountItem = (props: {
+    debit: any
+    account: WalletAccount | undefined
+}) => {
     const { account, debit } = props
     return (
-        <div
-            key={
-                "account-" +
-                debit.getIndex() +
-                debit.getPreviousAccount()
-            }
-        >
-            <strong>{account?.getAccountName()}</strong>
-            {" "}
+        <div key={"account-" + debit.getIndex() + debit.getPreviousAccount()}>
+            <strong>{account?.getAccountName()}</strong>{" "}
             <small className="text-muted">
-                (<Amount
+                (
+                <Amount
                     showCurrency={true}
                     amount={debit.getPreviousAmount()}
-                />)
+                />
+                )
             </small>
             <br />
         </div>
     )
 }
 
-class TransactionDetailsComponent extends React.Component<Props>{
+class TransactionDetailsComponent extends React.Component<Props> {
     render() {
         const tx = this.props.tx
         if (tx == null) {
@@ -57,9 +57,9 @@ class TransactionDetailsComponent extends React.Component<Props>{
                     <Button
                         variant="secondary"
                         className="float-right"
-                        onClick={() => this.props.publishUnminedTransactions()}
-                    >
-                        <FontAwesomeIcon icon={faBroadcastTower} /> Rebroadcast TX
+                        onClick={() => this.props.publishUnminedTransactions()}>
+                        <FontAwesomeIcon icon={faBroadcastTower} /> Rebroadcast
+                        TX
                     </Button>
                 )}
                 <Table borderless>
@@ -67,8 +67,7 @@ class TransactionDetailsComponent extends React.Component<Props>{
                         <tr>
                             <th>Type</th>
                             <td>
-                                {tx.getTypeAsString()}
-                                {" "}
+                                {tx.getTypeAsString()}{" "}
                                 {this.props.isTxMixed(tx) && (
                                     <Badge variant="secondary">Mix</Badge>
                                 )}
@@ -115,17 +114,21 @@ class TransactionDetailsComponent extends React.Component<Props>{
                         <tr>
                             <th>Accounts</th>
                             <td>
-                                {tx.getDebitsList().map(debit => (
+                                {tx.getDebitsList().map((debit) => (
                                     <div
                                         key={
                                             "account-" +
                                             debit.getIndex() +
                                             debit.getPreviousAccount()
-                                        }
-                                    >
+                                        }>
                                         <DebitAccountItem
-                                            account={_.first(this.props.lookupAccounts([debit.getPreviousAccount()]))}
-                                            debit={debit} />
+                                            account={_.first(
+                                                this.props.lookupAccounts([
+                                                    debit.getPreviousAccount(),
+                                                ])
+                                            )}
+                                            debit={debit}
+                                        />
                                     </div>
                                 ))}
                             </td>
@@ -133,9 +136,15 @@ class TransactionDetailsComponent extends React.Component<Props>{
                         <tr>
                             <th>Credit addresses</th>
                             <td>
-                                {tx.getCreditsList().map(credit => (
-                                    <div key={credit.getAddress() + credit.getIndex()}>
-                                        <Address address={credit.getAddress()} />
+                                {tx.getCreditsList().map((credit) => (
+                                    <div
+                                        key={
+                                            credit.getAddress() +
+                                            credit.getIndex()
+                                        }>
+                                        <Address
+                                            address={credit.getAddress()}
+                                        />
                                     </div>
                                 ))}
                             </td>
@@ -147,12 +156,13 @@ class TransactionDetailsComponent extends React.Component<Props>{
                         as={Button}
                         variant="secondary"
                         size="sm"
-                        eventKey="0"
-                    >
+                        eventKey="0">
                         Raw JSON <FontAwesomeIcon icon={faCaretDown} />
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="0">
-                        <pre>{JSON.stringify(tx.toObject(), undefined, "  ")}</pre>
+                        <pre>
+                            {JSON.stringify(tx.toObject(), undefined, "  ")}
+                        </pre>
                     </Accordion.Collapse>
                 </Accordion>
                 <ErrorAlert error={this.props.error} />
@@ -172,7 +182,7 @@ interface StateProps {
     isTxMixed: (tx: Transaction) => boolean
     lookupAccounts: (accountNumbers: number[]) => WalletAccount[]
     error: AppError | null
-    publishUnminedTransactionsResponse: PublishUnminedTransactionsResponse | null    
+    publishUnminedTransactionsResponse: PublishUnminedTransactionsResponse | null
 }
 
 interface DispatchProps {

@@ -7,10 +7,7 @@ import { Card } from "react-bootstrap"
 import UTXODetailsComponent from "./UTXODetailsComponent"
 import ListUTXOs from "./ListUTXOs"
 import { WalletAccount } from "../../../middleware/models"
-import {
-    fetchUnspentsAttempt,
-    getRegularUTXOs,
-} from "./unspentsSlice"
+import { fetchUnspentsAttempt, getRegularUTXOs } from "./unspentsSlice"
 import { IApplicationState } from "../../../store/types"
 import { UnspentOutput } from "../../../proto/walletgui_pb"
 import GenericModal from "../../../components/Shared/GenericModal"
@@ -46,8 +43,7 @@ class UTXOContainer extends React.Component<Props, InternalState> {
                     footer={true}
                     title="UTXO details"
                     show={this.state.showModal}
-                    onHide={() => this.setState({ showModal: false })}
-                >
+                    onHide={() => this.setState({ showModal: false })}>
                     <UTXODetailsComponent utxo={this.state.selectedItem} />
                 </GenericModal>
             </Card>

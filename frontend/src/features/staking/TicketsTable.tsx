@@ -13,29 +13,28 @@ import { transitionGroupProps } from "../../constants"
 import TransactionHash from "../transactions/TransactionHash"
 import { RectShape, TextBlock } from "react-placeholder/lib/placeholders"
 
-export default class TicketsTable extends React.PureComponent<TicketsTableProps> {
+export default class TicketsTable extends React.PureComponent<
+    TicketsTableProps
+> {
     render() {
         return (
             <Table hover>
                 {this.props.items.length > 0 && (
                     <TransitionGroup
                         {...transitionGroupProps}
-                        component="tbody"
-                    >
+                        component="tbody">
                         {this.props.items.map((ticket) => {
                             const tx = ticket.getTx()
                             return (
                                 <CSSTransition
                                     key={tx.getHash()}
                                     timeout={500}
-                                    classNames="shrink"
-                                >
+                                    classNames="shrink">
                                     <tr
                                         className="clickable"
                                         onClick={() =>
                                             this.props.onItemClick(ticket)
-                                        }
-                                    >
+                                        }>
                                         <td>
                                             <TicketStatusIcon
                                                 status={ticket.getStatus()}
@@ -70,6 +69,6 @@ interface TicketsTableProps {
 export const TicketsTablePlaceHolder = (
     <div>
         <RectShape style={{ width: 30, height: 80 }} />
-        <TextBlock color="#ddd"  rows={7} />
+        <TextBlock color="#ddd" rows={7} />
     </div>
 )

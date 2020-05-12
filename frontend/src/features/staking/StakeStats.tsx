@@ -26,7 +26,6 @@ import {
     IChartdataTimelineItem,
 } from "../../helpers/helpers"
 
-
 // @TODO add dropdown to control this
 const days = 7
 

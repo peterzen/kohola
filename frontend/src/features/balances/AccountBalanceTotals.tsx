@@ -68,15 +68,13 @@ class AccountTotals extends React.PureComponent<Props, {}> {
                     label="Spendable"
                     amount={balance.getSpendable()}
                     total={balance.getTotal()}
-                    variant="spendable"
-                ></ValueCol>
+                    variant="spendable"></ValueCol>
 
                 <ValueCol
                     label="Unconfirmed"
                     amount={balance.getUnconfirmed()}
                     total={balance.getTotal()}
-                    variant="unconfirmed"
-                ></ValueCol>
+                    variant="unconfirmed"></ValueCol>
 
                 <ValueCol
                     label="Immature"
@@ -85,15 +83,13 @@ class AccountTotals extends React.PureComponent<Props, {}> {
                         balance.getImmatureStakeGeneration()
                     }
                     total={balance.getTotal()}
-                    variant="immature"
-                ></ValueCol>
+                    variant="immature"></ValueCol>
 
                 <ValueCol
                     label="Voting auth"
                     amount={balance.getVotingAuthority()}
                     total={balance.getTotal()}
-                    variant="voting"
-                ></ValueCol>
+                    variant="voting"></ValueCol>
             </Row>
         )
     }

@@ -18,8 +18,7 @@ class BestBlockComponent extends React.Component<OwnProps> {
                             title={`${formatHash(
                                 this.props.currentBlock.getHash_asU8()
                             )} (${Networks[this.props.currentNetwork]})`}
-                            className="text-muted"
-                        >
+                            className="text-muted">
                             At block:{" "}
                             <strong>
                                 {this.props.currentBlock.getHeight()}

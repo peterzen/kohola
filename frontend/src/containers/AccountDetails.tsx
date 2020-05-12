@@ -54,8 +54,7 @@ class AccountDetails extends React.Component<Props, InternalState> {
                                         variant="link"
                                         size="lg"
                                         onClick={() => this.handleBack()}
-                                        className="text-muted"
-                                    >
+                                        className="text-muted">
                                         <FontAwesomeIcon icon={faChevronLeft} />
                                     </Button>
                                     &nbsp; Account: {account.getAccountName()}
@@ -73,12 +72,10 @@ class AccountDetails extends React.Component<Props, InternalState> {
                                 id="accountdetails-tabs"
                                 defaultActiveKey="transactions"
                                 mountOnEnter={true}
-                                unmountOnExit={false}
-                            >
+                                unmountOnExit={false}>
                                 <Tab
                                     eventKey="transactions"
-                                    title={<RecentTxTitle />}
-                                >
+                                    title={<RecentTxTitle />}>
                                     <RecentTransactions
                                         txList={this.props.txList(account)}
                                         showAccount={false}
@@ -94,8 +91,7 @@ class AccountDetails extends React.Component<Props, InternalState> {
                                 </Tab>
                                 <Tab
                                     eventKey="receive"
-                                    title={<ReceiveTitle />}
-                                >
+                                    title={<ReceiveTitle />}>
                                     <ReceiveDialog account={account} />
                                 </Tab>
                             </Tabs>

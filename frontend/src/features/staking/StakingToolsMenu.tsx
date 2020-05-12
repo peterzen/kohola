@@ -21,12 +21,10 @@ class StakingToolsMenu extends React.Component<Props> {
         return (
             <Dropdown
                 alignRight
-                onSelect={(evtKey: string) => this.menuHandler(evtKey)}
-            >
+                onSelect={(evtKey: string) => this.menuHandler(evtKey)}>
                 <Dropdown.Toggle
                     id={"staking-tools-dropdown"}
-                    className="no-arrow mt-3"
-                >
+                    className="no-arrow mt-3">
                     <div className="text-muted">
                         <FontAwesomeIcon icon={faTools} /> Tools{" "}
                         {ticketsToRevoke > 0 && (
@@ -45,8 +43,7 @@ class StakingToolsMenu extends React.Component<Props> {
                         eventKey={
                             StakingToolsMenuItems[StakingToolsMenuItems.REVOKE]
                         }
-                        disabled={ticketsToRevoke <= 0}
-                    >
+                        disabled={ticketsToRevoke <= 0}>
                         <span className="nowrap">
                             Revoke {ticketsToRevoke > 0 && ticketsToRevoke}{" "}
                             missed/expired tickets...

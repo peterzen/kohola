@@ -65,8 +65,9 @@ class MixerSettingsForm extends React.Component<Props, InternalState> {
                                         disabled={
                                             this.props.isAccountMixerRunning
                                         }
-                                        onClick={() => this.startAccountMixer()}
-                                    >
+                                        onClick={() =>
+                                            this.startAccountMixer()
+                                        }>
                                         <FontAwesomeIcon icon={faPlay} /> Start
                                     </Button>
                                     <Button
@@ -74,8 +75,7 @@ class MixerSettingsForm extends React.Component<Props, InternalState> {
                                         disabled={
                                             !this.props.isAccountMixerRunning
                                         }
-                                        onClick={() => this.stopAccountMixer()}
-                                    >
+                                        onClick={() => this.stopAccountMixer()}>
                                         <FontAwesomeIcon icon={faStop} /> Stop
                                     </Button>
                                 </span>
@@ -90,14 +90,12 @@ class MixerSettingsForm extends React.Component<Props, InternalState> {
                             onSubmit={_.bind(this.handleFormSubmit, this)}
                             className={
                                 this.props.inProgress ? "in-progress" : ""
-                            }
-                        >
+                            }>
                             <fieldset
                                 disabled={
                                     this.props.isAccountMixerRunning ||
                                     this.props.runAccountMixerAttempting
-                                }
-                            >
+                                }>
                                 <Form.Group as={Row}>
                                     <Col sm={4}>
                                         <Form.Label>Mixed account</Form.Label>
@@ -120,8 +118,7 @@ class MixerSettingsForm extends React.Component<Props, InternalState> {
                                             defaultValue={request.getMixedAccountBranch()}
                                             tabIndex={2}
                                             onChange={onChange}
-                                            as="select"
-                                        >
+                                            as="select">
                                             {_.map([0, 1], (n) => (
                                                 <option key={n} value={n}>
                                                     {n}
@@ -186,8 +183,7 @@ class MixerSettingsForm extends React.Component<Props, InternalState> {
                                     <Button
                                         disabled={!this.state.isDirty}
                                         type="submit"
-                                        variant="primary"
-                                    >
+                                        variant="primary">
                                         Save settings
                                     </Button>
                                 </div>
@@ -286,8 +282,10 @@ type Props = OwnProps & DispatchProps
 const mapStateToProps = (state: IApplicationState) => {
     const walletEndpointId = getConnectedEndpointId(state)
     const request =
-        getAppConfig(state).getWalletPreferencesMap().get(walletEndpointId)?.getAccountMixerRequestDefaults() ||
-        new RunAccountMixerRequest()
+        getAppConfig(state)
+            .getWalletPreferencesMap()
+            .get(walletEndpointId)
+            ?.getAccountMixerRequestDefaults() || new RunAccountMixerRequest()
     return {
         error: state.appconfiguration.setConfigError,
         inProgress: state.appconfiguration.setConfigAttempting,

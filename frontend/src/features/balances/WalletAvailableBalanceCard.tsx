@@ -3,20 +3,18 @@ import { WalletTotals } from "../../middleware/models"
 import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
 import { Amount, FiatAmount } from "../../components/Shared/Amount"
 
-export default class WalletAvailableBalanceCard extends PureComponent<OwnProps> {
-    
+export default class WalletAvailableBalanceCard extends PureComponent<
+    OwnProps
+> {
     render() {
         const totals = this.props.totals
         return (
             <ComponentPlaceHolder
                 type="text"
                 rows={3}
-                ready={!this.props.loading}
-            >
+                ready={!this.props.loading}>
                 <div>
-                    <div className="text-muted">
-                        Available balance
-                    </div>
+                    <div className="text-muted">Available balance</div>
                     <h1 className="mb-0">
                         <Amount
                             amount={totals.total}

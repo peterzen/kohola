@@ -20,7 +20,11 @@ class StakeInfoComponent extends React.Component<Props> {
         return (
             <Card>
                 <Card.Body>
-                    <ComponentPlaceHolder type='media' rows={7} firstLaunchOnly={true} ready={!this.props.getStakeInfoAttempting}>
+                    <ComponentPlaceHolder
+                        type="media"
+                        rows={7}
+                        firstLaunchOnly={true}
+                        ready={!this.props.getStakeInfoAttempting}>
                         <div>
                             <Row>
                                 <Col>
@@ -48,14 +52,18 @@ class StakeInfoComponent extends React.Component<Props> {
                                 <Col>
                                     <h2>{s.getLive()}</h2>
                                     <h6 className="text-muted">
-                                        <TicketStatusIcon status={TicketStatus.LIVE} />{" "}
+                                        <TicketStatusIcon
+                                            status={TicketStatus.LIVE}
+                                        />{" "}
                                         Live
                                     </h6>
                                 </Col>
                                 <Col>
                                     <h2>{s.getVoted()}</h2>
                                     <h6 className="text-muted">
-                                        <TicketStatusIcon status={TicketStatus.VOTED} />{" "}
+                                        <TicketStatusIcon
+                                            status={TicketStatus.VOTED}
+                                        />{" "}
                                         Voted recently
                                     </h6>
                                 </Col>
@@ -73,8 +81,7 @@ interface OwnProps {
     getStakeInfoAttempting: boolean
 }
 
-interface DispatchProps {
-}
+interface DispatchProps {}
 
 type Props = DispatchProps & OwnProps
 
@@ -85,7 +92,6 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
     }
 }
 
-const mapDispatchToProps = {
-}
+const mapDispatchToProps = {}
 
 export default connect(mapStateToProps, mapDispatchToProps)(StakeInfoComponent)

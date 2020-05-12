@@ -18,8 +18,7 @@ export default class WalletEndpointGrid extends React.Component<Props> {
                             <Col sm={4} key={endpoint.getId()} className="mb-4">
                                 <Card
                                     className="clickable"
-                                    onClick={() => this.onSelect(endpoint)}
-                                >
+                                    onClick={() => this.onSelect(endpoint)}>
                                     <Card.Body>
                                         <h6>{endpoint.getLabel()}</h6>
                                     </Card.Body>
@@ -33,8 +32,7 @@ export default class WalletEndpointGrid extends React.Component<Props> {
                                                             this.props.onEdit(
                                                                 endpoint
                                                             )
-                                                        }
-                                                    >
+                                                        }>
                                                         <FontAwesomeIcon
                                                             icon={faCog}
                                                         />{" "}
@@ -47,8 +45,7 @@ export default class WalletEndpointGrid extends React.Component<Props> {
                                                         this.props.onDelete(
                                                             endpoint
                                                         )
-                                                    }
-                                                >
+                                                    }>
                                                     <FontAwesomeIcon
                                                         icon={faTrash}
                                                     />
@@ -63,8 +60,7 @@ export default class WalletEndpointGrid extends React.Component<Props> {
                             {this.props.editable && (
                                 <Card
                                     className="clickable add-item-card"
-                                    onClick={() => this.props.onAdd()}
-                                >
+                                    onClick={() => this.props.onAdd()}>
                                     <Card.Body>
                                         <div className="text-center">
                                             <FontAwesomeIcon

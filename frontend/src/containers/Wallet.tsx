@@ -7,8 +7,6 @@ import _ from "lodash"
 import Fade from "react-reveal/Fade"
 import { Card } from "react-bootstrap"
 
-
-
 import {
     Transaction,
     WalletAccount,
@@ -34,10 +32,7 @@ class Wallet extends React.PureComponent<Props> {
     render() {
         return (
             <div>
-
-                <WalletTotalsComponent
-                    totals={this.props.walletTotals}
-                />
+                <WalletTotalsComponent totals={this.props.walletTotals} />
                 <div className="mt-3" />
                 <AccountBalanceTable
                     menuHandler={_.bind(this.menuHandler, this)}

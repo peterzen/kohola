@@ -43,11 +43,12 @@ class BalanceHistoryChart extends PureComponent<Props> {
         const series = this.props.series
         if (!series?.timerange()) return null
         return (
-            <div style={{
-                position: "absolute",
-                width: "100%",
-                bottom: -10,
-            }}>
+            <div
+                style={{
+                    position: "absolute",
+                    width: "100%",
+                    bottom: -10,
+                }}>
                 {series != undefined && (
                     <Resizable>
                         <ChartContainer
@@ -58,8 +59,7 @@ class BalanceHistoryChart extends PureComponent<Props> {
                             timeAxisHeight={0}
                             hideTimeAxis={true}
                             timeAxisStyle={{ axis: { display: "none" } }}
-                            enablePanZoom={false}
-                        >
+                            enablePanZoom={false}>
                             <ChartRow height="100">
                                 <YAxis
                                     id="y"
@@ -122,8 +122,6 @@ const mapStateToProps = (
     state: IApplicationState,
     ownProps: OwnProps
 ): StateProps => {
-
-
     // const coll = ownProps.txHistorySeries?.pipeline()
     //     .windowBy("1d")           // 1 day fixed windows
     //     .emitOn("eachEvent")      // emit result on each event
@@ -133,7 +131,6 @@ const mapStateToProps = (
     //     })
     //     .asIndexedEvents({ duration: "1d" })
     //     .toEventList()
-
 
     const rollup = ownProps.txHistorySeries
         ?.map((event: TimeEvent) => {
@@ -182,8 +179,5 @@ const mapStateToProps = (
         loading: state.accounts.getAccountsAttempting,
     }
 }
-
-
-
 
 export default connect(mapStateToProps)(BalanceHistoryChart)

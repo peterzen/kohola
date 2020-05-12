@@ -23,8 +23,7 @@ class PublishDialog extends React.Component<Props> {
                 <Form
                     onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
                         this.handleFormSubmit(e)
-                    }
-                >
+                    }>
                     <Form.Group controlId="unsignedTxHex">
                         <Form.Label>Signed tx</Form.Label>
                         <Form.Control
@@ -40,8 +39,7 @@ class PublishDialog extends React.Component<Props> {
                             <Button
                                 tabIndex={4}
                                 variant="secondary"
-                                onClick={this.props.onCancel}
-                            >
+                                onClick={this.props.onCancel}>
                                 Back
                             </Button>
                         </Col>
@@ -49,9 +47,9 @@ class PublishDialog extends React.Component<Props> {
                             <Button
                                 tabIndex={4}
                                 variant="primary"
-                                type="submit"
-                            >
-                                <FontAwesomeIcon icon={faBroadcastTower} /> Broadcast tx
+                                type="submit">
+                                <FontAwesomeIcon icon={faBroadcastTower} />{" "}
+                                Broadcast tx
                             </Button>
                         </Col>
                     </Row>
@@ -78,7 +76,6 @@ interface OwnProps {
     onStepChangeSubscribe: (fn: () => void) => void
 }
 
-
 interface DispatchProps {
     publishTransaction: typeof publishTransaction
 }
@@ -86,8 +83,7 @@ interface DispatchProps {
 type Props = OwnProps & DispatchProps
 
 const mapStateToProps = (state: IApplicationState) => {
-    return {
-    }
+    return {}
 }
 
 const mapDispatchToProps = {

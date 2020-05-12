@@ -59,7 +59,7 @@ const menuItems: MenuItemProps[] = [
             position: "absolute",
             bottom: "0.5rem",
             left: "1rem",
-        }
+        },
     },
 ]
 
@@ -70,8 +70,7 @@ class NavMenu extends React.Component<NavMenuProps> {
             <>
                 <Nav
                     id="sidebar"
-                    className={this.props.isMenuOpened ? "collapsed" : ""}
-                >
+                    className={this.props.isMenuOpened ? "collapsed" : ""}>
                     <div className="sidebar-nav-inner">
                         <div className="sidebar-header">
                             <Logo height={36} width={36} />
@@ -79,7 +78,10 @@ class NavMenu extends React.Component<NavMenuProps> {
                         <Fade fade slide left cascade>
                             <div>
                                 {menuItems.map((m) => (
-                                    <div key={m.href} hidden={!isNavigable} style={m.style}>
+                                    <div
+                                        key={m.href}
+                                        hidden={!isNavigable}
+                                        style={m.style}>
                                         {m.title != "" && (
                                             <SidebarNavItem {...m} />
                                         )}

@@ -19,34 +19,35 @@ const CoinToolsDropdown = (props: ICoinToolsDropdown) => {
     return (
         <Dropdown
             alignRight
-            onSelect={(evtKey: string) => props.menuHandler(evtKey, props.utxo)}
-        >
-            <Dropdown.Toggle variant="secondary" id="dropdown-utxo" className="m-0" size="sm">
+            onSelect={(evtKey: string) =>
+                props.menuHandler(evtKey, props.utxo)
+            }>
+            <Dropdown.Toggle
+                variant="secondary"
+                id="dropdown-utxo"
+                className="m-0"
+                size="sm">
                 <FontAwesomeIcon icon={faEllipsisH} />
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
                 <Dropdown.Item
-                    eventKey={UTXOMenuItems[UTXOMenuItems.UTXO_DETAILS]}
-                >
+                    eventKey={UTXOMenuItems[UTXOMenuItems.UTXO_DETAILS]}>
                     Details
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item
-                    eventKey={UTXOMenuItems[UTXOMenuItems.SPEND_COIN]}
-                >
+                    eventKey={UTXOMenuItems[UTXOMenuItems.SPEND_COIN]}>
                     Spend coin
                 </Dropdown.Item>
                 <Dropdown.Item
                     eventKey={UTXOMenuItems[UTXOMenuItems.LOCK_UTXO]}
-                    disabled
-                >
+                    disabled>
                     Lock
                 </Dropdown.Item>
                 <Dropdown.Item
                     eventKey={UTXOMenuItems[UTXOMenuItems.COPY_ADDRESS]}
-                    disabled
-                >
+                    disabled>
                     Copy address
                 </Dropdown.Item>
             </Dropdown.Menu>
@@ -64,7 +65,11 @@ export enum UTXOMenuItems {
 export default class ListUTXOs extends React.Component<Props> {
     render() {
         const utxos = this.props.utxos
-        const totalAmount = _.reduce(utxos, (total, utxo) => total + utxo.getAmount(), 0)
+        const totalAmount = _.reduce(
+            utxos,
+            (total, utxo) => total + utxo.getAmount(),
+            0
+        )
         return (
             <div>
                 <Table hover>
@@ -87,10 +92,12 @@ export default class ListUTXOs extends React.Component<Props> {
                                 className="clickable"
                                 onClick={() =>
                                     this.props.menuHandler("default", utxo)
-                                }
-                            >
+                                }>
                                 <td>
-                                    <TxHash hash={utxo.getTransactionHash_asU8()} />:{utxo.getOutputIndex()}
+                                    <TxHash
+                                        hash={utxo.getTransactionHash_asU8()}
+                                    />
+                                    :{utxo.getOutputIndex()}
                                 </td>
                                 <td>
                                     <Amount
@@ -120,7 +127,11 @@ export default class ListUTXOs extends React.Component<Props> {
                     <tfoot>
                         <tr>
                             <td></td>
-                            <td><strong><Amount amount={totalAmount} /></strong></td>
+                            <td>
+                                <strong>
+                                    <Amount amount={totalAmount} />
+                                </strong>
+                            </td>
                         </tr>
                     </tfoot>
                 </Table>

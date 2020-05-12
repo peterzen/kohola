@@ -25,8 +25,7 @@ class AccountBalanceTable extends React.Component<Props, InternalState> {
                 <ComponentPlaceHolder
                     type="text"
                     rows={7}
-                    ready={!this.props.isLoading}
-                >
+                    ready={!this.props.isLoading}>
                     <Table hover>
                         <thead>
                             <tr className="text-right">
@@ -73,8 +72,7 @@ class AccountBalanceTable extends React.Component<Props, InternalState> {
                         MenuItems[MenuItems.DETAILSVIEW],
                         account
                     )
-                }}
-            >
+                }}>
                 <td className="text-left">{account.getAccountName()}</td>
                 <td>
                     <Amount amount={balance.getSpendable()} />
@@ -167,15 +165,15 @@ interface OwnProps {
     menuHandler: (evtKey: string, account: WalletAccount) => void
 }
 
-interface DispatchProps { }
+interface DispatchProps {}
 
 type Props = StateProps & DispatchProps & OwnProps
 
-interface InternalState { }
+interface InternalState {}
 
 const mapStateToProps = (state: IApplicationState): StateProps => {
     return {
-        isLoading: state.accounts.getAccountsAttempting
+        isLoading: state.accounts.getAccountsAttempting,
     }
 }
 

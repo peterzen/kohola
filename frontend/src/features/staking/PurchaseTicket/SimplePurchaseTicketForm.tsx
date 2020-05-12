@@ -55,8 +55,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
                                     !this.props.error
                                 }
                                 onSubmit={_.bind(this.handleFormSubmit, this)}
-                                className="m-0"
-                            >
+                                className="m-0">
                                 <Row>
                                     <Col>
                                         <div className="text-right">
@@ -123,8 +122,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
                                     <Button
                                         size="sm"
                                         variant="secondary"
-                                        onClick={() => this.showSettings()}
-                                    >
+                                        onClick={() => this.showSettings()}>
                                         <FontAwesomeIcon icon={faCog} />{" "}
                                         Settings
                                     </Button>
@@ -137,8 +135,7 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
                                             this.handleFormSubmit,
                                             this
                                         )}
-                                        variant="primary"
-                                    >
+                                        variant="primary">
                                         Purchase
                                     </Button>
                                 </Col>

@@ -25,7 +25,6 @@ import {
 type IStepChangeCallback = () => void
 
 class SendDialogContainer extends React.Component<Props, InternalState> {
-
     wizardInstance: StepWizard
     onStepChangeSubscriptions: IStepChangeCallback[] = []
 
@@ -34,9 +33,7 @@ class SendDialogContainer extends React.Component<Props, InternalState> {
         return (
             <Card>
                 <Card.Header>
-                    <Card.Title>
-                        Send funds
-                    </Card.Title>
+                    <Card.Title>Send funds</Card.Title>
                 </Card.Header>
 
                 <Card.Body>
@@ -45,33 +42,48 @@ class SendDialogContainer extends React.Component<Props, InternalState> {
                         onStepChange={() => this.onStepChange()}
                         instance={(wizard: StepWizard) => {
                             this.wizardInstance = wizard
-                        }}
-                    >
+                        }}>
                         <ConstructTxDialog
                             defaultFromAccount={this.props.defaultFromAccount}
                             error={this.props.errorConstructTransaction}
                             txInfo={this.props.txInfo}
-                            onCancel={() => { }}
-                            onCompleted={() => { this.nextStep() }}
+                            onCancel={() => {}}
+                            onCompleted={() => {
+                                this.nextStep()
+                            }}
                             onStepChangeSubscribe={onStepChangeSubscribe}
                         />
                         <SignDialog
                             error={this.props.errorSignTransaction}
                             txInfo={this.props.txInfo}
-                            onCancel={() => { this.previousStep() }}
-                            onCompleted={() => { this.nextStep() }}
+                            onCancel={() => {
+                                this.previousStep()
+                            }}
+                            onCompleted={() => {
+                                this.nextStep()
+                            }}
                             onStepChangeSubscribe={onStepChangeSubscribe}
                         />
                         <PublishDialog
                             error={this.props.errorPublishTransaction}
-                            signTransactionResponse={this.props.signTransactionResponse}
-                            onCancel={() => { this.previousStep() }}
-                            onCompleted={() => { this.nextStep() }}
+                            signTransactionResponse={
+                                this.props.signTransactionResponse
+                            }
+                            onCancel={() => {
+                                this.previousStep()
+                            }}
+                            onCompleted={() => {
+                                this.nextStep()
+                            }}
                             onStepChangeSubscribe={onStepChangeSubscribe}
                         />
                         <PublishConfirmDialog
-                            onCompleted={() => { this.firstStep() }}
-                            publishTransactionResponse={this.props.publishTransactionResponse}
+                            onCompleted={() => {
+                                this.firstStep()
+                            }}
+                            publishTransactionResponse={
+                                this.props.publishTransactionResponse
+                            }
                             onStepChangeSubscribe={onStepChangeSubscribe}
                         />
                     </StepWizard>
@@ -85,7 +97,7 @@ class SendDialogContainer extends React.Component<Props, InternalState> {
     }
 
     onStepChange() {
-        _.each(this.onStepChangeSubscriptions, fn => fn())
+        _.each(this.onStepChangeSubscriptions, (fn) => fn())
     }
 
     firstStep() {
@@ -119,9 +131,7 @@ interface StateProps {
     errorPublishTransaction: AppError | null
 }
 
-
-interface InternalState {
-}
+interface InternalState {}
 
 type Props = StateProps & OwnProps
 
@@ -140,6 +150,5 @@ const mapStateToProps = (state: IApplicationState): StateProps => {
             state.transactions.createTransactionRequest,
     }
 }
-
 
 export default connect(mapStateToProps)(SendDialogContainer)

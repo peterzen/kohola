@@ -39,12 +39,10 @@ class PurchaseTicketSettingsForm extends React.Component<Props, InternalState> {
                     ref={this.state.formRef}
                     validated={this.state.formIsValidated}
                     onSubmit={_.bind(this.handleFormSubmit, this)}
-                    className="m-0"
-                >
+                    className="m-0">
                     <Tabs
                         defaultActiveKey="solo"
-                        id="purchaseticketsettings-tabs"
-                    >
+                        id="purchaseticketsettings-tabs">
                         <Tab eventKey="solo" title="Solo staking">
                             <Form.Group as={Row} className="p-2">
                                 <Col sm={4}>
@@ -86,8 +84,7 @@ class PurchaseTicketSettingsForm extends React.Component<Props, InternalState> {
                                         name="required_confirmations"
                                         defaultValue="1"
                                         onChange={onChange}
-                                        as="select"
-                                    >
+                                        as="select">
                                         {_.map([0, 1, 2, 3, 4], (n) => (
                                             <option key={n} value={n}>
                                                 {n}
@@ -194,8 +191,7 @@ class PurchaseTicketSettingsModal extends React.Component<
                 centered
                 size="lg"
                 show={this.props.showModal}
-                onHide={this.props.onHide}
-            >
+                onHide={this.props.onHide}>
                 <Modal.Header closeButton>
                     <Modal.Title>Ticket purchase settings</Modal.Title>
                 </Modal.Header>

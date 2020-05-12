@@ -33,8 +33,7 @@ export default class GenericModalDialog<P, S> extends React.Component<
                 onEntered={this.onEntered}
                 onExit={this.onExit}
                 show={this.props.show}
-                onHide={this.props.onHide}
-            >
+                onHide={this.props.onHide}>
                 <Modal.Header closeButton>
                     <this.ModalTitle />
                 </Modal.Header>
@@ -45,8 +44,7 @@ export default class GenericModalDialog<P, S> extends React.Component<
                     <Button
                         variant="secondary"
                         size="sm"
-                        onClick={this.props.onHide}
-                    >
+                        onClick={this.props.onHide}>
                         Close
                     </Button>
                 </Modal.Footer>

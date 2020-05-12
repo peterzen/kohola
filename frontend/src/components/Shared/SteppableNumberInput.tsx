@@ -33,8 +33,7 @@ export const SteppableNumberInput = (props: ISteppableNumberInputProps) => {
                     <Button
                         variant="outline-secondary"
                         tabIndex={-1}
-                        onClick={stepDown}
-                    >
+                        onClick={stepDown}>
                         <FontAwesomeIcon icon={faMinus} />
                     </Button>
                 </InputGroup.Prepend>
@@ -50,8 +49,7 @@ export const SteppableNumberInput = (props: ISteppableNumberInputProps) => {
                     <Button
                         tabIndex={-1}
                         variant="outline-secondary"
-                        onClick={stepUp}
-                    >
+                        onClick={stepUp}>
                         <FontAwesomeIcon icon={faPlus} />
                     </Button>
                 </InputGroup.Append>

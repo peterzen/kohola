@@ -29,14 +29,12 @@ const ConfirmDialog = (props: Props) => {
                     <div className="text-right">
                         <Button
                             variant="secondary"
-                            onClick={() => props.onSelect(false)}
-                        >
+                            onClick={() => props.onSelect(false)}>
                             {props.cancelButtonLabel}
                         </Button>
                         <Button
                             variant="primary"
-                            onClick={() => props.onSelect(true)}
-                        >
+                            onClick={() => props.onSelect(true)}>
                             {props.okButtonLabel}
                         </Button>
                     </div>
