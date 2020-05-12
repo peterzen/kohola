@@ -29,11 +29,11 @@ export function normalizeDatapoints<T extends any>(
     datapoints: T[],
     fieldName: string
 ): T[] {
-    const valuesColl = _.map(datapoints, (d: T): number => d[fieldName])
+    const valuesColl = _.map(datapoints, (d: any): number => d[fieldName])
     const minValue = _.min(valuesColl) || 0
     return _.map(
         datapoints,
-        (d: T): T => {
+        (d: any): T => {
             d[fieldName] = d[fieldName] - minValue
             return d
         }

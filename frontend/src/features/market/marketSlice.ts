@@ -16,7 +16,6 @@ import {
 } from "../../store/types"
 import { hexToRaw } from "../../helpers/byteActions"
 import { ExchangeRateBotBackend } from "../../middleware/exchangeratebot"
-import { normalizeDatapoints } from "../../helpers/helpers"
 
 
 const w = window as any
