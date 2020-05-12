@@ -3,7 +3,6 @@ import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import _ from "lodash"
 
-
 import { Row, Col, Tabs, Tab } from "react-bootstrap"
 // @ts-ignore
 import Fade from "react-reveal/Fade"
@@ -37,8 +36,7 @@ class StakingContainer extends React.PureComponent<Props> {
                     defaultActiveKey="overview"
                     id="purchaseticketsettings-tabs"
                     mountOnEnter={true}
-                    unmountOnExit={true}
-                >
+                    unmountOnExit={true}>
                     <Tab eventKey="overview" title="Overview">
                         <div>
                             <StakeInfoComponent />

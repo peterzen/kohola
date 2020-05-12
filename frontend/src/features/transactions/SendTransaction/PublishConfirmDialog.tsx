@@ -11,7 +11,9 @@ import { TxHash } from "../TransactionHash"
 import { resetSendTransaction } from "../transactionsSlice"
 import { IApplicationState } from "../../../store/types"
 
-class PublishConfirmDialog extends React.Component<Props & Partial<StepWizardChildProps>> {
+class PublishConfirmDialog extends React.Component<
+    Props & Partial<StepWizardChildProps>
+> {
     render() {
         if (this.props.publishTransactionResponse == null) return null
 
@@ -57,12 +59,14 @@ interface DispatchProps {
 type Props = OwnProps & DispatchProps
 
 const mapStateToProps = (state: IApplicationState) => {
-    return {
-    }
+    return {}
 }
 
 const mapDispatchToProps = {
     resetSendTransaction,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PublishConfirmDialog)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PublishConfirmDialog)

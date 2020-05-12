@@ -10,13 +10,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTimes, faEquals } from "@fortawesome/free-solid-svg-icons"
 import { Amount } from "../../components/Shared/Amount"
 
-
-export default class FeeChooserInput extends React.Component<OwnProps, InternalState> {
+export default class FeeChooserInput extends React.Component<
+    OwnProps,
+    InternalState
+> {
     constructor(props: OwnProps) {
         super(props)
         this.state = {
             feeRateValue: props.value,
-            feeEstimate: props.txSizeEstimate ? this.calculateFee(props.value, props.txSizeEstimate) : 0,
+            feeEstimate: props.txSizeEstimate
+                ? this.calculateFee(props.value, props.txSizeEstimate)
+                : 0,
         }
     }
     render() {
@@ -30,7 +34,9 @@ export default class FeeChooserInput extends React.Component<OwnProps, InternalS
                             xmax={1000}
                             xstep={100}
                             x={this.state.feeRateValue}
-                            onChange={(values: { x: number, y: number }) => this.onChange(values.x)}
+                            onChange={(values: { x: number; y: number }) =>
+                                this.onChange(values.x)
+                            }
                         />
                         {/* <RangeSlider
                             ref={this.props.inputRef}
@@ -53,21 +59,21 @@ export default class FeeChooserInput extends React.Component<OwnProps, InternalS
                         {`${this.state.feeRateValue} atoms/byte `}
                         <FontAwesomeIcon icon={faTimes} />
                         {` ${this.props.txSizeEstimate} bytes `}
-                        <FontAwesomeIcon icon={faEquals} />
-                        {" "}
+                        <FontAwesomeIcon icon={faEquals} />{" "}
                         <Amount amount={this.state.feeEstimate} rounding={8} />
                     </span>
-
                 </Col>
-                <Col sm={4}>
-                </Col>
+                <Col sm={4}></Col>
             </Row>
         )
     }
     onChange(feeRateValue: number) {
         this.setState({
             feeRateValue: feeRateValue,
-            feeEstimate: this.calculateFee(feeRateValue, this.props.txSizeEstimate)
+            feeEstimate: this.calculateFee(
+                feeRateValue,
+                this.props.txSizeEstimate
+            ),
         })
         this.props.onChange(feeRateValue)
     }

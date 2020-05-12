@@ -7,7 +7,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
 
 import { Ticket } from "../../middleware/models"
-import { getTickets, loadTicketsAttempt, onTimeFrameChanged } from "./stakingSlice"
+import {
+    getTickets,
+    loadTicketsAttempt,
+    onTimeFrameChanged,
+} from "./stakingSlice"
 import { TicketStatus } from "../../constants"
 import TicketsTable from "./TicketsTable"
 import { IApplicationState } from "../../store/types"
@@ -15,7 +19,10 @@ import { SelectedDropdownItemLabel } from "../../components/Shared/shared"
 import GenericModal from "../../components/Shared/GenericModal"
 import TicketDetailsComponent from "./TicketDetailsComponent"
 import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
-import IntervalChooser, { ChartTimeframe, timeframes } from "../../components/Shared/IntervalChooser"
+import IntervalChooser, {
+    ChartTimeframe,
+    timeframes,
+} from "../../components/Shared/IntervalChooser"
 import moment from "../../helpers/moment-helper"
 
 interface ITicketsListFilterDropdownProps {
@@ -40,12 +47,10 @@ menuItems[TicketStatus.VOTED] = "Voted"
 menuItems[TicketStatus.UNMINED] = "Unmined"
 menuItems[TicketStatus.EXPIRED] = "Expired"
 
-
-
 class TicketsListFilterDropdown extends React.Component<
     ITicketsListFilterDropdownProps,
     TicketsListFilterDropdownState
-    > {
+> {
     constructor(props: ITicketsListFilterDropdownProps) {
         super(props)
         this.state = {
@@ -58,12 +63,10 @@ class TicketsListFilterDropdown extends React.Component<
         return (
             <Dropdown
                 alignRight
-                onSelect={(evtKey: string) => this.onSelect(evtKey)}
-            >
+                onSelect={(evtKey: string) => this.onSelect(evtKey)}>
                 <Dropdown.Toggle
                     variant="secondary"
-                    id="ticket-filter-dropdown"
-                >
+                    id="ticket-filter-dropdown">
                     <FontAwesomeIcon icon={faFilter} /> {selectedLabel}
                 </Dropdown.Toggle>
 
@@ -73,8 +76,7 @@ class TicketsListFilterDropdown extends React.Component<
                     {_.map(menuItems, (label, status) => (
                         <Dropdown.Item eventKey={status} key={status}>
                             <SelectedDropdownItemLabel
-                                isSelected={status == selected.toString()}
-                            >
+                                isSelected={status == selected.toString()}>
                                 {label}
                             </SelectedDropdownItemLabel>
                         </Dropdown.Item>
@@ -102,7 +104,10 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
     }
 
     render() {
-        const tickets = this.props.getFilteredTickets(this.state.currentFilter, this.props.selectedTimeframe)
+        const tickets = this.props.getFilteredTickets(
+            this.state.currentFilter,
+            this.props.selectedTimeframe
+        )
         return (
             <Card>
                 <Card.Header>
@@ -112,19 +117,22 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
                         />
                         <IntervalChooser
                             timeframes={timeframes}
-                            onChange={(timeframe: ChartTimeframe) => this.props.onTimeFrameChanged(timeframe)}
+                            onChange={(timeframe: ChartTimeframe) =>
+                                this.props.onTimeFrameChanged(timeframe)
+                            }
                             selectedValue={this.props.selectedTimeframe}
                         />
                     </div>
                     <Card.Title>
-                        My tickets <small className="text-muted">({tickets.length})</small>
+                        My tickets{" "}
+                        <small className="text-muted">({tickets.length})</small>
                     </Card.Title>
                 </Card.Header>
 
                 <ComponentPlaceHolder
                     firstLaunchOnly={true}
                     delay={500}
-                    type='text'
+                    type="text"
                     rows={7}
                     ready={!this.props.getTicketsAttempting}>
                     <TicketsTable
@@ -138,8 +146,7 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
                     footer={true}
                     title="Ticket details"
                     show={this.state.showModal}
-                    onHide={() => this.setState({ showModal: false })}
-                >
+                    onHide={() => this.setState({ showModal: false })}>
                     <TicketDetailsComponent ticket={this.state.selectedItem} />
                 </GenericModal>
             </Card>
@@ -168,14 +175,26 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
         tickets: getTickets(state),
         selectedTimeframe: state.staking.selectedTimeframe,
         getTicketsAttempting: state.staking.getTicketsAttempting,
-        getFilteredTickets: (currentFilter: TicketStatus, timeframe: ChartTimeframe) => {
+        getFilteredTickets: (
+            currentFilter: TicketStatus,
+            timeframe: ChartTimeframe
+        ) => {
             let tickets = getTickets(state)
             if (currentFilter != -1) {
-                tickets = _.filter(tickets, t => t.getStatus() == currentFilter)
+                tickets = _.filter(
+                    tickets,
+                    (t) => t.getStatus() == currentFilter
+                )
             }
-            const startTimestamp = moment.default().subtract(timeframe.days, "days").unix()
-            return _.filter(tickets, t => t.getTx().getTimestamp().unix() >= startTimestamp)
-        }
+            const startTimestamp = moment
+                .default()
+                .subtract(timeframe.days, "days")
+                .unix()
+            return _.filter(
+                tickets,
+                (t) => t.getTx().getTimestamp().unix() >= startTimestamp
+            )
+        },
     }
 }
 
@@ -183,7 +202,10 @@ interface OwnProps {
     tickets: Ticket[]
     selectedTimeframe: ChartTimeframe
     getTicketsAttempting: boolean
-    getFilteredTickets: (filter: TicketStatus, timeframe: ChartTimeframe) => Ticket[]
+    getFilteredTickets: (
+        filter: TicketStatus,
+        timeframe: ChartTimeframe
+    ) => Ticket[]
 }
 
 interface DispatchProps {
@@ -204,4 +226,7 @@ const mapDispatchToProps = {
     onTimeFrameChanged,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketsOverviewContainer)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TicketsOverviewContainer)

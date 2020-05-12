@@ -47,16 +47,14 @@ class TransactionTable extends React.Component<Props> {
                         </thead>
                         <TransitionGroup
                             {...transitionGroupProps}
-                            component="tbody"
-                        >
+                            component="tbody">
                             {this.props.items.map((tx: Transaction) => (
                                 <Fade slide cascade key={tx.getHash()}>
                                     <tr
                                         className="clickable"
                                         onClick={() =>
                                             this.props.onItemClick(tx)
-                                        }
-                                    >
+                                        }>
                                         <td>
                                             <TransactionMempoolStatusIcon
                                                 isMined={tx.isMined()}
@@ -82,8 +80,7 @@ class TransactionTable extends React.Component<Props> {
                                                         return (
                                                             <Badge
                                                                 key={account.getAccountName()}
-                                                                variant="info"
-                                                            >
+                                                                variant="info">
                                                                 {account.getAccountName()}
                                                             </Badge>
                                                         )
@@ -122,7 +119,6 @@ class TransactionTable extends React.Component<Props> {
         )
     }
 }
-
 
 interface StateProps {
     isTxMixed: (tx: Transaction) => boolean

@@ -14,8 +14,7 @@ export default class SendTransactionModal extends React.Component<Props> {
                 show={this.props.show}
                 onHide={() => this.props.onHide()}
                 animation={true}
-                size="lg"
-            >
+                size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Send DCR</Modal.Title>
                 </Modal.Header>

@@ -29,7 +29,9 @@ export default class UTXODetailsComponent extends React.Component<Props, {}> {
                         </tr>
                         <tr>
                             <th>Address</th>
-                            <td><Address address={utxo.getAddress()} /></td>
+                            <td>
+                                <Address address={utxo.getAddress()} />
+                            </td>
                         </tr>
                         <tr>
                             <th>Amount</th>

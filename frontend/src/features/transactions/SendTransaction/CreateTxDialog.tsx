@@ -39,13 +39,15 @@ import {
     haveExchangeRateData,
 } from "../../market/marketSlice"
 import { getAccountBalance } from "../../balances/walletBalanceSlice"
-import { UnspentOutput, CreateTransactionRequest } from "../../../proto/walletgui_pb"
+import {
+    UnspentOutput,
+    CreateTransactionRequest,
+} from "../../../proto/walletgui_pb"
 import { AuthoredTransactionMetadata } from "../models"
 import { Amount } from "../../../components/Shared/Amount"
 import { createTransaction } from "../actions"
 
 class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
-
     formRef: React.RefObject<any> = React.createRef()
     feeRateRef: React.RefObject<any> = React.createRef()
     updateTxMetadata: () => void
@@ -80,8 +82,7 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                     ref={this.formRef}
                     className="mb-0"
                     validated={this.state.formIsValidated && !this.props.error}
-                    onSubmit={_.bind(this.handleFormSubmit, this)}
-                >
+                    onSubmit={_.bind(this.handleFormSubmit, this)}>
                     <Form.Group controlId="destinationAddressControl" as={Row}>
                         <Form.Label column sm={3}>
                             Pay to
@@ -95,9 +96,12 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                                     type="text"
                                     size="lg"
                                     placeholder="Ds....."
-                                    defaultValue={this.state.destinationAddress[0]}
+                                    defaultValue={
+                                        this.state.destinationAddress[0]
+                                    }
                                     onChange={_.bind(
-                                        this.handleDestinationAddressChange, this
+                                        this.handleDestinationAddressChange,
+                                        this
                                     )}
                                     name="destinationAddress"
                                 />
@@ -119,26 +123,29 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                             <Row>
                                 <Col sm={6}>
                                     <strong>
-                                        {this.state.sourceAccount.getAccountName()}
-                                        {" "}
+                                        {this.state.sourceAccount.getAccountName()}{" "}
                                         <Amount
-                                            amount={this.props.getSpendableBalance(this.state.sourceAccount)}
+                                            amount={this.props.getSpendableBalance(
+                                                this.state.sourceAccount
+                                            )}
                                             rounding={8}
-                                            showCurrency />
+                                            showCurrency
+                                        />
                                     </strong>
                                 </Col>
                                 <Col sm={6}>
                                     <Form.Group
                                         controlId="manualUTXOSelectionToggleControl"
-                                        className=""
-                                    >
+                                        className="">
                                         <Form.Check
                                             type="switch"
                                             name="manualUTXOSelectionToggle"
                                             tabIndex={3}
                                             // checked={this.state.manualInputSelection}
                                             onChange={(
-                                                e: React.ChangeEvent<HTMLInputElement>
+                                                e: React.ChangeEvent<
+                                                    HTMLInputElement
+                                                >
                                             ) =>
                                                 this.handleManualInputToggleChange(
                                                     e.currentTarget.checked
@@ -154,7 +161,11 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                                     <UTXOSelectorWidget
                                         onSelectionChange={(
                                             utxos: UnspentOutput[]
-                                        ) => this.handleUTXOSelectionChange(utxos)}
+                                        ) =>
+                                            this.handleUTXOSelectionChange(
+                                                utxos
+                                            )
+                                        }
                                         account={this.state.sourceAccount}
                                     />
                                 </div>
@@ -226,7 +237,9 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                                             id="amountControl"
                                             size="lg"
                                             onChange={(
-                                                e: React.ChangeEvent<HTMLInputElement>
+                                                e: React.ChangeEvent<
+                                                    HTMLInputElement
+                                                >
                                             ) =>
                                                 this.handleAmountInputChange(
                                                     "amount",
@@ -264,7 +277,11 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                                             id="amountControlAltCurrency"
                                             size="lg"
                                             aria-describedby="amountControlAltCurrency"
-                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                            onChange={(
+                                                e: React.ChangeEvent<
+                                                    HTMLInputElement
+                                                >
+                                            ) =>
                                                 this.handleAmountInputChange(
                                                     "amountAltCurrency",
                                                     parseFloat(
@@ -279,12 +296,10 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                                                     this.handleAltCurrencySelectorChange(
                                                         evtKey
                                                     )
-                                                }
-                                            >
+                                                }>
                                                 <Dropdown.Toggle
                                                     variant="secondary"
-                                                    id="alt-currency-selector"
-                                                >
+                                                    id="alt-currency-selector">
                                                     {this.state.selectedAltCurrencyCode.toUpperCase()}
                                                 </Dropdown.Toggle>
 
@@ -306,7 +321,8 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                                         Rate:{" "}
                                         {this.props
                                             .altCurrencyExchangeRate(
-                                                this.state.selectedAltCurrencyCode
+                                                this.state
+                                                    .selectedAltCurrencyCode
                                             )
                                             ?.toFixed(8)}
                                     </small>
@@ -315,14 +331,15 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                                     <Button tabIndex={-1} variant="link">
                                         <Form.Group
                                             controlId="sendAllControl"
-                                            className="m-0"
-                                        >
+                                            className="m-0">
                                             <Form.Check
                                                 name="sendAllToggle"
                                                 tabIndex={3}
                                                 type="checkbox"
                                                 onChange={(
-                                                    e: React.ChangeEvent<HTMLInputElement>
+                                                    e: React.ChangeEvent<
+                                                        HTMLInputElement
+                                                    >
                                                 ) =>
                                                     this.handleSourceChange(
                                                         e.currentTarget.checked
@@ -346,8 +363,14 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                             Fee
                         </Form.Label>
                         <Col sm={6}>
-                            Estimated size: {this.state.estimatedSignedSize} bytes<br />
-                            Fee: <Amount amount={this.state.estimatedFee} showCurrency />
+                            Estimated size: {this.state.estimatedSignedSize}{" "}
+                            bytes
+                            <br />
+                            Fee:{" "}
+                            <Amount
+                                amount={this.state.estimatedFee}
+                                showCurrency
+                            />
                             {/* <FeeChooserInput
                                 inputRef={this.feeRateRef}
                                 value={this.state.feeRate}
@@ -363,14 +386,12 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                         </Col>
                     </Row>
 
-
                     <Row className="mt-5">
                         <Col xs={6}>
                             <Button
                                 onClick={() => this.resetFields()}
                                 tabIndex={-1}
-                                variant="secondary"
-                            >
+                                variant="secondary">
                                 Clear
                             </Button>
                         </Col>
@@ -378,8 +399,12 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                             {/* <Button tabIndex={4} variant="secondary">
                                 <FontAwesomeIcon icon={faEye} /> Preview
                             </Button> */}
-                            <Button tabIndex={4} variant="primary" type="submit">
-                                <FontAwesomeIcon icon={faEye} /> Preview &amp; Sign
+                            <Button
+                                tabIndex={4}
+                                variant="primary"
+                                type="submit">
+                                <FontAwesomeIcon icon={faEye} /> Preview &amp;
+                                Sign
                             </Button>
                         </Col>
                     </Row>
@@ -394,7 +419,8 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
             this.state.selectedAltCurrencyCode
         )
         let amount = 0
-        const normalizeValue = (value: number) => Math.floor(value * ATOMS_DIVISOR)/ATOMS_DIVISOR
+        const normalizeValue = (value: number) =>
+            Math.floor(value * ATOMS_DIVISOR) / ATOMS_DIVISOR
         switch (fieldName) {
             case "amount":
                 form.amount.value = amount = normalizeValue(value)
@@ -409,11 +435,14 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
                 form.amount.value = amount = normalizeValue(dcrValue)
                 break
         }
-        this.setState({
-            amount: amount,
-        }, () => {
-            this.updateTxMetadata()
-        })
+        this.setState(
+            {
+                amount: amount,
+            },
+            () => {
+                this.updateTxMetadata()
+            }
+        )
     }
 
     handleSourceChange(sendAllFlag: boolean = this.state.sendAllToggle) {
@@ -432,29 +461,38 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
         if (sendAllFlag == true) {
             this.handleAmountInputChange("amount", spendableFunds)
         }
-        this.setState({
-            sendAllToggle: sendAllFlag,
-            spendableFunds: spendableFunds,
-        }, () => {
-            this.updateTxMetadata()
-        })
+        this.setState(
+            {
+                sendAllToggle: sendAllFlag,
+                spendableFunds: spendableFunds,
+            },
+            () => {
+                this.updateTxMetadata()
+            }
+        )
     }
 
     handleManualInputToggleChange(state: boolean) {
-        this.setState({
-            manualInputSelection: state,
-            selectedUTXOs: [],
-        }, () => {
-            this.handleSourceChange()
-        })
+        this.setState(
+            {
+                manualInputSelection: state,
+                selectedUTXOs: [],
+            },
+            () => {
+                this.handleSourceChange()
+            }
+        )
     }
 
     handleUTXOSelectionChange(utxos: UnspentOutput[]) {
-        this.setState({
-            selectedUTXOs: utxos,
-        }, () => {
-            this.handleSourceChange()
-        })
+        this.setState(
+            {
+                selectedUTXOs: utxos,
+            },
+            () => {
+                this.handleSourceChange()
+            }
+        )
     }
 
     handleDestinationAddressChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -469,12 +507,14 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
             return false
         }
         e.currentTarget.setCustomValidity("")
-        this.setState({
-            destinationAddress: [address],
-        }, () => {
-            this.updateTxMetadata()
-
-        })
+        this.setState(
+            {
+                destinationAddress: [address],
+            },
+            () => {
+                this.updateTxMetadata()
+            }
+        )
         return true
     }
 
@@ -510,13 +550,18 @@ class ConstructTxDialog extends React.Component<Props, ISendDialogFormData> {
         const txInfo = this.props.txInfo
         let estimatedFee = 0
         if (txInfo != undefined && txInfo.constructedTx != undefined) {
-            estimatedFee = txInfo.constructedTx.getTotalPreviousOutputAmount() - txInfo.constructedTx.getTotalOutputAmount()
+            estimatedFee =
+                txInfo.constructedTx.getTotalPreviousOutputAmount() -
+                txInfo.constructedTx.getTotalOutputAmount()
         }
         if (f.amount.value && f.destinationAddress.value) {
             await this.createTransaction()
             this.setState({
                 estimatedFee: estimatedFee,
-                estimatedSignedSize: this.props.txInfo != null ? this.props.txInfo.estimatedSignedSize : 0
+                estimatedSignedSize:
+                    this.props.txInfo != null
+                        ? this.props.txInfo.estimatedSignedSize
+                        : 0,
             })
         }
     }

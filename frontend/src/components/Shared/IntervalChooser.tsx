@@ -11,7 +11,6 @@ export interface ChartTimeframe {
     windowSize: string
 }
 
-
 export const timeframes: ChartTimeframe[] = [
     { days: 1, name: "24 hours", windowSize: "1h" },
     { days: 3, name: "3 days", windowSize: "12h" },
@@ -31,17 +30,16 @@ export default class IntervalChooser extends React.Component<OwnProps> {
                     variant="secondary"
                     id="timeframe-dropdown"
                     size="sm">
-                    <FontAwesomeIcon icon={faCalendar} /> {this.props.selectedValue.name}
+                    <FontAwesomeIcon icon={faCalendar} />{" "}
+                    {this.props.selectedValue.name}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     {this.props.timeframes.map((item) => (
                         <Dropdown.Item
                             key={`interval-${item.days}`}
-                            onClick={() => this.props.onChange(item)}
-                        >
+                            onClick={() => this.props.onChange(item)}>
                             <SelectedDropdownItemLabel
-                                isSelected={this.props.selectedValue == item}
-                            >
+                                isSelected={this.props.selectedValue == item}>
                                 {item.name}
                             </SelectedDropdownItemLabel>
                         </Dropdown.Item>

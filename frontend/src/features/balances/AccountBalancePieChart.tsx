@@ -19,8 +19,7 @@ export default class AccountBalancePieChart extends PureComponent {
                     outerRadius={30}
                     fill="#8884d8"
                     paddingAngle={5}
-                    dataKey="value"
-                >
+                    dataKey="value">
                     {data.map((entry, index) => (
                         <Cell
                             key={`cell-${index}`}

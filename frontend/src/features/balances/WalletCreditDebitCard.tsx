@@ -18,10 +18,12 @@ import {
 import { WalletTotals } from "../../middleware/models"
 import { IApplicationState } from "../../store/types"
 import { makeTxHistoryChartSeries } from "../transactions/transactionsSlice"
-import { timeframes, ChartTimeframe } from "../../components/Shared/IntervalChooser"
+import {
+    timeframes,
+    ChartTimeframe,
+} from "../../components/Shared/IntervalChooser"
 import { colorScheme } from "../staking/StakingHistory/StakingHistoryChart"
 import { sprintf } from "sprintf-js"
-
 
 const style = styler([
     { key: "credit", color: colorScheme[3], width: 5 },
@@ -46,8 +48,7 @@ class WalletCreditDebitCard extends PureComponent<Props> {
                         position: "absolute",
                         width: "100%",
                         bottom: -10,
-                    }}
-                >
+                    }}>
                     <ChartContainer
                         timeRange={series.timerange()}
                         timeAxisTickCount={4}
@@ -55,7 +56,7 @@ class WalletCreditDebitCard extends PureComponent<Props> {
                         enablePanZoom={true}
                         paddingLeft={25}
                         paddingRight={25}
-                    // showGrid={true}
+                        // showGrid={true}
                     >
                         <ChartRow height="160">
                             <YAxis
@@ -96,7 +97,6 @@ interface OwnProps {
     txHistorySeries: TimeSeries | undefined
 }
 
-
 interface StateProps {
     series: TimeSeries | undefined
     loading: boolean
@@ -104,17 +104,18 @@ interface StateProps {
 
 type Props = OwnProps & StateProps
 
-const mapStateToProps = (state: IApplicationState, ownProps: OwnProps): StateProps => {
-
-    const series = ownProps.txHistorySeries?.
-        fixedWindowRollup({
-            windowSize: ownProps.timeframe.windowSize,
-            toTimeEvents: false,
-            aggregation: {
-                debit_sum: { debit: sum() },
-                credit_sum: { credit: sum() },
-            },
-        })
+const mapStateToProps = (
+    state: IApplicationState,
+    ownProps: OwnProps
+): StateProps => {
+    const series = ownProps.txHistorySeries?.fixedWindowRollup({
+        windowSize: ownProps.timeframe.windowSize,
+        toTimeEvents: false,
+        aggregation: {
+            debit_sum: { debit: sum() },
+            credit_sum: { credit: sum() },
+        },
+    })
 
     return {
         series: series,

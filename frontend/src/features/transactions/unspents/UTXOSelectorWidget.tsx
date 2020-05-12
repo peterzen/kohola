@@ -5,10 +5,7 @@ import _ from "lodash"
 import TimeAgo from "react-timeago"
 
 import { WalletAccount } from "../../../middleware/models"
-import {
-    fetchUnspentsAttempt,
-    getRegularUTXOs,
-} from "./unspentsSlice"
+import { fetchUnspentsAttempt, getRegularUTXOs } from "./unspentsSlice"
 
 import { IApplicationState } from "../../../store/types"
 import { Table, Form, Alert } from "react-bootstrap"
@@ -38,7 +35,7 @@ class UTXOSelectorWidget extends React.Component<Props, InternalState> {
                             <tr>
                                 <th>Hash</th>
                                 <th>Timestamp</th>
-                                <th style={{width:"10rem"}}>Amount</th>
+                                <th style={{ width: "10rem" }}>Amount</th>
                                 <th>
                                     {/* <Form.Check
                                         disabled
@@ -59,8 +56,7 @@ class UTXOSelectorWidget extends React.Component<Props, InternalState> {
                                         utxo.getOutputIndex()
                                     }
                                     className="clickable"
-                                    onClick={() => this.toggleSelection(utxo)}
-                                >
+                                    onClick={() => this.toggleSelection(utxo)}>
                                     <td>
                                         <TxHash
                                             hash={utxo.getTransactionHash_asU8()}

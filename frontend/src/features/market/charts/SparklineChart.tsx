@@ -3,13 +3,8 @@ import { connect } from "react-redux"
 import _ from "lodash"
 
 import { IApplicationState } from "../../../store/types"
-import {
-    fetchExchangeChartData,
-    getMarketCurrencyState,
-} from "../marketSlice"
-import {
-    TimeSeries,
-} from "pondjs"
+import { fetchExchangeChartData, getMarketCurrencyState } from "../marketSlice"
+import { TimeSeries } from "pondjs"
 import {
     Charts,
     ChartContainer,
@@ -36,12 +31,15 @@ class SparklineChart extends React.Component<Props> {
                         showGrid={false}
                         maxTime={priceSeries.timerange().end()}
                         minTime={priceSeries.timerange().begin()}
-                        onMouseMove={(x: number, y: number) => this.handleMouseMove(x, y)}
+                        onMouseMove={(x: number, y: number) =>
+                            this.handleMouseMove(x, y)
+                        }
                         minDuration={1000 * 60 * 60 * 24 * 30}
                         hideTimeAxis={true}
                         timeAxisAngledLabels={false}
-                        timeAxisStyle={{ axis: { fill: "none", stroke: "none" } }}
-                    >
+                        timeAxisStyle={{
+                            axis: { fill: "none", stroke: "none" },
+                        }}>
                         <ChartRow>
                             <YAxis
                                 id="y"
@@ -72,7 +70,10 @@ class SparklineChart extends React.Component<Props> {
         this.setState({ x, y })
     }
     componentDidMount() {
-        this.props.fetchExchangeChartData(this.props.currencyCode, this.props.days)
+        this.props.fetchExchangeChartData(
+            this.props.currencyCode,
+            this.props.days
+        )
     }
 }
 
@@ -93,7 +94,8 @@ type Props = OwnProps & StateProps & DispatchProps
 
 const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
     return {
-        priceSeries: getMarketCurrencyState(state, ownProps.currencyCode)?.priceSeries,
+        priceSeries: getMarketCurrencyState(state, ownProps.currencyCode)
+            ?.priceSeries,
     }
 }
 

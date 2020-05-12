@@ -16,8 +16,7 @@ class MixerContainer extends React.PureComponent<{}, {}> {
                     defaultActiveKey="mixing-stats"
                     id="mixing-tabs"
                     mountOnEnter={true}
-                    unmountOnExit={true}
-                >
+                    unmountOnExit={true}>
                     <Tab eventKey="mixing-stats" title="Overview">
                         <div>
                             <MixingStats />

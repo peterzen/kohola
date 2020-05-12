@@ -2,7 +2,7 @@ import * as React from "react"
 import _ from "lodash"
 import moment from "../../../helpers/moment-helper"
 
-import { Table, } from "react-bootstrap"
+import { Table } from "react-bootstrap"
 import ReactTimeago from "react-timeago"
 import { TransitionGroup } from "react-transition-group"
 // @ts-ignore
@@ -27,13 +27,12 @@ export default class StakingHistoryTable extends React.Component<Props> {
                         <th className="text-secondary">FeeDebit</th>
                     </tr>
                 </thead>
-                <TransitionGroup
-                    {...transitionGroupProps}
-                    component="tbody"
-                >
-
+                <TransitionGroup {...transitionGroupProps} component="tbody">
                     {this.props.stakingHistory.map((item) => (
-                        <Fade slide cascade key={rawHashToHex(item.getTxHash_asU8()) || ""}>
+                        <Fade
+                            slide
+                            cascade
+                            key={rawHashToHex(item.getTxHash_asU8()) || ""}>
                             <tr>
                                 <td>{TransactionType[item.getTxType()]}</td>
                                 <td>
@@ -80,8 +79,6 @@ interface OwnProps {
     stakingHistory: StakingHistory.StakingHistoryLineItem[]
 }
 
-interface DispatchProps {
-}
+interface DispatchProps {}
 
 type Props = OwnProps
-
