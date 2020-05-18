@@ -25,9 +25,10 @@ class AgendasComponent extends React.Component<Props, InternalState> {
                 </Card.Header>
                 <Card.Body>
                     <ComponentPlaceHolder
+                        firstLaunchOnly={true}
                         type="text"
-                        rows={7}
-                        ready={!this.props.isLoading}
+                        rows={10}
+                        ready={!this.props.loading}
                         showLoadingAnimation>
                         <div>
                             {this.props.agendas
@@ -69,23 +70,25 @@ class AgendasComponent extends React.Component<Props, InternalState> {
     }
 }
 
-interface OwnProps {
+interface StateProps {
     agendas: Agendas
-    isLoading: boolean
+}
+
+interface OwnProps {
+    loading: boolean
 }
 
 interface DispatchProps {
     loadAgendasAttempt: typeof loadAgendasAttempt
 }
 
-type Props = DispatchProps & OwnProps
+type Props = DispatchProps & OwnProps & StateProps
 
 interface InternalState {}
 
 const mapStateToProps = (state: IApplicationState) => {
     return {
         agendas: state.staking.agendas,
-        isLoading: state.staking.getAgendasAttempting,
     }
 }
 

@@ -45,9 +45,11 @@ export default class WalletTotalsCard extends PureComponent<OwnProps> {
                     <Row>
                         <Col xs="6" sm="6" md="7" lg="6">
                             <ComponentPlaceHolder
+                                firstLaunchOnly={true}
                                 type="text"
                                 rows={8}
-                                ready={!this.props.loading}>
+                                ready={!this.props.loading}
+                                showLoadingAnimation>
                                 <div>
                                     <ValueRow
                                         label="Spendable"
@@ -83,7 +85,10 @@ export default class WalletTotalsCard extends PureComponent<OwnProps> {
                             </ComponentPlaceHolder>
                         </Col>
                         <Col className="p-0" xs="6" sm="6" md="5" lg="6">
-                            <WalletTotalsPieChart totals={totals} />
+                            <WalletTotalsPieChart
+                                totals={totals}
+                                loading={this.props.loading}
+                            />
                         </Col>
                     </Row>
                 </Card.Body>

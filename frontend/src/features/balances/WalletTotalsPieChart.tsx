@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react"
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts"
 import { WalletTotals } from "../../middleware/models"
+import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
 
 const RADIAN = Math.PI / 180
 const renderCustomizedLabel = ({
@@ -42,30 +43,39 @@ export default class WalletTotalsPieChart extends PureComponent<OwnProps> {
         ]
 
         return (
-            <ResponsiveContainer>
-                <PieChart>
-                    <Pie
-                        data={totalsPieData}
-                        labelLine={false}
-                        label={renderCustomizedLabel}
-                        isAnimationActive={false}
-                        dataKey="value" // silence a warning -- https://github.com/recharts/recharts/issues/1410
-                    >
-                        {totalsPieData.map((entry, index) => {
-                            return (
-                                <Cell
-                                    key={`cell-${index}`}
-                                    className={`spendable-${entry.name}`}
-                                />
-                            )
-                        })}
-                    </Pie>
-                </PieChart>
-            </ResponsiveContainer>
+            <ComponentPlaceHolder
+                firstLaunchOnly={true}
+                className="pr-x-15"
+                type="text"
+                rows={7}
+                ready={!this.props.loading}
+                showLoadingAnimation>
+                <ResponsiveContainer>
+                    <PieChart>
+                        <Pie
+                            data={totalsPieData}
+                            labelLine={false}
+                            label={renderCustomizedLabel}
+                            isAnimationActive={false}
+                            dataKey="value" // silence a warning -- https://github.com/recharts/recharts/issues/1410
+                        >
+                            {totalsPieData.map((entry, index) => {
+                                return (
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        className={`spendable-${entry.name}`}
+                                    />
+                                )
+                            })}
+                        </Pie>
+                    </PieChart>
+                </ResponsiveContainer>
+            </ComponentPlaceHolder>
         )
     }
 }
 
 interface OwnProps {
     totals: WalletTotals
+    loading: boolean
 }

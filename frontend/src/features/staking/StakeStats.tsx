@@ -25,6 +25,7 @@ import {
     makeTimeline,
     IChartdataTimelineItem,
 } from "../../helpers/helpers"
+import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
 
 // @TODO add dropdown to control this
 const days = 7
@@ -40,50 +41,79 @@ class StakeStats extends React.Component<Props> {
         return (
             <Card>
                 <Card.Body>
-                    <Row>
-                        <Col sm={6}>
-                            <h2>
-                                <Amount
-                                    amount={this.props.ticketPrice.getTicketPrice()}
-                                    showCurrency
+                    <ComponentPlaceHolder
+                        firstLaunchOnly={true}
+                        type="media"
+                        rows={3}
+                        ready={!this.props.loading}
+                        showLoadingAnimation>
+                        <Row>
+                            <Col sm={6}>
+                                <h2>
+                                    <Amount
+                                        amount={this.props.ticketPrice.getTicketPrice()}
+                                        showCurrency
+                                    />
+                                </h2>
+                                <h6 className="text-muted">
+                                    Ticket price in next block
+                                </h6>
+                            </Col>
+                            <Col sm={6} className="pt-3">
+                                <SparklineChart
+                                    data={this.props.stakediffHistory}
+                                    dataKey="value"
                                 />
-                            </h2>
-                            <h6 className="text-muted">
-                                Ticket price in next block
-                            </h6>
-                        </Col>
-                        <Col sm={6} className="pt-3">
-                            <SparklineChart
-                                data={this.props.stakediffHistory}
-                                dataKey="value"
-                            />
-                        </Col>
-                    </Row>
+                            </Col>
+                        </Row>
+                    </ComponentPlaceHolder>
                 </Card.Body>
                 <hr className="m-0" />
                 <Card.Body>
                     <Row>
                         <Col xs={6}>
-                            <h3>{sumPurchasedCount}</h3>
-                            <h6 className="text-muted">
-                                <TicketStatusIcon status={TicketStatus.VOTED} />{" "}
-                                Purchased
-                            </h6>
-                            <SparklineChart
-                                data={this.props.purchasedCounts}
-                                dataKey="value"
-                            />
+                            <ComponentPlaceHolder
+                                firstLaunchOnly={true}
+                                type="media"
+                                rows={4}
+                                ready={!this.props.loading}
+                                showLoadingAnimation>
+                                <div>
+                                    <h3>{sumPurchasedCount}</h3>
+                                    <h6 className="text-muted">
+                                        <TicketStatusIcon
+                                            status={TicketStatus.VOTED}
+                                        />{" "}
+                                        Purchased
+                                    </h6>
+                                    <SparklineChart
+                                        data={this.props.purchasedCounts}
+                                        dataKey="value"
+                                    />
+                                </div>
+                            </ComponentPlaceHolder>
                         </Col>
                         <Col xs={6}>
-                            <h3>{s.getVoted()}</h3>
-                            <h6 className="text-muted">
-                                <TicketStatusIcon status={TicketStatus.VOTED} />{" "}
-                                Voted
-                            </h6>
-                            <SparklineChart
-                                data={this.props.voteCounts}
-                                dataKey="value"
-                            />
+                            <ComponentPlaceHolder
+                                firstLaunchOnly={true}
+                                type="media"
+                                rows={4}
+                                ready={!this.props.loading}
+                                showLoadingAnimation>
+                                <div>
+                                    <h3>{s.getVoted()}</h3>
+                                    <h6 className="text-muted">
+                                        <TicketStatusIcon
+                                            status={TicketStatus.VOTED}
+                                        />{" "}
+                                        Voted
+                                    </h6>
+                                    <SparklineChart
+                                        data={this.props.voteCounts}
+                                        dataKey="value"
+                                    />
+                                </div>
+                            </ComponentPlaceHolder>
                         </Col>
                         {/* <Col xs={6}>
 							<h3><Amount amount={s.getTotalSubsidy()} showCurrency={true} /></h3>
@@ -91,22 +121,42 @@ class StakeStats extends React.Component<Props> {
 							<PlaceholderSparklineChart />
 						</Col> */}
                         <Col xs={6}>
-                            <h3>{s.getMissed()}</h3>
-                            <h6 className="text-muted">
-                                <TicketStatusIcon
-                                    status={TicketStatus.MISSED}
-                                />{" "}
-                                Missed
-                            </h6>
+                            <ComponentPlaceHolder
+                                className="pt-x-20"
+                                firstLaunchOnly={true}
+                                type="media"
+                                rows={4}
+                                ready={!this.props.loading}
+                                showLoadingAnimation>
+                                <div>
+                                    <h3>{s.getMissed()}</h3>
+                                    <h6 className="text-muted">
+                                        <TicketStatusIcon
+                                            status={TicketStatus.MISSED}
+                                        />{" "}
+                                        Missed
+                                    </h6>
+                                </div>
+                            </ComponentPlaceHolder>
                         </Col>
                         <Col xs={6}>
-                            <h3>{s.getRevoked()}</h3>
-                            <h6 className="text-muted">
-                                <TicketStatusIcon
-                                    status={TicketStatus.REVOKED}
-                                />{" "}
-                                Revoked
-                            </h6>
+                            <ComponentPlaceHolder
+                                className="pt-x-20"
+                                firstLaunchOnly={true}
+                                type="media"
+                                rows={4}
+                                ready={!this.props.loading}
+                                showLoadingAnimation>
+                                <div>
+                                    <h3>{s.getRevoked()}</h3>
+                                    <h6 className="text-muted">
+                                        <TicketStatusIcon
+                                            status={TicketStatus.REVOKED}
+                                        />{" "}
+                                        Revoked
+                                    </h6>
+                                </div>
+                            </ComponentPlaceHolder>
                         </Col>
                     </Row>
                 </Card.Body>
@@ -120,7 +170,7 @@ class StakeStats extends React.Component<Props> {
     }
 }
 
-interface OwnProps {
+interface StateProps {
     stakeinfo: StakeInfo
     voteCounts: IChartdataTimelineItem[]
     ticketPrice: TicketPrice
@@ -129,14 +179,18 @@ interface OwnProps {
     revocationCounts: IChartdataTimelineItem[]
 }
 
+interface OwnProps {
+    loading: boolean
+}
+
 interface DispatchProps {
     loadStakeDiffHistory: typeof loadStakeDiffHistory
     loadTicketPriceAttempt: typeof loadTicketPriceAttempt
 }
 
-type Props = DispatchProps & OwnProps
+type Props = DispatchProps & OwnProps & StateProps
 
-const mapStateToProps = (state: IApplicationState): OwnProps => {
+const mapStateToProps = (state: IApplicationState): StateProps => {
     const stakingHistory = getFilteredStakingHistory(state, days)
     return {
         stakeinfo: state.staking.stakeinfo,

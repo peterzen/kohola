@@ -39,27 +39,31 @@ class StakingContainer extends React.PureComponent<Props> {
                     unmountOnExit={true}>
                     <Tab eventKey="overview" title="Overview">
                         <div>
-                            <StakeInfoComponent />
+                            <StakeInfoComponent loading={this.props.loading} />
                             <Row className="mt-3">
                                 <Col>
-                                    <TicketsOverviewContainer />
+                                    <TicketsOverviewContainer
+                                        loading={this.props.loading}
+                                    />
                                 </Col>
                                 <Col>
-                                    <StakeStats />
+                                    <StakeStats loading={this.props.loading} />
                                     <div className="mt-3" />
-                                    <PurchaseTicketForm />
+                                    <PurchaseTicketForm
+                                        loading={this.props.loading}
+                                    />
                                 </Col>
                             </Row>
                         </div>
                     </Tab>
                     <Tab eventKey="roi" title="Returns">
-                        <StakingHistoryContainer />
+                        <StakingHistoryContainer loading={this.props.loading} />
                     </Tab>
                     <Tab eventKey="ticketbuyer" title="Ticketbuyer">
-                        <TicketBuyerComponent />
+                        <TicketBuyerComponent loading={this.props.loading} />
                     </Tab>
                     <Tab eventKey="voting" title="Voting">
-                        <AgendasComponent />
+                        <AgendasComponent loading={this.props.loading} />
                     </Tab>
                 </Tabs>
                 <PassphraseEntryDialog show={false} />
@@ -76,6 +80,7 @@ class StakingContainer extends React.PureComponent<Props> {
 
 interface OwnProps {
     stakeinfo: StakeInfo
+    loading: boolean
 }
 
 interface DispatchProps {
@@ -89,6 +94,10 @@ type Props = OwnProps & DispatchProps
 const mapStateToProps = (state: IApplicationState): OwnProps => {
     return {
         stakeinfo: state.staking.stakeinfo,
+        loading: 
+            state.staking.getStakeInfoAttempting ||
+            state.staking.getTicketsAttempting ||
+            state.staking.getAgendasAttempting,
     }
 }
 

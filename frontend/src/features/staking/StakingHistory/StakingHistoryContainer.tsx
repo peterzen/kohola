@@ -13,6 +13,7 @@ import { StakingHistory } from "../../../proto/walletgui_pb"
 import StakingHistoryTable from "./StakingHistoryTable"
 import { onTimeFrameChanged, getFilteredStakingHistory } from "../stakingSlice"
 import StakingHistoryChart from "./StakingHistoryChart"
+import ComponentPlaceHolder from "../../../components/Shared/ComponentPlaceholder"
 
 class StakingHistoryContainer extends React.PureComponent<
     Props,
@@ -33,12 +34,20 @@ class StakingHistoryContainer extends React.PureComponent<
                     </div>
                     <Card.Title>Staking returns</Card.Title>
                 </Card.Header>
-                <StakingHistoryChart
-                    stakingHistory={this.props.history}
-                    timeframe={this.props.selectedTimeframe}
-                />
+                    <StakingHistoryChart
+                        stakingHistory={this.props.history}
+                        timeframe={this.props.selectedTimeframe}
+                        loading={this.props.loading}
+                    />
                 <hr />
-                <StakingHistoryTable stakingHistory={this.props.history} />
+                <ComponentPlaceHolder
+                    firstLaunchOnly={true}
+                    className="p-x-20"
+                    type="text"
+                    rows={7}
+                    ready={!this.props.loading}>
+                    <StakingHistoryTable stakingHistory={this.props.history} />
+                </ComponentPlaceHolder>
             </Card>
         )
     }
@@ -51,7 +60,9 @@ interface StateProps {
     history: StakingHistory.StakingHistoryLineItem[]
 }
 
-interface OwnProps {}
+interface OwnProps {
+    loading: boolean
+}
 
 interface DispatchProps {
     onTimeFrameChanged: typeof onTimeFrameChanged

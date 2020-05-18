@@ -22,6 +22,7 @@ import GenericModal from "../../components/Shared/GenericModal"
 import TransactionDetailsComponent from "../transactions/TransactionDetailsComponent"
 import MixerStatsChart from "./MixerStatsChart"
 import { TimeRange } from "pondjs"
+import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
 
 class MixingStatsContainer extends React.Component<Props, InternalState> {
     constructor(props: Props) {
@@ -53,11 +54,23 @@ class MixingStatsContainer extends React.Component<Props, InternalState> {
                     </Card.Title>
                 </Card.Header>
 
-                <MixerStatsChart timeframe={this.state.selectedTimeframe} />
-                <MixingStatsTable
-                    onItemClick={_.bind(this.itemClickHandler, this)}
-                    transactions={txList}
-                />
+                <ComponentPlaceHolder
+                    firstLaunchOnly={true}
+                    className="p-x-20"
+                    type="text"
+                    rows={15}
+                    ready={!this.props.loading}
+                    showLoadingAnimation>
+                    <div>
+                        <MixerStatsChart
+                            timeframe={this.state.selectedTimeframe}
+                        />
+                        <MixingStatsTable
+                            onItemClick={_.bind(this.itemClickHandler, this)}
+                            transactions={txList}
+                        />
+                    </div>
+                </ComponentPlaceHolder>
 
                 <GenericModal
                     size="lg"
@@ -94,6 +107,10 @@ interface InternalState {
 }
 
 interface OwnProps {
+    loading: boolean
+}
+
+interface StateProps {
     getTxList: (timeframe: ChartTimeframe) => Transaction[]
 }
 
@@ -101,12 +118,11 @@ interface DispatchProps {
     onTimeFrameChanged: typeof onTimeFrameChanged
 }
 
-type Props = DispatchProps & OwnProps
+type Props = DispatchProps & OwnProps & StateProps
 
-const mapStateToProps = (state: IApplicationState) => {
+const mapStateToProps = (state: IApplicationState): StateProps => {
     const timeframe = state.staking.selectedTimeframe
     return {
-        isLoading: state.transactions.getTransactionsAttempting,
         getTxList: (timeframe: ChartTimeframe) => {
             const startTimestamp = moment
                 .default()

@@ -10,9 +10,11 @@ export default class WalletAvailableBalanceCard extends PureComponent<
         const totals = this.props.totals
         return (
             <ComponentPlaceHolder
+                firstLaunchOnly={true}
                 type="text"
                 rows={3}
-                ready={!this.props.loading}>
+                ready={!this.props.loading}
+                showLoadingAnimation>
                 <div>
                     <div className="text-muted">Available balance</div>
                     <h1 className="mb-0">

@@ -32,18 +32,23 @@ class Wallet extends React.PureComponent<Props> {
     render() {
         return (
             <div>
-                <WalletTotalsComponent totals={this.props.walletTotals} />
+                <WalletTotalsComponent
+                    totals={this.props.walletTotals}
+                    loading={this.props.loading}
+                />
                 <div className="mt-3" />
                 <AccountBalanceTable
                     menuHandler={_.bind(this.menuHandler, this)}
                     accounts={this.props.accounts}
                     balances={this.props.balances}
                     walletTotals={this.props.walletTotals}
+                    loading={this.props.loading}
                 />
                 <div className="mt-3" />
                 <RecentTransactions
                     txList={this.props.txList}
                     showAccount={true}
+                    loading={this.props.loading}
                 />
             </div>
         )
@@ -68,7 +73,7 @@ interface OwnProps {
     accounts: IndexedWalletAccounts
     balances: WalletBalance
     walletTotals: WalletTotals
-    accountsLoading: boolean
+    loading: boolean
 }
 
 interface DispatchProps {
@@ -83,7 +88,7 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
         accounts: getVisibleAccounts(state),
         balances: getWalletBalances(state),
         walletTotals: getWalletTotals(state),
-        accountsLoading:
+        loading:
             state.accounts.getAccountsAttempting ||
             state.transactions.getTransactionsAttempting,
     }

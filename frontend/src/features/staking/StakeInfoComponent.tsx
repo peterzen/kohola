@@ -21,10 +21,11 @@ class StakeInfoComponent extends React.Component<Props> {
             <Card>
                 <Card.Body>
                     <ComponentPlaceHolder
-                        type="media"
-                        rows={7}
                         firstLaunchOnly={true}
-                        ready={!this.props.getStakeInfoAttempting}>
+                        type="media"
+                        rows={4}
+                        ready={!this.props.loading}
+                        showLoadingAnimation>
                         <div>
                             <Row>
                                 <Col>
@@ -76,19 +77,21 @@ class StakeInfoComponent extends React.Component<Props> {
     }
 }
 
-interface OwnProps {
+interface StateProps {
     stakeinfo: StakeInfo
-    getStakeInfoAttempting: boolean
+}
+
+interface OwnProps {
+    loading: boolean
 }
 
 interface DispatchProps {}
 
-type Props = DispatchProps & OwnProps
+type Props = DispatchProps & OwnProps & StateProps
 
-const mapStateToProps = (state: IApplicationState): OwnProps => {
+const mapStateToProps = (state: IApplicationState): StateProps => {
     return {
         stakeinfo: state.staking.stakeinfo,
-        getStakeInfoAttempting: state.staking.getStakeInfoAttempting,
     }
 }
 

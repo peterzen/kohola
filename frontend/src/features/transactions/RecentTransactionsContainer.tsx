@@ -52,9 +52,11 @@ class RecentTransactionsComponent extends React.Component<
                 </Card.Header>
 
                 <ComponentPlaceHolder
+                    firstLaunchOnly={true}
+                    className="p-x-20"
                     type="text"
-                    rows={7}
-                    ready={!this.props.isLoading}>
+                    rows={6}
+                    ready={!this.props.loading}>
                     <TransactionTable
                         items={txList}
                         onItemClick={_.bind(this.itemClickHandler, this)}
@@ -85,11 +87,11 @@ class RecentTransactionsComponent extends React.Component<
 }
 
 interface StateProps {
-    isLoading: boolean
     getTxList: (timeframe: ChartTimeframe) => Transaction[]
 }
 
 interface OwnProps {
+    loading?: boolean
     showAccount?: boolean
     txList: Transaction[]
 }
@@ -110,7 +112,6 @@ const mapStateToProps = (
     ownProps: OwnProps
 ): StateProps => {
     return {
-        isLoading: state.transactions.getTransactionsAttempting,
         getTxList: (timeframe: ChartTimeframe) => {
             const startTimestamp = moment
                 .default()
