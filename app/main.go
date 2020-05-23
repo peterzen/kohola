@@ -29,10 +29,9 @@ func main() {
 	defer w.Destroy()
 
 	bindUIAPI(w)
+	walletgui.InitSystray(w)
 
 	startUI(w)
-
-	// go walletgui.initSystray()
 
 }
 
