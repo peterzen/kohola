@@ -1,6 +1,7 @@
 package webview
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 	"runtime"
@@ -16,6 +17,7 @@ type Interface interface {
 	Eval(js string)
 	Bind(name string, f interface{}) error
 	Destroy()
+	ShowWindow()
 }
 
 type webviewUI struct {
@@ -51,6 +53,11 @@ func (ui *webviewUI) Eval(js string) {
 
 func (ui *webviewUI) Bind(name string, f interface{}) error {
 	return ui.w.Bind(name, f)
+}
+
+func (ui *webviewUI) ShowWindow() {
+	window := ui.w.Window()
+	showWindow(window)
 }
 
 // Lorca
@@ -94,6 +101,10 @@ func (ui *lorcaUI) Eval(js string) {
 
 func (ui *lorcaUI) Bind(name string, f interface{}) error {
 	return ui.w.Bind(name, f)
+}
+
+func (ui *lorcaUI) ShowWindow() {
+	fmt.Println("Not supported in LorcaUI")
 }
 
 var wvInstance Interface

@@ -1,0 +1,1 @@
+void showAppWindow(void *window);
