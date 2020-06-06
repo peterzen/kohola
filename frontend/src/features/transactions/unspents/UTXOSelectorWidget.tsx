@@ -5,7 +5,7 @@ import _ from "lodash"
 import TimeAgo from "react-timeago"
 
 import { WalletAccount } from "../../../middleware/models"
-import { fetchUnspentsAttempt, getRegularUTXOs } from "./unspentsSlice"
+import { fetchUnspentsAttempt, getUTXOs } from "./unspentsSlice"
 
 import { IApplicationState } from "../../../store/types"
 import { Table, Form, Alert } from "react-bootstrap"
@@ -165,7 +165,7 @@ const mapStateToProps = (
     ownProps: OwnProps
 ): StateProps => {
     return {
-        utxos: getRegularUTXOs(state, ownProps.account?.getAccountNumber()),
+        utxos: getUTXOs(state, ownProps.account?.getAccountNumber()),
     }
 }
 

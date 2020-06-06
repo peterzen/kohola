@@ -7,7 +7,7 @@ import { Card } from "react-bootstrap"
 import UTXODetailsComponent from "./UTXODetailsComponent"
 import ListUTXOs from "./ListUTXOs"
 import { WalletAccount } from "../../../middleware/models"
-import { fetchUnspentsAttempt, getRegularUTXOs } from "./unspentsSlice"
+import { fetchUnspentsAttempt, getUTXOs } from "./unspentsSlice"
 import { IApplicationState } from "../../../store/types"
 import { UnspentOutput } from "../../../proto/walletgui_pb"
 import GenericModal from "../../../components/Shared/GenericModal"
@@ -82,7 +82,7 @@ const mapStateToProps = (
     ownProps: OwnProps
 ): StateProps => {
     return {
-        utxoList: getRegularUTXOs(state, ownProps.account.getAccountNumber()),
+        utxoList: getUTXOs(state, ownProps.account.getAccountNumber()),
     }
 }
 

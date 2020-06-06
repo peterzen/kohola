@@ -96,13 +96,13 @@ export const fetchUnspentsAttempt: ActionCreator<any> = (
 }
 
 // selectors
-export const getRegularUTXOs = (
+export const getUTXOs = (
 	state: IApplicationState,
 	accountNumber: number
 ) => {
 	return _.filter(
 		state.unspentoutputs.unspentOutputsByAccount[accountNumber],
-		(u) => u.getTree() == 0
+		(u) => true
 	)
 }
 
