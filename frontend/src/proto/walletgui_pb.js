@@ -1491,7 +1491,9 @@ proto.walletgui.GRPCEndpoint.toObject = function(includeInstance, msg) {
     label: jspb.Message.getFieldWithDefault(msg, 7, ""),
     isWatchingOnly: jspb.Message.getBooleanFieldWithDefault(msg, 8, false),
     activeNetwork: jspb.Message.getFieldWithDefault(msg, 9, 0),
-    coinType: jspb.Message.getFieldWithDefault(msg, 10, 0)
+    coinType: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    clientCertBlob: jspb.Message.getFieldWithDefault(msg, 11, ""),
+    clientKeyBlob: jspb.Message.getFieldWithDefault(msg, 12, "")
   };
 
   if (includeInstance) {
@@ -1567,6 +1569,14 @@ proto.walletgui.GRPCEndpoint.deserializeBinaryFromReader = function(msg, reader)
     case 10:
       var value = /** @type {number} */ (reader.readUint32());
       msg.setCoinType(value);
+      break;
+    case 11:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setClientCertBlob(value);
+      break;
+    case 12:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setClientKeyBlob(value);
       break;
     default:
       reader.skipField();
@@ -1664,6 +1674,20 @@ proto.walletgui.GRPCEndpoint.serializeBinaryToWriter = function(message, writer)
   if (f !== 0) {
     writer.writeUint32(
       10,
+      f
+    );
+  }
+  f = message.getClientCertBlob();
+  if (f.length > 0) {
+    writer.writeString(
+      11,
+      f
+    );
+  }
+  f = message.getClientKeyBlob();
+  if (f.length > 0) {
+    writer.writeString(
+      12,
       f
     );
   }
@@ -1847,6 +1871,42 @@ proto.walletgui.GRPCEndpoint.prototype.getCoinType = function() {
  */
 proto.walletgui.GRPCEndpoint.prototype.setCoinType = function(value) {
   return jspb.Message.setProto3IntField(this, 10, value);
+};
+
+
+/**
+ * optional string client_cert_blob = 11;
+ * @return {string}
+ */
+proto.walletgui.GRPCEndpoint.prototype.getClientCertBlob = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 11, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.walletgui.GRPCEndpoint} returns this
+ */
+proto.walletgui.GRPCEndpoint.prototype.setClientCertBlob = function(value) {
+  return jspb.Message.setProto3StringField(this, 11, value);
+};
+
+
+/**
+ * optional string client_key_blob = 12;
+ * @return {string}
+ */
+proto.walletgui.GRPCEndpoint.prototype.getClientKeyBlob = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 12, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.walletgui.GRPCEndpoint} returns this
+ */
+proto.walletgui.GRPCEndpoint.prototype.setClientKeyBlob = function(value) {
+  return jspb.Message.setProto3StringField(this, 12, value);
 };
 
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"crypto/x509"
 	"encoding/hex"
 	"errors"
@@ -75,14 +76,20 @@ func connectWallet(endpointCfg *walletgui.GRPCEndpoint) error {
 // NewGRPCClient connects to the wallet gRPC server
 func newGRPCClient(endpointCfg *walletgui.GRPCEndpoint) (*grpc.ClientConn, error) {
 	// fmt.Printf("%#v", endpointCfg)
-	var creds credentials.TransportCredentials = nil
 	var err error = nil
 
-	cp := x509.NewCertPool()
-	if !cp.AppendCertsFromPEM([]byte(endpointCfg.CertBlob)) {
+	serverCAs := x509.NewCertPool()
+	if !serverCAs.AppendCertsFromPEM([]byte(endpointCfg.CertBlob)) {
 		return nil, fmt.Errorf("credentials: failed to append certificates")
 	}
-	creds = credentials.NewClientTLSFromCert(cp, "localhost")
+	keypair, err := tls.X509KeyPair([]byte(endpointCfg.ClientCertBlob), []byte(endpointCfg.ClientKeyBlob))
+	if err != nil {
+		return nil, fmt.Errorf("credentials: client cert not found")
+	}
+	creds := credentials.NewTLS(&tls.Config{
+		Certificates: []tls.Certificate{keypair},
+		RootCAs:      serverCAs,
+	})
 
 	hostPort := fmt.Sprintf("%s:%d", endpointCfg.Hostname, endpointCfg.Port)
 	conn, err := grpc.Dial(hostPort, grpc.WithTransportCredentials(creds))

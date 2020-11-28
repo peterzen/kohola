@@ -170,6 +170,12 @@ export class GRPCEndpoint extends jspb.Message {
   getCoinType(): number;
   setCoinType(value: number): void;
 
+  getClientCertBlob(): string;
+  setClientCertBlob(value: string): void;
+
+  getClientKeyBlob(): string;
+  setClientKeyBlob(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GRPCEndpoint.AsObject;
   static toObject(includeInstance: boolean, msg: GRPCEndpoint): GRPCEndpoint.AsObject;
@@ -192,6 +198,8 @@ export namespace GRPCEndpoint {
     isWatchingOnly: boolean,
     activeNetwork: number,
     coinType: number,
+    clientCertBlob: string,
+    clientKeyBlob: string,
   }
 }
 
