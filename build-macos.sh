@@ -27,6 +27,9 @@ cat > $APP/Contents/Info.plist << EOF
 	<string>icon.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.github.peterzen.kohola</string>
+	<!-- avoid having a blurry icon and text -->
+	<key>NSHighResolutionCapable</key>
+	<string>True</string>
 </dict>
 </plist>
 EOF
