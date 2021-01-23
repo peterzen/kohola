@@ -279,7 +279,7 @@ func getVoteChoices() (r walletgui.LorcaMessage) {
 func setVoteChoices(agendaID string, choiceID string) (r walletgui.LorcaMessage) {
 	request := &walletrpc.SetVoteChoicesRequest{
 		Choices: []*walletrpc.SetVoteChoicesRequest_Choice{
-			&walletrpc.SetVoteChoicesRequest_Choice{
+			{
 				AgendaId: agendaID,
 				ChoiceId: choiceID,
 			},
@@ -319,7 +319,7 @@ func getTickets(
 	StartingBlockHeight int32,
 	EndingBlockHeight int32,
 	TargetTicketCount int32) (r walletgui.LorcaMessage) {
-		
+
 	request := &walletrpc.GetTicketsRequest{
 		StartingBlockHeight: StartingBlockHeight,
 		EndingBlockHeight:   EndingBlockHeight,

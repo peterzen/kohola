@@ -196,8 +196,8 @@ export default class RPCEndpointConfigForm extends React.Component<
                 <h5>Client TLS</h5>
                 <div>
                     <small className="form-text text-muted">
-                        Client TLS key and certificate must be created
-                            using <code>gencerts</code>
+                        Client TLS key and certificate must be created using{" "}
+                        <code>gencerts</code>
                     </small>
                 </div>
 
@@ -209,7 +209,9 @@ export default class RPCEndpointConfigForm extends React.Component<
                         rows={6}
                         placeholder="Paste the key content"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            this.handleClientKeyBlobChange(e.currentTarget.value)
+                            this.handleClientKeyBlobChange(
+                                e.currentTarget.value
+                            )
                         }
                         value={this.state.clientKeyBlob}
                         className="mt-3"
@@ -230,7 +232,9 @@ export default class RPCEndpointConfigForm extends React.Component<
                         rows={6}
                         placeholder="Paste the certificate content"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            this.handleClientCertBlobChange(e.currentTarget.value)
+                            this.handleClientCertBlobChange(
+                                e.currentTarget.value
+                            )
                         }
                         value={this.state.clientCertBlob}
                         className="mt-3"
@@ -243,8 +247,8 @@ export default class RPCEndpointConfigForm extends React.Component<
                     </div>
                     <div>
                         <small className="form-text text-muted">
-                            Client TLS certificate.  This must be added
-                            to  <code>~/.dcrwallet/clients.pem</code>
+                            Client TLS certificate. This must be added to{" "}
+                            <code>~/.dcrwallet/clients.pem</code>
                         </small>
                     </div>
                 </Form.Group>
@@ -428,10 +432,7 @@ const generateEndpointLabel = (endpoint: GRPCEndpoint) => {
     return sprintf("%s:%d", endpoint.getHostname(), endpoint.getPort())
 }
 
-const loadFormFields = (
-    formRef: React.RefObject<any>,
-    ep: GRPCEndpoint
-) => {
+const loadFormFields = (formRef: React.RefObject<any>, ep: GRPCEndpoint) => {
     const f = formRef.current
     ep.setHostname(f.hostname.value)
     ep.setPort(f.port.value)
