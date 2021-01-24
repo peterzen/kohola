@@ -1,11 +1,12 @@
 package webview
 
 import (
-	"github.com/zserge/lorca"
-	"github.com/zserge/webview"
 	"os"
 	"os/signal"
 	"runtime"
+
+	"github.com/webview/webview"
+	"github.com/zserge/lorca"
 )
 
 // Interface abstracts lorca and WebView APIs
