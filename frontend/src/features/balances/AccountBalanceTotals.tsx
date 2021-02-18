@@ -94,7 +94,7 @@ class AccountTotals extends React.PureComponent<Props, {}> {
                 )}
                 {balance.getLockedByTickets() > 0 && (
                     <ValueCol
-                        label="Voting auth"
+                        label="Locked"
                         amount={balance.getLockedByTickets()}
                         total={balance.getTotal()}
                         variant="voting"></ValueCol>
