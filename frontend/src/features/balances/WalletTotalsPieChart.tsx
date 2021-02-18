@@ -39,6 +39,7 @@ export default class WalletTotalsPieChart extends PureComponent<OwnProps> {
                 value: totals.immature_coinbase + totals.immature_stake,
             },
             { name: "votingauth", value: totals.votingauth },
+            { name: "votingauth", value: totals.locked },
         ]
 
         return (
