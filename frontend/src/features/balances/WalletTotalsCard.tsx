@@ -73,12 +73,22 @@ export default class WalletTotalsCard extends PureComponent<OwnProps> {
                                         variant="immature"
                                     />
 
-                                    <ValueRow
-                                        label="Voting authority"
-                                        amount={totals.votingauth}
-                                        total={totals.total}
-                                        variant="votingauth"
-                                    />
+                                    {totals.votingauth > 0 && (
+                                        <ValueRow
+                                            label="Voting authority"
+                                            amount={totals.votingauth}
+                                            total={totals.total}
+                                            variant="votingauth"
+                                        />
+                                    )}
+                                    {totals.locked > 0 && (
+                                        <ValueRow
+                                            label="Locked"
+                                            amount={totals.locked}
+                                            total={totals.total}
+                                            variant="votingauth"
+                                        />
+                                    )}
                                 </div>
                             </ComponentPlaceHolder>
                         </Col>
