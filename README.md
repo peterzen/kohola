@@ -12,7 +12,7 @@
  * Supports multiple wallet connections
  * Essential wallet features only
  * Solo staking support
- * Tigther desktop UI integration (OS notifications)
+ * Tighter desktop UI integration (OS notifications)
  * No Electron bloat
 
 ## Features
