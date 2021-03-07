@@ -3,7 +3,17 @@
 ![Go build](https://github.com/peterzen/kohola/workflows/Go%20build/badge.svg)
 ![Frontend build](https://github.com/peterzen/kohola/workflows/Frontend%20build/badge.svg)
 
-<abbr title="'Kohola' means 'whale' in Hawaiian">Kohola</abbr> is a multi platform Decred wallet application for power users running wallets in dedicated, secure environments.  It connects to existing `dcrwallet` instances; it is particularly tailored to expert users that are familiar with operating advanced setups.  For new users, [Decrediton](https://github.com/decred/decrediton) is a better choice.
+<abbr title="'Kohola' means 'whale' in Hawaiian">Kohola</abbr> ("whale" in Hawaiian) is a multi platform Decred wallet application for power users running wallets in dedicated, secure environments.  It connects to existing `dcrwallet` instances; it is particularly tailored to expert users that are familiar with operating advanced setups.  For new users, [Decrediton](https://github.com/decred/decrediton) is a better choice.
+
+## Differences to Decrediton
+
+ * It connects to remote `dcrwallet`, does not keep wallet data on the local machine
+ * Stores all its configuration in an encrypted form, protecting the user's privacy
+ * Supports multiple wallet connections
+ * Essential wallet features only
+ * Solo staking support
+ * Tighter desktop UI integration (OS notifications)
+ * No Electron bloat
 
 ## Features
 

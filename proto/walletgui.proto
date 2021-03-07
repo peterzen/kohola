@@ -56,6 +56,8 @@ message GRPCEndpoint {
   bool is_watching_only = 8;
   uint32 active_network = 9;
   uint32 coin_type = 10;
+  string client_cert_blob = 11;
+  string client_key_blob = 12;
 }
 
 enum DisplayUnit {

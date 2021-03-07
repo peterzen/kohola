@@ -15,7 +15,7 @@ import LorcaBackend from "../../middleware/lorca"
 import GenericModal, {
     GenericModalProps,
 } from "../../components/Shared/GenericModal"
-import { RPCEndpoint, GRPCEndpoint } from "../../proto/walletgui_pb"
+import { GRPCEndpoint } from "../../proto/walletgui_pb"
 import { Networks } from "../../constants"
 import { PasteButton } from "../../components/Shared/shared"
 
@@ -93,6 +93,8 @@ export default class RPCEndpointConfigForm extends React.Component<
             connectionCheckMessage: "",
             certBlob: this.props.endPointConfig.getCertBlob(),
             certFileName: this.props.endPointConfig.getCertFileName(),
+            clientCertBlob: this.props.endPointConfig.getClientCertBlob(),
+            clientKeyBlob: this.props.endPointConfig.getClientKeyBlob(),
         }
     }
     render() {
@@ -136,36 +138,9 @@ export default class RPCEndpointConfigForm extends React.Component<
                         />
                     </Col>
                 </Form.Group>
-                {endPoint instanceof RPCEndpoint && (
-                    <div>
-                        <Form.Group>
-                            {/* <Form.Label>Username</Form.Label> */}
-                            <Form.Control
-                                autoComplete="off"
-                                required
-                                name="username"
-                                placeholder="RPC username"
-                                onChange={onChange}
-                                defaultValue={endPoint.getUsername()}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            {/* <Form.Label >Password</Form.Label> */}
-                            <Form.Control
-                                autoComplete="off"
-                                required
-                                name="password"
-                                type="password"
-                                placeholder="RPC password"
-                                onChange={onChange}
-                                defaultValue={endPoint.getPassword()}
-                            />
-                        </Form.Group>
-                    </div>
-                )}
 
                 <Form.Group className="certificate-input">
-                    <Form.Label>Client certificate</Form.Label>
+                    <Form.Label>RPC certificate</Form.Label>
                     <Row>
                         <Col sm={3}>
                             <Button
@@ -214,6 +189,66 @@ export default class RPCEndpointConfigForm extends React.Component<
                             Either select your cert file or paste the blob into
                             this field. It will be saved in the configuration in
                             encrypted form.
+                        </small>
+                    </div>
+                </Form.Group>
+
+                <h5>Client TLS</h5>
+                <div>
+                    <small className="form-text text-muted">
+                        Client TLS key and certificate must be created using{" "}
+                        <code>gencerts</code>
+                    </small>
+                </div>
+
+                <Form.Group className="certificate-input">
+                    <Form.Label>Client key</Form.Label>
+                    <Form.Control
+                        name="client_key_blob"
+                        as="textarea"
+                        rows={6}
+                        placeholder="Paste the key content"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            this.handleClientKeyBlobChange(
+                                e.currentTarget.value
+                            )
+                        }
+                        value={this.state.clientKeyBlob}
+                        className="mt-3"
+                    />
+                    <div className="text-right">
+                        <PasteButton
+                            onClick={_.bind(this.onPasteBlob, this)}
+                            className="pastebutton-overlaid"
+                        />
+                    </div>
+                </Form.Group>
+
+                <Form.Group className="certificate-input">
+                    <Form.Label>Client certificate</Form.Label>
+                    <Form.Control
+                        name="client_cert_blob"
+                        as="textarea"
+                        rows={6}
+                        placeholder="Paste the certificate content"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            this.handleClientCertBlobChange(
+                                e.currentTarget.value
+                            )
+                        }
+                        value={this.state.clientCertBlob}
+                        className="mt-3"
+                    />
+                    <div className="text-right">
+                        <PasteButton
+                            onClick={_.bind(this.onPasteBlob, this)}
+                            className="pastebutton-overlaid"
+                        />
+                    </div>
+                    <div>
+                        <small className="form-text text-muted">
+                            Client TLS certificate. This must be added to{" "}
+                            <code>~/.dcrwallet/clients.pem</code>
                         </small>
                     </div>
                 </Form.Group>
@@ -309,6 +344,24 @@ export default class RPCEndpointConfigForm extends React.Component<
         )
     }
 
+    handleClientCertBlobChange(certBlob: string) {
+        this.setState(
+            {
+                clientCertBlob: certBlob,
+            },
+            () => this.handleChange()
+        )
+    }
+
+    handleClientKeyBlobChange(keyBlob: string) {
+        this.setState(
+            {
+                clientKeyBlob: keyBlob,
+            },
+            () => this.handleChange()
+        )
+    }
+
     handleChange() {
         const ep = this.props.endPointConfig
         this.setState({
@@ -375,24 +428,19 @@ export class EditEndpointModal extends React.Component<
     }
 }
 
-const generateEndpointLabel = (endpoint: GRPCEndpoint | RPCEndpoint) => {
+const generateEndpointLabel = (endpoint: GRPCEndpoint) => {
     return sprintf("%s:%d", endpoint.getHostname(), endpoint.getPort())
 }
 
-const loadFormFields = (
-    formRef: React.RefObject<any>,
-    ep: GRPCEndpoint | RPCEndpoint
-) => {
+const loadFormFields = (formRef: React.RefObject<any>, ep: GRPCEndpoint) => {
     const f = formRef.current
-    if (ep instanceof RPCEndpoint) {
-        ep.setUsername(f.username.value)
-        ep.setPassword(f.password.value)
-    }
     ep.setHostname(f.hostname.value)
     ep.setPort(f.port.value)
     ep.setNetwork(f.network.value)
     ep.setCertFileName(f.cert_file_name.value)
     ep.setCertBlob(f.cert_blob.value)
+    ep.setClientCertBlob(f.client_cert_blob.value)
+    ep.setClientKeyBlob(f.client_key_blob.value)
     ep.setLabel(generateEndpointLabel(ep))
 }
 
@@ -414,9 +462,9 @@ const fetchCertBlob = async (
 interface IRPCFormProps {
     title: string
     error: AppError | null
-    endPointConfig: RPCEndpoint | GRPCEndpoint
+    endPointConfig: GRPCEndpoint
     onCancel: () => void
-    onFormComplete: (endpoint: GRPCEndpoint | RPCEndpoint) => void
+    onFormComplete: (endpoint: GRPCEndpoint) => void
 }
 
 interface IRPCFormState {
@@ -428,4 +476,6 @@ interface IRPCFormState {
     isDirty: boolean
     certBlob: string
     certFileName: string
+    clientCertBlob: string
+    clientKeyBlob: string
 }
