@@ -13,12 +13,12 @@ var (
 // InitSystray initailze the systray
 func InitSystray(w webview.Interface) {
 	wv = w
-	systray.Register(onReady, nil)
+	systray.Run(onReady, nil)
 }
 
 func onReady() {
 	systray.SetTemplateIcon(systray_icon.Data, systray_icon.Data)
-	systray.SetTitle("Kohola")
+	// systray.SetTitle("Kohola")
 	systray.SetTooltip("Kohola")
 
 	mShowWindow := systray.AddMenuItem("Show window", "")
