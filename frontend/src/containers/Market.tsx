@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import { withRouter, RouteChildrenProps } from "react-router-dom"
 import _ from "lodash"
 
-import { Card } from "react-bootstrap"
+import { Card, Col, Row } from "react-bootstrap"
 
 import { IApplicationState } from "../store/types"
 import { AltCurrencyRates } from "../proto/walletgui_pb"
@@ -13,6 +13,8 @@ import IntervalChooser, {
     defaultTimeframe,
 } from "../components/Shared/IntervalChooser"
 import ExchangeRateV2Chart from "../features/market/charts/ExchangeRateV2Chart"
+import { getCurrentExchangeRate } from "../features/market/marketSlice"
+import { sprintf } from "sprintf-js"
 
 class Market extends React.PureComponent<Props, InternalState> {
     state = {
@@ -24,6 +26,42 @@ class Market extends React.PureComponent<Props, InternalState> {
             <div>
                 <Card>
                     <Card.Header>
+                        <Card.Title>DCR Markets</Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+                        <Row>
+                            <Col>
+                                <h2>DCRBTC</h2>
+                                <h4>
+                                    {sprintf(
+                                        "%.6f",
+                                        this.props.getCurrentExchangeRate("btc")
+                                    )}
+                                </h4>
+                            </Col>
+                            <Col>
+                                <h2>DCRUSD</h2>
+                                <h4>
+                                    {sprintf(
+                                        "%.2f",
+                                        this.props.getCurrentExchangeRate("usd")
+                                    )}
+                                </h4>
+                            </Col>
+                            <Col>
+                                <h2>DCREUR</h2>
+                                <h4>
+                                    {sprintf(
+                                        "%.2f",
+                                        this.props.getCurrentExchangeRate("eur")
+                                    )}
+                                </h4>
+                            </Col>
+                        </Row>
+                    </Card.Body>
+                </Card>
+                <Card>
+                    <Card.Header>
                         <div className="float-right">
                             <IntervalChooser
                                 onChange={(timeframe: ChartTimeframe) =>
@@ -33,7 +71,6 @@ class Market extends React.PureComponent<Props, InternalState> {
                                 selectedValue={this.state.selectedTimeframe}
                             />
                         </div>
-                        <Card.Title>DCR Markets</Card.Title>
                     </Card.Header>
                     <div>
                         <ExchangeRateV2Chart
@@ -61,6 +98,7 @@ interface InternalState {
 interface OwnProps {
     currentRates: AltCurrencyRates
     currencies: string[]
+    getCurrentExchangeRate: (currencyCode: string) => number
 }
 
 type Props = OwnProps & RouteChildrenProps<any>
@@ -72,6 +110,10 @@ const mapStateToProps = (state: IApplicationState) => {
     return {
         currencies: altCurrencies,
         currentRates: state.market.currentRates,
+        getCurrentExchangeRate: (currencyCode: string) => {
+            const r = getCurrentExchangeRate(state, currencyCode)
+            return r
+        },
     }
 }
 
