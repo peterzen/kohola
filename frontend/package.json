@@ -111,7 +111,7 @@
         "@types/redux-thunk": "2.1.0",
         "@types/sprintf-js": "1.1.2",
         "@types/styled-components": "5.1.0",
-        "@types/uuid": "7.0.3",
+        "@types/uuid": "8.0.0",
         "@types/webpack-env": "1.15.2",
         "autoprefixer": "9.8.0",
         "babel-loader": "8.1.0",
