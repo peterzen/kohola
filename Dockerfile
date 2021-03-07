@@ -23,6 +23,7 @@ RUN yarn && yarn build
 FROM golang:1.14-stretch
 
 RUN apt-get update && apt-get install -y -q --no-install-recommends \
+	gcc \
 	libwebkit2gtk-4.0-dev \
 	libgtk-3-dev \
 	libcairo2-dev \
