@@ -9,7 +9,8 @@
         "proto": "./protogen.sh",
         "remotedev": "remotedev --hostname=localhost --port=8888",
         "test": "cross-env NODE_ENV=test jest",
-        "prettier": "prettier --check \"src/**/*.ts?\""
+        "prettier": "prettier --check \"src/**/*.ts?\"",
+        "prettier-fix": "prettier --write \"src/**/*.ts?\""
     },
     "author": "",
     "license": "ISC",
