@@ -7,6 +7,7 @@ import { ATOMS_DIVISOR } from "../../constants"
 import { AppDispatch, IApplicationState } from "../../store/types"
 import { getCurrentExchangeRate } from "../../features/market/marketSlice"
 import { AltCurrencyRates } from "../../proto/walletgui_pb"
+import NumberFormat from "react-number-format"
 
 interface AmountProps {
     amount: number
@@ -43,15 +44,18 @@ class _FiatAmount extends React.Component<FiatAmountProps> {
         }
 
         const showCurrency = this.props.showCurrency || false
-        const rounding = this.props.rounding || 4
-        const dcrAmount = (this.props.amount / ATOMS_DIVISOR) * exchangeRate
-        const split = dcrAmount.toFixed(rounding).toString().split(".")
-        const head = [split[0], split[1].slice(0, 2)].join(".")
-        const negativeZero = parseFloat(head) === 0 && dcrAmount < 0
 
+        const amount = (this.props.amount / ATOMS_DIVISOR) * exchangeRate
         return (
-            <span className="amount" title={dcrAmount.toString()}>
-                <span>{sprintf("%s%2f", negativeZero ? "-" : "", head)}</span>
+            <span className="amount" title={amount.toFixed(0)}>
+                <NumberFormat
+                    value={amount}
+                    className="amount"
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={""}
+                    decimalScale={0}
+                />
                 &nbsp;
                 {showCurrency ? (
                     <span className="currency">{this.props.currency}</span>
