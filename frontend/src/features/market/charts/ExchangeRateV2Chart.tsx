@@ -23,6 +23,7 @@ import { fetchExchangeChartData, getMarketCurrencyState } from "../marketSlice"
 import { IApplicationState } from "../../../store/types"
 import { CrossHairs } from "./CrossHairs"
 import { makeTimerange } from "../../../helpers/pondjs"
+import ComponentPlaceHolder from "../../../components/Shared/ComponentPlaceholder"
 
 const style = styler([
     { key: "btc", color: "#7ebdb4" },
@@ -91,91 +92,106 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState> {
         const timerange = priceSeries.timerange()
 
         return (
-            <div>
-                {/* {priceSeries == undefined ||
+            <ComponentPlaceHolder
+                firstLaunchOnly={true}
+                className="p-x-20"
+                type="media"
+                rows={15}
+                ready={priceSeries != undefined && priceSeries.count() > 0}
+                showLoadingAnimation>
+                <div>
+                    {/* {priceSeries == undefined ||
 					(priceSeries.count() < 1 && (
 						<Alert variant="secondary">price series</Alert>
 					))} */}
 
-                {priceSeries != undefined && priceSeries.count() > 0 && (
-                    <div>
-                        <Resizable>
-                            <ChartContainer
-                                timeRange={timerange}
-                                hideWeekends={false}
-                                timeAxisAngledLabels={true}
-                                timeAxisHeight={65}
-                                enablePanZoom={true}
-                                showGrid={false}
-                                maxTime={timerange.end()}
-                                minTime={timerange.begin()}
-                                onTrackerChanged={this.handleTrackerChanged}
-                                onBackgroundClick={() =>
-                                    this.setState({ selection: null })
-                                }
-                                onTimeRangeChanged={this.handleTimeRangeChange}
-                                onMouseMove={(x: number, y: number) =>
-                                    this.handleMouseMove(x, y)
-                                }
-                                minDuration={1000 * 60 * 60 * 24 * 30}
-                                // timeAxisStyle={{ axis: { fill: "none", stroke: "none" } }}
-                            >
-                                <ChartRow height="300">
-                                    {this.props.currencies.map((currency) => (
-                                        <YAxis
-                                            key={currency}
-                                            id={`axis-${currency}`}
-                                            label={`${currency}`}
-                                            min={priceSeries.min(currency)}
-                                            max={priceSeries.max(currency)}
-                                            format=",.0f"
-                                            width="0"
-                                            type={this.state.mode}
-                                            visible={false}
-                                        />
-                                    ))}
-                                    <Charts>
+                    {priceSeries != undefined && priceSeries.count() > 0 && (
+                        <div>
+                            <Resizable>
+                                <ChartContainer
+                                    timeRange={timerange}
+                                    hideWeekends={false}
+                                    timeAxisAngledLabels={true}
+                                    timeAxisHeight={65}
+                                    enablePanZoom={true}
+                                    showGrid={false}
+                                    maxTime={timerange.end()}
+                                    minTime={timerange.begin()}
+                                    onTrackerChanged={this.handleTrackerChanged}
+                                    onBackgroundClick={() =>
+                                        this.setState({ selection: null })
+                                    }
+                                    onTimeRangeChanged={
+                                        this.handleTimeRangeChange
+                                    }
+                                    onMouseMove={(x: number, y: number) =>
+                                        this.handleMouseMove(x, y)
+                                    }
+                                    minDuration={1000 * 60 * 60 * 24 * 30}
+                                    // timeAxisStyle={{ axis: { fill: "none", stroke: "none" } }}
+                                >
+                                    <ChartRow height="300">
                                         {this.props.currencies.map(
                                             (currency) => (
-                                                <LineChart
+                                                <YAxis
                                                     key={currency}
-                                                    axis={`axis-${currency}`}
-                                                    style={style}
-                                                    breakLine={false}
-                                                    // style={{ value: { normal: { stroke: "steelblue" } } }}
-                                                    columns={[currency]}
-                                                    series={priceSeries}
-                                                    interpolation="curveBasis"
-                                                    highlight={
-                                                        this.state.highlight
-                                                    }
-                                                    onHighlightChange={(
-                                                        highlight: string
-                                                    ) =>
-                                                        this.setState({
-                                                            highlight,
-                                                        })
-                                                    }
-                                                    selection={
-                                                        this.state.selection
-                                                    }
-                                                    onSelectionChange={(
-                                                        selection: string
-                                                    ) =>
-                                                        this.setState({
-                                                            selection,
-                                                        })
-                                                    }
+                                                    id={`axis-${currency}`}
+                                                    label={`${currency}`}
+                                                    min={priceSeries.min(
+                                                        currency
+                                                    )}
+                                                    max={priceSeries.max(
+                                                        currency
+                                                    )}
+                                                    format=",.0f"
+                                                    width="0"
+                                                    type={this.state.mode}
+                                                    visible={false}
                                                 />
                                             )
                                         )}
-                                        <CrossHairs
-                                            x={this.state.x!}
-                                            y={this.state.y!}
-                                        />
-                                    </Charts>
-                                </ChartRow>
-                                {/* <ChartRow height="120" axisMargin={0}>
+                                        <Charts>
+                                            {this.props.currencies.map(
+                                                (currency) => (
+                                                    <LineChart
+                                                        key={currency}
+                                                        axis={`axis-${currency}`}
+                                                        style={style}
+                                                        breakLine={false}
+                                                        // style={{ value: { normal: { stroke: "steelblue" } } }}
+                                                        columns={[currency]}
+                                                        series={priceSeries}
+                                                        interpolation="curveBasis"
+                                                        highlight={
+                                                            this.state.highlight
+                                                        }
+                                                        onHighlightChange={(
+                                                            highlight: string
+                                                        ) =>
+                                                            this.setState({
+                                                                highlight,
+                                                            })
+                                                        }
+                                                        selection={
+                                                            this.state.selection
+                                                        }
+                                                        onSelectionChange={(
+                                                            selection: string
+                                                        ) =>
+                                                            this.setState({
+                                                                selection,
+                                                            })
+                                                        }
+                                                    />
+                                                )
+                                            )}
+                                            <CrossHairs
+                                                x={this.state.x!}
+                                                y={this.state.y!}
+                                            />
+                                        </Charts>
+                                    </ChartRow>
+                                    {/* <ChartRow height="120" axisMargin={0}>
 									<Charts>
 										<LineChart
 											axis="volume-axis"
@@ -192,40 +208,44 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState> {
 										width="60"
 									/>
 								</ChartRow> */}
-                            </ChartContainer>
-                        </Resizable>
-                        <div>
-                            <Legend
-                                type="line"
-                                align="right"
-                                style={style}
-                                highlight={this.state.highlight}
-                                onHighlightChange={(highlight: string) =>
-                                    this.setState({ highlight })
-                                }
-                                selection={this.state.selection}
-                                onSelectionChange={(selection: string) =>
-                                    this.setState({ selection })
-                                }
-                                categories={_.map(this.props.currencies, (c) =>
-                                    Object.assign(
-                                        {},
-                                        {
-                                            key: c,
-                                            label: `DCR-${c.toUpperCase()}`,
-                                            value:
-                                                (this.getTrackedValue(
-                                                    this.props.priceSeries,
-                                                    c
-                                                ) || "") + " ",
-                                        }
-                                    )
-                                )}
-                            />
+                                </ChartContainer>
+                            </Resizable>
+                            <div>
+                                <Legend
+                                    type="line"
+                                    align="right"
+                                    style={style}
+                                    highlight={this.state.highlight}
+                                    onHighlightChange={(highlight: string) =>
+                                        this.setState({ highlight })
+                                    }
+                                    selection={this.state.selection}
+                                    onSelectionChange={(selection: string) =>
+                                        this.setState({ selection })
+                                    }
+                                    categories={_.map(
+                                        this.props.currencies,
+                                        (c) =>
+                                            Object.assign(
+                                                {},
+                                                {
+                                                    key: c,
+                                                    label: `DCR-${c.toUpperCase()}`,
+                                                    value:
+                                                        (this.getTrackedValue(
+                                                            this.props
+                                                                .priceSeries,
+                                                            c
+                                                        ) || "") + " ",
+                                                }
+                                            )
+                                    )}
+                                />
+                            </div>
                         </div>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            </ComponentPlaceHolder>
         )
     }
 
@@ -243,27 +263,29 @@ class ExchangeRateChartv2 extends React.Component<Props, InternalState> {
 
         return (
             <div>
-                <div className="text-right mr-4">
-                    <span
-                        style={
-                            this.state.mode === "log"
-                                ? linkStyleActive
-                                : linkStyle
-                        }
-                        onClick={this.setModeLinear}>
-                        Linear
-                    </span>
-                    <span> | </span>
-                    <span
-                        style={
-                            this.state.mode === "linear"
-                                ? linkStyleActive
-                                : linkStyle
-                        }
-                        onClick={this.setModeLog}>
-                        Log
-                    </span>
-                </div>
+                {this.props.priceSeries != undefined && this.props.priceSeries.count() > 0 && (                
+                    <div className="text-right mr-4">
+                        <span
+                            style={
+                                this.state.mode === "log"
+                                    ? linkStyleActive
+                                    : linkStyle
+                            }
+                            onClick={this.setModeLinear}>
+                            Linear
+                        </span>
+                        <span> | </span>
+                        <span
+                            style={
+                                this.state.mode === "linear"
+                                    ? linkStyleActive
+                                    : linkStyle
+                            }
+                            onClick={this.setModeLog}>
+                            Log
+                        </span>
+                    </div>
+                )}
 
                 <div className="">{this.renderChart()}</div>
                 {/* <ErrorAlert error={this.props.error} /> */}
@@ -313,7 +335,7 @@ interface InternalState {
 }
 
 const mapStateToProps = (state: IApplicationState, ownProps: OwnProps) => {
-    debugger
+    // debugger
     const timerange = makeTimerange(ownProps.days)
 
     const seriesList = _.compact(

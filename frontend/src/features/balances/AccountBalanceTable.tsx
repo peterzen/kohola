@@ -23,9 +23,12 @@ class AccountBalanceTable extends React.Component<Props, InternalState> {
         return (
             <Card>
                 <ComponentPlaceHolder
+                    firstLaunchOnly={true}
+                    className="p-x-20"
                     type="text"
                     rows={7}
-                    ready={!this.props.isLoading}>
+                    ready={!this.props.loading}
+                    showLoadingAnimation>
                     <Table hover>
                         <thead>
                             <tr className="text-right">
@@ -154,11 +157,10 @@ class AccountBalanceTable extends React.Component<Props, InternalState> {
     }
 }
 
-interface StateProps {
-    isLoading: boolean
-}
+interface StateProps {}
 
 interface OwnProps {
+    loading: boolean
     accounts: IndexedWalletAccounts
     balances: WalletBalance
     walletTotals: WalletTotals
@@ -172,9 +174,7 @@ type Props = StateProps & DispatchProps & OwnProps
 interface InternalState {}
 
 const mapStateToProps = (state: IApplicationState): StateProps => {
-    return {
-        isLoading: state.accounts.getAccountsAttempting,
-    }
+    return {}
 }
 
 export default connect(mapStateToProps)(AccountBalanceTable)

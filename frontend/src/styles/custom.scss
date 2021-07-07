@@ -186,6 +186,21 @@ table.table tbody tr th {
     }
 }
 
+.text-block, 
+.media-block {
+    &.p-x-20 {
+        padding: 20px;
+    }
+    
+    &.pr-x-15 {
+        padding-right: 15px;
+    }    
+    
+    &.pt-x-20 {
+        padding-top: 20px;
+    }    
+}
+
 @media screen and (max-width: 900px) {
     .current-balance-container {
         .amount {

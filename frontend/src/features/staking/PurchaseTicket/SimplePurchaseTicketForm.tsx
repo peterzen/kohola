@@ -23,6 +23,7 @@ import { SteppableNumberInput } from "../../../components/Shared/SteppableNumber
 import { Amount } from "../../../components/Shared/Amount"
 import PurchaseTicketSettings from "./PurchaseTicketSettings"
 import { ErrorAlert } from "../../../components/Shared/FormStatusAlerts"
+import ComponentPlaceHolder from "../../../components/Shared/ComponentPlaceholder"
 
 class PurchaseTicketForm extends React.Component<Props, InternalState> {
     constructor(props: Props) {
@@ -47,100 +48,130 @@ class PurchaseTicketForm extends React.Component<Props, InternalState> {
                 <Card>
                     <Card.Body>
                         <Card.Title>Purchase tickets</Card.Title>
-                        {showForm && (
-                            <Form
-                                ref={this.state.formRef}
-                                validated={
-                                    this.state.formIsValidated &&
-                                    !this.props.error
-                                }
-                                onSubmit={_.bind(this.handleFormSubmit, this)}
-                                className="m-0">
-                                <Row>
-                                    <Col>
-                                        <div className="text-right">
-                                            <h4>
-                                                <small>Current price:</small>{" "}
-                                                <Amount
-                                                    amount={this.props.ticketPrice.getTicketPrice()}
-                                                    showCurrency
-                                                />
-                                            </h4>
-                                        </div>
-                                    </Col>
-                                </Row>
-                                <Form.Group>
-                                    <AccountSelector
-                                        defaultValue={-1}
-                                        name="account_select"
-                                        onChange={_.bind(
-                                            this.handleChange,
-                                            this
-                                        )}
-                                    />
-                                </Form.Group>
-                                <Form.Group as={Row}>
-                                    <Col sm={8}>
-                                        <SteppableNumberInput
-                                            className="ml-3 mr-3"
-                                            placeholder="# of tix"
-                                            name="num_tickets"
-                                            max={this.state.buyingPower}
-                                            onChange={_.bind(
-                                                this.handleChange,
-                                                this
-                                            )}
-                                        />
-                                        <br />
-                                        Remaining balance:{" "}
-                                        <Amount
-                                            amount={this.state.remainingBalance}
-                                        />
-                                    </Col>
-                                    <Col>
-                                        Buying power: {this.state.buyingPower}
-                                        <br />
-                                    </Col>
-                                </Form.Group>
-                            </Form>
-                        )}
-
-                        {showConfirmation &&
-                            this.props.purchaseTicketResponse != null && (
-                                <TxConfirmationPanel
-                                    hashes={this.props.purchaseTicketResponse.getTicketHashesList_asU8()}
-                                />
-                            )}
-                        <PassphraseEntryDialog show={false} />
-                    </Card.Body>
-                    <Card.Footer>
-                        <ErrorAlert error={this.props.error} />
-
-                        {showForm && (
-                            <Row>
-                                <Col xs={6}>
-                                    <Button
-                                        size="sm"
-                                        variant="secondary"
-                                        onClick={() => this.showSettings()}>
-                                        <FontAwesomeIcon icon={faCog} />{" "}
-                                        Settings
-                                    </Button>
-                                </Col>
-                                <Col xs={6} className="text-right">
-                                    <Button
-                                        type="submit"
-                                        disabled={!this.state.formIsValidated}
-                                        onClick={_.bind(
+                        <ComponentPlaceHolder
+                            firstLaunchOnly={true}
+                            type="text"
+                            rows={4}
+                            ready={!this.props.loading}>
+                            <div>
+                                {showForm && (
+                                    <Form
+                                        ref={this.state.formRef}
+                                        validated={
+                                            this.state.formIsValidated &&
+                                            !this.props.error
+                                        }
+                                        onSubmit={_.bind(
                                             this.handleFormSubmit,
                                             this
                                         )}
-                                        variant="primary">
-                                        Purchase
-                                    </Button>
-                                </Col>
-                            </Row>
-                        )}
+                                        className="m-0">
+                                        <Row>
+                                            <Col>
+                                                <div className="text-right">
+                                                    <h4>
+                                                        <small>
+                                                            Current price:
+                                                        </small>{" "}
+                                                        <Amount
+                                                            amount={this.props.ticketPrice.getTicketPrice()}
+                                                            showCurrency
+                                                        />
+                                                    </h4>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                        <Form.Group>
+                                            <AccountSelector
+                                                defaultValue={-1}
+                                                name="account_select"
+                                                onChange={_.bind(
+                                                    this.handleChange,
+                                                    this
+                                                )}
+                                            />
+                                        </Form.Group>
+                                        <Form.Group as={Row}>
+                                            <Col sm={8}>
+                                                <SteppableNumberInput
+                                                    className="ml-3 mr-3"
+                                                    placeholder="# of tix"
+                                                    name="num_tickets"
+                                                    max={this.state.buyingPower}
+                                                    onChange={_.bind(
+                                                        this.handleChange,
+                                                        this
+                                                    )}
+                                                />
+                                                <br />
+                                                Remaining balance:{" "}
+                                                <Amount
+                                                    amount={
+                                                        this.state
+                                                            .remainingBalance
+                                                    }
+                                                />
+                                            </Col>
+                                            <Col>
+                                                Buying power:{" "}
+                                                {this.state.buyingPower}
+                                                <br />
+                                            </Col>
+                                        </Form.Group>
+                                    </Form>
+                                )}
+
+                                {showConfirmation &&
+                                    this.props.purchaseTicketResponse !=
+                                        null && (
+                                        <TxConfirmationPanel
+                                            hashes={this.props.purchaseTicketResponse.getTicketHashesList_asU8()}
+                                        />
+                                    )}
+                                <PassphraseEntryDialog show={false} />
+                            </div>
+                        </ComponentPlaceHolder>
+                    </Card.Body>
+                    <Card.Footer>
+                        <ComponentPlaceHolder
+                            firstLaunchOnly={true}
+                            type="text"
+                            rows={1}
+                            ready={!this.props.loading}>
+                            <div>
+                                <ErrorAlert error={this.props.error} />
+
+                                {showForm && (
+                                    <Row>
+                                        <Col xs={6}>
+                                            <Button
+                                                size="sm"
+                                                variant="secondary"
+                                                onClick={() =>
+                                                    this.showSettings()
+                                                }>
+                                                <FontAwesomeIcon icon={faCog} />{" "}
+                                                Settings
+                                            </Button>
+                                        </Col>
+                                        <Col xs={6} className="text-right">
+                                            <Button
+                                                type="submit"
+                                                disabled={
+                                                    !this.state.formIsValidated
+                                                }
+                                                onClick={_.bind(
+                                                    this.handleFormSubmit,
+                                                    this
+                                                )}
+                                                variant="primary">
+                                                Purchase
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                )}
+                            </div>
+                        </ComponentPlaceHolder>
                     </Card.Footer>
                 </Card>
                 <PurchaseTicketSettings
@@ -235,16 +266,19 @@ const loadFormFields = (
     r.setRequiredConfirmations(1)
 }
 
-interface OwnProps {
+interface StateProps {
     error: AppError | null
     balances: WalletBalance
     ticketPrice: TicketPrice
     purchaseTicketResponse: PurchaseTicketsResponse | null
 }
+interface OwnProps {
+    loading: boolean
+}
 
-type Props = DispatchProps & OwnProps
+type Props = DispatchProps & OwnProps & StateProps
 
-const mapStateToProps = (state: IApplicationState): OwnProps => {
+const mapStateToProps = (state: IApplicationState): StateProps => {
     return {
         error: state.staking.errorPurchaseTickets,
         purchaseTicketResponse: state.staking.purchaseTicketResponse,

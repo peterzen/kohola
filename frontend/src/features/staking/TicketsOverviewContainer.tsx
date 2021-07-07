@@ -130,11 +130,11 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
                 </Card.Header>
 
                 <ComponentPlaceHolder
+                    className="p-x-20"
                     firstLaunchOnly={true}
-                    delay={500}
                     type="text"
-                    rows={7}
-                    ready={!this.props.getTicketsAttempting}>
+                    rows={15}
+                    ready={!this.props.loading}>
                     <TicketsTable
                         items={tickets}
                         onItemClick={_.bind(this.itemClickHandler, this)}
@@ -170,7 +170,7 @@ class TicketsOverviewContainer extends React.Component<Props, InternalState> {
     }
 }
 
-const mapStateToProps = (state: IApplicationState): OwnProps => {
+const mapStateToProps = (state: IApplicationState): StateProps => {
     return {
         tickets: getTickets(state),
         selectedTimeframe: state.staking.selectedTimeframe,
@@ -198,7 +198,7 @@ const mapStateToProps = (state: IApplicationState): OwnProps => {
     }
 }
 
-interface OwnProps {
+interface StateProps {
     tickets: Ticket[]
     selectedTimeframe: ChartTimeframe
     getTicketsAttempting: boolean
@@ -206,6 +206,10 @@ interface OwnProps {
         filter: TicketStatus,
         timeframe: ChartTimeframe
     ) => Ticket[]
+}
+
+interface OwnProps {
+    loading: boolean
 }
 
 interface DispatchProps {
@@ -219,7 +223,7 @@ interface InternalState {
     currentFilter: TicketStatus
 }
 
-type Props = OwnProps & DispatchProps
+type Props = OwnProps & DispatchProps & StateProps
 
 const mapDispatchToProps = {
     loadTicketsAttempt,

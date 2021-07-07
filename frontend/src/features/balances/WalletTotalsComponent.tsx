@@ -15,6 +15,7 @@ import {
 } from "../../components/Shared/IntervalChooser"
 import { makeTxHistoryChartSeries } from "../transactions/transactionsSlice"
 import BalanceHistoryChart from "./BalanceHistoryChart"
+import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
 
 class WalletTotalsComponent extends React.PureComponent<Props, {}> {
     render() {
@@ -33,11 +34,19 @@ class WalletTotalsComponent extends React.PureComponent<Props, {}> {
                                 </Col>
                             </Row>
                         </Card.Body>
-                        <BalanceHistoryChart
-                            timeframe={this.props.timeframe}
-                            currentBalance={totals.total}
-                            txHistorySeries={this.props.txHistorySeries}
-                        />
+                        <ComponentPlaceHolder
+                            firstLaunchOnly={true}
+                            className="p-x-20"
+                            type="text"
+                            rows={3}
+                            ready={!this.props.loading}
+                            showLoadingAnimation>
+                            <BalanceHistoryChart
+                                timeframe={this.props.timeframe}
+                                currentBalance={totals.total}
+                                txHistorySeries={this.props.txHistorySeries}
+                            />
+                        </ComponentPlaceHolder>
                     </Card>
                 </Col>
                 <Col sm="4">
@@ -47,10 +56,20 @@ class WalletTotalsComponent extends React.PureComponent<Props, {}> {
                     />
                 </Col>
                 <Col sm="4">
-                    <WalletCreditDebitCard
-                        timeframe={this.props.timeframe}
-                        txHistorySeries={this.props.txHistorySeries}
-                    />
+                    <Card className="h-100">
+                        <ComponentPlaceHolder
+                            firstLaunchOnly={true}
+                            className="p-x-20"
+                            type="text"
+                            rows={8}
+                            ready={!this.props.loading}
+                            showLoadingAnimation>
+                            <WalletCreditDebitCard
+                                timeframe={this.props.timeframe}
+                                txHistorySeries={this.props.txHistorySeries}
+                            />
+                        </ComponentPlaceHolder>
+                    </Card>
                 </Col>
             </Row>
         )
@@ -59,10 +78,10 @@ class WalletTotalsComponent extends React.PureComponent<Props, {}> {
 
 interface OwnProps {
     totals: WalletTotals
+    loading: boolean
 }
 
 interface StateProps {
-    loading: boolean
     timeframe: ChartTimeframe
     txHistorySeries: TimeSeries | undefined
 }
@@ -73,7 +92,6 @@ const mapStateToProps = (state: IApplicationState): StateProps => {
     const timeframe = timeframes[4]
     const txHistorySeries = makeTxHistoryChartSeries(state, timeframe)
     return {
-        loading: state.accounts.getAccountsAttempting,
         timeframe: timeframe,
         txHistorySeries: txHistorySeries,
     }

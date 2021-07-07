@@ -35,6 +35,7 @@ import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { getConnectedEndpointId } from "../../app/appSlice"
 import { ATOMS_DIVISOR } from "../../../constants"
+import ComponentPlaceHolder from "../../../components/Shared/ComponentPlaceholder"
 
 class Ticketbuyer extends React.Component<Props, InternalState> {
     constructor(props: Props) {
@@ -70,229 +71,270 @@ class Ticketbuyer extends React.Component<Props, InternalState> {
                                 <Card.Title>Ticketbuyer</Card.Title>
                             </Col>
                             <Col sm={4} className="text-center pt-2">
-                                <OnOffIndicator
-                                    status={this.props.isTicketBuyerRunning}
-                                    onMessage="Ticketbuyer is running"
-                                    offMessage="Ticketbuyer is not running"
-                                />
-                                <ErrorAlert
-                                    error={this.props.runTicketBuyerError}
-                                />
+                                {!this.props.loading && (
+                                    <div>
+                                        <OnOffIndicator
+                                            status={
+                                                this.props.isTicketBuyerRunning
+                                            }
+                                            onMessage="Ticketbuyer is running"
+                                            offMessage="Ticketbuyer is not running"
+                                        />
+                                        <ErrorAlert
+                                            error={
+                                                this.props.runTicketBuyerError
+                                            }
+                                        />
+                                    </div>
+                                )}
                             </Col>
                             <Col sm={4}>
-                                <span className="float-right">
-                                    <Button
-                                        variant="primary"
-                                        disabled={
-                                            this.props.isTicketBuyerRunning
-                                        }
-                                        onClick={() => this.startTicketbuyer()}>
-                                        <FontAwesomeIcon icon={faPlay} /> Start
-                                    </Button>
-                                    <Button
-                                        variant="secondary"
-                                        disabled={
-                                            !this.props.isTicketBuyerRunning
-                                        }
-                                        onClick={() => this.stopTicketbuyer()}>
-                                        <FontAwesomeIcon icon={faStop} /> Stop
-                                    </Button>
-                                </span>
+                                {!this.props.loading && (
+                                    <span className="float-right">
+                                        <Button
+                                            variant="primary"
+                                            disabled={
+                                                this.props.isTicketBuyerRunning
+                                            }
+                                            onClick={() =>
+                                                this.startTicketbuyer()
+                                            }>
+                                            <FontAwesomeIcon icon={faPlay} />{" "}
+                                            Start
+                                        </Button>
+                                        <Button
+                                            variant="secondary"
+                                            disabled={
+                                                !this.props.isTicketBuyerRunning
+                                            }
+                                            onClick={() =>
+                                                this.stopTicketbuyer()
+                                            }>
+                                            <FontAwesomeIcon icon={faStop} />{" "}
+                                            Stop
+                                        </Button>
+                                    </span>
+                                )}
                             </Col>
                         </Row>
                     </Card.Header>
 
                     <Card.Body>
-                        <Form
-                            ref={this.state.formRef}
-                            validated={this.state.formIsValidated}
-                            onSubmit={_.bind(this.handleFormSubmit, this)}
-                            className={
-                                this.props.inProgress ? "in-progress" : ""
-                            }>
-                            <fieldset
-                                disabled={
-                                    this.props.isTicketBuyerRunning ||
-                                    this.props.runTicketBuyerAttempting
-                                }>
-                                <Row className="mb-4">
-                                    <Col sm={6}>
-                                        <Form.Group>
-                                            <Form.Label>
-                                                Purchase account
-                                            </Form.Label>
-                                            <AccountSelector
-                                                defaultValue={request.getAccount()}
-                                                name="account"
-                                                tabIndex={1}
-                                                onChange={onChange}
-                                            />
-                                            <small className="form-text text-muted">
-                                                Tickets will be purchased from
-                                                this account
-                                            </small>
-                                        </Form.Group>
-                                    </Col>
+                        <ComponentPlaceHolder
+                            firstLaunchOnly={true}
+                            className="p-x-20"
+                            type="text"
+                            rows={10}
+                            ready={!this.props.loading}>
+                            <div>
+                                <Form
+                                    ref={this.state.formRef}
+                                    validated={this.state.formIsValidated}
+                                    onSubmit={_.bind(
+                                        this.handleFormSubmit,
+                                        this
+                                    )}
+                                    className={
+                                        this.props.inProgress
+                                            ? "in-progress"
+                                            : ""
+                                    }>
+                                    <fieldset
+                                        disabled={
+                                            this.props.isTicketBuyerRunning ||
+                                            this.props.runTicketBuyerAttempting
+                                        }>
+                                        <Row className="mb-4">
+                                            <Col sm={6}>
+                                                <Form.Group>
+                                                    <Form.Label>
+                                                        Purchase account
+                                                    </Form.Label>
+                                                    <AccountSelector
+                                                        defaultValue={request.getAccount()}
+                                                        name="account"
+                                                        tabIndex={1}
+                                                        onChange={onChange}
+                                                    />
+                                                    <small className="form-text text-muted">
+                                                        Tickets will be
+                                                        purchased from this
+                                                        account
+                                                    </small>
+                                                </Form.Group>
+                                            </Col>
 
-                                    <Col sm={5}>
-                                        <Form.Label>
-                                            Balance to maintain
-                                        </Form.Label>
-                                        <InputGroup>
-                                            <Form.Control
-                                                autoComplete="off"
-                                                required
-                                                name="balance_to_maintain"
-                                                type="text"
-                                                placeholder="Amount"
-                                                onChange={onChange}
-                                                tabIndex={2}
-                                                defaultValue={
-                                                    request.getBalanceToMaintain() /
-                                                    ATOMS_DIVISOR
-                                                }
-                                            />
-                                            <InputGroup.Append>
-                                                <InputGroup.Text>
-                                                    DCR
-                                                </InputGroup.Text>
-                                            </InputGroup.Append>
-                                        </InputGroup>
-                                    </Col>
-                                </Row>
-
-                                <h5>Voting</h5>
-
-                                <Tab.Container
-                                    activeKey={this.state.votingTab}
-                                    onSelect={(tab: string) =>
-                                        this.activateVotingTab(tab)
-                                    }
-                                    id="ticketbuyer-voting-tabs">
-                                    <Row>
-                                        <Col sm={3}>
-                                            <Nav
-                                                variant="pills"
-                                                className="flex-column">
-                                                <Nav.Item>
-                                                    <Nav.Link
-                                                        disabled={
-                                                            this.props
-                                                                .isTicketBuyerRunning
+                                            <Col sm={5}>
+                                                <Form.Label>
+                                                    Balance to maintain
+                                                </Form.Label>
+                                                <InputGroup>
+                                                    <Form.Control
+                                                        autoComplete="off"
+                                                        required
+                                                        name="balance_to_maintain"
+                                                        type="text"
+                                                        placeholder="Amount"
+                                                        onChange={onChange}
+                                                        tabIndex={2}
+                                                        defaultValue={
+                                                            request.getBalanceToMaintain() /
+                                                            ATOMS_DIVISOR
                                                         }
-                                                        eventKey="voting_account">
-                                                        Voting account
-                                                    </Nav.Link>
-                                                </Nav.Item>
-                                                <Nav.Item>
-                                                    <Nav.Link
-                                                        disabled={
-                                                            this.props
-                                                                .isTicketBuyerRunning
-                                                        }
-                                                        eventKey="voting_address">
-                                                        Voting address
-                                                    </Nav.Link>
-                                                </Nav.Item>
-                                                <Nav.Item>
-                                                    <Nav.Link
-                                                        disabled={
-                                                            this.props
-                                                                .isTicketBuyerRunning
-                                                        }
-                                                        eventKey="pool">
-                                                        VSP (pool address)
-                                                    </Nav.Link>
-                                                </Nav.Item>
-                                            </Nav>
-                                        </Col>
-                                        <Col sm={9}>
-                                            <Tab.Content>
-                                                <Tab.Pane eventKey="voting_account">
-                                                    <Form.Group>
-                                                        <AccountSelector
-                                                            defaultValue={request.getVotingAccount()}
-                                                            name="voting_account"
-                                                            tabIndex={3}
-                                                            onChange={onChange}
-                                                            enableAccountCreate={
-                                                                true
-                                                            }
-                                                        />
-                                                        <small className="form-text text-muted">
-                                                            The account that
-                                                            will be used for the
-                                                            voting address
-                                                        </small>
-                                                    </Form.Group>
-                                                </Tab.Pane>
+                                                    />
+                                                    <InputGroup.Append>
+                                                        <InputGroup.Text>
+                                                            DCR
+                                                        </InputGroup.Text>
+                                                    </InputGroup.Append>
+                                                </InputGroup>
+                                            </Col>
+                                        </Row>
 
-                                                <Tab.Pane
-                                                    eventKey="voting_address"
-                                                    title="Voting address">
-                                                    <Form.Group>
-                                                        <Form.Label>
-                                                            Voting address
-                                                        </Form.Label>
-                                                        <Form.Control
-                                                            autoComplete="off"
-                                                            name="voting_address"
-                                                            type="text"
-                                                            placeholder="Ds....."
-                                                            onChange={onChange}
-                                                            defaultValue={request.getVotingAddress()}
-                                                        />
-                                                    </Form.Group>
-                                                </Tab.Pane>
+                                        <h5>Voting</h5>
 
-                                                <Tab.Pane
-                                                    eventKey="pool"
-                                                    title="VSP (pool address)">
-                                                    <Form.Group>
-                                                        <Form.Label>
-                                                            Pool address
-                                                        </Form.Label>
-                                                        <Form.Control
-                                                            autoComplete="off"
-                                                            name="pool_address"
-                                                            type="text"
-                                                            placeholder="Ds....."
-                                                            onChange={onChange}
-                                                            defaultValue={request.getPoolAddress()}
-                                                        />
-                                                    </Form.Group>
+                                        <Tab.Container
+                                            activeKey={this.state.votingTab}
+                                            onSelect={(tab: string) =>
+                                                this.activateVotingTab(tab)
+                                            }
+                                            id="ticketbuyer-voting-tabs">
+                                            <Row>
+                                                <Col sm={3}>
+                                                    <Nav
+                                                        variant="pills"
+                                                        className="flex-column">
+                                                        <Nav.Item>
+                                                            <Nav.Link
+                                                                disabled={
+                                                                    this.props
+                                                                        .isTicketBuyerRunning
+                                                                }
+                                                                eventKey="voting_account">
+                                                                Voting account
+                                                            </Nav.Link>
+                                                        </Nav.Item>
+                                                        <Nav.Item>
+                                                            <Nav.Link
+                                                                disabled={
+                                                                    this.props
+                                                                        .isTicketBuyerRunning
+                                                                }
+                                                                eventKey="voting_address">
+                                                                Voting address
+                                                            </Nav.Link>
+                                                        </Nav.Item>
+                                                        <Nav.Item>
+                                                            <Nav.Link
+                                                                disabled={
+                                                                    this.props
+                                                                        .isTicketBuyerRunning
+                                                                }
+                                                                eventKey="pool">
+                                                                VSP (pool
+                                                                address)
+                                                            </Nav.Link>
+                                                        </Nav.Item>
+                                                    </Nav>
+                                                </Col>
+                                                <Col sm={9}>
+                                                    <Tab.Content>
+                                                        <Tab.Pane eventKey="voting_account">
+                                                            <Form.Group>
+                                                                <AccountSelector
+                                                                    defaultValue={request.getVotingAccount()}
+                                                                    name="voting_account"
+                                                                    tabIndex={3}
+                                                                    onChange={
+                                                                        onChange
+                                                                    }
+                                                                    enableAccountCreate={
+                                                                        true
+                                                                    }
+                                                                />
+                                                                <small className="form-text text-muted">
+                                                                    The account
+                                                                    that will be
+                                                                    used for the
+                                                                    voting
+                                                                    address
+                                                                </small>
+                                                            </Form.Group>
+                                                        </Tab.Pane>
 
-                                                    <Form.Group className="mt-5">
-                                                        <Form.Label>
-                                                            Pool fees
-                                                        </Form.Label>
-                                                        <FeeChooserInput
-                                                            value={request.getPoolFees()}
-                                                            onChange={(
-                                                                value: number
-                                                            ) =>
-                                                                this.onFeeChange(
-                                                                    value
-                                                                )
-                                                            }
-                                                        />
-                                                    </Form.Group>
-                                                </Tab.Pane>
-                                            </Tab.Content>
-                                        </Col>
-                                    </Row>
-                                </Tab.Container>
+                                                        <Tab.Pane
+                                                            eventKey="voting_address"
+                                                            title="Voting address">
+                                                            <Form.Group>
+                                                                <Form.Label>
+                                                                    Voting
+                                                                    address
+                                                                </Form.Label>
+                                                                <Form.Control
+                                                                    autoComplete="off"
+                                                                    name="voting_address"
+                                                                    type="text"
+                                                                    placeholder="Ds....."
+                                                                    onChange={
+                                                                        onChange
+                                                                    }
+                                                                    defaultValue={request.getVotingAddress()}
+                                                                />
+                                                            </Form.Group>
+                                                        </Tab.Pane>
 
-                                <div className="text-right mt-5">
-                                    <Button
-                                        disabled={!this.state.isDirty}
-                                        type="submit"
-                                        variant="primary">
-                                        Save settings
-                                    </Button>
-                                </div>
-                            </fieldset>
-                        </Form>
+                                                        <Tab.Pane
+                                                            eventKey="pool"
+                                                            title="VSP (pool address)">
+                                                            <Form.Group>
+                                                                <Form.Label>
+                                                                    Pool address
+                                                                </Form.Label>
+                                                                <Form.Control
+                                                                    autoComplete="off"
+                                                                    name="pool_address"
+                                                                    type="text"
+                                                                    placeholder="Ds....."
+                                                                    onChange={
+                                                                        onChange
+                                                                    }
+                                                                    defaultValue={request.getPoolAddress()}
+                                                                />
+                                                            </Form.Group>
+
+                                                            <Form.Group className="mt-5">
+                                                                <Form.Label>
+                                                                    Pool fees
+                                                                </Form.Label>
+                                                                <FeeChooserInput
+                                                                    value={request.getPoolFees()}
+                                                                    onChange={(
+                                                                        value: number
+                                                                    ) =>
+                                                                        this.onFeeChange(
+                                                                            value
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </Form.Group>
+                                                        </Tab.Pane>
+                                                    </Tab.Content>
+                                                </Col>
+                                            </Row>
+                                        </Tab.Container>
+
+                                        <div className="text-right mt-5">
+                                            <Button
+                                                disabled={!this.state.isDirty}
+                                                type="submit"
+                                                variant="primary">
+                                                Save settings
+                                            </Button>
+                                        </div>
+                                    </fieldset>
+                                </Form>
+                            </div>
+                        </ComponentPlaceHolder>
                     </Card.Body>
                 </Card>
                 <PassphraseEntryDialog show={false} />
@@ -398,7 +440,7 @@ interface InternalState {
     ticketbuyerRequest: RunTicketBuyerRequest
 }
 
-interface OwnProps {
+interface StateProps {
     error: AppError | null
     inProgress: boolean
     walletEndpointId: string
@@ -409,7 +451,11 @@ interface OwnProps {
     runTicketBuyerAttempting: boolean
 }
 
-const mapStateToProps = (state: IApplicationState) => {
+interface OwnProps {
+    loading: boolean
+}
+
+const mapStateToProps = (state: IApplicationState): StateProps => {
     const walletEndpointId = getConnectedEndpointId(state)
     const request =
         getAppConfig(state)
@@ -434,7 +480,7 @@ interface DispatchProps {
     saveTicketbuyerRequestDefaults: typeof saveTicketbuyerRequestDefaults
 }
 
-type Props = OwnProps & DispatchProps
+type Props = OwnProps & DispatchProps & StateProps
 
 const mapDispatchToProps = {
     runTicketBuyer,

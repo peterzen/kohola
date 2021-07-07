@@ -8,7 +8,7 @@ import Fade from "react-reveal/Fade"
 import MixerSettings from "../features/privacy/MixerSettings"
 import MixingStats from "../features/privacy/MixingStatsContainer"
 
-class MixerContainer extends React.PureComponent<{}, {}> {
+class MixerContainer extends React.PureComponent<Props> {
     render() {
         return (
             <div>
@@ -19,21 +19,29 @@ class MixerContainer extends React.PureComponent<{}, {}> {
                     unmountOnExit={true}>
                     <Tab eventKey="mixing-stats" title="Overview">
                         <div>
-                            <MixingStats />
+                            <MixingStats loading={this.props.loading}/>
                         </div>
                     </Tab>
 
                     <Tab eventKey="mixer-control" title="Mixer control">
-                        <MixerSettings />
+                        <MixerSettings loading={this.props.loading}/>
                     </Tab>
                 </Tabs>
             </div>
         )
     }
 }
+interface OwnProps {
+    loading: boolean
+}
 
-const mapStateToProps = () => {
-    return {}
+
+const mapStateToProps = (state: IApplicationState): OwnProps => {
+    return {
+        loading:
+            state.accounts.getAccountsAttempting ||
+            state.transactions.getTransactionsAttempting,
+    }
 }
 
 export default withRouter(connect(mapStateToProps)(MixerContainer))

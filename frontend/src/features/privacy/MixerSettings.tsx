@@ -23,6 +23,7 @@ import { ErrorAlert } from "../../components/Shared/FormStatusAlerts"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons"
 import { getConnectedEndpointId } from "../app/appSlice"
+import ComponentPlaceHolder from "../../components/Shared/ComponentPlaceholder"
 
 class MixerSettingsForm extends React.Component<Props, InternalState> {
     constructor(props: Props) {
@@ -48,147 +49,180 @@ class MixerSettingsForm extends React.Component<Props, InternalState> {
                             <Col sm={4}>
                                 <Card.Title>Account mixer service</Card.Title>
                             </Col>
-                            <Col sm={4} className="text-center pt-2">
-                                <OnOffIndicator
-                                    status={this.props.isAccountMixerRunning}
-                                    onMessage="CSPP++ mixer is running"
-                                    offMessage="CSPP++ mixer is not running"
-                                />
-                                <ErrorAlert
-                                    error={this.props.runAccountMixerError}
-                                />
-                            </Col>
-                            <Col sm={4}>
-                                <span className="float-right">
-                                    <Button
-                                        variant="primary"
-                                        disabled={
+                            {!this.props.loading && (
+                                <Col sm={4} className="text-center pt-2">
+                                    <OnOffIndicator
+                                        status={
                                             this.props.isAccountMixerRunning
                                         }
-                                        onClick={() =>
-                                            this.startAccountMixer()
-                                        }>
-                                        <FontAwesomeIcon icon={faPlay} /> Start
-                                    </Button>
-                                    <Button
-                                        variant="secondary"
-                                        disabled={
-                                            !this.props.isAccountMixerRunning
-                                        }
-                                        onClick={() => this.stopAccountMixer()}>
-                                        <FontAwesomeIcon icon={faStop} /> Stop
-                                    </Button>
-                                </span>
-                            </Col>
+                                        onMessage="CSPP++ mixer is running"
+                                        offMessage="CSPP++ mixer is not running"
+                                    />
+                                    <ErrorAlert
+                                        error={this.props.runAccountMixerError}
+                                    />
+                                </Col>
+                            )}
+                            {!this.props.loading && (
+                                <Col sm={4}>
+                                    <span className="float-right">
+                                        <Button
+                                            variant="primary"
+                                            disabled={
+                                                this.props.isAccountMixerRunning
+                                            }
+                                            onClick={() =>
+                                                this.startAccountMixer()
+                                            }>
+                                            <FontAwesomeIcon icon={faPlay} />{" "}
+                                            Start
+                                        </Button>
+                                        <Button
+                                            variant="secondary"
+                                            disabled={
+                                                !this.props
+                                                    .isAccountMixerRunning
+                                            }
+                                            onClick={() =>
+                                                this.stopAccountMixer()
+                                            }>
+                                            <FontAwesomeIcon icon={faStop} />{" "}
+                                            Stop
+                                        </Button>
+                                    </span>
+                                </Col>
+                            )}
                         </Row>
                     </Card.Header>
 
                     <Card.Body>
-                        <Form
-                            ref={this.state.formRef}
-                            validated={this.state.formIsValidated}
-                            onSubmit={_.bind(this.handleFormSubmit, this)}
-                            className={
-                                this.props.inProgress ? "in-progress" : ""
-                            }>
-                            <fieldset
-                                disabled={
-                                    this.props.isAccountMixerRunning ||
-                                    this.props.runAccountMixerAttempting
-                                }>
-                                <Form.Group as={Row}>
-                                    <Col sm={4}>
-                                        <Form.Label>Mixed account</Form.Label>
-                                    </Col>
-                                    <Col xs={5}>
-                                        <AccountSelector
-                                            name="mixed_account"
-                                            defaultValue={request.getMixedAccount()}
-                                            tabIndex={1}
-                                            onChange={onChange}
-                                        />
-                                        <small className="form-text text-muted">
-                                            The account where the mixed funds
-                                            should end up
-                                        </small>
-                                    </Col>
-                                    <Col xs={3}>
-                                        <Form.Control
-                                            name="mixed_account_branch"
-                                            defaultValue={request.getMixedAccountBranch()}
-                                            tabIndex={2}
-                                            onChange={onChange}
-                                            as="select">
-                                            {_.map([0, 1], (n) => (
-                                                <option key={n} value={n}>
-                                                    {n}
-                                                </option>
-                                            ))}
-                                        </Form.Control>
-                                        <small className="form-text text-muted">
-                                            Branch
-                                        </small>
-                                    </Col>
-                                </Form.Group>
+                        <ComponentPlaceHolder
+                            firstLaunchOnly={true}
+                            type="text"
+                            rows={10}
+                            ready={!this.props.loading}
+                            showLoadingAnimation>
+                            <div>
+                                <Form
+                                    ref={this.state.formRef}
+                                    validated={this.state.formIsValidated}
+                                    onSubmit={_.bind(
+                                        this.handleFormSubmit,
+                                        this
+                                    )}
+                                    className={
+                                        this.props.inProgress
+                                            ? "in-progress"
+                                            : ""
+                                    }>
+                                    <fieldset
+                                        disabled={
+                                            this.props.isAccountMixerRunning ||
+                                            this.props.runAccountMixerAttempting
+                                        }>
+                                        <Form.Group as={Row}>
+                                            <Col sm={4}>
+                                                <Form.Label>
+                                                    Mixed account
+                                                </Form.Label>
+                                            </Col>
+                                            <Col xs={5}>
+                                                <AccountSelector
+                                                    name="mixed_account"
+                                                    defaultValue={request.getMixedAccount()}
+                                                    tabIndex={1}
+                                                    onChange={onChange}
+                                                />
+                                                <small className="form-text text-muted">
+                                                    The account where the mixed
+                                                    funds should end up
+                                                </small>
+                                            </Col>
+                                            <Col xs={3}>
+                                                <Form.Control
+                                                    name="mixed_account_branch"
+                                                    defaultValue={request.getMixedAccountBranch()}
+                                                    tabIndex={2}
+                                                    onChange={onChange}
+                                                    as="select">
+                                                    {_.map([0, 1], (n) => (
+                                                        <option
+                                                            key={n}
+                                                            value={n}>
+                                                            {n}
+                                                        </option>
+                                                    ))}
+                                                </Form.Control>
+                                                <small className="form-text text-muted">
+                                                    Branch
+                                                </small>
+                                            </Col>
+                                        </Form.Group>
 
-                                <Form.Group as={Row}>
-                                    <Col sm={4}>
-                                        <Form.Label>Change account</Form.Label>
-                                    </Col>
-                                    <Col xs={5}>
-                                        <AccountSelector
-                                            name="change_account"
-                                            tabIndex={3}
-                                            defaultValue={request.getChangeAccount()}
-                                            onChange={onChange}
-                                        />
-                                        <small className="form-text text-muted">
-                                            The account that will be used for
-                                            any unmixed change that is waiting
-                                            to be mixed.
-                                        </small>
-                                    </Col>
-                                </Form.Group>
+                                        <Form.Group as={Row}>
+                                            <Col sm={4}>
+                                                <Form.Label>
+                                                    Change account
+                                                </Form.Label>
+                                            </Col>
+                                            <Col xs={5}>
+                                                <AccountSelector
+                                                    name="change_account"
+                                                    tabIndex={3}
+                                                    defaultValue={request.getChangeAccount()}
+                                                    onChange={onChange}
+                                                />
+                                                <small className="form-text text-muted">
+                                                    The account that will be
+                                                    used for any unmixed change
+                                                    that is waiting to be mixed.
+                                                </small>
+                                            </Col>
+                                        </Form.Group>
 
-                                <Form.Group as={Row}>
-                                    <Col sm={4}>
-                                        <Form.Label>CSPP server</Form.Label>
-                                    </Col>
-                                    <Col sm={5}>
-                                        <Form.Control
-                                            autoComplete="off"
-                                            required
-                                            type="text"
-                                            name="cspp_server_host"
-                                            placeholder="Hostname or IP"
-                                            onChange={onChange}
-                                            tabIndex={4}
-                                            defaultValue={csppHost}
-                                        />
-                                    </Col>
-                                    <Col sm={3}>
-                                        <Form.Control
-                                            autoComplete="off"
-                                            required
-                                            name="cspp_server_port"
-                                            type="number"
-                                            placeholder="Port"
-                                            onChange={onChange}
-                                            tabIndex={5}
-                                            defaultValue={csppPort}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                                <div className="text-right mt-5">
-                                    <Button
-                                        disabled={!this.state.isDirty}
-                                        type="submit"
-                                        variant="primary">
-                                        Save settings
-                                    </Button>
-                                </div>
-                            </fieldset>
-                        </Form>
+                                        <Form.Group as={Row}>
+                                            <Col sm={4}>
+                                                <Form.Label>
+                                                    CSPP server
+                                                </Form.Label>
+                                            </Col>
+                                            <Col sm={5}>
+                                                <Form.Control
+                                                    autoComplete="off"
+                                                    required
+                                                    type="text"
+                                                    name="cspp_server_host"
+                                                    placeholder="Hostname or IP"
+                                                    onChange={onChange}
+                                                    tabIndex={4}
+                                                    defaultValue={csppHost}
+                                                />
+                                            </Col>
+                                            <Col sm={3}>
+                                                <Form.Control
+                                                    autoComplete="off"
+                                                    required
+                                                    name="cspp_server_port"
+                                                    type="number"
+                                                    placeholder="Port"
+                                                    onChange={onChange}
+                                                    tabIndex={5}
+                                                    defaultValue={csppPort}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                        <div className="text-right mt-5">
+                                            <Button
+                                                disabled={!this.state.isDirty}
+                                                type="submit"
+                                                variant="primary">
+                                                Save settings
+                                            </Button>
+                                        </div>
+                                    </fieldset>
+                                </Form>
+                            </div>
+                        </ComponentPlaceHolder>
                     </Card.Body>
                 </Card>
                 <PassphraseEntryDialog show={false} />
@@ -261,6 +295,9 @@ interface InternalState {
 }
 
 interface OwnProps {
+    loading: boolean
+}
+interface StateProps {
     error: AppError | null
     inProgress: boolean
     walletEndpointId: string
@@ -277,9 +314,9 @@ interface DispatchProps {
     saveAccountMixerRequestDefaults: typeof saveAccountMixerRequestDefaults
 }
 
-type Props = OwnProps & DispatchProps
+type Props = OwnProps & DispatchProps & StateProps
 
-const mapStateToProps = (state: IApplicationState) => {
+const mapStateToProps = (state: IApplicationState): StateProps => {
     const walletEndpointId = getConnectedEndpointId(state)
     const request =
         getAppConfig(state)
