@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends \
 RUN go get -v github.com/markbates/pkger/cmd/pkger
 
 WORKDIR /root
-COPY --from=nodebuilder /root/deps ./deps
+#COPY --from=nodebuilder /root/deps ./deps
 COPY --from=nodebuilder /root/app ./app
 COPY --from=nodebuilder /root/frontend/dist/ ./app/www/
 COPY --from=nodebuilder /root/build-linux.sh .
