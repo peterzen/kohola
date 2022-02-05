@@ -28,7 +28,7 @@ cp app/icons/icon.png $APPDIR/usr/share/icons/hicolor/256x256/apps/${APP}.png
 #todo set proper Version
 cat > $APPDIR/usr/share/applications/${APP}.desktop << EOF
 [Desktop Entry]
-Version=1.0
+Version=1.1
 Type=Application
 Name=$APP
 Exec=$APP
@@ -40,7 +40,7 @@ EOF
 #todo set proper Version
 cat > $APPDIR/DEBIAN/control << EOF
 Package: ${APP}
-Version: 1.0-0
+Version: 1.1-0
 Depends: libwebkit2gtk-4.0-37
 Section: base
 Priority: optional
