@@ -1,5 +1,7 @@
 # Stage I - frontend node build
-FROM debian:stretch-slim AS nodebuilder
+FROM debian:bullseye-slim AS nodebuilder
+
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y -q --no-install-recommends \
 	ca-certificates \
@@ -8,8 +10,8 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends \
 
 SHELL ["/bin/bash", "--login", "-c"]
 
-RUN curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
-RUN nvm install v11 && nvm use v11
+RUN curl -sL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+RUN nvm install v12 && nvm use v12
 RUN npm install --global yarn
 
 WORKDIR /root
@@ -20,7 +22,7 @@ WORKDIR frontend/
 RUN yarn && yarn build
 
 # stage II - Go build & packaging
-FROM golang:1.14-stretch
+FROM golang:1.15-bullseye
 
 RUN apt-get update && apt-get install -y -q --no-install-recommends \
 	gcc \

@@ -24,7 +24,7 @@ require (
 	github.com/markbates/pkger v0.17.1
 	github.com/sqweek/dialog v0.0.0-20200304031853-0dcd55bfe06a
 	github.com/superoo7/go-gecko v1.0.0
-	github.com/webview/webview v0.0.0-20210122092209-7b1b723cbdd5
+	github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e
 	github.com/zserge/lorca v0.1.9
 	google.golang.org/grpc v1.29.1
 )
