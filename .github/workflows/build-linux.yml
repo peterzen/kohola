@@ -1,17 +1,11 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: Linux .deb build
+name: linux_build
 
 on:
   push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -20,18 +14,29 @@ jobs:
 
     strategy:
       matrix:
+        go: [ '1.14']
         node-version: [12.x]
 
     steps:
-    - uses: actions/setup-go@v2
-    - run: |
-        echo PATH=$PATH
-        go version
-        go get -u github.com/markbates/pkger/cmd/pkger
     - uses: actions/checkout@v2
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: ./build-linux.sh
+
+    - run: npm install -g yarn
+
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+          go-version: ${{ matrix.go }}
+
+    - name: install deps
+      run: sudo apt-get update && sudo apt-get install -y -q --no-install-recommends libwebkit2gtk-4.0-dev libgtk-3-dev libcairo2-dev libglib2.0-dev libappindicator3-dev libappindicator3-0.1-cil-dev
+
+    - name: Build
+      run: |
+        go get -u github.com/markbates/pkger/cmd/pkger
+        ./build-linux.sh
 
