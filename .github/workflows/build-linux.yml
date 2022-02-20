@@ -23,7 +23,11 @@ jobs:
         node-version: [12.x]
 
     steps:
-    - uses: actions/setup-go@v2.0.3
+    - uses: actions/setup-go@v2
+    - run: |
+        echo PATH=$PATH
+        go version
+        go get -u github.com/markbates/pkger/cmd/pkger
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
