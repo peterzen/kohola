@@ -74,6 +74,10 @@ func NewLorca() Interface {
 		args = append(args, "--class=Lorca")
 	}
 	u, _ := lorca.New("", "", 1200, 800, args...)
+	if u == nil {
+		fmt.Println("This application requires WebView, please install Google Chrome.")
+		os.Exit(1)
+	}
 	ui.w = u
 	return ui
 }
