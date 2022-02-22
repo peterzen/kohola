@@ -19,7 +19,7 @@ require (
 	github.com/gobuffalo/here v0.6.2 // indirect
 	github.com/golang/protobuf v1.4.2
 	github.com/gopherjs/gopherjs v0.0.0-20200217142428-fce0ec30dd00 // indirect
-	github.com/gotk3/gotk3 v0.0.0-20200129211157-69caac910e50 // indirect
+	github.com/gotk3/gotk3 v0.6.1 // indirect
 	github.com/lxn/win v0.0.0-20210218163916-a377121e959e
 	github.com/markbates/pkger v0.17.1
 	github.com/sqweek/dialog v0.0.0-20200304031853-0dcd55bfe06a

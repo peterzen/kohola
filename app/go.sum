@@ -203,6 +203,8 @@ github.com/gorilla/websocket v1.2.0/go.mod h1:E7qHFY5m1UJ88s3WnNqhKjPHQ0heANvMoA
 github.com/gorilla/websocket v1.4.1/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/gotk3/gotk3 v0.0.0-20200129211157-69caac910e50 h1:feE1u+kHXGgxYKOWFYTH8ZVGAoigZyHuzI+EOx9qt1M=
 github.com/gotk3/gotk3 v0.0.0-20200129211157-69caac910e50/go.mod h1:Eew3QBwAOBTrfFFDmsDE5wZWbcagBL1NUslj1GhRveo=
+github.com/gotk3/gotk3 v0.6.1 h1:GJ400a0ecEEWrzjBvzBzH+pB/esEMIGdB9zPSmBdoeo=
+github.com/gotk3/gotk3 v0.6.1/go.mod h1:/hqFpkNa9T3JgNAE2fLvCdov7c5bw//FHNZrZ3Uv9/Q=
 github.com/h2non/parth v0.0.0-20190131123155-b4df798d6542 h1:2VTzZjLZBgl62/EtslCrtky5vbi9dd7HrQPQIx6wqiw=
 github.com/h2non/parth v0.0.0-20190131123155-b4df798d6542/go.mod h1:Ow0tF8D4Kplbc8s8sSb3V2oUCygFHVp8gC3Dn6U4MNI=
 github.com/hpcloud/tail v1.0.0 h1:nfCOvKYfkgYP8hkirhJocXT2+zOD8yUNjXaWfTlyFKI=
@@ -239,6 +241,8 @@ github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:
 github.com/skelterjohn/go.wde v0.0.0-20180104102407-a0324cbf3ffe/go.mod h1:zXxNsJHeUYIqpg890APBNEn9GoCbA4Cdnvuv3mx4fBk=
 github.com/sqweek/dialog v0.0.0-20200304031853-0dcd55bfe06a h1:BHv3lo0aZg2IPfeBfgYFjq48DoKehP+JC9dtACUEmT4=
 github.com/sqweek/dialog v0.0.0-20200304031853-0dcd55bfe06a/go.mod h1:QSrNdZLZB8VoFPGlZ2vDuA2oNaVdhld3g0PZLc7soX8=
+github.com/sqweek/dialog v0.0.0-20211002065838-9a201b55ab91 h1:Ap4SC7+bIAFzh81vREQSElqYUtuxPgknVl1ol5rOf9w=
+github.com/sqweek/dialog v0.0.0-20211002065838-9a201b55ab91/go.mod h1:/qNPSY91qTz/8TgHEMioAUc6q7+3SOybeKczHMXFcXw=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
