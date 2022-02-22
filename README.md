@@ -52,7 +52,7 @@ By default, `dcrwallet` listens on port 9111 (mainnet) or 19111 (testnet).  The 
 ##### Dependencies:
 
  * `yarn`
- * `golang` 1.12 or later (tested on 1.13 but should work on 1.12)
+ * `golang` 1.12 or later
  * development packages:
  ```
  apt-get install libwebkit2gtk-4.0-dev \
