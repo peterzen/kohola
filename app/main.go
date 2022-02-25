@@ -29,7 +29,8 @@ func main() {
 	defer w.Destroy()
 
 	bindUIAPI(w)
-	go walletgui.InitSystray(w)
+	// @FIXME - this crashes the app
+	// go walletgui.InitSystray(w)
 
 	startUI(w)
 
