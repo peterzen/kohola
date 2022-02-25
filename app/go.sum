@@ -163,6 +163,8 @@ github.com/getlantern/ops v0.0.0-20190325191751-d70cb0d6f85f h1:wrYrQttPS8FHIRSl
 github.com/getlantern/ops v0.0.0-20190325191751-d70cb0d6f85f/go.mod h1:D5ao98qkA6pxftxoqzibIBBrLSUli+kYnJqrgBf9cIA=
 github.com/getlantern/systray v1.1.0 h1:U0wCEqseLi2ok1fE6b88gJklzriavPJixZysZPkZd/Y=
 github.com/getlantern/systray v1.1.0/go.mod h1:AecygODWIsBquJCJFop8MEQcJbWFfw/1yWbVabNgpCM=
+github.com/getlantern/systray v1.2.0 h1:MsAdOcmOnm4V+r3HFONDszdZeoj7E3q2dEvsPdsxXtI=
+github.com/getlantern/systray v1.2.0/go.mod h1:AecygODWIsBquJCJFop8MEQcJbWFfw/1yWbVabNgpCM=
 github.com/go-resty/resty/v2 v2.2.0 h1:vgZ1cdblp8Aw4jZj3ZsKh6yKAlMg3CHMrqFSFFd+jgY=
 github.com/go-resty/resty/v2 v2.2.0/go.mod h1:nYW/8rxqQCmI3bPz9Fsmjbr2FBjGuR2Mzt6kDh3zZ7w=
 github.com/go-stack/stack v1.8.0 h1:5SgMzNM5HxrEjV0ww2lTmX6E2Izsfxas4+YHWRs3Lsk=
@@ -232,6 +234,8 @@ github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:
 github.com/skelterjohn/go.wde v0.0.0-20180104102407-a0324cbf3ffe/go.mod h1:zXxNsJHeUYIqpg890APBNEn9GoCbA4Cdnvuv3mx4fBk=
 github.com/sqweek/dialog v0.0.0-20200304031853-0dcd55bfe06a h1:BHv3lo0aZg2IPfeBfgYFjq48DoKehP+JC9dtACUEmT4=
 github.com/sqweek/dialog v0.0.0-20200304031853-0dcd55bfe06a/go.mod h1:QSrNdZLZB8VoFPGlZ2vDuA2oNaVdhld3g0PZLc7soX8=
+github.com/sqweek/dialog v0.0.0-20211002065838-9a201b55ab91 h1:Ap4SC7+bIAFzh81vREQSElqYUtuxPgknVl1ol5rOf9w=
+github.com/sqweek/dialog v0.0.0-20211002065838-9a201b55ab91/go.mod h1:/qNPSY91qTz/8TgHEMioAUc6q7+3SOybeKczHMXFcXw=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
@@ -243,6 +247,8 @@ github.com/tadvi/systray v0.0.0-20190226123456-11a2b8fa57af h1:6yITBqGTE2lEeTPG0
 github.com/tadvi/systray v0.0.0-20190226123456-11a2b8fa57af/go.mod h1:4F09kP5F+am0jAwlQLddpoMDM+iewkxxt6nxUQ5nq5o=
 github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e h1:z780M7mCrdt6KiICeW9SGirvQjxDlrVU+n99FO93nbI=
 github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e/go.mod h1:rpXAuuHgyEJb6kXcXldlkOjU6y4x+YcASKKXJNUhh0Y=
+github.com/webview/webview v0.0.0-20220225033244-e75f7551c31c h1:uZ7aoYJ6MOIioti8xBEUTPM7dFGW07rt9lMAysHOOmI=
+github.com/webview/webview v0.0.0-20220225033244-e75f7551c31c/go.mod h1:rpXAuuHgyEJb6kXcXldlkOjU6y4x+YcASKKXJNUhh0Y=
 github.com/zserge/lorca v0.1.9 h1:vbDdkqdp2/rmeg8GlyCewY2X8Z+b0s7BqWyIQL/gakc=
 github.com/zserge/lorca v0.1.9/go.mod h1:bVmnIbIRlOcoV285KIRSe4bUABKi7R7384Ycuum6e4A=
 go.etcd.io/bbolt v1.3.4/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=

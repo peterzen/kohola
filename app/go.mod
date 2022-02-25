@@ -14,14 +14,14 @@ require (
 	github.com/decred/dcrwallet/wallet v1.3.0
 	github.com/gen2brain/beeep v0.0.0-20200420150314-13046a26d502
 	github.com/gen2brain/dlgs v0.0.0-20200211102745-b9c2664df42f
-	github.com/getlantern/systray v1.1.0
+	github.com/getlantern/systray v1.2.0
 	github.com/go-resty/resty/v2 v2.2.0
 	github.com/golang/protobuf v1.4.2
 	github.com/lxn/win v0.0.0-20210218163916-a377121e959e
 	github.com/markbates/pkger v0.17.1
-	github.com/sqweek/dialog v0.0.0-20200304031853-0dcd55bfe06a
+	github.com/sqweek/dialog v0.0.0-20211002065838-9a201b55ab91
 	github.com/superoo7/go-gecko v1.0.0
-	github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e
+	github.com/webview/webview v0.0.0-20220225033244-e75f7551c31c
 	github.com/zserge/lorca v0.1.9
 	google.golang.org/grpc v1.29.1
 )
