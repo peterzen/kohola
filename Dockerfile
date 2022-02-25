@@ -18,11 +18,11 @@ WORKDIR /root
 
 COPY .  .
 
-WORKDIR frontend/
+WORKDIR /root/frontend/
 RUN yarn && yarn build
 
 # stage II - Go build & packaging
-FROM golang:1.16-bullseye
+FROM golang:1.17-bullseye
 
 RUN apt-get update && apt-get install -y -q --no-install-recommends \
 	gcc \
@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends \
 	libgtk-3-dev \
 	libcairo2-dev \
 	libglib2.0-dev \
-	libappindicator3-0.1-cil \
+	libayatana-appindicator3-dev \
 	libappindicator3-0.1-cil-dev
 
 RUN go get -v github.com/markbates/pkger/cmd/pkger

@@ -53,14 +53,6 @@ func getScriptSize(pkScript []byte) (int, error) {
 	}
 }
 
-// noInputValue describes an error returned by the input source when no inputs
-// were selected because each previous output value was zero.  Callers of
-// txauthor.NewUnsignedTransaction need not report these errors to the user.
-type noInputValue struct {
-}
-
-func (noInputValue) Error() string { return "no input value" }
-
 // makeInputSource creates an InputSource that creates inputs for every unspent
 // output with non-zero output values.  The target amount is ignored since every
 // output is consumed.  The InputSource does not return any previous output
@@ -243,7 +235,7 @@ func ConstructTransaction(ctx context.Context, req *walletgui.CreateTransactionR
 		FeePerKb:              req.FeeRate,
 	}
 
-	if req.SendAllFlag == true {
+	if req.SendAllFlag {
 		if len(req.Amounts) > 1 {
 			return nil, status.Errorf(10, "Too many outputs provided for a send all request")
 		} else if len(req.Amounts) == 0 {

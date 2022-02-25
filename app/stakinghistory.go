@@ -81,13 +81,11 @@ func calculateLineItems(allTxList []*walletrpc.TransactionDetails) (lineItemSlic
 			if stakerevoke != nil {
 				lineItem.TicketCostCredit = stakerevoke.Value
 			}
-			break
 		case walletrpc.TransactionDetails_TICKET_PURCHASE:
 			stakesubmission := findScript(tx.MsgTx().TxOut, txscript.StakeSubmissionTy)
 			if stakesubmission != nil {
 				lineItem.TicketCostDebit = stakesubmission.Value
 			}
-			break
 		case walletrpc.TransactionDetails_VOTE:
 			stakegen := findScript(tx.MsgTx().TxOut, txscript.StakeGenTy)
 			if stakegen != nil {
@@ -95,7 +93,6 @@ func calculateLineItems(allTxList []*walletrpc.TransactionDetails) (lineItemSlic
 			}
 			// @FIXME probably not the proper way to obtain the reward amount
 			lineItem.RewardCredit = tx.MsgTx().TxIn[0].ValueIn
-			break
 		default:
 			continue
 		}

@@ -210,20 +210,20 @@ func connectEndpoint(endpointID string, w webview.Interface) (endpoint *walletgu
 	endpoint = getEndpointByID(endpoints, endpointID)
 
 	if endpoint == nil {
-		return nil, errors.New("Endpoint not found")
+		return nil, errors.New("endpoint not found")
 	}
 	isOK, err := checkGRPCConnection(endpoint)
 	if !isOK {
 		if err != nil {
-			err = fmt.Errorf("Cannot connect to dcrwallet: %s", err.Error())
+			err = fmt.Errorf("cannot connect to dcrwallet: %s", err.Error())
 		} else {
-			err = fmt.Errorf("Connection check failed for %s", endpoint.Label)
+			err = fmt.Errorf("connection check failed for %s", endpoint.Label)
 		}
 		return nil, err
 	}
 	err = connectWallet(endpoint)
 	if err != nil {
-		err = fmt.Errorf("Cannot connect to dcrwallet: %s", err)
+		err = fmt.Errorf("cannot connect to dcrwallet: %s", err)
 		return nil, err
 	}
 	cointType, err := getCointType()
@@ -233,7 +233,7 @@ func connectEndpoint(endpointID string, w webview.Interface) (endpoint *walletgu
 	if err != nil && grpc.Code(err) == 12 {
 		endpoint.IsWatchingOnly = true
 	}
-	network, err := getNetwork()
+	network, _ := getNetwork()
 	if network != nil {
 		endpoint.ActiveNetwork = network.ActiveNetwork
 	}
