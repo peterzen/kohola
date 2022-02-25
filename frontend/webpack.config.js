@@ -2,6 +2,7 @@ const path = require("path")
 const webpack = require("webpack")
 
 module.exports = {
+    mode: 'none',
     entry: ["react-hot-loader/patch", path.resolve("src/index.tsx")],
     module: {
         rules: [
