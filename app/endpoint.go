@@ -13,6 +13,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/status"
 
 	"decred.org/dcrwallet/rpc/walletrpc"
 	"github.com/golang/protobuf/proto"
@@ -230,7 +231,7 @@ func connectEndpoint(endpointID string, w webview.Interface) (endpoint *walletgu
 	if cointType != nil {
 		endpoint.CoinType = cointType.CoinType
 	}
-	if err != nil && grpc.Code(err) == 12 {
+	if err != nil && status.Code(err) == 12 {
 		endpoint.IsWatchingOnly = true
 	}
 	network, _ := getNetwork()
