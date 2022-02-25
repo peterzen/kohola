@@ -34,7 +34,7 @@ func Test_getScriptSize(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			pkScript, err := base64.StdEncoding.DecodeString(tt.args.pkScriptB64)
+			pkScript, _ := base64.StdEncoding.DecodeString(tt.args.pkScriptB64)
 			got, err := getScriptSize(pkScript)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("getScriptSize() error = %v, wantErr %v", err, tt.wantErr)

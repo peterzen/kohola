@@ -1,6 +1,6 @@
 module github.com/peterzen/kohola
 
-go 1.15
+go 1.17
 
 require (
 	decred.org/dcrwallet v1.2.3-0.20200322211959-ec65a80865c2

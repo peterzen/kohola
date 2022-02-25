@@ -68,8 +68,8 @@ func ExportWalletAPI(w webview.Interface) {
 		}
 
 		request := &walletrpc.RunTicketBuyerRequest{}
-		bytes, err := hex.DecodeString(requestAsHex)
-		err = proto.Unmarshal(bytes, request)
+		bytes, _ := hex.DecodeString(requestAsHex)
+		var err = proto.Unmarshal(bytes, request)
 		if err != nil {
 			fmt.Println(err)
 			onErrorFn(err)
@@ -100,8 +100,8 @@ func ExportWalletAPI(w webview.Interface) {
 		}
 
 		request := &walletrpc.RunAccountMixerRequest{}
-		bytes, err := hex.DecodeString(requestAsHex)
-		err = proto.Unmarshal(bytes, request)
+		bytes, _ := hex.DecodeString(requestAsHex)
+		var err = proto.Unmarshal(bytes, request)
 		if err != nil {
 			fmt.Println(err)
 			onErrorFn(err)
@@ -118,7 +118,7 @@ func ExportWalletAPI(w webview.Interface) {
 
 	w.Bind("walletgui__ConnectWalletEndpoint", func(endpointID string) (r walletgui.LorcaMessage) {
 		if !walletgui.HaveConfig() {
-			r.Err = errors.New("Missing dcrwallet entry in config file")
+			r.Err = errors.New("missing dcrwallet entry in config file")
 			return r
 		}
 		endpoint, err := connectEndpoint(endpointID, w)
@@ -131,8 +131,8 @@ func ExportWalletAPI(w webview.Interface) {
 
 	w.Bind("walletgui__CheckGRPCConnection", func(requestAsHex string) (r walletgui.CheckConnectionResponse) {
 		cfg := &walletgui.GRPCEndpoint{}
-		bytes, err := hex.DecodeString(requestAsHex)
-		err = proto.Unmarshal(bytes, cfg)
+		bytes, _ := hex.DecodeString(requestAsHex)
+		var err = proto.Unmarshal(bytes, cfg)
 
 		if err != nil {
 			r.Error = err.Error()
@@ -194,7 +194,7 @@ func getStakeInfo() (r walletgui.LorcaMessage) {
 }
 
 func decodeRawTransaction(txAsHex string) (r walletgui.LorcaMessage) {
-	txBytes, err := hex.DecodeString(txAsHex)
+	txBytes, _ := hex.DecodeString(txAsHex)
 	request := &walletrpc.DecodeRawTransactionRequest{
 		SerializedTransaction: txBytes,
 	}
@@ -453,8 +453,8 @@ func renameAccount(
 
 func createTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
 	request := &walletgui.CreateTransactionRequest{}
-	bytes, err := hex.DecodeString(requestAsHex)
-	err = proto.Unmarshal(bytes, request)
+	bytes, _ := hex.DecodeString(requestAsHex)
+	var err = proto.Unmarshal(bytes, request)
 
 	if request.FeeRate == 0 {
 		request.FeeRate = int32(txrules.DefaultRelayFeePerKb)
@@ -483,8 +483,8 @@ func createTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
 
 func signTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
 	request := &walletrpc.SignTransactionRequest{}
-	bytes, err := hex.DecodeString(requestAsHex)
-	err = proto.Unmarshal(bytes, request)
+	bytes, _ := hex.DecodeString(requestAsHex)
+	var err = proto.Unmarshal(bytes, request)
 	response, err := walletServiceClient.SignTransaction(ctx, request)
 	if err != nil {
 		fmt.Println(err)
@@ -501,8 +501,8 @@ func signTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
 
 func publishTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
 	request := &walletrpc.PublishTransactionRequest{}
-	bytes, err := hex.DecodeString(requestAsHex)
-	err = proto.Unmarshal(bytes, request)
+	bytes, _ := hex.DecodeString(requestAsHex)
+	var err = proto.Unmarshal(bytes, request)
 	response, err := walletServiceClient.PublishTransaction(ctx, request)
 	if err != nil {
 		fmt.Println(err)
@@ -519,8 +519,8 @@ func publishTransaction(requestAsHex string) (r walletgui.LorcaMessage) {
 
 func publishUnminedTransactions(requestAsHex string) (r walletgui.LorcaMessage) {
 	request := &walletrpc.PublishUnminedTransactionsRequest{}
-	bytes, err := hex.DecodeString(requestAsHex)
-	err = proto.Unmarshal(bytes, request)
+	bytes, _ := hex.DecodeString(requestAsHex)
+	var err = proto.Unmarshal(bytes, request)
 	response, err := walletServiceClient.PublishUnminedTransactions(ctx, request)
 	if err != nil {
 		fmt.Println(err)
@@ -537,8 +537,8 @@ func publishUnminedTransactions(requestAsHex string) (r walletgui.LorcaMessage) 
 
 func purchaseTickets(requestAsHex string) (r walletgui.LorcaMessage) {
 	request := &walletrpc.PurchaseTicketsRequest{}
-	bytes, err := hex.DecodeString(requestAsHex)
-	err = proto.Unmarshal(bytes, request)
+	bytes, _ := hex.DecodeString(requestAsHex)
+	var err = proto.Unmarshal(bytes, request)
 	response, err := walletServiceClient.PurchaseTickets(ctx, request)
 	if err != nil {
 		fmt.Println(err)
@@ -655,7 +655,7 @@ func listUnspent(
 	}
 	m, err := walletServiceClient.UnspentOutputs(ctx, request)
 	if err != nil {
-		log.Printf(err.Error())
+		log.Println(err.Error())
 		r.Err = err
 		return r
 	}
@@ -786,7 +786,7 @@ func usedAddressMonitor(ntfn *walletrpc.TransactionNotificationsResponse) {
 	// set seen addresses to nil in address cache
 	for account, addressCache := range accountChangeAddressCache {
 		for address := range addressCache {
-			if seenAddressList[address] == true {
+			if seenAddressList[address] {
 				accountChangeAddressCache[account][address] = nil
 			}
 		}

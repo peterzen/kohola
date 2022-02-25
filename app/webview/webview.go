@@ -83,7 +83,7 @@ func NewLorca() Interface {
 }
 
 func (ui *lorcaUI) Run() {
-	sigc := make(chan os.Signal)
+	sigc := make(chan os.Signal, 1)
 	signal.Notify(sigc, os.Interrupt)
 	select {
 	case <-sigc:
