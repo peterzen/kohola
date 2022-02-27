@@ -22,27 +22,31 @@ RUN yarn install
 COPY ./frontend/  /src/frontend/
 RUN yarn --verbose build
 
-# stage II - Go build & packaging
-FROM golang:1.17-buster AS golangbuild
+# Stage II - Go build & packaging
+FROM golang:1.17-bullseye AS golangbuild
 
 RUN go install github.com/markbates/pkger/cmd/pkger@v0.17.1
 
 RUN apt-get update && apt-get install -y -q --no-install-recommends \
 	gcc \
-	libwebkit2gtk-4.0-dev \
 	libgtk-3-dev \
 	libglib2.0-dev \
-	libappindicator3-dev
+	libwebkit2gtk-4.0-dev \
+	libayatana-appindicator3-dev
+
+# Workaround to get `getlantern/systray` to compile on Debian bullseye.  This is neccessary 
+# until the dependency is fixed upstream.
+RUN cp /usr/lib/x86_64-linux-gnu/pkgconfig/ayatana-appindicator3-0.1.pc /usr/lib/x86_64-linux-gnu/pkgconfig/appindicator3-0.1.pc
 
 WORKDIR /src
-#COPY --from=nodebuilder /root/deps ./deps
 COPY ./app/ ./app/
 COPY --from=nodebuilder /src/frontend/dist/ ./app/www/
 COPY ./build-linux.sh .
 
+# expensive step to compile gotk3 - let docker cache
+WORKDIR /src/app/
+RUN go get -v
+
+WORKDIR /src
 ENV NO_FRONTEND_BUILD yes
 RUN ./build-linux.sh
-
-# WORKDIR /src/app/
-# RUN go build -v -tags=legacy_appindicator
-
