@@ -2,6 +2,8 @@ const path = require("path")
 const webpack = require("webpack")
 
 module.exports = {
+    mode: 'none',
+    target: 'web',
     entry: ["react-hot-loader/patch", path.resolve("src/index.tsx")],
     module: {
         rules: [
@@ -30,24 +32,10 @@ module.exports = {
             {
                 test: /\.(scss|css)$/,
                 use: [
-                    {
-                        loader: "style-loader", // inject CSS to page
-                    },
-                    {
-                        loader: "css-loader", // translates CSS into CommonJS modules
-                    },
-                    {
-                        loader: "postcss-loader", // Run postcss actions
-                        options: {
-                            plugins: function () {
-                                // postcss plugins, can be exported to postcss.config.js
-                                return [require("autoprefixer")]
-                            },
-                        },
-                    },
-                    {
-                        loader: "sass-loader", // compiles Sass to CSS
-                    },
+                    { loader: "style-loader" },
+                    { loader: "css-loader" },
+                    { loader: "postcss-loader" },
+                    { loader: "sass-loader" },
                 ],
             },
             {
@@ -72,7 +60,23 @@ module.exports = {
     },
     resolve: {
         extensions: [".js", ".jsx", ".ts", ".tsx", "*.scss", "*.css"],
-        alias: { "react-dom": "@hot-loader/react-dom" },
+        alias: { 
+            "react-dom": "@hot-loader/react-dom",
+            "process": "process/browser",
+        },
+        fallback: {
+            "fs": false,
+            "tls": false,
+            "net": false,
+            "path": false,
+            "zlib": false,
+            "http": false,
+            "https": false,
+            "crypto": false,
+            "stream": require.resolve("stream-browserify"),
+            "buffer": require.resolve("buffer")
+            // "crypto-browserify": require.resolve('crypto-browserify'),
+          } 
     },
     externals: {
         // "react": "React",
@@ -84,11 +88,19 @@ module.exports = {
         filename: "bundle.js",
     },
     devServer: {
-        contentBase: "./dist",
+        static: "./dist",
         historyApiFallback: true,
         hot: true,
     },
-    plugins: [new webpack.HotModuleReplacementPlugin()],
+    plugins: [
+        // new webpack.HotModuleReplacementPlugin(),
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+        }),
+        new webpack.ProvidePlugin({
+            Buffer: ['buffer', 'Buffer'],
+        }),
+    ],
     // dev build perf optimization
     optimization: {
         removeAvailableModules: false,

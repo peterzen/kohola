@@ -5,13 +5,14 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y -q --no-install-recommends \
 	ca-certificates \
+	python \
 	curl \
 	git 
 
 SHELL ["/bin/bash", "--login", "-c"]
 
 RUN curl -sL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-RUN nvm install v12 && nvm use v12
+RUN nvm install v16 && nvm use v16
 RUN npm install --global yarn
 
 COPY ./frontend/package.json /src/frontend/
