@@ -14,7 +14,7 @@ require (
 	github.com/decred/dcrwallet/wallet v1.3.0
 	github.com/gen2brain/beeep v0.0.0-20200420150314-13046a26d502
 	github.com/gen2brain/dlgs v0.0.0-20200211102745-b9c2664df42f
-	github.com/getlantern/systray v1.1.0
+	github.com/getlantern/systray v1.2.0
 	github.com/go-resty/resty/v2 v2.2.0
 	github.com/golang/protobuf v1.4.2
 	github.com/lxn/win v0.0.0-20210218163916-a377121e959e

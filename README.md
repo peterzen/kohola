@@ -60,16 +60,16 @@ By default, `dcrwallet` listens on port 9111 (mainnet) or 19111 (testnet).  The 
 	libgtk-3-dev \
 	libcairo2-dev \
 	libglib2.0-dev \
-	libappindicator3-dev \
-	libayatana-appindicator3-dev \
-	libappindicator3-0.1-cil-dev
+	libayatana-appindicator3-dev 
 ```
+
+On Debian Buster, you'll need to install `libappindicator3-dev` instead of `libayatana-appindicator3-dev` for the time being.
 
 `./build-linux.sh`
 
-There is an experimental `Dockerfile` to build without having to install  dependencies:
+There is an experimental `Dockerfile` to build without having to install the dev dependencies:
 
-`docker build  -t decred/dcrwalletgui .`
+`docker build -t user/kohola .`
 
 ### MacOS
 
