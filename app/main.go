@@ -25,7 +25,7 @@ func main() {
 
 	WalletAPIInit()
 
-	w := webview.New(false)
+	w := webview.New(true)
 	defer w.Destroy()
 
 	bindUIAPI(w)
