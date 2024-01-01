@@ -14,15 +14,26 @@
 
 ## Features
 
+![Accounts overview](docs/Screenshot_kohola_2024-01-01_2.png)
 ### Coin control
 
 ### Security and privacy
 
 Kohola protects connection credentials (RPC certificate) and all other connection information by storing its configuration in encrypted form (using AES).  This is optional, but highly recommended, along with a choosing a long, strong passphrase.  The passphrase is prompted when the application is started.
 
+### Solo staking, governance
+
+![Accounts overview](docs/Screenshot_kohola_2024-01-01_1.png)
+
+
 ### UTXO and transaction metadata
 
 Unspent transaction outputs (spendable coins) can be labelled individually in order to keep tabs on the observers associated with a transaction.
+
+### Market overview
+
+![Accounts overview](docs/Screenshot_kohola_2024-01-01_3.png)
+
 
 ## Implementation
 
