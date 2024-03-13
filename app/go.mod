@@ -16,7 +16,7 @@ require (
 	github.com/gen2brain/dlgs v0.0.0-20200211102745-b9c2664df42f
 	github.com/getlantern/systray v1.2.0
 	github.com/go-resty/resty/v2 v2.2.0
-	github.com/golang/protobuf v1.4.2
+	github.com/golang/protobuf v1.5.0
 	github.com/lxn/win v0.0.0-20210218163916-a377121e959e
 	github.com/markbates/pkger v0.17.1
 	github.com/sqweek/dialog v0.0.0-20200304031853-0dcd55bfe06a
@@ -66,7 +66,7 @@ require (
 	golang.org/x/text v0.3.2 // indirect
 	golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 // indirect
 	google.golang.org/genproto v0.0.0-20190819201941-24fa4b261c55 // indirect
-	google.golang.org/protobuf v1.23.0 // indirect
+	google.golang.org/protobuf v1.33.0 // indirect
 )
 
 //replace decred.org/dcrwallet => ../deps/dcrwallet
